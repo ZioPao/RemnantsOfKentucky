@@ -50,18 +50,6 @@ SafehouseInstanceManager.loadSafehouseInstances = function(cellX, cellY)
                 y = wY,
                 z = wZ
             }
-
-            --local sq = getCell():getGridSquare(wX, wY, relativeZ);
-            local sq = getCell():getGridSquare(tonumber(wX), tonumber(wY), tonumber(0));
-            
-            if not sq then
-
-            else
-
-                local sqMd = sq:getModData();
-                sqMd.PZEFT = sqMd.PZEFT or {}
-                assignedSafehouses[SafehouseInstanceManager.getCoordinateID(wX, wY, wZ)] = sqMd.PZEFT_Assigned.PlayerId
-            end
         end
     end
 end
@@ -71,15 +59,6 @@ end
 ---@param key string
 ---@param playerOnlineID integer
 SafehouseInstanceManager.assignSafehouseInstanceToPlayer = function(key, playerOnlineID)
-    local safehouseInstance = safehouseInstances[key];
-
-    local sq = getSquare(safehouseInstance.x, safehouseInstance.y, safehouseInstance.z);
-    local sqMd = sq:getModData();
-
-    if sqMd.PZEFT then
-        sqMd.PZEFT.PlayerId = playerOnlineID;
-    end
-
     assignedSafehouses[key] = playerOnlineID
     return key
 end
@@ -98,14 +77,6 @@ end
 ---@param key string
 SafehouseInstanceManager.unassignSafehouseInstance = function(key)
     local safehouseInstance = safehouseInstances[key];
-
-    local sq = getSquare(safehouseInstance.x, safehouseInstance.y, safehouseInstance.z);
-    local sqMd = sq:getModData();
-
-    if sqMd.PZEFT then
-        sqMd.PZEFT.PlayerId = playerOnlineID;
-    end
-
     assignedSafehouses[key] = nil
 end
 
@@ -132,7 +103,7 @@ end
 SafehouseInstanceManager.getFreeSafehouseCount = function()
     local totalSafehouseCount = #safehouseInstances
     local totalAssignedCount = #assignedSafehouses
-
+    
     return totalSafehouseCount - totalAssignedCount
 end
 
