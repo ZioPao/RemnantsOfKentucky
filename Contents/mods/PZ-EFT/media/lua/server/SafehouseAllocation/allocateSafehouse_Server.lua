@@ -128,7 +128,7 @@ PlayerSafehouseManager.getOrAssignSafehouse = function(player)
         SafehouseInstanceManager.loadSafehouseInstances(1,1)
     end
 
-    local id = player:getOnlineID() + 1 --todo debug
+    local id = player:getUsername()
 
     local playerSafehouseKey = SafehouseInstanceManager.getPlayerSafehouseKey(id)
 
