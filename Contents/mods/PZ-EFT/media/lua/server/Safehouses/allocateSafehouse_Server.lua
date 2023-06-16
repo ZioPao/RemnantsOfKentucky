@@ -146,8 +146,7 @@ PlayerSafehouseManager.getOrAssignSafehouse = function(player)
     return playerSafehouseKey
 end
 
-
---TODO: DEBUG CODE
+--TODO: Check if works well in MP environment
 
 local function OnLoad()
 	SafehouseInstanceManager.loadSafehouseInstances(1,1)
