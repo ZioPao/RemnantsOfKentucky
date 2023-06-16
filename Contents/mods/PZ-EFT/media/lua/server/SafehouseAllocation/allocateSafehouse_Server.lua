@@ -18,29 +18,29 @@ local safehouseGrid = {
 }
 
 local safehouseInstances = {} -- key (SafehouseInstanceManager.getCoordinateID): "x-y-z", value: {x=wx, y=wy, z=wz}
-local assignedSafehouses = {} -- key (SafehouseInstanceManager.getCoordinateID): "x-y-z", value: playerSteamID
+local assignedSafehouses = {} -- key (SafehouseInstanceManager.getCoordinateID): "x-y-z", value: username
 
 local loaded = false;
 
 SafehouseInstanceManager = SafehouseInstanceManager or {}
 
--- TODO: Testing, can remove later --
+-- DEBUGGING FUNCTIONS --
 
-SafehouseInstanceManager.displaySafehouseInstances = function()
+SafehouseInstanceManager.debug = {}
+SafehouseInstanceManager.debug.displaySafehouseInstances = function()
     for key, value in pairs(safehouseInstances) do
         print("Key: " .. key)
     end
 end
 
-SafehouseInstanceManager.displayAssignedSafehouseInstances = function()
+SafehouseInstanceManager.debug.displayAssignedSafehouseInstances = function()
     for key, value in pairs(assignedSafehouses) do
         print("Key: " .. key)
     end
 end
 
-SafehouseInstanceManager.isLoaded = function()
+SafehouseInstanceManager.debug.isLoaded = function()
     print(loaded)
-    return loaded
 end
 
 ------------------------
@@ -119,11 +119,9 @@ SafehouseInstanceManager.getNextFreeSafehouseKey = function()
     end
 end
 
-PlayerSafehouseManager = PlayerSafehouseManager or {}
-
 --- Get or assign safehouse and get its key.
 ---@param player IsoPlayer
-PlayerSafehouseManager.getOrAssignSafehouse = function(player)
+SafehouseInstanceManager.getOrAssignSafehouse = function(player)
     if not loaded then
         SafehouseInstanceManager.loadSafehouseInstances(1,1)
     end
@@ -136,7 +134,7 @@ PlayerSafehouseManager.getOrAssignSafehouse = function(player)
         playerSafehouseKey = SafehouseInstanceManager.getNextFreeSafehouseKey()
 
         if not playerSafehouseKey then
-            warn("PlayerSafehouseManager.getOrAssignSafehouse: No free safehouses found for player.")
+            warn("SafehouseInstanceManager.getOrAssignSafehouse: No free safehouses found for player.")
             return
         end
 

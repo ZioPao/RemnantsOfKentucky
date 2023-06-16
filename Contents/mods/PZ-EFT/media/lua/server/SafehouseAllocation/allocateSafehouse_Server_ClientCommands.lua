@@ -1,7 +1,7 @@
 local ClientCommands = {}
 
 ClientCommands.RequestSafehouseAllocation = function(playerObj, _)
-    local safehouseKey = PlayerSafehouseManager.getOrAssignSafehouse(playerObj)
+    local safehouseKey = SafehouseInstanceManager.getOrAssignSafehouse(playerObj)
     local safehouseInstance = SafehouseInstanceManager.getSafehouseInstanceByKey(safehouseKey)
 
     --TODO: REMOVE FOR SP DEBUG
