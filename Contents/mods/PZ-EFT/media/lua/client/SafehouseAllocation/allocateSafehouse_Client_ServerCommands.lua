@@ -1,3 +1,5 @@
+require "utils"
+
 local ServerCommands = {}
 
 ServerCommands.SetSafehouse = function(safehouseInstance)
