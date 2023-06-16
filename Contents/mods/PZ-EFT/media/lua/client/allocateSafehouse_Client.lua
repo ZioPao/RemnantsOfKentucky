@@ -1,5 +1,5 @@
+--TODO: DEBUGGING
 local function OnPlayerAttackFinished(character, handWeapon)
-
     local p = getPlayer()
 
     local psq = p:getSquare()
@@ -17,11 +17,6 @@ local function OnPlayerAttackFinished(character, handWeapon)
 
     Clipboard.setClipboard(s)
     print(s)
-
-    SafehouseInstanceManager.loadSafehouseInstances(1,1)
-    print("Total: " .. SafehouseInstanceManager.getTotalSafehouseInstanceCount())
-    print("Free: " .. SafehouseInstanceManager.getFreeSafehouseCount())
-    print("Assigned: " .. SafehouseInstanceManager.getAssignedSafehouseCount())
 end
 
 Events.OnPlayerAttackFinished.Add(OnPlayerAttackFinished)
@@ -31,10 +26,11 @@ local function OnCreatePlayer(playerIndex, player)
 	if player == getPlayer() then
         --On join, request safehouse allocation data
         print("On Create Player, RequestSafehouseAllocation");
-        sendClientCommand("PZEFT", "RequestSafehouseAllocation")
-        
         --Teleport player to hub
-        PZEFT_UTILS.TeleportPlayer(player,301,301,0);
+        PZEFT_UTILS.TeleportPlayer(player,302,302,0);
+
+        --Request safe house allocation, which in turn will teleport the player to the assigned safehouse
+        sendClientCommand("PZEFT", "RequestSafehouseAllocation", {})
     end
 end
 

@@ -20,7 +20,30 @@ local safehouseGrid = {
 local safehouseInstances = {} -- key (SafehouseInstanceManager.getCoordinateID): "x-y-z", value: {x=wx, y=wy, z=wz}
 local assignedSafehouses = {} -- key (SafehouseInstanceManager.getCoordinateID): "x-y-z", value: playerSteamID
 
+local loaded = false;
+
 SafehouseInstanceManager = SafehouseInstanceManager or {}
+
+-- Testing, can remove later --
+
+SafehouseInstanceManager.displaySafehouseInstances = function()
+    for key, value in pairs(safehouseInstances) do
+        print("Key: " .. key)
+    end
+end
+
+SafehouseInstanceManager.displayAssignedSafehouseInstances = function()
+    for key, value in pairs(assignedSafehouses) do
+        print("Key: " .. key)
+    end
+end
+
+SafehouseInstanceManager.isLoaded = function()
+    print(loaded)
+    return loaded
+end
+
+------------------------
 
 --- Get coordinate key string by world X, world Y, worldZ
 ---@param wx number
@@ -52,6 +75,7 @@ SafehouseInstanceManager.loadSafehouseInstances = function(cellX, cellY)
             }
         end
     end
+    loaded = true;
 end
 
 -- TODO Check if the same playerSteamID persists after death/reconnect
@@ -88,10 +112,6 @@ end
 
 --- Get the key of the next free safehouse, if any
 SafehouseInstanceManager.getNextFreeSafehouseKey = function()
-    if SafehouseInstanceManager.getFreeSafehouseCount() <= 0 then
-        return nil
-    end
-
     for key, value in pairs(safehouseInstances) do
         if not assignedSafehouses[key] then
             return key
@@ -99,34 +119,20 @@ SafehouseInstanceManager.getNextFreeSafehouseKey = function()
     end
 end
 
---- Get count of free safehouses
-SafehouseInstanceManager.getFreeSafehouseCount = function()
-    local totalSafehouseCount = #safehouseInstances
-    local totalAssignedCount = #assignedSafehouses
-    
-    return totalSafehouseCount - totalAssignedCount
-end
-
---- Get count of assigned safehouses
-SafehouseInstanceManager.getAssignedSafehouseCount = function()
-    return #assignedSafehouses
-end
-
---- Get count of total safehouse instances
-SafehouseInstanceManager.getTotalSafehouseInstanceCount = function()
-    return #safehouseInstances
-end
-
 PlayerSafehouseManager = PlayerSafehouseManager or {}
 
 --- Get or assign safehouse and get its key.
 ---@param player IsoPlayer
 PlayerSafehouseManager.getOrAssignSafehouse = function(player)
-    local id = player:getOnlineID()
+    if not loaded then
+        SafehouseInstanceManager.loadSafehouseInstances(1,1)
+    end
+
+    local id = player:getOnlineID() + 1 --todo debug
 
     local playerSafehouseKey = SafehouseInstanceManager.getPlayerSafehouseKey(id)
 
-    if not playerSafehouseKey then
+    if playerSafehouseKey == nil then
         playerSafehouseKey = SafehouseInstanceManager.getNextFreeSafehouseKey()
 
         if not playerSafehouseKey then
@@ -139,3 +145,12 @@ PlayerSafehouseManager.getOrAssignSafehouse = function(player)
 
     return playerSafehouseKey
 end
+
+
+--TODO: DEBUG CODE
+
+local function OnLoad()
+	SafehouseInstanceManager.loadSafehouseInstances(1,1)
+end
+
+Events.OnLoad.Add(OnLoad)
