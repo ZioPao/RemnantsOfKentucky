@@ -24,7 +24,7 @@ local loaded = false;
 
 SafehouseInstanceManager = SafehouseInstanceManager or {}
 
--- Testing, can remove later --
+-- TODO: Testing, can remove later --
 
 SafehouseInstanceManager.displaySafehouseInstances = function()
     for key, value in pairs(safehouseInstances) do
