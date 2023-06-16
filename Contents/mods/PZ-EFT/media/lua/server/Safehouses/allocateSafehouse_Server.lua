@@ -18,7 +18,7 @@ local safehouseGrid = {
 }
 
 local safehouseInstances = {} -- key (SafehouseInstanceManager.getCoordinateID): "x-y-z", value: {x=wx, y=wy, z=wz}
-local assignedSafehouses = {} -- key (SafehouseInstanceManager.getCoordinateID): "x-y-z", value: playerOnlineID
+local assignedSafehouses = {} -- key (SafehouseInstanceManager.getCoordinateID): "x-y-z", value: playerSteamID
 
 SafehouseInstanceManager = SafehouseInstanceManager or {}
 
@@ -54,20 +54,20 @@ SafehouseInstanceManager.loadSafehouseInstances = function(cellX, cellY)
     end
 end
 
--- TODO Check if the same playerOnlineID persists after death/reconnect
+-- TODO Check if the same playerSteamID persists after death/reconnect
 --- Assign a safehouse instance by key to player online ID
 ---@param key string
----@param playerOnlineID integer
-SafehouseInstanceManager.assignSafehouseInstanceToPlayer = function(key, playerOnlineID)
-    assignedSafehouses[key] = playerOnlineID
+---@param playerSteamID integer
+SafehouseInstanceManager.assignSafehouseInstanceToPlayer = function(key, playerSteamID)
+    assignedSafehouses[key] = playerSteamID
     return key
 end
 
 --- Get player safehouse by player online ID
----@param playerOnlineID integer
-SafehouseInstanceManager.getPlayerSafehouseKey = function(playerOnlineID)
+---@param playerSteamID integer
+SafehouseInstanceManager.getPlayerSafehouseKey = function(playerSteamID)
     for key, value in pairs(assignedSafehouses) do
-        if assignedSafehouses[key] == playerOnlineID then
+        if assignedSafehouses[key] == playerSteamID then
             return key
         end
     end
@@ -76,7 +76,7 @@ end
 --- Unassign a safehouse instance 
 ---@param key string
 SafehouseInstanceManager.unassignSafehouseInstance = function(key)
-    local safehouseInstance = safehouseInstances[key];
+    local safehouseInstance = safehouseInstances[key]
     assignedSafehouses[key] = nil
 end
 

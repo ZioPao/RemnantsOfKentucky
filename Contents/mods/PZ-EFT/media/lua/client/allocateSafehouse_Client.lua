@@ -15,13 +15,27 @@ local function OnPlayerAttackFinished(character, handWeapon)
 
     local s = "CellX: " .. cx .. " CellY: " .. cy .. " RelX: " .. rx .. " RelY: " .. ry .. " WorldX: " .. x .. " WorldY: " .. y
 
-    Clipboard.setClipboard(s);
+    Clipboard.setClipboard(s)
     print(s)
 
-    SafehouseInstanceManager.loadSafehouseInstances(1,1);
+    SafehouseInstanceManager.loadSafehouseInstances(1,1)
     print("Total: " .. SafehouseInstanceManager.getTotalSafehouseInstanceCount())
     print("Free: " .. SafehouseInstanceManager.getFreeSafehouseCount())
     print("Assigned: " .. SafehouseInstanceManager.getAssignedSafehouseCount())
 end
 
 Events.OnPlayerAttackFinished.Add(OnPlayerAttackFinished)
+
+
+local function OnCreatePlayer(playerIndex, player)
+	if player == getPlayer() then
+        --On join, request safehouse allocation data
+        print("On Create Player, RequestSafehouseAllocation");
+        sendClientCommand("PZEFT", "RequestSafehouseAllocation")
+        
+        --Teleport player to hub
+        PZEFT_UTILS.TeleportPlayer(player,301,301,0);
+    end
+end
+
+Events.OnCreatePlayer.Add(OnCreatePlayer)
