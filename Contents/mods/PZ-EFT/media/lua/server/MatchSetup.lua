@@ -54,3 +54,5 @@ end
 function MatchHandler:handleZombieSpawns(currentTime)
     -- TODO We need to manage the zombie spawns depending on the time.
 end
+
+return MatchHandler

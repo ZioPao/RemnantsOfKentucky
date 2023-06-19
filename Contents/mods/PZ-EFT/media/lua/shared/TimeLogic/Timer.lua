@@ -26,8 +26,6 @@ function TimerHandler:setFuncToRun(funcToRun, delay)
     self.delayTimeToRunFunc = delay + os_time()     -- TODO Delay is in seconds for now
     self.timeSinceLastRunFunc = 0
 
-
-    --func(self.currentTime)
 end
 
 function TimerHandler:initialise()
@@ -40,18 +38,18 @@ function TimerHandler:update()
     -- Handle func to be run every amount of time
     if self.funcToRun then
         if self.timeSinceLastRunFunc >= self.delayTimeToRunFunc then
-            self.funcToRun()
+            self.funcToRun(self.timeInSeconds)
 
             self.timeSinceLastRunFunc = os_time()
             self.delayTimeToRunFunc = os_time() + self.delayToRunFunc
         end
     end
 
-
-    local timeInSeconds = self.currentTime - self.startTime
-    print(timeInSeconds)
+end
 
 
+function TimerHandler:syncWithClients()
+    -- TODO we should check if our timer is synced with the clients to prevent issues
 end
 
 

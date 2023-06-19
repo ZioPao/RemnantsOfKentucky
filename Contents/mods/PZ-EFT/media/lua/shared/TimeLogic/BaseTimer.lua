@@ -39,7 +39,8 @@ end
 --* Loop logic
 function BaseTimer:update()
     self.currentTime = os_time()
-
+    self.timeInSeconds = self.currentTime - self.startTime
+    print(self.timeInSeconds)
     -- TODO Every minute we'll send an ack to be sure that we're still synced with the clients?
 end
 

@@ -23,7 +23,7 @@ end
 
 function CountdownHandler:update()
     BaseTimer.update(self)
-    
+
     print(tostring(self.currentTime))
     if self.endTime <= self.currentTime then
         self.funcToRun()
