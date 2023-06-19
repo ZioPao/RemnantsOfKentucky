@@ -1,4 +1,5 @@
 -- 2x3 cells
+--TODO: If we want to turn this into a framework to support different maps, maybe set these settings through an API to add support to configure through submods
 local settings = {
     xLength = 2,
     yLength = 3,

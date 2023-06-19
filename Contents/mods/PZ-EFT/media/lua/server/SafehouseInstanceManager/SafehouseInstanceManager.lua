@@ -1,23 +1,25 @@
-local firstSafehouse = {
-    relative = {
-        x = 8,
-        y = 19,
-        z = 0
-    }
-}
-
-local safehouseGrid = {
-    x = {
-        count = 5,
-        spacing = 60
+-- TODO: If we want to turn this into a framework to support different maps, maybe set these settings through an API to add support to configure through submods
+local settings = {
+    firstSafehouse = {
+        relative = {
+            x = 8,
+            y = 19,
+            z = 0
+        }
     },
-    y = {
-        count = 5,
-        spacing = 60
+    safehouseGrid = {
+        x = {
+            count = 5,
+            spacing = 60
+        },
+        y = {
+            count = 5,
+            spacing = 60
+        }
     }
 }
 
---TODO PERSIST THIS DATA ON THE SERVER
+-- TODO PERSIST THIS DATA ON THE SERVER
 local safehouseInstances = {} -- key (SafehouseInstanceManager.getSafehouseInstanceID): "x-y-z", value: {x=wx, y=wy, z=wz}
 local assignedSafehouses = {} -- key (SafehouseInstanceManager.getSafehouseInstanceID): "x-y-z", value: username
 
@@ -59,11 +61,11 @@ end
 ---@param cellX number
 ---@param cellY number
 SafehouseInstanceManager.loadSafehouseInstances = function(cellX, cellY)
-    for y = 0, safehouseGrid.y.count - 1 do
-        for x = 0, safehouseGrid.x.count - 1 do
-            local relativeX = firstSafehouse.relative.x + (x * safehouseGrid.x.spacing)
-            local relativeY = firstSafehouse.relative.y + (y * safehouseGrid.y.spacing)
-            local relativeZ = firstSafehouse.relative.z
+    for y = 0, settings.safehouseGrid.y.count - 1 do
+        for x = 0, settings.safehouseGrid.x.count - 1 do
+            local relativeX = settings.firstSafehouse.relative.x + (x * settings.safehouseGrid.x.spacing)
+            local relativeY = settings.firstSafehouse.relative.y + (y * settings.safehouseGrid.y.spacing)
+            local relativeZ = settings.firstSafehouse.relative.z
 
             local wX = (cellX * 300) + relativeX
             local wY = (cellY * 300) + relativeY
@@ -124,7 +126,7 @@ end
 ---@param player IsoPlayer
 SafehouseInstanceManager.getOrAssignSafehouse = function(player)
     if not loaded then
-        SafehouseInstanceManager.loadSafehouseInstances(1,1)
+        SafehouseInstanceManager.loadSafehouseInstances(1, 1)
     end
 
     local id = player:getUsername()
@@ -145,10 +147,10 @@ SafehouseInstanceManager.getOrAssignSafehouse = function(player)
     return playerSafehouseKey
 end
 
---TODO: Check if works well in MP environment
+-- TODO: Check if works well in MP environment
 
 local function OnLoad()
-	SafehouseInstanceManager.loadSafehouseInstances(1,1)
+    SafehouseInstanceManager.loadSafehouseInstances(1, 1)
 end
 
 Events.OnLoad.Add(OnLoad)
