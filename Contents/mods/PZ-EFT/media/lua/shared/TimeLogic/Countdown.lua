@@ -1,19 +1,39 @@
 local BaseTimer = require("TimeLogic/BaseTimer")
+local os_time = os.time
 local CountdownHandler = {}
 
-
-function CountdownHandler:new()
+--- Set a countdown
+---@param time number
+---@param funcToRun function
+---@return table
+function CountdownHandler:new(time, funcToRun)
     local o = BaseTimer:new()
     setmetatable(o, self)
     self.__index = self
 
+    o.endTime = os_time() + time    -- in seconds
+    o.funcToRun = funcToRun
     return o
 end
 
----Run a function when the countdown is over
----@param func function
-function CountdownHandler:onEndRun(func)
-    -- ...
+function CountdownHandler:initialise()
+    BaseTimer.initialise(self)
+    Events.OnTick.Add(self.update)
+end
+
+function CountdownHandler:update()
+    BaseTimer.update(self)
+    
+    print(tostring(self.currentTime))
+    if self.endTime <= self.currentTime then
+        self.funcToRun()
+        self:stop()
+    end
+end
+
+function CountdownHandler:stop()
+    BaseTimer.stop(self)
+    Events.OnTick.Remove(self.update)
 end
 
 return CountdownHandler

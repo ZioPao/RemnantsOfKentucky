@@ -5,6 +5,10 @@ local BaseTimer = {}
 local os_time = os.time
 
 
+-- we only need one i'm dumb
+
+
+
 function BaseTimer:new()
     local o ={}
     setmetatable(o, self)
@@ -12,14 +16,13 @@ function BaseTimer:new()
 
 
     -- Let's init stuff here just to know what we're gonna use later
-    o.startTime = 0
-    o.currentTime = 0
+    o.startTime = os_time()
+    o.currentTime = os_time()
     return o
 end
 
 function BaseTimer:initialise()
     print("Starting timer")
-    Events.OnTick.Add(self.updateCurrentTime)
 end
 
 
@@ -34,12 +37,15 @@ end
 
 
 --* Loop logic
-function BaseTimer:updateCurrentTime()
+function BaseTimer:update()
     self.currentTime = os_time()
 
     -- TODO Every minute we'll send an ack to be sure that we're still synced with the clients?
 end
 
+function BaseTimer:stop()
+    print("Stopping basetimer")
+end
 
 
 

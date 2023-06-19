@@ -23,9 +23,8 @@ function MatchHandler:initialise()
 
     --* Start a countdown until the start of the game
     -- TODO When countdown is over, start the actual match
-    self.countdown = CountdownHandler:new()
+    self.countdown = CountdownHandler:new(30, self.start)
     self.countdown:initialise()
-    self.countdown:onEndRun(self.start)
 
     return true
 end
@@ -37,22 +36,17 @@ function MatchHandler:start()
   for i=0, playersArray:size() do
       -- Fetch spawn point and delete it
       local id = PvpInstanceManager.FetchRandomSpawnPointIndex()
-      local coords = instance.spawnPoints[id]
+      local coords = self.instance.spawnPoints[id]
       PvpInstanceManager.DeleteSpawnPoint(id)
 
       local pl = playersArray:get(i)
       PZEFT_UTILS.TeleportPlayer(pl, coords.x, coords.y, coords.z)
   end
 
-  --* Start timer
+  --* Start timer and the event handling zombie spawning
   self.timer = TimerHandler:new()
+  self.timer:setFuncToRun(self.handleZombieSpawns, 5)       -- will be run every 5 minnutes
   self.timer:initialise()
-
-
-
-  --* Start the event handling zombie spawning
-  -- TODO This will depend on the timer.
-  self.timer:runFuncFiveMinutes(self.handleZombieSpawns)
 
 
 end

@@ -1,5 +1,6 @@
 local BaseTimer = require("TimeLogic/BaseTimer")
 local TimerHandler = {}
+local os_time = os.time
 
 
 function TimerHandler:new()
@@ -11,14 +12,54 @@ function TimerHandler:new()
 end
 
 
----Run a certain function every 5 minutes
----@param func function
-function TimerHandler:runFuncFiveMinutes(func)
+---Run a certain function every amount of time
+---@param funcToRun function
+---@param delay number
+function TimerHandler:setFuncToRun(funcToRun, delay)
 
     -- TODO we should pass the current time to the function
-    
+    self.funcToRun = funcToRun
+
+
+    self.delayToRunFunc = delay
+
+    self.delayTimeToRunFunc = delay + os_time()     -- TODO Delay is in seconds for now
+    self.timeSinceLastRunFunc = 0
+
+
     --func(self.currentTime)
 end
+
+function TimerHandler:initialise()
+    Events.OnTick.Add(self.update)
+end
+
+function TimerHandler:update()
+    BaseTimer.update(self)
+
+    -- Handle func to be run every amount of time
+    if self.funcToRun then
+        if self.timeSinceLastRunFunc >= self.delayTimeToRunFunc then
+            self.funcToRun()
+
+            self.timeSinceLastRunFunc = os_time()
+            self.delayTimeToRunFunc = os_time() + self.delayToRunFunc
+        end
+    end
+
+
+    local timeInSeconds = self.currentTime - self.startTime
+    print(timeInSeconds)
+
+
+end
+
+
+function TimerHandler:stop()
+    Events.OnTick.Remove(self.update)
+end
+
+
 
 -- TODO We can use getDate from the server directly to handle the timer.
 -- TODO Check out how lua_timers handle this kind of stuff
