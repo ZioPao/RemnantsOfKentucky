@@ -20,12 +20,25 @@ end
 ---@param coordinateList {x=0,y=0,z=0}
 ---@param cellX number
 ---@param cellY number
+---@param otherArgs list of names of arguments to copy from coordinateList, Example: {"time"}
 ---@return {{x=0,y=0,z=0}, {x=0,y=0,z=0}}
-PZEFT_UTILS.MapWorldCoordinatesToCell = function(coordinateList, cellX, cellY)
+PZEFT_UTILS.MapWorldCoordinatesToCell = function(coordinateList, cellX, cellY, otherArgs)
     local mappedCoordinates = {}
     for index, point in ipairs(coordinateList) do
         local wX = cellX * 300
         local wY = cellY * 300
+
+        local newEntry = {
+            x = wX + point.x,
+            y = wY + point.y,
+            z = point.z
+        }
+
+        if otherArgs then
+            for index, point in ipairs(otherArgs) do
+                newEntry[otherArgs] = point[otherArgs]
+            end
+        end
 
         table.insert(mappedCoordinates, {
             x = wX + point.x,

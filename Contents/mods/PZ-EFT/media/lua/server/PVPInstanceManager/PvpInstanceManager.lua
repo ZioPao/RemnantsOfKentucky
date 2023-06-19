@@ -44,25 +44,30 @@ local spawnPoints = {{
 local permanentExtractionPoints = {{
     x = 5,
     y = 5,
-    z = 0
+    z = 0,
+    time = 10,
 }, {
     x = 5,
     y = 58,
-    z = 2
+    z = 2,
+    time = 10,
 }}
 
 local randomExtractionPoints = {{
     x = 54,
     y = 56,
-    z = 0
+    z = 0,
+    time = 10,
 }, {
     x = 500,
     y = 550,
-    z = 1
+    z = 1,
+    time = 10,
 }, {
     x = 200,
     y = 300,
-    z = 0
+    z = 0,
+    time = 10,
 }}
 
 -- TODO PERSIST THIS DATA ON THE SERVER
@@ -129,7 +134,7 @@ PvpInstanceManager.loadPvpInstances = function()
 
             local randomExtractions = PvpInstanceManager.getRandomExtractionPoints(iX, iY,
                 settings.randomExtractionPointCount);
-            local permanentExtractions = PZEFT_UTILS.MapWorldCoordinatesToCell(permanentExtractionPoints, iX, iY);
+            local permanentExtractions = PZEFT_UTILS.MapWorldCoordinatesToCell(permanentExtractionPoints, iX, iY, {"time"});
 
             pvpInstances[id] = {
                 id = id,
@@ -198,7 +203,7 @@ end
 ---@param count number
 ---@return {{x=5, y=5, z=0}, {x=5, y=5, z=0}}
 PvpInstanceManager.getRandomExtractionPoints = function(cellX, cellY, count)
-    local extractionPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(randomExtractionPoints, cellX, cellY)
+    local extractionPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(randomExtractionPoints, cellX, cellY, {"time"})
 
     local extractionPointCount = #extractionPoints
     if extractionPointCount <= count then
