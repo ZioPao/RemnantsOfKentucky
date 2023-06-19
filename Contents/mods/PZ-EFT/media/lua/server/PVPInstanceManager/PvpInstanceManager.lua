@@ -21,6 +21,7 @@ local spawnPoints = {
     {x=200, y=300, z=0},
 }
 
+--TODO PERSIST THIS DATA ON THE SERVER
 local pvpInstances = {} -- key (PvpInstanceManager.getInstanceID): "x-y", value: {id="x-y", x=cx, y=cy, spawnPoints=[{x,y,z}, {x,y,z}]}
 local usedInstances = {} -- reference pvpInstances
 local currentInstance = nil -- reference pvpInstance.value

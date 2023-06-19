@@ -17,6 +17,7 @@ local safehouseGrid = {
     }
 }
 
+--TODO PERSIST THIS DATA ON THE SERVER
 local safehouseInstances = {} -- key (SafehouseInstanceManager.getSafehouseInstanceID): "x-y-z", value: {x=wx, y=wy, z=wz}
 local assignedSafehouses = {} -- key (SafehouseInstanceManager.getSafehouseInstanceID): "x-y-z", value: username
 
