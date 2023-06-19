@@ -1,4 +1,12 @@
 -- 2x3 cells
+
+-- TODO Add reference to this
+-- currentInstance = {id, x, y, spawnPoints = {}}
+--pvpInstances[id] = {id = id, x = iX, y = iY, spawnPoints = PvpInstanceManager.getSpawnPointsForInstance(iX, iY)}
+
+
+
+
 --TODO: If we want to turn this into a framework to support different maps, maybe set these settings through an API to add support to configure through submods
 local settings = {
     xLength = 2,
@@ -14,6 +22,7 @@ local settings = {
 }
 
 --Spawn points - world coordinates if PVP instance starts at cell 0,0
+-- TODO we could make it totally random, we already know how large the map is since it's 2x3. We'd just need to add it to the current x,y of the instance
 local spawnPoints = {
     {x=5, y=5, z=0},
     {x=5, y=58, z=2},
@@ -98,4 +107,20 @@ PvpInstanceManager.getSpawnPointsForInstance = function(cX,cY)
     end
 
     return mappedSpawnPoints;
+end
+
+
+
+---Consumes a spawnpoint.
+---@return unknown
+PvpInstanceManager.FetchRandomSpawnPointIndex = function()
+    local size = #currentInstance.spawnPoints
+
+    local randIndex = ZombRand(0, size)     -- todo was it inclusive?
+    return currentInstance.spawnPoints[randIndex]
+
+end
+
+PvpInstanceManager.DeleteSpawnPoint = function(index)
+    currentInstance.spawnPoints[index] = nil
 end
