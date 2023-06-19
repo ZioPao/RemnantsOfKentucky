@@ -180,6 +180,12 @@ end
 ---@return {x=5, y=5, z=0}
 PvpInstanceManager.popRandomSpawnPoint = function()
     local size = #currentInstance.spawnPoints
+
+    if size <= 0 then
+        warn("No more spawn points left to pop!")
+        return nil;
+    end
+
     local randIndex = ZombRand(size)
     local spawnPoint = currentInstance.spawnPoints[randIndex];
     table.remove(currentInstance.spawnPoints, randIndex)
