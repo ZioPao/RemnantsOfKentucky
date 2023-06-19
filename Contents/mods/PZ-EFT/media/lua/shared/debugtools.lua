@@ -17,3 +17,4 @@ function debug_getPosition()
     Clipboard.setClipboard(s)
     print(s)
 end
+

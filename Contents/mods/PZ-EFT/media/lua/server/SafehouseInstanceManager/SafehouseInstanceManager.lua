@@ -17,8 +17,8 @@ local safehouseGrid = {
     }
 }
 
-local safehouseInstances = {} -- key (SafehouseInstanceManager.getCoordinateID): "x-y-z", value: {x=wx, y=wy, z=wz}
-local assignedSafehouses = {} -- key (SafehouseInstanceManager.getCoordinateID): "x-y-z", value: username
+local safehouseInstances = {} -- key (SafehouseInstanceManager.getSafehouseInstanceID): "x-y-z", value: {x=wx, y=wy, z=wz}
+local assignedSafehouses = {} -- key (SafehouseInstanceManager.getSafehouseInstanceID): "x-y-z", value: username
 
 local loaded = false;
 
@@ -49,7 +49,7 @@ end
 ---@param wx number
 ---@param wy number
 ---@param wz number
-SafehouseInstanceManager.getCoordinateID = function(wx, wy, wz)
+SafehouseInstanceManager.getSafehouseInstanceID = function(wx, wy, wz)
     return wx .. "-" .. wy .. "-" .. wz
 end
 
@@ -68,7 +68,7 @@ SafehouseInstanceManager.loadSafehouseInstances = function(cellX, cellY)
             local wY = (cellY * 300) + relativeY
             local wZ = relativeZ
 
-            safehouseInstances[SafehouseInstanceManager.getCoordinateID(wX, wY, wZ)] = {
+            safehouseInstances[SafehouseInstanceManager.getSafehouseInstanceID(wX, wY, wZ)] = {
                 x = wX,
                 y = wY,
                 z = wZ
