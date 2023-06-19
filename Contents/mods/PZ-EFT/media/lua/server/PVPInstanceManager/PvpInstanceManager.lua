@@ -66,20 +66,19 @@ end
 --- Marks old instance as used and Gets new instance
 ---@param if any
 PvpInstanceManager.getNextInstance = function()
-    if currentInstance then
-        usedInstances[currentInstance.id] = currentInstance
-    end
-
-    currentInstance = nil;
+    local changedInstance = false;
 
     for key, value in pairs(pvpInstances) do
         if not usedInstances[key] then
+            changedInstance = true;
             currentInstance = value;
+            usedInstances[currentInstance.id] = currentInstance
         end
     end
     
-    if not currentInstance then
+    if not changedInstance then
         warn("No more instances left! Please reset map files.");
+        return nil;
     end
 
     return currentInstance
