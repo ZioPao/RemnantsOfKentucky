@@ -1,3 +1,5 @@
+--- DEBUG
+--- Gets player position and copies coordinates to clipboard
 function debug_getPosition()
     local p = getPlayer()
 
@@ -12,7 +14,8 @@ function debug_getPosition()
     local rx = x - (cx * 300)
     local ry = y - (cy * 300)
 
-    local s = "CellX: " .. cx .. " CellY: " .. cy .. " RelX: " .. rx .. " RelY: " .. ry .. " WorldX: " .. x .. " WorldY: " .. y
+    local s = "CellX: " .. cx .. " CellY: " .. cy .. " RelX: " .. rx .. " RelY: " .. ry .. " WorldX: " .. x ..
+                  " WorldY: " .. y
 
     Clipboard.setClipboard(s)
     print(s)

@@ -1,11 +1,12 @@
 local ClientCommands = {}
 
+--- Sends command to client to set the player's safehouse
+---@param playerObj IsoPlayer
 ClientCommands.RequestSafehouseAllocation = function(playerObj, _)
     local safehouseKey = SafehouseInstanceManager.getOrAssignSafehouse(playerObj)
     local safehouseInstance = SafehouseInstanceManager.getSafehouseInstanceByKey(safehouseKey)
 
-    --TODO: REMOVE FOR SP DEBUG
-    triggerEvent("OnServerCommand", "PZEFT", "SetSafehouse", safehouseInstance);
+    triggerEvent("OnServerCommand", "PZEFT", "SetSafehouse", safehouseInstance); -- TODO: Remove, SP support for testing
     sendServerCommand(playerObj, 'PZEFT', 'SetSafehouse', safehouseInstance)
 end
 
@@ -14,6 +15,5 @@ local OnClientCommand = function(module, command, playerObj, args)
         ClientCommands[command](playerObj, args)
     end
 end
-
 
 Events.OnClientCommand.Add(OnClientCommand)

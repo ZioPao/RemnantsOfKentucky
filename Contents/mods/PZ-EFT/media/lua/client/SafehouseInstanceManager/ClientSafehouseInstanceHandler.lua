@@ -1,4 +1,8 @@
-local function OnCreatePlayer(playerIndex, player)
+--- On create player
+--- Teleport player to a "neutral"square to remove from any potential safehouse
+--- Request safehouse allocation of player from server
+---@param player IsoPlayer
+local function OnCreatePlayer(_, player)
 	if player == getPlayer() then
         --On join, request safehouse allocation data
         print("On Create Player, RequestSafehouseAllocation");
