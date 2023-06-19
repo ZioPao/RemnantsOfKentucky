@@ -102,7 +102,7 @@ end
 ---@param cellY number
 ---@return "cellX-cellY"
 PvpInstanceManager.getInstanceID = function(cellX, cellY)
-    return cX .. "-" .. cellY;
+    return cellX .. "-" .. cellY;
 end
 
 --- clear existing PVP instance and reload PVP instances
@@ -187,16 +187,16 @@ PvpInstanceManager.popRandomSpawnPoint = function()
 end
 
 --- Gets a random set of extraction points for given an instance
----@param cX number
+---@param cellX number
 ---@param cellY number
 ---@param count number
 ---@return {{x=5, y=5, z=0}, {x=5, y=5, z=0}}
-PvpInstanceManager.getRandomExtractionPoints = function(cX, cellY, count)
-    local extractionPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(randomExtractionPoints, cX, cellY)
+PvpInstanceManager.getRandomExtractionPoints = function(cellX, cellY, count)
+    local extractionPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(randomExtractionPoints, cellX, cellY)
 
     local extractionPointCount = #extractionPoints
     if extractionPointCount <= count then
-        return randomExtractionPoints
+        return extractionPoints
     end
 
     local activeExtractionPoints = {}
