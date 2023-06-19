@@ -14,16 +14,12 @@ end
 
 ---Run a certain function every amount of time
 ---@param funcToRun function
----@param delay number
+---@param delay number delay in minutes
 function TimerHandler:setFuncToRun(funcToRun, delay)
 
-    -- TODO we should pass the current time to the function
     self.funcToRun = funcToRun
-
-
-    self.delayToRunFunc = delay
-
-    self.delayTimeToRunFunc = delay + os_time()     -- TODO Delay is in seconds for now
+    self.delayToRunFunc = delay * 60
+    self.delayTimeToRunFunc = self.delayToRunFunc + os_time()
     self.timeSinceLastRunFunc = 0
 
 end
@@ -47,20 +43,9 @@ function TimerHandler:update()
 
 end
 
-
-function TimerHandler:syncWithClients()
-    -- TODO we should check if our timer is synced with the clients to prevent issues
-end
-
-
 function TimerHandler:stop()
     Events.OnTick.Remove(self.update)
 end
-
-
-
--- TODO We can use getDate from the server directly to handle the timer.
--- TODO Check out how lua_timers handle this kind of stuff
 
 
 

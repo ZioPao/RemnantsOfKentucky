@@ -22,8 +22,7 @@ function MatchHandler:initialise()
     end
 
     --* Start a countdown until the start of the game
-    -- TODO When countdown is over, start the actual match
-    self.countdown = CountdownHandler:new(30, self.start)
+    self.countdown = CountdownHandler:new(30, self.start)       -- 30 seconds
     self.countdown:initialise()
 
     return true
