@@ -3,8 +3,6 @@ local MatchHandler = {}
 local TimerHandler = require("TimeLogic/Timer")
 local CountdownHandler = require("TimeLogic/Countdown")
 
-
-
 function MatchHandler:new()
     local o = {}
     setmetatable(o, self)
@@ -47,8 +45,19 @@ function MatchHandler:start()
   self.timer = TimerHandler:new()
   self.timer:setFuncToRun(self.handleZombieSpawns, 5)       -- will be run every 5 minnutes
   self.timer:initialise()
+end
 
+--- Kill players that are still in the pvp instance and didn't manage to escape in time
+function MatchHandler:killAlivePlayers()
+end
 
+--- Extract the player and return to safehouse
+---@param playerUsername number
+function MatchHandler:extractPlayer(playerUsername)
+    local safehouseKey = SafehouseInstanceManager.getPlayerSafehouseKey(playerUsername)
+    local safehouseInstance = SafehouseInstanceManager.getSafehouseInstanceByKey(safehouseKey)
+    local player = getPlayerByUserName(playerUsername)
+    PZEFT_UTILS.TeleportPlayer(player, safehouseInstance.x, safehouseInstance.y, safehouseInstance.z)
 end
 
 function MatchHandler:handleZombieSpawns(currentTime)

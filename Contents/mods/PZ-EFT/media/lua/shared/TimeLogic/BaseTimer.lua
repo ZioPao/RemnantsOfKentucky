@@ -48,9 +48,6 @@ function BaseTimer:stop()
     print("Stopping basetimer")
 end
 
-
-
-
 ---------------------------
 return BaseTimer
 

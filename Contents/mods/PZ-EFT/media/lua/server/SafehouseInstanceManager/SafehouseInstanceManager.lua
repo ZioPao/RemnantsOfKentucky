@@ -85,7 +85,7 @@ SafehouseInstanceManager.assignSafehouseInstanceToPlayer = function(key, playerS
     return key
 end
 
---- Get player safehouse by player online ID
+--- Get player safehouse by player username
 ---@param playerSteamID integer
 ---@return "wx-wy-wz" Key of player safehouse
 SafehouseInstanceManager.getPlayerSafehouseKey = function(playerSteamID)

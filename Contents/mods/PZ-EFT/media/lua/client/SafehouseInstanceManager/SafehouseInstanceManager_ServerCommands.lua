@@ -11,7 +11,6 @@ ServerCommands.SetSafehouse = function(safehouseInstance)
     local md = player:getModData()
     md.PZEFT = md.PZEFT or {}
     md.PZEFT.safehouse = safehouseInstance
-    PZEFT_UTILS.TeleportPlayer(player, safehouseInstance.x, safehouseInstance.y, safehouseInstance.z)
 end
 
 local OnServerCommand = function(module, command, args)
