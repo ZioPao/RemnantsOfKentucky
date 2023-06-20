@@ -6,7 +6,7 @@ PZEFT_UTILS = PZEFT_UTILS or {}
 ---@param y number
 ---@param z number
 PZEFT_UTILS.TeleportPlayer = function(player, x, y, z)
-    assert(player ~= nil, "PZEFT_UTILS.TeleportPlayer: Player cannot be nil");
+    assert(player ~= nil, "PZEFT_UTILS.TeleportPlayer: Player cannot be nil")
 
     player:setX(x)
     player:setY(y)
@@ -44,8 +44,32 @@ PZEFT_UTILS.MapWorldCoordinatesToCell = function(coordinateList, cellX, cellY, o
             x = wX + point.x,
             y = wY + point.y,
             z = point.z
-        });
+        })
     end
 
-    return mappedCoordinates;
+    return mappedCoordinates
+end
+
+PZEFT_UTILS.getSquareStringCoords = function(square)
+    return "X"..square.x.."Y"..square.y.."Z"..square.z
+end
+
+PZEFT_UTILS.getSurroundingGridCoordinates = function(center, radius)
+    local coordinates = {}
+
+    local str = PZEFT_UTILS.getSquareStringCoords(center)
+    coordinates[str] = true
+
+    for xOffset = -radius, radius do
+      for yOffset = -radius, radius do
+        local newX = center.x + xOffset
+        local newY = center.y + yOffset
+  
+        local point = { x = newX, y = newY, z = center.z }
+        str = PZEFT_UTILS.getSquareStringCoords(point)
+        coordinates[str] = true
+      end
+    end
+  
+    return coordinates
 end

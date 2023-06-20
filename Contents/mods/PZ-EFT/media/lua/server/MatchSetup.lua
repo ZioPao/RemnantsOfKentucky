@@ -35,12 +35,12 @@ function MatchHandler:start()
   local playersArray = getOnlinePlayers()
   for i=0, playersArray:size() do
       -- Fetch spawn point and delete it
-      local id = PvpInstanceManager.FetchRandomSpawnPointIndex()
-      local coords = self.instance.spawnPoints[id]
-      PvpInstanceManager.DeleteSpawnPoint(id)
+      local coords = PvpInstanceManager.popRandomSpawnPoint()
 
-      local pl = playersArray:get(i)
-      PZEFT_UTILS.TeleportPlayer(pl, coords.x, coords.y, coords.z)
+      if coords then
+        local pl = playersArray:get(i)
+        PZEFT_UTILS.TeleportPlayer(pl, coords.x, coords.y, coords.z)
+      end
   end
 
   --* Start timer and the event handling zombie spawning
