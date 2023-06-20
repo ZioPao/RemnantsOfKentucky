@@ -2,83 +2,10 @@
 -- TODO Add reference to this
 -- currentInstance = {id, x, y, spawnPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}, extractionPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}}
 -- pvpInstances[id] = {id = id, x = iX, y = iY, spawnPoints = PvpInstanceManager.getSpawnPointsForInstance(iX, iY)}
--- TODO: If we want to turn this into a framework to support different maps, maybe set these settings through an API to add support to configure through submods
-local settings = {
-    xLength = 2,
-    yLength = 3,
 
-    buffer = 1,
+require "PZ_EFT_config"
 
-    firstXCellPos = 3,
-    firstYCellPos = 2,
-
-    xRepeat = 4,
-    yRepeat = 4,
-
-    randomExtractionPointCount = 4
-}
-
--- Spawn points TEST DATA - world coordinates if PVP instance starts at cell 0,0
-local spawnPoints = {{
-    x = 5,
-    y = 5,
-    z = 0
-}, {
-    x = 5,
-    y = 58,
-    z = 2
-}, {
-    x = 54,
-    y = 56,
-    z = 0
-}, {
-    x = 500,
-    y = 550,
-    z = 1
-}, {
-    x = 200,
-    y = 300,
-    z = 0
-}}
-
-local permanentExtractionPoints = {{
-    x = 5,
-    y = 5,
-    z = 0,
-    time = 10,
-    radius = 3,
-    extractionSquares = {},
-}, {
-    x = 5,
-    y = 58,
-    z = 2,
-    time = 10,
-    radius = 3,
-    extractionSquares = {},
-}}
-
-local randomExtractionPoints = {{
-    x = 54,
-    y = 56,
-    z = 0,
-    time = 10,
-    radius = 3,
-    extractionSquares = {},
-}, {
-    x = 500,
-    y = 550,
-    z = 1,
-    time = 10,
-    radius = 3,
-    extractionSquares = {},
-}, {
-    x = 200,
-    y = 300,
-    z = 0,
-    time = 10,
-    radius = 3,
-    extractionSquares = {},
-}}
+local pvpInstanceSettings = PZ_EFT_CONFIG.PVPInstanceSettings
 
 -- TODO PERSIST THIS DATA ON THE SERVER
 local pvpInstances = {} -- key (PvpInstanceManager.getInstanceID): "x-y", value: {id="x-y", x=cx, y=cy, spawnPoints={{x,y,z}, {x,y,z}}, extractionPoints={{x,y,z}}}
@@ -133,16 +60,16 @@ end
 --- load PVP instances and add them to the stores
 PvpInstanceManager.loadPvpInstances = function()
     -- iterators
-    local iX = settings.firstXCellPos
-    local iY = settings.firstYCellPos
+    local iX = pvpInstanceSettings.firstXCellPos
+    local iY = pvpInstanceSettings.firstYCellPos
 
     repeat
         repeat
             local id = PvpInstanceManager.getInstanceID(iX, iY)
         
             local randomExtractions = PvpInstanceManager.getRandomExtractionPoints(iX, iY,
-                settings.randomExtractionPointCount)
-            local permanentExtractions = PZEFT_UTILS.MapWorldCoordinatesToCell(permanentExtractionPoints, iX, iY, {"time", "radius", "extractionSquares"})
+            pvpInstanceSettings.randomExtractionPointCount)
+            local permanentExtractions = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.PermanentExtractionPoints, iX, iY, {"time", "radius"})
 
             for _, value in ipairs(permanentExtractions) do
                 value.extractionSquares = PZEFT_UTILS.getSurroundingGridCoordinates(value, value.radius)
@@ -152,18 +79,18 @@ PvpInstanceManager.loadPvpInstances = function()
                 id = id,
                 x = iX,
                 y = iY,
-                spawnPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(spawnPoints, iX, iY),
+                spawnPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.Spawnpoints, iX, iY),
                 extractionPoints = {table.unpack(permanentExtractions), table.unpack(randomExtractions)}
             }
 
-            iX = iX + settings.xLength + 1
-        until iX > settings.firstXCellPos + (settings.xLength * (settings.xRepeat - 1)) +
-            ((settings.buffer * (settings.xRepeat - 1)))
+            iX = iX + pvpInstanceSettings.xLength + 1
+        until iX > pvpInstanceSettings.firstXCellPos + (pvpInstanceSettings.xLength * (pvpInstanceSettings.xRepeat - 1)) +
+            ((pvpInstanceSettings.buffer * (pvpInstanceSettings.xRepeat - 1)))
 
-        iX = settings.firstXCellPos
-        iY = iY + settings.yLength + 1
-    until iY > settings.firstYCellPos + (settings.yLength * (settings.yRepeat - 1)) +
-        ((settings.buffer * (settings.yRepeat - 1)))
+        iX = pvpInstanceSettings.firstXCellPos
+        iY = iY + pvpInstanceSettings.yLength + 1
+    until iY > pvpInstanceSettings.firstYCellPos + (pvpInstanceSettings.yLength * (pvpInstanceSettings.yRepeat - 1)) +
+        ((pvpInstanceSettings.buffer * (pvpInstanceSettings.yRepeat - 1)))
 end
 
 --- Marks old instance as used and Gets new instance
@@ -215,7 +142,7 @@ end
 ---@param count number
 ---@return {{x=5, y=5, z=0, time=0, radius=1, extractionSquares={{x=1,y=1,z=1}}}
 PvpInstanceManager.getRandomExtractionPoints = function(cellX, cellY, count)
-    local extractionPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(randomExtractionPoints, cellX, cellY, {"time", "radius", "extractionSquares"})
+    local extractionPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.RandomExtractionPoints, cellX, cellY, {"time", "radius"})
 
     local extractionPointCount = #extractionPoints
     if extractionPointCount <= count then

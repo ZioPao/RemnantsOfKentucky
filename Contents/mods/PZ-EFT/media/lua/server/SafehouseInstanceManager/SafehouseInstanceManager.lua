@@ -1,27 +1,8 @@
--- TODO: If we want to turn this into a framework to support different maps, maybe set these settings through an API to add support to configure through submods
-local settings = {
-    firstSafehouse = {
-        relative = {
-            x = 8,
-            y = 19,
-            z = 0
-        }
-    },
-    safehouseGrid = {
-        x = {
-            count = 5,
-            spacing = 60
-        },
-        y = {
-            count = 5,
-            spacing = 60
-        }
-    }
-}
-
 -- TODO PERSIST THIS DATA ON THE SERVER
 local safehouseInstances = {} -- key (SafehouseInstanceManager.getSafehouseInstanceID): "x-y-z", value: {x=wx, y=wy, z=wz}
 local assignedSafehouses = {} -- key (SafehouseInstanceManager.getSafehouseInstanceID): "x-y-z", value: username
+
+local safehouseSettings = PZ_EFT_CONFIG.SafehouseInstanceSettings
 
 SafehouseInstanceManager = SafehouseInstanceManager or {}
 
@@ -56,11 +37,11 @@ end
 ---@param cellX number
 ---@param cellY number
 SafehouseInstanceManager.loadSafehouseInstances = function(cellX, cellY)
-    for y = 0, settings.safehouseGrid.y.count - 1 do
-        for x = 0, settings.safehouseGrid.x.count - 1 do
-            local relativeX = settings.firstSafehouse.relative.x + (x * settings.safehouseGrid.x.spacing)
-            local relativeY = settings.firstSafehouse.relative.y + (y * settings.safehouseGrid.y.spacing)
-            local relativeZ = settings.firstSafehouse.relative.z
+    for y = 0, safehouseSettings.safehouseGrid.y.count - 1 do
+        for x = 0, safehouseSettings.safehouseGrid.x.count - 1 do
+            local relativeX = safehouseSettings.firstSafehouse.relative.x + (x * safehouseSettings.safehouseGrid.x.spacing)
+            local relativeY = safehouseSettings.firstSafehouse.relative.y + (y * safehouseSettings.safehouseGrid.y.spacing)
+            local relativeZ = safehouseSettings.firstSafehouse.relative.z
 
             local wX = (cellX * 300) + relativeX
             local wY = (cellY * 300) + relativeY
