@@ -1,29 +1,8 @@
--- TODO: If we want to turn this into a framework to support different maps, maybe set these settings through an API to add support to configure through submods
-local settings = {
-    firstSafehouse = {
-        relative = {
-            x = 8,
-            y = 19,
-            z = 0
-        }
-    },
-    safehouseGrid = {
-        x = {
-            count = 5,
-            spacing = 60
-        },
-        y = {
-            count = 5,
-            spacing = 60
-        }
-    }
-}
-
 -- TODO PERSIST THIS DATA ON THE SERVER
 local safehouseInstances = {} -- key (SafehouseInstanceManager.getSafehouseInstanceID): "x-y-z", value: {x=wx, y=wy, z=wz}
 local assignedSafehouses = {} -- key (SafehouseInstanceManager.getSafehouseInstanceID): "x-y-z", value: username
 
-local loaded = false;
+local safehouseSettings = PZ_EFT_CONFIG.SafehouseInstanceSettings
 
 SafehouseInstanceManager = SafehouseInstanceManager or {}
 
@@ -42,16 +21,13 @@ SafehouseInstanceManager.debug.displayAssignedSafehouseInstances = function()
     end
 end
 
-SafehouseInstanceManager.debug.isLoaded = function()
-    print(loaded)
-end
-
 ------------------------
 
 --- Get coordinate key string by world X, world Y, worldZ
 ---@param wx number
 ---@param wy number
 ---@param wz number
+---@return "wx-wy-wz"
 SafehouseInstanceManager.getSafehouseInstanceID = function(wx, wy, wz)
     return wx .. "-" .. wy .. "-" .. wz
 end
@@ -61,11 +37,11 @@ end
 ---@param cellX number
 ---@param cellY number
 SafehouseInstanceManager.loadSafehouseInstances = function(cellX, cellY)
-    for y = 0, settings.safehouseGrid.y.count - 1 do
-        for x = 0, settings.safehouseGrid.x.count - 1 do
-            local relativeX = settings.firstSafehouse.relative.x + (x * settings.safehouseGrid.x.spacing)
-            local relativeY = settings.firstSafehouse.relative.y + (y * settings.safehouseGrid.y.spacing)
-            local relativeZ = settings.firstSafehouse.relative.z
+    for y = 0, safehouseSettings.safehouseGrid.y.count - 1 do
+        for x = 0, safehouseSettings.safehouseGrid.x.count - 1 do
+            local relativeX = safehouseSettings.firstSafehouse.relative.x + (x * safehouseSettings.safehouseGrid.x.spacing)
+            local relativeY = safehouseSettings.firstSafehouse.relative.y + (y * safehouseSettings.safehouseGrid.y.spacing)
+            local relativeZ = safehouseSettings.firstSafehouse.relative.z
 
             local wX = (cellX * 300) + relativeX
             local wY = (cellY * 300) + relativeY
@@ -78,20 +54,21 @@ SafehouseInstanceManager.loadSafehouseInstances = function(cellX, cellY)
             }
         end
     end
-    loaded = true;
 end
 
 -- TODO Check if the same playerSteamID persists after death/reconnect
 --- Assign a safehouse instance by key to player online ID
 ---@param key string
 ---@param playerSteamID integer
+---@return "wx-wy-wz" Key of assigned safehouse
 SafehouseInstanceManager.assignSafehouseInstanceToPlayer = function(key, playerSteamID)
     assignedSafehouses[key] = playerSteamID
     return key
 end
 
---- Get player safehouse by player online ID
+--- Get player safehouse by player username
 ---@param playerSteamID integer
+---@return "wx-wy-wz" Key of player safehouse
 SafehouseInstanceManager.getPlayerSafehouseKey = function(playerSteamID)
     for key, value in pairs(assignedSafehouses) do
         if assignedSafehouses[key] == playerSteamID then
@@ -109,11 +86,13 @@ end
 
 --- Get safehouse instance information by key
 ---@param key string
+---@return {x=0, y=0,z=0} Safehouse Instance
 SafehouseInstanceManager.getSafehouseInstanceByKey = function(key)
     return safehouseInstances[key]
 end
 
 --- Get the key of the next free safehouse, if any
+---@return "wx-wy-wz" Key of next free safehouse
 SafehouseInstanceManager.getNextFreeSafehouseKey = function()
     for key, value in pairs(safehouseInstances) do
         if not assignedSafehouses[key] then
@@ -124,11 +103,8 @@ end
 
 --- Get or assign safehouse and get its key.
 ---@param player IsoPlayer
+---@return "wx-wy-wz" Key of assigned safehouse
 SafehouseInstanceManager.getOrAssignSafehouse = function(player)
-    if not loaded then
-        SafehouseInstanceManager.loadSafehouseInstances(1, 1)
-    end
-
     local id = player:getUsername()
 
     local playerSafehouseKey = SafehouseInstanceManager.getPlayerSafehouseKey(id)
@@ -148,6 +124,7 @@ SafehouseInstanceManager.getOrAssignSafehouse = function(player)
 end
 
 -- TODO: Check if works well in MP environment
+-- TODO: Load persisted data if available
 
 local function OnLoad()
     SafehouseInstanceManager.loadSafehouseInstances(1, 1)

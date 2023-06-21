@@ -14,12 +14,14 @@ end
 
 ---Run a certain function every amount of time
 ---@param funcToRun function
----@param delay number delay in minutes
-function TimerHandler:setFuncToRun(funcToRun, delay)
-
+---@param delayInSeconds number
+function TimerHandler:setFuncToRun(funcToRun, delayInSeconds)
+    -- TODO we should pass the current time to the function
     self.funcToRun = funcToRun
-    self.delayToRunFunc = delay * 60
-    self.delayTimeToRunFunc = self.delayToRunFunc + os_time()
+
+    self.delayToRunFunc = delayInSeconds
+
+    self.delayTimeToRunFunc = delayInSeconds + os_time()
     self.timeSinceLastRunFunc = 0
 
 end

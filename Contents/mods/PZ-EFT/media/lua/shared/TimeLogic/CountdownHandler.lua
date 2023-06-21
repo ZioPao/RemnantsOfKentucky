@@ -3,15 +3,15 @@ local os_time = os.time
 local CountdownHandler = {}
 
 --- Set a countdown
----@param time number
+---@param timeInSeconds number
 ---@param funcToRun function
 ---@return table
-function CountdownHandler:new(time, funcToRun)
+function CountdownHandler:new(timeInSeconds, funcToRun)
     local o = BaseTimer:new()
     setmetatable(o, self)
     self.__index = self
 
-    o.endTime = os_time() + time    -- in seconds
+    o.endTime = os_time() + timeInSeconds    -- in seconds
     o.funcToRun = funcToRun
     return o
 end
