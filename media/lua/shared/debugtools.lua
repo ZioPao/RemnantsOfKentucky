@@ -28,7 +28,7 @@ end
 
 function TestCountdown()
     --local countdown = CountdownHandler:new(30, startFunc)       -- 30 seconds
-
+    sendClientCommand("PZEFT-Time", "StartCountdown", {30})
     --countdown:initialise()
 end
 
