@@ -37,7 +37,7 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
     xRepeat = 4,
     yRepeat = 4,
 
-    randomExtractionPointCount = 2
+    randomExtractionPointCount = 3
 }
 
 --- Spawn points - world coordinates if PVP instance starts at cell 0,0

@@ -66,21 +66,16 @@ PvpInstanceManager.loadPvpInstances = function()
     repeat
         repeat
             local id = PvpInstanceManager.getInstanceID(iX, iY)
-        
-            local randomExtractions = PvpInstanceManager.getRandomExtractionPoints(iX, iY,
-            pvpInstanceSettings.randomExtractionPointCount)
-            local permanentExtractions = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.PermanentExtractionPoints, iX, iY, {"time", "radius"})
 
-            for _, value in ipairs(permanentExtractions) do
-                value.extractionSquares = PZEFT_UTILS.getSurroundingGridCoordinates(value, value.radius)
-            end
-            
+            local permanentExtractions = PvpInstanceManager.getPermanentExtractionPoints(iX, iY)
+            local randomExtractions = PvpInstanceManager.getRandomExtractionPoints(iX, iY, pvpInstanceSettings.randomExtractionPointCount)
+
             pvpInstances[id] = {
                 id = id,
                 x = iX,
                 y = iY,
                 spawnPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.Spawnpoints, iX, iY),
-                extractionPoints = {table.unpack(permanentExtractions), table.unpack(randomExtractions)}
+                extractionPoints = PZEFT_UTILS.MergeIPairs(randomExtractions, permanentExtractions)
             }
 
             iX = iX + pvpInstanceSettings.xLength + 1
@@ -153,7 +148,7 @@ PvpInstanceManager.getRandomExtractionPoints = function(cellX, cellY, count)
 
     for i = 1, count do
         local size = #extractionPoints
-        local randIndex = ZombRand(size)
+        local randIndex = ZombRand(size)+1
         local extractionPoint = extractionPoints[randIndex]
 
         extractionPoint.extractionSquares = PZEFT_UTILS.getSurroundingGridCoordinates(extractionPoint, extractionPoint.radius)
@@ -163,6 +158,20 @@ PvpInstanceManager.getRandomExtractionPoints = function(cellX, cellY, count)
     end
 
     return activeExtractionPoints
+end
+
+--- Gets a permanent set of extraction points for given an instance
+---@param cellX number
+---@param cellY number
+---@return {{x=5, y=5, z=0, time=0, radius=1, extractionSquares={{x=1,y=1,z=1}}}
+PvpInstanceManager.getPermanentExtractionPoints = function(cellX, cellY)
+    local points = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.PermanentExtractionPoints, cellX, cellY, {"time", "radius"})
+
+    for _, value in ipairs(points) do
+        value.extractionSquares = PZEFT_UTILS.getSurroundingGridCoordinates(value, value.radius)
+    end
+
+    return points
 end
 
 -- TODO: Check if works well in MP environment
