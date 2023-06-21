@@ -15,7 +15,7 @@ function EFT_Countdown.Update()
 	--print(currTime)
 	local currSeconds = EFT_Countdown.stopTime - currTime
 	print(currSeconds)
-	sendServerCommand("PZEFT-Time", "ReceiveCountdownUpdate", {currSeconds})
+	sendServerCommand("PZEFT-Time", "ReceiveTimeUpdate", {currSeconds})
 
 	if currTime >= EFT_Countdown.stopTime then
 		print("STOP COUNTDOWN! Running func!")

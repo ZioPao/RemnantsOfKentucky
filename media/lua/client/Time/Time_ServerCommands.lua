@@ -1,9 +1,10 @@
 local ServerCommands = {}
 
 ServerCommands.ReceiveTimeUpdate = function(time)
-    -- TODO Should we make separate functions for a timer and a countdown?
     print("Server Command - ReceiveTimeUpdate")
     print(time[1])
+
+    -- TODO Latency tests
 end
 
 ---------------------
