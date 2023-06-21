@@ -35,16 +35,12 @@ PZEFT_UTILS.MapWorldCoordinatesToCell = function(coordinateList, cellX, cellY, o
         }
 
         if otherArgs then
-            for index, point in ipairs(otherArgs) do
-                newEntry[otherArgs] = point[otherArgs]
+            for _, arg in ipairs(otherArgs) do
+                newEntry[arg] = point[arg]
             end
         end
 
-        table.insert(mappedCoordinates, {
-            x = wX + point.x,
-            y = wY + point.y,
-            z = point.z
-        })
+        table.insert(mappedCoordinates, newEntry)
     end
 
     return mappedCoordinates
@@ -72,4 +68,18 @@ PZEFT_UTILS.getSurroundingGridCoordinates = function(center, radius)
     end
   
     return coordinates
+end
+
+PZEFT_UTILS.MergeIPairs = function(listA, listB)
+    local resultList = {}
+
+    for _, arg in ipairs(listA) do
+        table.insert(resultList, arg)
+    end
+
+    for _, arg in ipairs(listB) do
+        table.insert(resultList, arg)
+    end
+
+    return resultList
 end
