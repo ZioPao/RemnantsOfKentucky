@@ -6,7 +6,7 @@ ClientCommands.RequestSafehouseAllocation = function(playerObj, _)
     local safehouseKey = SafehouseInstanceManager.getOrAssignSafehouse(playerObj)
     local safehouseInstance = SafehouseInstanceManager.getSafehouseInstanceByKey(safehouseKey)
 
-    sendServerCommand(playerObj, 'PZEFT', 'SetSafehouse', safehouseInstance)
+    sendServerCommand(playerObj, 'PZEFT-Safehouse', 'SetSafehouse', safehouseInstance)
     PZEFT_UTILS.TeleportPlayer(playerObj, safehouseInstance.x, safehouseInstance.y, safehouseInstance.z)
 end
 
