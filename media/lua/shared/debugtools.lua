@@ -21,3 +21,17 @@ function debug_getPosition()
     print(s)
 end
 
+
+local TimerHandler = require("TimeLogic/Timer")
+local CountdownHandler = require("TimeLogic/Countdown")
+
+local function startFunc()
+    print("Test func!")
+end
+
+function TestCountdown()
+    local countdown = CountdownHandler:new(30, startFunc)       -- 30 seconds
+    countdown:initialise()
+end
+
+
