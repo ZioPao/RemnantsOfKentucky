@@ -13,6 +13,13 @@ ServerCommands.SetSafehouse = function(safehouseInstance)
     md.PZEFT.safehouse = safehouseInstance
 end
 
+ServerCommands.ReceiveTimeUpdate = function(time)
+    print("Server Command - ReceiveTimeUpdate")
+
+    print(time)
+
+end
+
 local OnServerCommand = function(module, command, args)
     if module == 'PZEFT' and ServerCommands[command] then
         ServerCommands[command](args)

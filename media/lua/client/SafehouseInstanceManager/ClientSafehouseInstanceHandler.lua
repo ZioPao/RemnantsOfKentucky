@@ -11,7 +11,7 @@ local function OnCreatePlayer(_, player)
         PZEFT_UTILS.TeleportPlayer(player,302,302,0)
 
         --Request safe house allocation, which in turn will teleport the player to the assigned safehouse
-        sendClientCommand("PZEFT", "RequestSafehouseAllocation", {})
+        sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {})
     end
 end
 

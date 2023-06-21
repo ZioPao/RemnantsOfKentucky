@@ -15,24 +15,31 @@ local assert = assert
 local type = type
 local pairs = pairs
 
-timer = {
+
+
+local EFT_Timer = {
 	Timers = {},
 	SimpleTimers = {}
 }
 
-function timer:Simple(delay, func)
+
+-- TODO We should change its name to prevent issues with other mods that use lua_timers
+
+function EFT_Timer:Simple(delay, func, isCountdown)
 
 	assert(type(delay) == "number", "Delay of timer should be a number type")
 	assert(type(func) == "function", "Func of timer should be a function type (lol)")
 
 	table_insert(self.SimpleTimers, {
+		StartTime = os_time(),
 		EndTime = os_time() + delay,
-		Func = func
+		Func = func,
+		IsCountdown = isCountdown
 	})
 
 end
 
-function timer:Create(name, delay, repetitions, func)
+function EFT_Timer:Create(name, delay, repetitions, func, isCountdown)
 	
 	assert(type(name) == "string", "ID of timer should be a string type")
 	assert(type(delay) == "number", "Delay of timer should be a number type")
@@ -54,7 +61,7 @@ local function timerUpdate()
 
 	local cur_time = os_time()
 
-	for k,v in pairs(timer.Timers) do
+	for k,v in pairs(EFT_Timer.Timers) do
 
 		if not v.Paused then
 			
@@ -78,16 +85,31 @@ local function timerUpdate()
 
 	end
 
-	local simple_timers = timer.SimpleTimers
+	local simple_timers = EFT_Timer.SimpleTimers
 
 	for i = #simple_timers, 1, -1 do
 
 		local t = simple_timers[i]
-		
+
+	-- TODO TEST STUFF
+
+
+		if t.StartTime then
+			if t.IsCountdown then
+				print(t.EndTime - cur_time)
+				sendServerCommand("PZEFT", "ReceiveTimeUpdate", t.EndTime - cur_time)
+
+			else
+				print(cur_time - t.StartTime)
+
+			end
+			
+		end
+
+
 		if t.EndTime <= cur_time then
 
 			t.Func()
-
 			table_remove(simple_timers, i)
 
 		end
@@ -97,7 +119,7 @@ local function timerUpdate()
 end
 Events.OnTickEvenPaused.Add(timerUpdate)
 	
-function timer:Remove(name)
+function EFT_Timer:Remove(name)
 
 	local t = self.Timers[name]
 
@@ -109,13 +131,13 @@ function timer:Remove(name)
 
 end
 
-function timer:Exists(name)
+function EFT_Timer:Exists(name)
 
 	return self.Timers[name] and true or false
 
 end
 
-function timer:Start(name)
+function EFT_Timer:Start(name)
 
 	local t = self.Timers[name]
 
@@ -130,7 +152,7 @@ function timer:Start(name)
 
 end
 
-function timer:Pause(name)
+function EFT_Timer:Pause(name)
 
 	local t = self.Timers[name]
 
@@ -145,7 +167,7 @@ function timer:Pause(name)
 
 end
 
-function timer:UnPause(name)
+function EFT_Timer:UnPause(name)
 
 	local t = self.Timers[name]
 
@@ -158,9 +180,9 @@ function timer:UnPause(name)
 	return true
 
 end
-timer.Resume = timer.UnPause
+EFT_Timer.Resume = EFT_Timer.UnPause
 
-function timer:Toggle(name)
+function EFT_Timer:Toggle(name)
 
 	local t = self.Timers[name]
 
@@ -172,7 +194,7 @@ function timer:Toggle(name)
 
 end
 
-function timer:TimeLeft(name)
+function EFT_Timer:TimeLeft(name)
 
 	local t = self.Timers[name]
 
@@ -190,7 +212,7 @@ function timer:TimeLeft(name)
 
 end
 
-function timer:NextTimeLeft(name)
+function EFT_Timer:NextTimeLeft(name)
 
 	local t = self.Timers[name]
 
@@ -208,10 +230,12 @@ function timer:NextTimeLeft(name)
 
 end
 
-function timer:RepsLeft(name)
+function EFT_Timer:RepsLeft(name)
 
 	local t = self.Timers[name]
 
 	return t and t.Repetitions
 
 end
+
+return EFT_Timer

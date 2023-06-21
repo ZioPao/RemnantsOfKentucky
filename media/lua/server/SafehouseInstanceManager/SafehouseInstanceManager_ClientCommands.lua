@@ -11,7 +11,7 @@ ClientCommands.RequestSafehouseAllocation = function(playerObj, _)
 end
 
 local OnClientCommand = function(module, command, playerObj, args)
-    if module == 'PZEFT' and ClientCommands[command] then
+    if module == 'PZEFT-Safehouse' and ClientCommands[command] then
         ClientCommands[command](playerObj, args)
     end
 end
