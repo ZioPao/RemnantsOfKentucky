@@ -177,10 +177,8 @@ end
 -- TODO: Check if works well in MP environment
 -- TODO: Load persisted data if available
 
--- TODO This triggers an error as of now, about getSurroundingGridCoordinates
 local function OnLoad()
     PvpInstanceManager.loadPvpInstancesNew()
 end
 
--- TODO Disabled it for now
---Events.OnLoad.Add(OnLoad)
+Events.OnLoad.Add(OnLoad)

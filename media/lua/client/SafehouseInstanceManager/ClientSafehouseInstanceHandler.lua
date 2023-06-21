@@ -15,5 +15,4 @@ local function OnCreatePlayer(_, player)
     end
 end
 
--- TODO Disabled it only for test
---Events.OnCreatePlayer.Add(OnCreatePlayer)
+Events.OnCreatePlayer.Add(OnCreatePlayer)
