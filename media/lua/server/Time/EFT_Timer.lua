@@ -28,11 +28,8 @@ function EFT_Timer.Update()
 end
 
 function EFT_Timer.Setup(stopTime, timeBetweenFunc, func)
-
 	EFT_Timer.startTime = os_time()
-
 	EFT_Timer.stopTime = stopTime
-
 	EFT_Timer.timeBetweenFunc = timeBetweenFunc
 	EFT_Timer.lastFuncTime = 0
 	EFT_Timer.func = func

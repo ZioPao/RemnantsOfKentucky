@@ -9,16 +9,12 @@ local function test()
 end
 
 ClientCommands.StartCountdown = function(_, args)
-    print("PZFET-Time: countdown setup")
-    print(args.stopTime)
-
+    --print("PZFET-Time: countdown setup")
     Countdown.Setup(args.stopTime, test)
 end
 
 ClientCommands.StartTimer = function(_, args)
-    print("PZFET-Time: timer setup")
-    print(args.stopTime)
-
+    --print("PZFET-Time: timer setup")
     Timer.Setup(args.stopTime, args.timeBetweenFunc, test)
 end
 
