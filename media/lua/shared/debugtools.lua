@@ -22,14 +22,13 @@ function debug_getPosition()
 end
 
 
-local function startFunc()
-    print("Test func!")
-end
 
 function TestCountdown()
-    --local countdown = CountdownHandler:new(30, startFunc)       -- 30 seconds
-    sendClientCommand("PZEFT-Time", "StartCountdown", {30})
-    --countdown:initialise()
+    sendClientCommand("PZEFT-Time", "StartCountdown", {stopTime = 30})
+end
+
+function TestTimer()
+    sendClientCommand("PZEFT-Time", "StartTimer", {stopTime = 30, timeBetweenFunc=5})
 end
 
 

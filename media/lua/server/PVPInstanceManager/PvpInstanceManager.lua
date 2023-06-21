@@ -182,4 +182,5 @@ local function OnLoad()
     PvpInstanceManager.loadPvpInstancesNew()
 end
 
-Events.OnLoad.Add(OnLoad)
+-- TODO Disabled it for now
+--Events.OnLoad.Add(OnLoad)
