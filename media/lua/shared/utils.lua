@@ -83,3 +83,18 @@ PZEFT_UTILS.MergeIPairs = function(listA, listB)
 
     return resultList
 end
+
+PZEFT_UTILS.PrintTable = function(table, indent)
+    if not PZ_EFT_CONFIG.Debug then return end
+    
+    indent = indent or ""
+
+    for key, value in pairs(table) do
+        if type(value) == "table" then
+            print(indent .. key .. " (table):")
+            printTable(value, indent .. "  ")
+        else
+            print(indent .. key .. ":", value)
+        end
+    end
+end

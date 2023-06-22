@@ -1,16 +1,6 @@
--- 2x3 cells
--- TODO Add reference to this
--- currentInstance = {id, x, y, spawnPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}, extractionPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}}
--- pvpInstances[id] = {id = id, x = iX, y = iY, spawnPoints = PvpInstanceManager.getSpawnPointsForInstance(iX, iY)}
-
 require "PZ_EFT_config"
 
 local pvpInstanceSettings = PZ_EFT_CONFIG.PVPInstanceSettings
-
--- TODO PERSIST THIS DATA ON THE SERVER
-local pvpInstances = {} -- key (PvpInstanceManager.getInstanceID): "x-y", value: {id="x-y", x=cx, y=cy, spawnPoints={{x,y,z}, {x,y,z}}, extractionPoints={{x,y,z}}}
-local usedInstances = {} -- reference pvpInstances
-local currentInstance = nil -- reference pvpInstance.value
 
 PvpInstanceManager = PvpInstanceManager or {}
 
@@ -18,18 +8,21 @@ PvpInstanceManager = PvpInstanceManager or {}
 
 PvpInstanceManager.debug = PvpInstanceManager.debug or {}
 PvpInstanceManager.debug.getPvpInstances = function()
+    local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
     for key, value in pairs(pvpInstances) do
         print("Key: " .. key)
     end
 end
 
 PvpInstanceManager.debug.getUsedPvpInstances = function()
+    local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
     for key, value in pairs(usedInstances) do
         print("Key: " .. key)
     end
 end
 
 PvpInstanceManager.debug.getCurrentInstance = function()
+    local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
     if currentInstance then
         print(currentInstance.id)
     else
@@ -50,8 +43,9 @@ end
 --- clear existing PVP instance and reload PVP instances
 PvpInstanceManager.loadPvpInstancesNew = function()
     if clearInstances then
-        pvpInstances = {}
-        usedInstances = {}
+        ServerData.PVPInstances.SetPvpInstances({})
+        ServerData.PVPInstances.SetPvpUsedInstances({})
+        ServerData.PVPInstances.SetPvpCurrentInstance(nil)
     end
 
     PvpInstanceManager.loadPvpInstances()
@@ -59,6 +53,7 @@ end
 
 --- load PVP instances and add them to the stores
 PvpInstanceManager.loadPvpInstances = function()
+    local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
     -- iterators
     local iX = pvpInstanceSettings.firstXCellPos
     local iY = pvpInstanceSettings.firstYCellPos
@@ -86,11 +81,17 @@ PvpInstanceManager.loadPvpInstances = function()
         iY = iY + pvpInstanceSettings.yLength + 1
     until iY > pvpInstanceSettings.firstYCellPos + (pvpInstanceSettings.yLength * (pvpInstanceSettings.yRepeat - 1)) +
         ((pvpInstanceSettings.buffer * (pvpInstanceSettings.yRepeat - 1)))
+
+        
+    ServerData.PVPInstances.SetPvpInstances(pvpInstances)
 end
 
 --- Marks old instance as used and Gets new instance
 ---@return {id, x, y, spawnPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}, extractionPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}}
 PvpInstanceManager.getNextInstance = function()
+    local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
+    local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
+    local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
     local changedInstance = false
 
     for key, value in pairs(pvpInstances) do
@@ -106,18 +107,22 @@ PvpInstanceManager.getNextInstance = function()
         return nil
     end
 
+    ServerData.PVPInstances.SetPvpInstances(pvpInstances)
+    ServerData.PVPInstances.SetPvpUsedInstances(usedInstances)
+    ServerData.PVPInstances.SetPvpCurrentInstance(currentInstance)
     return currentInstance
 end
 
 --- Get the current active instance
 ---@return {id, x, y, spawnPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}, extractionPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}}
 PvpInstanceManager.getCurrentInstance = function()
-    return currentInstance
+    return ServerData.PVPInstances.GetPvpCurrentInstance()
 end
 
 ---Consumes a spawnpoint.
 ---@return {x=5, y=5, z=0}
 PvpInstanceManager.popRandomSpawnPoint = function()
+    local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
     local size = #currentInstance.spawnPoints
 
     if size <= 0 then
@@ -128,6 +133,9 @@ PvpInstanceManager.popRandomSpawnPoint = function()
     local randIndex = ZombRand(size)
     local spawnPoint = currentInstance.spawnPoints[randIndex]
     table.remove(currentInstance.spawnPoints, randIndex)
+
+    ServerData.PVPInstances.SetPvpCurrentInstance(currentInstance)
+
     return spawnPoint
 end
 

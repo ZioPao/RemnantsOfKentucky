@@ -1,7 +1,3 @@
--- TODO PERSIST THIS DATA ON THE SERVER
-local safehouseInstances = {} -- key (SafehouseInstanceManager.getSafehouseInstanceID): "x-y-z", value: {x=wx, y=wy, z=wz}
-local assignedSafehouses = {} -- key (SafehouseInstanceManager.getSafehouseInstanceID): "x-y-z", value: username
-
 local safehouseSettings = PZ_EFT_CONFIG.SafehouseInstanceSettings
 
 SafehouseInstanceManager = SafehouseInstanceManager or {}
@@ -10,12 +6,14 @@ SafehouseInstanceManager = SafehouseInstanceManager or {}
 
 SafehouseInstanceManager.debug = {}
 SafehouseInstanceManager.debug.displaySafehouseInstances = function()
+    local safehouseInstances = ServerData.SafehouseInstances.GetSafehouseInstances()
     for key, value in pairs(safehouseInstances) do
         print("Key: " .. key)
     end
 end
 
 SafehouseInstanceManager.debug.displayAssignedSafehouseInstances = function()
+    local assignedSafehouses = ServerData.SafehouseInstances.GetSafehouseAssignedInstances()
     for key, value in pairs(assignedSafehouses) do
         print("Key: " .. key)
     end
@@ -37,6 +35,8 @@ end
 ---@param cellX number
 ---@param cellY number
 SafehouseInstanceManager.loadSafehouseInstances = function(cellX, cellY)
+    local safehouseInstances = ServerData.SafehouseInstances.GetSafehouseInstances()
+
     for y = 0, safehouseSettings.safehouseGrid.y.count - 1 do
         for x = 0, safehouseSettings.safehouseGrid.x.count - 1 do
             local relativeX = safehouseSettings.firstSafehouse.relative.x + (x * safehouseSettings.safehouseGrid.x.spacing)
@@ -54,24 +54,28 @@ SafehouseInstanceManager.loadSafehouseInstances = function(cellX, cellY)
             }
         end
     end
+
+    ServerData.SafehouseInstances.SetSafehouseInstances(safehouseInstances)
 end
 
 -- TODO Check if the same playerSteamID persists after death/reconnect
 --- Assign a safehouse instance by key to player online ID
 ---@param key string
----@param playerSteamID integer
+---@param username string
 ---@return "wx-wy-wz" Key of assigned safehouse
-SafehouseInstanceManager.assignSafehouseInstanceToPlayer = function(key, playerSteamID)
-    assignedSafehouses[key] = playerSteamID
+SafehouseInstanceManager.assignSafehouseInstanceToPlayer = function(key, username)
+    local assignedSafehouses = ServerData.SafehouseInstances.GetSafehouseAssignedInstances()
+    assignedSafehouses[key] = username
     return key
 end
 
 --- Get player safehouse by player username
----@param playerSteamID integer
+---@param username string
 ---@return "wx-wy-wz" Key of player safehouse
-SafehouseInstanceManager.getPlayerSafehouseKey = function(playerSteamID)
+SafehouseInstanceManager.getPlayerSafehouseKey = function(username)
+    local assignedSafehouses = ServerData.SafehouseInstances.GetSafehouseAssignedInstances()
     for key, value in pairs(assignedSafehouses) do
-        if assignedSafehouses[key] == playerSteamID then
+        if assignedSafehouses[key] == username then
             return key
         end
     end
@@ -80,6 +84,7 @@ end
 --- Unassign a safehouse instance 
 ---@param key string
 SafehouseInstanceManager.unassignSafehouseInstance = function(key)
+    local safehouseInstances = ServerData.SafehouseInstances.GetSafehouseInstances()
     local safehouseInstance = safehouseInstances[key]
     assignedSafehouses[key] = nil
 end
@@ -88,12 +93,14 @@ end
 ---@param key string
 ---@return {x=0, y=0,z=0} Safehouse Instance
 SafehouseInstanceManager.getSafehouseInstanceByKey = function(key)
+    local safehouseInstances = ServerData.SafehouseInstances.GetSafehouseInstances()
     return safehouseInstances[key]
 end
 
 --- Get the key of the next free safehouse, if any
 ---@return "wx-wy-wz" Key of next free safehouse
 SafehouseInstanceManager.getNextFreeSafehouseKey = function()
+    local safehouseInstances = ServerData.SafehouseInstances.GetSafehouseInstances()
     for key, value in pairs(safehouseInstances) do
         if not assignedSafehouses[key] then
             return key

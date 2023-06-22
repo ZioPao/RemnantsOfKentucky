@@ -30,5 +30,3 @@ end
 function TestTimer()
     sendClientCommand("PZEFT-Time", "StartTimer", {stopTime = 30, timeBetweenFunc=5})
 end
-
-
