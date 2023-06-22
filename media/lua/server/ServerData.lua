@@ -1,4 +1,6 @@
 --TODO: TEST EVERYTHING
+-- This might be overengineered a bit lmao
+-- Tried to keep an API structure where we "request" global mod data through these functions
 
 local PZ_EFT = "PZ-EFT"
 local KEY_PVP_INSTANCES = "PZ-EFT-PVP-INSTANCES"
@@ -29,6 +31,8 @@ local function getData(key)
     return ServerData.Data[key] or getOrCreateData(key)
 end
 
+--TODO: AFAIK everything is done by reference so if we update something in ServerData.Data, it gets updated in OnInitGlobalModData?
+--- Load data in a local variable
 ServerData.LoadData = function()
     ServerData.Data[KEY_PVP_INSTANCES] = ServerData.PVPInstances.GetPvpInstances()
     ServerData.Data[KEY_PVP_USEDINSTANCES] = ServerData.PVPInstances.GetPvpCurrentInstance()
