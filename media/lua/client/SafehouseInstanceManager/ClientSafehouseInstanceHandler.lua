@@ -7,30 +7,36 @@ ClientSafehouseInstanceHandler = ClientSafehouseInstanceHandler or {}
 --- Request safehouse allocation of player from server
 ---@param player IsoPlayer
 ClientSafehouseInstanceHandler.onCreatePlayer = function(_, player)
-	if player == getPlayer() then
-        --On join, request safehouse allocation data
+    if player == getPlayer() then
+        -- On join, request safehouse allocation data
         debugPrint("On Create Player, RequestSafehouseAllocation")
 
-        --Request safe house allocation, which in turn will teleport the player to the assigned safehouse
-        sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {teleport=true})
+        -- Request safe house allocation, which in turn will teleport the player to the assigned safehouse
+        sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {
+            teleport = true
+        })
     end
 end
 
 Events.OnCreatePlayer.Add(ClientSafehouseInstanceHandler.onCreatePlayer)
 
---- This check is on the client side. Maybe somehow move to the server but that might be costly.
-ClientSafehouseInstanceHandler.isInSafehouse = function ()
-    --TODO: Might affect performance? Update safehouse allocation for next check.
+ClientSafehouseInstanceHandler.refreshSafehouseAllocation = function()
+    sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {
+        teleport = false
+    })
+end
 
+--- This check is on the client side. Maybe somehow move to the server but that might be costly.
+ClientSafehouseInstanceHandler.isInSafehouse = function()
     local player = getPlayer()
     if not ClientState.IsInRaid then
-        sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {teleport=false})
-
         local player = getPlayer()
         local md = player:getModData()
-        
-        if not md.PZEFT or not md.PZEFT.safehouse then return end
-        
+
+        if not md.PZEFT or not md.PZEFT.safehouse then
+            return
+        end
+
         local sq = player:getSquare()
 
         if sq:getZ() ~= 0 then
@@ -38,8 +44,11 @@ ClientSafehouseInstanceHandler.isInSafehouse = function ()
         end
 
         local dimensions = PZ_EFT_CONFIG.SafehouseInstanceSettings.dimensions
-        if not PZEFT_UTILS.IsPointWithinDimensions(md.PZEFT.safehouse.x, md.PZEFT.safehouse.y, dimensions.n, dimensions.s, dimensions.e, dimensions.w, sq:getX(), sq:getY()) then
-            sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {teleport=true})
+        if not PZEFT_UTILS.IsPointWithinDimensions(md.PZEFT.safehouse.x, md.PZEFT.safehouse.y, dimensions.n,
+            dimensions.s, dimensions.e, dimensions.w, sq:getX(), sq:getY()) then
+            sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {
+                teleport = true
+            })
         end
     end
 end
