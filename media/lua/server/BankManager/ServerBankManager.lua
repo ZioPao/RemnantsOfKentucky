@@ -2,10 +2,15 @@ ServerBankManager = ServerBankManager or {}
 
 --- Get account information by username
 ---@param username string
-ServerBankManager.getAccount = function(username)
-    local account = ServerData.Bank.GetBankAccounts()[username]
+ServerBankManager.getOrCreateAccount = function(username, isInitialise)
+    local accounts = ServerData.Bank.GetBankAccounts()
+    local account = accounts[username]
     if not account then
-        warn("ServerBankManager.addAmountToAccount: Account " .. username .. " doesn't exist!")
+        print("ServerBankManager.addAmountToAccount: Account " .. username .. " doesn't exist!")
+        if isInitialise then
+            accounts[username] = 0
+            account = accounts[username]
+        end
     end
 
     return account
@@ -19,7 +24,7 @@ ServerBankManager.processTransaction = function(username, amount)
     local accounts = ServerData.Bank.GetBankAccounts()
 
     if not accounts[username] then
-        warn("ServerBankManager.addAmountToAccount: Account " .. username .. " doesn't exist!")
+        print("ServerBankManager.addAmountToAccount: Account " .. username .. " doesn't exist!")
         return {success = false, account = nil}
     end
 

@@ -87,6 +87,8 @@ end
 PZEFT_UTILS.PrintTable = function(table, indent)
     if not PZ_EFT_CONFIG.Debug then return end
     
+    if not table then return end
+
     indent = indent or ""
 
     for key, value in pairs(table) do
@@ -120,8 +122,8 @@ end
 PZEFT_UTILS.IsPointWithinDimensions = function(rootX, rootY, north, south, east, west, posX, posY)
     local minX = rootX - west
     local maxX = rootX + east
-    local minY = rootY - south
-    local maxY = rootY + north
+    local minY = rootY - north
+    local maxY = rootY + south
 
     return posX >= minX and posX <= maxX and posY >= minY and posY <= maxY
 end

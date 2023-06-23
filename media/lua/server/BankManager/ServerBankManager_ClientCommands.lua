@@ -6,9 +6,11 @@ local ClientCommands = {}
 
 --- Sends command to client to set the player's safehouse
 ---@param playerObj IsoPlayer
-ClientCommands.RequestBankAccount = function(playerObj, _)
-    local account = ServerBankManager.getAccount(playerObj:getUsername())
-    sendServerCommand(playerObj, MODULE, 'UpdateBankAccount', account)
+---@param args Table {isInitialise=true/false} 
+ClientCommands.RequestBankAccount = function(playerObj, args)
+    args = args or {}
+    local account = ServerBankManager.getOrCreateAccount(playerObj:getUsername(), args.isInitialise)
+    sendServerCommand(playerObj, MODULE, 'UpdateBankAccount', {account=account})
 end
 
 --- Process a transaction and do a callback if successful or failed.

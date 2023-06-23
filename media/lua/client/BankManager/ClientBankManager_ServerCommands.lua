@@ -9,11 +9,11 @@ ServerCommands.TransactionFailed = function(args)
     print("Transaction " .. tostring(args) .. " failed.")
 end
 
-ServerCommands.UpdateBankAccount = function(balance)
+ServerCommands.UpdateBankAccount = function(args)
     local player = getPlayer()
     local md = player:getModData()
     md.PZEFT = md.PZEFT or {}
-    md.PZEFT.accountBalance = balance
+    md.PZEFT.accountBalance = args.account
 end
 
 local OnServerCommand = function(module, command, args)

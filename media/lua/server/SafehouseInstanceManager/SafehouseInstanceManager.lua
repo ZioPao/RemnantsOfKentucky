@@ -104,6 +104,7 @@ end
 ---@return "wx-wy-wz" Key of next free safehouse
 SafehouseInstanceManager.getNextFreeSafehouseKey = function()
     local safehouseInstances = ServerData.SafehouseInstances.GetSafehouseInstances()
+    local assignedSafehouses = ServerData.SafehouseInstances.GetSafehouseAssignedInstances()
     for key, value in pairs(safehouseInstances) do
         if not assignedSafehouses[key] then
             return key
@@ -123,7 +124,7 @@ SafehouseInstanceManager.getOrAssignSafehouse = function(player)
         playerSafehouseKey = SafehouseInstanceManager.getNextFreeSafehouseKey()
 
         if not playerSafehouseKey then
-            warn("SafehouseInstanceManager.getOrAssignSafehouse: No free safehouses found for player.")
+            print("SafehouseInstanceManager.getOrAssignSafehouse: No free safehouses found for player.")
             return
         end
 

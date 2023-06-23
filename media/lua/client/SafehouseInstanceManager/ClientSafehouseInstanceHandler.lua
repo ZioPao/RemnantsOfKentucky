@@ -29,7 +29,7 @@ ClientSafehouseInstanceHandler.isInSafehouse = function ()
         local player = getPlayer()
         local md = player:getModData()
         
-        if not md.PZEFT or md.PZEFT.safehouse then return end
+        if not md.PZEFT or not md.PZEFT.safehouse then return end
         
         local sq = player:getSquare()
 
@@ -38,7 +38,7 @@ ClientSafehouseInstanceHandler.isInSafehouse = function ()
         end
 
         local dimensions = PZ_EFT_CONFIG.SafehouseInstanceSettings.dimensions
-        if not PZEFT_UTILS.IsPointWithinDimensions(md.PZEFT.safehouse.x, md.PZEFT.safehouse.x, dimensions.n, dimensions.s, dimensions.e, dimensions.w, sq:getX(), sq:getY()) then
+        if not PZEFT_UTILS.IsPointWithinDimensions(md.PZEFT.safehouse.x, md.PZEFT.safehouse.y, dimensions.n, dimensions.s, dimensions.e, dimensions.w, sq:getX(), sq:getY()) then
             sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {teleport=true})
         end
     end

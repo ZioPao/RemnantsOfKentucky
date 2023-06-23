@@ -1,9 +1,9 @@
 ClientBankManager = ClientBankManager or {}
 
 --- Get account information by username
----@param username string
-ClientBankManager.getAccount = function(username)
-    sendClientCommand('PZEFT-BankAccount', "RequestBankAccount", {})
+---@param isInitialise boolean
+ClientBankManager.getAccount = function(isInitialise)
+    sendClientCommand('PZEFT-BankAccount', "RequestBankAccount", {isInitialise=isInitialise})
 end
 
 --- Add or decreases an amount to a bank account
@@ -31,3 +31,18 @@ ClientBankManager.TryProcessTransaction = function(amount, successCallbackModule
         }
     })
 end
+
+--- On create player
+--- Teleport player to a "neutral"square to remove from any potential safehouse
+--- Request safehouse allocation of player from server
+---@param player IsoPlayer
+ClientBankManager.onCreatePlayer = function(_, player)
+	if player == getPlayer() then
+        --On join, request safehouse allocation data
+        debugPrint("On Create Player, RequestSafehouseAllocation")
+        --Request safe house allocation, which in turn will teleport the player to the assigned safehouse
+        ClientBankManager.getAccount(true)
+    end
+end
+
+Events.OnCreatePlayer.Add(ClientBankManager.onCreatePlayer)

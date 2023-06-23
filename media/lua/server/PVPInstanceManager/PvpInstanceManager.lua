@@ -104,7 +104,7 @@ PvpInstanceManager.getNextInstance = function()
     end
 
     if not changedInstance then
-        warn("No more instances left! Please reset map files.")
+        print("No more instances left! Please reset map files.")
         return nil
     end
 
@@ -127,7 +127,7 @@ PvpInstanceManager.popRandomSpawnPoint = function()
     local size = #currentInstance.spawnPoints
 
     if size <= 0 then
-        warn("No more spawn points left to pop!")
+        print("No more spawn points left to pop!")
         return nil
     end
 

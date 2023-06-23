@@ -27,10 +27,10 @@ PZ_EFT_CONFIG.SafehouseInstanceSettings = {
     },
     ---Dimensions of safehouse, relative to the entrance
     dimensions = {
-        n = 5,
-        s = 5,
-        e = 0,
-        w = 1
+        n = 16,
+        s = 1,
+        e = 1,
+        w = 6
     }
 }
 

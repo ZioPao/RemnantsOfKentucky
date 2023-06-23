@@ -20,19 +20,12 @@ ServerData.Data = {}
 
 local function getOrCreateModData(key)
     local baseData = ModData.getOrCreate(PZ_EFT)
-    PZEFT_UTILS.PrintTable(baseData)
     baseData[key] = baseData[key] or {}
     return baseData[key]
 end
 
 local function getData(key)
-    --TODO: TEST THAT DATA STAYS SYNCED
-    debugPrint("ServerData.Data["..key.."]")
-    PZEFT_UTILS.PrintTable(ServerData.Data[key])
-    debugPrint("getOrCreateData("..key..")")
-    PZEFT_UTILS.PrintTable(getOrCreateData(key))
-
-    return ServerData.Data[key] or getOrCreateData(key)
+    return ServerData.Data[key] or getOrCreateModData(key)
 end
 
 --TODO: AFAIK everything is done by reference so if we update something in ServerData.Data, it gets updated in OnInitGlobalModData?
