@@ -1,7 +1,7 @@
 local ClientCommands = {}
 
-local Countdown = require("Time/EFT_Countdown")
-local Timer = require("Time/EFT_Timer")
+local Countdown = require("Time/PZEFT_Countdown")
+local Timer = require("Time/PZEFT_Timer")
 
 
 local function test()
