@@ -71,7 +71,7 @@ SafehouseInstanceManager.assignSafehouseInstanceToPlayer = function(key, usernam
     return key
 end
 
---- Get player safehouse by player username
+--- Get player safehouse key by player username
 ---@param username string
 ---@return "wx-wy-wz" Key of player safehouse
 SafehouseInstanceManager.getPlayerSafehouseKey = function(username)
@@ -86,8 +86,7 @@ end
 --- Unassign a safehouse instance 
 ---@param key string
 SafehouseInstanceManager.unassignSafehouseInstance = function(key)
-    local safehouseInstances = ServerData.SafehouseInstances.GetSafehouseInstances()
-    local safehouseInstance = safehouseInstances[key]
+    local assignedSafehouses = ServerData.SafehouseInstances.GetSafehouseAssignedInstances()
     assignedSafehouses[key] = nil
 end
 

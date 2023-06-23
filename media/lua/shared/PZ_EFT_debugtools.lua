@@ -39,10 +39,10 @@ function debug_getPosition()
     print(s)
 end
 
-function TestCountdown()
+function debug_testCountdown()
     sendClientCommand("PZEFT-Time", "StartCountdown", {stopTime = 30})
 end
 
-function TestTimer()
+function debug_testTimer()
     sendClientCommand("PZEFT-Time", "StartTimer", {stopTime = 30, timeBetweenFunc=5})
 end
