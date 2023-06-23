@@ -14,6 +14,25 @@ ServerCommands.SetSafehouse = function(safehouseInstance)
     md.PZEFT.safehouse = safehouseInstance
 end
 
+ServerCommands.CleanStorage = function(safehouseInstance)
+    local x = safehouseInstance.x + PZ_EFT_CONFIG.SafehouseInstanceSettings.storageRelativePosition.x
+    local y = safehouseInstance.y + PZ_EFT_CONFIG.SafehouseInstanceSettings.storageRelativePosition.y
+    local sq = getCell():getGridSquare(x, y, 0)
+
+    local objects = sq:getObjects()
+    local inventoryContainer
+	for i=1, objects:size() do
+        if instanceof(objects:get(i), "InventoryItem") then
+            inventoryContainer = objects:get(i):getContainer()
+            if inventoryContainer then
+                inventoryContainer:clear()
+            else
+                error("Crate found, but no InventoryContainer")
+
+            end
+        end
+	end
+end
 
 
 local OnServerCommand = function(module, command, args)

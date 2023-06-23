@@ -25,6 +25,13 @@ PZ_EFT_CONFIG.SafehouseInstanceSettings = {
             spacing = 60
         }
     },
+
+    -- Storage boxes will be placed alwyas in the same point inside a safehouse.
+    storageRelativePosition = {
+        x = 1,
+        y = 1,
+    },
+
     ---Dimensions of safehouse, relative to the entrance
     dimensions = {
         n = 16,

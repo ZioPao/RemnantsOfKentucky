@@ -17,8 +17,14 @@ ClientCommands.RequestSafehouseAllocation = function(playerObj, args)
 
     sendServerCommand(playerObj, MODULE, 'SetSafehouse', safehouseInstance)
 
+    -- TODO Clean Inventory Box here to be sure that it doesn't contain old items.
+
     if args.teleport then
         PZEFT_UTILS.TeleportPlayer(playerObj, safehouseInstance.x, safehouseInstance.y, safehouseInstance.z)
+    end
+
+    if args.cleanStorage then
+        sendServerCommand(playerObj, MODULE, 'CleanStorage', safehouseInstance)
     end
 end
 
