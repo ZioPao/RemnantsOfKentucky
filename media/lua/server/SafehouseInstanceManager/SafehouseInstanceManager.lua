@@ -1,3 +1,6 @@
+require "PZ_EFT_debugtools"
+require "PZ_EFT_config"
+
 local safehouseSettings = PZ_EFT_CONFIG.SafehouseInstanceSettings
 
 SafehouseInstanceManager = SafehouseInstanceManager or {}
@@ -8,14 +11,14 @@ SafehouseInstanceManager.debug = {}
 SafehouseInstanceManager.debug.displaySafehouseInstances = function()
     local safehouseInstances = ServerData.SafehouseInstances.GetSafehouseInstances()
     for key, value in pairs(safehouseInstances) do
-        print("Key: " .. key)
+        debugPrint("Key: " .. key)
     end
 end
 
 SafehouseInstanceManager.debug.displayAssignedSafehouseInstances = function()
     local assignedSafehouses = ServerData.SafehouseInstances.GetSafehouseAssignedInstances()
     for key, value in pairs(assignedSafehouses) do
-        print("Key: " .. key)
+        debugPrint("Key: " .. key)
     end
 end
 

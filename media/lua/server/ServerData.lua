@@ -1,3 +1,5 @@
+require "PZ_EFT_debugtools"
+
 --TODO: TEST EVERYTHING
 -- This might be overengineered a bit lmao
 -- Tried to keep an API structure where we "request" global mod data through these functions
@@ -9,6 +11,8 @@ local KEY_PVP_CURRENTINSTANCE = "PZ-EFT-PVP-CURRENTINSTANCE"
 
 local KEY_SAFEHOUSE_INSTANCES = "PZ-EFT-SAFEHOUSE-INSTANCES"
 local KEY_SAFEHOUSE_ASSIGNEDINSTANCES = "PZ-EFT-SAFEHOUSE-ASSIGNEDINSTANCES"
+
+local KEY_BANK_ACCOUNTS = "PZ-EFT-BANK-ACCOUNTS"
 
 ServerData = ServerData or {}
 
@@ -23,9 +27,9 @@ end
 
 local function getData(key)
     --TODO: TEST THAT DATA STAYS SYNCED
-    print("ServerData.Data["..key.."]")
+    debugPrint("ServerData.Data["..key.."]")
     PZEFT_UTILS.PrintTable(ServerData.Data[key])
-    print("getOrCreateData("..key..")")
+    debugPrint("getOrCreateData("..key..")")
     PZEFT_UTILS.PrintTable(getOrCreateData(key))
 
     return ServerData.Data[key] or getOrCreateData(key)
@@ -40,6 +44,8 @@ ServerData.LoadData = function()
 
     ServerData.Data[KEY_SAFEHOUSE_INSTANCES] = ServerData.SafehouseInstances.GetSafehouseInstances()
     ServerData.Data[KEY_SAFEHOUSE_ASSIGNEDINSTANCES] = ServerData.SafehouseInstances.GetSafehouseAssignedInstances()
+
+    ServerData.Data[KEY_BANK_ACCOUNTS] = ServerData.Bank.GetBankAccounts()
 end
 
 ServerData.PVPInstances = ServerData.PVPInstances or {}
@@ -108,6 +114,21 @@ end
 ---@param data Table Of ["worldx-worldy-worldz"]=username
 ServerData.SafehouseInstances.SetSafehouseAssignedInstances = function(data)
     local gmd = getData(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
+    gmd = data
+end
+
+ServerData.Bank = ServerData.Bank or {}
+
+--- Get table of bank accounts
+---@return Table Of ["usernames"]=balance
+ServerData.Bank.GetBankAccounts = function()
+    return getData(KEY_BANK_ACCOUNTS)
+end
+
+--- Set table of bank accounts
+---@param data Table Of ["usernames"]=balance
+ServerData.Bank.SetBankAccounts = function(data)
+    local gmd = getData(KEY_BANK_ACCOUNTS)
     gmd = data
 end
 

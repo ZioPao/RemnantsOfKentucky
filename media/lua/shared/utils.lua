@@ -92,7 +92,7 @@ PZEFT_UTILS.PrintTable = function(table, indent)
     for key, value in pairs(table) do
         if type(value) == "table" then
             print(indent .. key .. " (table):")
-            printTable(value, indent .. "  ")
+            PZEFT_UTILS.PrintTable(value, indent .. "  ")
         else
             print(indent .. key .. ":", value)
         end

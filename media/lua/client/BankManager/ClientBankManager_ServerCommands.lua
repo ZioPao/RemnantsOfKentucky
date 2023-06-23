@@ -1,20 +1,20 @@
 require "PZ_EFT_debugtools"
 
-local MODULE = 'PZEFT-Safehouse'
+local MODULE = 'PZEFT-BankAccount'
 
 local ServerCommands = {}
 
---- When client recieves SetSafehouse Server Command
---- Update mod data of player with recieved safehouse data
----@param {x=0, y=0,z=0} Safehouse Instance
-ServerCommands.SetSafehouse = function(safehouseInstance)
+ServerCommands.TransactionFailed = function(args)
+    --TODO: HANDLE IF NECESSARY
+    print("Transaction " .. tostring(args) .. " failed.")
+end
+
+ServerCommands.UpdateBankAccount = function(balance)
     local player = getPlayer()
     local md = player:getModData()
     md.PZEFT = md.PZEFT or {}
-    md.PZEFT.safehouse = safehouseInstance
+    md.PZEFT.accountBalance = balance
 end
-
-
 
 local OnServerCommand = function(module, command, args)
     if module == MODULE and ServerCommands[command] then
@@ -22,6 +22,5 @@ local OnServerCommand = function(module, command, args)
         ServerCommands[command](args)
     end
 end
-
 
 Events.OnServerCommand.Add(OnServerCommand)

@@ -1,3 +1,5 @@
+require "PZ_EFT_debugtools"
+
 local MatchHandler = {}
 
 local TimerHandler = require("TimeLogic/Timer")
@@ -15,7 +17,7 @@ end
 
 function MatchHandler:initialise()
     if self.instance == nil then
-        print("PZ_EFT: No more instances found!")
+        debugPrint("PZ_EFT: No more instances found!")
         return false
     end
 

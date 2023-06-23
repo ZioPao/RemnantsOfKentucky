@@ -1,3 +1,4 @@
+require "PZ_EFT_debugtools"
 require "PZ_EFT_config"
 
 local pvpInstanceSettings = PZ_EFT_CONFIG.PVPInstanceSettings
@@ -10,23 +11,23 @@ PvpInstanceManager.debug = PvpInstanceManager.debug or {}
 PvpInstanceManager.debug.getPvpInstances = function()
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
     for key, value in pairs(pvpInstances) do
-        print("Key: " .. key)
+        debugPrint("Key: " .. key)
     end
 end
 
 PvpInstanceManager.debug.getUsedPvpInstances = function()
     local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
     for key, value in pairs(usedInstances) do
-        print("Key: " .. key)
+        debugPrint("Key: " .. key)
     end
 end
 
 PvpInstanceManager.debug.getCurrentInstance = function()
     local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
     if currentInstance then
-        print(currentInstance.id)
+        debugPrint(currentInstance.id)
     else
-        print(nil)
+        debugPrint(nil)
     end
 end
 

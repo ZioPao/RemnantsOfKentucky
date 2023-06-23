@@ -1,5 +1,13 @@
+require "PZ_EFT_config"
 --- DEBUG
 --- Gets player position and copies coordinates to clipboard
+
+function debugPrint(text)
+    if PZ_EFT_CONFIG.Debug then
+        print(text)
+    end
+end
+
 function debug_getPosition()
     local p = getPlayer()
 
@@ -20,8 +28,6 @@ function debug_getPosition()
     Clipboard.setClipboard(s)
     print(s)
 end
-
-
 
 function TestCountdown()
     sendClientCommand("PZEFT-Time", "StartCountdown", {stopTime = 30})

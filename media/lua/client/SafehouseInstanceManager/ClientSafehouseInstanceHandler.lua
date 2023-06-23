@@ -1,3 +1,5 @@
+require "PZ_EFT_debugtools"
+
 --- On create player
 --- Teleport player to a "neutral"square to remove from any potential safehouse
 --- Request safehouse allocation of player from server
@@ -5,7 +7,7 @@
 local function OnCreatePlayer(_, player)
 	if player == getPlayer() then
         --On join, request safehouse allocation data
-        print("On Create Player, RequestSafehouseAllocation")
+        debugPrint("On Create Player, RequestSafehouseAllocation")
         --Teleport player to hub 
         -- TODO: maybe change coordinates
         PZEFT_UTILS.TeleportPlayer(player,302,302,0)
