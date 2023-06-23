@@ -11,21 +11,24 @@ ClientCommands.RequestBankAccount = function(playerObj, _)
     sendServerCommand(playerObj, MODULE, 'UpdateBankAccount', account)
 end
 
---- Process a transaction and do a callback if successful.
---- Also returns the updated bank account balance when successful
----@param args {amount=x, callbackModule="abc", callbackCommand="abc", callbackArgs={args...}}
+--- Process a transaction and do a callback if successful or failed.
+--- Also calls the RequestBankAccount->UpdateBankAccount command
+---@param args {amount=x, onSuccess = {callbackModule="abc", callbackCommand="abc", callbackArgs={args...}}, onFail = {callbackModule="abc", callbackCommand="abc", callbackArgs={args...}}}
 ClientCommands.ProcessTransaction = function(playerObj, args)
     --amount, callbackCommand, callbackArgs
     local result = ServerBankManager.processTransaction(playerObj:getUsername(), args.amount)
 
     if result.success then
-        if args.callbackModule and args.callbackCommand then
-            sendServerCommand(playerObj, args.callbackModule, args.callbackCommand, args.callbackArgs)
+        if args.onSuccess and args.callbackModule and args.callbackCommand then
+            sendServerCommand(playerObj, args.onSuccess.callbackModule, args.onSuccess.callbackCommand, args.onSuccess.callbackArgs)
         end
-        sendServerCommand(playerObj, MODULE, 'UpdateBankAccount', args.account)
     else
-        sendServerCommand(playerObj, MODULE, 'TransactionFailed', args)
+        if args.onFail and args.callbackModule and args.callbackCommand then
+            sendServerCommand(playerObj, args.onFail.callbackModule, args.onFail.callbackCommand, args.onFail.callbackArgs)
+        end
     end
+
+    ClientCommands.RequestBankAccount(playerObj, nil)
 end
 
 local OnClientCommand = function(module, command, playerObj, args)
