@@ -184,7 +184,6 @@ PvpInstanceManager.getPermanentExtractionPoints = function(cellX, cellY)
 end
 
 -- TODO: Check if works well in MP environment
--- TODO: Load persisted data if available
 
 local function OnLoad()
     PvpInstanceManager.loadPvpInstancesNew()

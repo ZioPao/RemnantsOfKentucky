@@ -61,7 +61,6 @@ SafehouseInstanceManager.loadSafehouseInstances = function(cellX, cellY)
     ServerData.SafehouseInstances.SetSafehouseInstances(safehouseInstances)
 end
 
--- TODO Check if the same playerSteamID persists after death/reconnect
 --- Assign a safehouse instance by key to player online ID
 ---@param key string
 ---@param username string
@@ -135,8 +134,6 @@ SafehouseInstanceManager.getOrAssignSafehouse = function(player)
 end
 
 -- TODO: Check if works well in MP environment
--- TODO: Load persisted data if available
-
 local function OnLoad()
     SafehouseInstanceManager.loadSafehouseInstances(1, 1)
 end

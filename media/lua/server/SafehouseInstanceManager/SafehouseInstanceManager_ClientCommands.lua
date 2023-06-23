@@ -8,7 +8,6 @@ local ClientCommands = {}
 ---@param playerObj IsoPlayer
 ---@param args Table {teleport=true/false}
 ClientCommands.RequestSafehouseAllocation = function(playerObj, args)
-    --TODO: Might not be necessary if this is called on OnCreatePlayer
     if args.teleport then
         PZEFT_UTILS.TeleportPlayer(playerObj,302,302,0)
     end

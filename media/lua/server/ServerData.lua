@@ -1,6 +1,5 @@
 require "PZ_EFT_debugtools"
 
---TODO: TEST EVERYTHING
 -- This might be overengineered a bit lmao
 -- Tried to keep an API structure where we "request" global mod data through these functions
 

@@ -4,11 +4,6 @@ local MODULE = 'PZEFT-BankAccount'
 
 local ServerCommands = {}
 
-ServerCommands.TransactionFailed = function(args)
-    --TODO: HANDLE IF NECESSARY
-    print("Transaction " .. tostring(args) .. " failed.")
-end
-
 ServerCommands.UpdateBankAccount = function(args)
     local player = getPlayer()
     local md = player:getModData()
