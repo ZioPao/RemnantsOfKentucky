@@ -56,6 +56,11 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
     randomExtractionPointCount = 3
 }
 
+PZ_EFT_CONFIG.MatchSettings = {
+    time = 30,      -- TODO Maybe it's better if we set it in seconds here instead of minutes
+    overTime = 5
+}
+
 --- Spawn points - world coordinates if PVP instance starts at cell 0,0
 PZ_EFT_CONFIG.Spawnpoints = {}
 

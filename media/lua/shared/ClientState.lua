@@ -1,3 +1,4 @@
 ClientState = ClientState or {}
 
-ClientState.IsInRaid = false;
+ClientState.IsInRaid = false
+ClientState.currentTime = ""
