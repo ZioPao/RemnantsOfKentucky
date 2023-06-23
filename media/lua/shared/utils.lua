@@ -98,3 +98,12 @@ PZEFT_UTILS.PrintTable = function(table, indent)
         end
     end
 end
+
+--- Add items to a container
+---@param items Table Of {"Base.ItemName" = quantity}
+---@param container IsoContainer
+PZEFT_UTILS.AddItems = function(items, container)
+    for itemName, quantity in pairs(items) do
+        container:AddItem(itemName, quantity)
+    end
+end
