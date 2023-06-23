@@ -6,12 +6,21 @@ local ClientCommands = {}
 
 --- Sends command to client to set the player's safehouse
 ---@param playerObj IsoPlayer
-ClientCommands.RequestSafehouseAllocation = function(playerObj, _)
+---@param args Table {teleport=true/false}
+ClientCommands.RequestSafehouseAllocation = function(playerObj, args)
+    --TODO: Might not be necessary if this is called on OnCreatePlayer
+    if args.teleport then
+        PZEFT_UTILS.TeleportPlayer(playerObj,302,302,0)
+    end
+
     local safehouseKey = SafehouseInstanceManager.getOrAssignSafehouse(playerObj)
     local safehouseInstance = SafehouseInstanceManager.getSafehouseInstanceByKey(safehouseKey)
 
     sendServerCommand(playerObj, MODULE, 'SetSafehouse', safehouseInstance)
-    PZEFT_UTILS.TeleportPlayer(playerObj, safehouseInstance.x, safehouseInstance.y, safehouseInstance.z)
+
+    if args.teleport then
+        PZEFT_UTILS.TeleportPlayer(playerObj, safehouseInstance.x, safehouseInstance.y, safehouseInstance.z)
+    end
 end
 
 local OnClientCommand = function(module, command, playerObj, args)

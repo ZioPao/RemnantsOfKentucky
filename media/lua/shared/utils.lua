@@ -107,3 +107,21 @@ PZEFT_UTILS.AddItems = function(items, container)
         container:AddItem(itemName, quantity)
     end
 end
+
+--- determine if another point falls within the specified north, south, east, and west dimensions of a given point (x, y)
+---@param rootX number
+---@param rootY number
+---@param north number
+---@param south number
+---@param east number
+---@param west number
+---@param posX number
+---@param posY number
+PZEFT_UTILS.IsPointWithinDimensions = function(rootX, rootY, north, south, east, west, posX, posY)
+    local minX = rootX - west
+    local maxX = rootX + east
+    local minY = rootY - south
+    local maxY = rootY + north
+
+    return posX >= minX and posX <= maxX and posY >= minY and posY <= maxY
+end
