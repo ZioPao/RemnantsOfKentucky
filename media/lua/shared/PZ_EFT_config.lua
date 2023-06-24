@@ -26,7 +26,8 @@ PZ_EFT_CONFIG.SafehouseInstanceSettings = {
         }
     },
 
-    -- Storage boxes will be placed alwyas in the same point inside a safehouse.
+    -- Storage boxes will be placed always in the same point inside a safehouse.
+    -- Relative position from the safehouse's spawn point
     storageRelativePosition = {
         x = 1,
         y = 1,
