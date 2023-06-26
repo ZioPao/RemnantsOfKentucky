@@ -41,6 +41,8 @@ ClientSafehouseInstanceHandler.isInSafehouse = function()
 
         local sq = player:getSquare()
 
+        if not sq then return end
+
         if sq:getZ() ~= 0 then
             return false;
         end

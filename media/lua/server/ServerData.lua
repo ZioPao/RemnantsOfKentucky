@@ -31,9 +31,9 @@ end
 --- Load data in a local variable
 ServerData.LoadData = function()
     ServerData.Data[KEY_PVP_INSTANCES] = ServerData.PVPInstances.GetPvpInstances()
-    ServerData.Data[KEY_PVP_USEDINSTANCES] = ServerData.PVPInstances.GetPvpCurrentInstance()
-    ServerData.Data[KEY_PVP_CURRENTINSTANCE] = ServerData.PVPInstances.GetPvpUsedInstances()
-
+    ServerData.Data[KEY_PVP_USEDINSTANCES] = ServerData.PVPInstances.GetPvpUsedInstances()
+    ServerData.Data[KEY_PVP_CURRENTINSTANCE] = ServerData.PVPInstances.GetPvpCurrentInstance()
+    
     ServerData.Data[KEY_SAFEHOUSE_INSTANCES] = ServerData.SafehouseInstances.GetSafehouseInstances()
     ServerData.Data[KEY_SAFEHOUSE_ASSIGNEDINSTANCES] = ServerData.SafehouseInstances.GetSafehouseAssignedInstances()
 

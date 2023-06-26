@@ -100,6 +100,7 @@ PvpInstanceManager.getNextInstance = function()
             changedInstance = true
             currentInstance = value
             usedInstances[currentInstance.id] = currentInstance
+            break;
         end
     end
 
@@ -108,7 +109,6 @@ PvpInstanceManager.getNextInstance = function()
         return nil
     end
 
-    ServerData.PVPInstances.SetPvpInstances(pvpInstances)
     ServerData.PVPInstances.SetPvpUsedInstances(usedInstances)
     ServerData.PVPInstances.SetPvpCurrentInstance(currentInstance)
     return currentInstance
