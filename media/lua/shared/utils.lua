@@ -127,3 +127,17 @@ PZEFT_UTILS.IsPointWithinDimensions = function(rootX, rootY, north, south, east,
 
     return posX >= minX and posX <= maxX and posY >= minY and posY <= maxY
 end
+
+PZEFT_UTILS.GetCellOfPlayer = function(player)
+    if not player then return end
+
+    local psq = player:getSquare()
+
+    local x = psq:getX()
+    local y = psq:getY()
+
+    local cx = math.floor(x / 300)
+    local cy = math.floor(y / 300)
+
+    return {x = cx, y = cy}
+end

@@ -1,7 +1,5 @@
 require "PZ_EFT_debugtools"
 
--- This might be overengineered a bit lmao
--- Tried to keep an API structure where we "request" global mod data through these functions
 
 local PZ_EFT = "PZ-EFT"
 local KEY_PVP_INSTANCES = "PZ-EFT-PVP-INSTANCES"
@@ -17,68 +15,61 @@ ServerData = ServerData or {}
 
 ServerData.Data = {}
 
-local function getOrCreateModData(key)
-    local baseData = ModData.getOrCreate(PZ_EFT)
-    baseData[key] = baseData[key] or {}
-    return baseData[key]
+ServerData.GlobalModDataInit = function(isNewGame)
+    ModData.getOrCreate(KEY_PVP_INSTANCES)
+    ModData.getOrCreate(KEY_PVP_USEDINSTANCES)
+    ModData.getOrCreate(KEY_PVP_CURRENTINSTANCE)
+    ModData.getOrCreate(KEY_SAFEHOUSE_INSTANCES)
+    ModData.getOrCreate(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
+    ModData.getOrCreate(KEY_BANK_ACCOUNTS)
 end
 
-local function getData(key)
-    return ServerData.Data[key] or getOrCreateModData(key)
+ServerData.ClearAllData = function(state)
+    ModData.remove(KEY_PVP_INSTANCES)
+    ModData.remove(KEY_PVP_USEDINSTANCES)
+    ModData.remove(KEY_PVP_CURRENTINSTANCE)
+    ModData.remove(KEY_SAFEHOUSE_INSTANCES)
+    ModData.remove(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
+    ModData.remove(KEY_BANK_ACCOUNTS)
 end
 
---TODO: AFAIK everything is done by reference so if we update something in ServerData.Data, it gets updated in OnInitGlobalModData?
---- Load data in a local variable
-ServerData.LoadData = function()
-    ServerData.Data[KEY_PVP_INSTANCES] = ServerData.PVPInstances.GetPvpInstances()
-    ServerData.Data[KEY_PVP_USEDINSTANCES] = ServerData.PVPInstances.GetPvpUsedInstances()
-    ServerData.Data[KEY_PVP_CURRENTINSTANCE] = ServerData.PVPInstances.GetPvpCurrentInstance()
-    
-    ServerData.Data[KEY_SAFEHOUSE_INSTANCES] = ServerData.SafehouseInstances.GetSafehouseInstances()
-    ServerData.Data[KEY_SAFEHOUSE_ASSIGNEDINSTANCES] = ServerData.SafehouseInstances.GetSafehouseAssignedInstances()
-
-    ServerData.Data[KEY_BANK_ACCOUNTS] = ServerData.Bank.GetBankAccounts()
-end
 
 ServerData.PVPInstances = ServerData.PVPInstances or {}
 
 --- Get table of PVP instances data
 ---@return Table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
 ServerData.PVPInstances.GetPvpInstances = function()
-    return getData(KEY_PVP_INSTANCES)
+    return ModData.getOrCreate(KEY_PVP_INSTANCES)
 end
 
 --- Set table of PVP instances data
 ---@param data Table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
 ServerData.PVPInstances.SetPvpInstances = function(data)
-    local gmd = getData(KEY_PVP_INSTANCES)
-    gmd = data
+    ModData.add(KEY_PVP_INSTANCES, data)
 end
 
 --- Get table of PVP used instances data
 ---@return Table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
 ServerData.PVPInstances.GetPvpUsedInstances = function()
-    return getData(KEY_PVP_USEDINSTANCES)
+    return ModData.getOrCreate(KEY_PVP_USEDINSTANCES)
 end
 
 --- Set table of PVP used instances data
 ---@param data Table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
 ServerData.PVPInstances.SetPvpUsedInstances = function(data)
-    local gmd = getData(KEY_PVP_USEDINSTANCES)
-    gmd = data
+    ModData.add(KEY_PVP_USEDINSTANCES, data)
 end
 
 --- Get PVP current instance data
 ---@return {id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
 ServerData.PVPInstances.GetPvpCurrentInstance = function()
-    return getData(KEY_PVP_CURRENTINSTANCE)
+    return ModData.getOrCreate(KEY_PVP_CURRENTINSTANCE)
 end
 
 --- Set PVP current instance data
 ---@param data {id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
 ServerData.PVPInstances.SetPvpCurrentInstance = function(data)
-    local gmd = getData(KEY_PVP_CURRENTINSTANCE)
-    gmd = data
+    ModData.add(KEY_PVP_CURRENTINSTANCE, data)
 end
 
 ServerData.SafehouseInstances = ServerData.SafehouseInstances or {}
@@ -86,27 +77,25 @@ ServerData.SafehouseInstances = ServerData.SafehouseInstances or {}
 --- Get table of safehouse instances
 ---@return Table Of ["worldx-worldy-worldz"]={x=worldx, y=worldy, z=worldz}
 ServerData.SafehouseInstances.GetSafehouseInstances = function()
-    return getData(KEY_SAFEHOUSE_INSTANCES)
+    return ModData.getOrCreate(KEY_SAFEHOUSE_INSTANCES)
 end
 
 --- Set table of safehouse instances
 ---@param data Table Of ["worldx-worldy-worldz"]={x=worldx, y=worldy, z=worldz}
 ServerData.SafehouseInstances.SetSafehouseInstances = function(data)
-    local gmd = getData(KEY_SAFEHOUSE_INSTANCES)
-    gmd = data
+    ModData.add(KEY_SAFEHOUSE_INSTANCES, data)
 end
 
 --- Get table fo assigned instances
 ---@return Table Of ["worldx-worldy-worldz"]=username
 ServerData.SafehouseInstances.GetSafehouseAssignedInstances = function()
-    return getData(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
+    return ModData.getOrCreate(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
 end
 
 --- Set table of assigned instances
 ---@param data Table Of ["worldx-worldy-worldz"]=username
 ServerData.SafehouseInstances.SetSafehouseAssignedInstances = function(data)
-    local gmd = getData(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
-    gmd = data
+    ModData.add(KEY_SAFEHOUSE_ASSIGNEDINSTANCES, data)
 end
 
 ServerData.Bank = ServerData.Bank or {}
@@ -114,14 +103,13 @@ ServerData.Bank = ServerData.Bank or {}
 --- Get table of bank accounts
 ---@return Table Of ["usernames"]=balance
 ServerData.Bank.GetBankAccounts = function()
-    return getData(KEY_BANK_ACCOUNTS)
+    return ModData.getOrCreate(KEY_BANK_ACCOUNTS)
 end
 
 --- Set table of bank accounts
 ---@param data Table Of ["usernames"]=balance
 ServerData.Bank.SetBankAccounts = function(data)
-    local gmd = getData(KEY_BANK_ACCOUNTS)
-    gmd = data
+    ModData.add(KEY_BANK_ACCOUNTS, data)
 end
 
-Events.OnInitGlobalModData.Add(ServerData.LoadData)
+Events.OnInitGlobalModData.Add(ServerData.GlobalModDataInit)

@@ -33,6 +33,14 @@ SafehouseInstanceManager.getSafehouseInstanceID = function(wx, wy, wz)
     return wx .. "-" .. wy .. "-" .. wz
 end
 
+SafehouseInstanceManager.reset = function()
+    ServerData.SafehouseInstances.SetSafehouseInstances({})
+    ServerData.SafehouseInstances.SetSafehouseAssignedInstances({})
+    for i,v in ipairs(PZ_EFT_CONFIG.SafehouseCells) do
+        SafehouseInstanceManager.loadSafehouseInstances(v.x,v.y)
+    end
+end
+
 --- Load safehouse instances using relative cell coordinates.
 --- Call this multiple times with different cells if safehouses take up more than one cell
 ---@param cellX number
@@ -132,9 +140,10 @@ SafehouseInstanceManager.getOrAssignSafehouse = function(player)
     return playerSafehouseKey
 end
 
--- TODO: Check if works well in MP environment
 local function OnLoad()
-    SafehouseInstanceManager.loadSafehouseInstances(1, 1)
+    for i,v in ipairs(PZ_EFT_CONFIG.SafehouseCells) do
+        SafehouseInstanceManager.loadSafehouseInstances(v.x,v.y)
+    end
 end
 
 Events.OnLoad.Add(OnLoad)

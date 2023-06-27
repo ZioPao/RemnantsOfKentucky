@@ -42,13 +42,10 @@ PvpInstanceManager.getInstanceID = function(cellX, cellY)
 end
 
 --- clear existing PVP instance and reload PVP instances
-PvpInstanceManager.loadPvpInstancesNew = function()
-    if clearInstances then
-        ServerData.PVPInstances.SetPvpInstances({})
-        ServerData.PVPInstances.SetPvpUsedInstances({})
-        ServerData.PVPInstances.SetPvpCurrentInstance(nil)
-    end
-
+PvpInstanceManager.reset = function(clearInstances)
+    ServerData.PVPInstances.SetPvpInstances({})
+    ServerData.PVPInstances.SetPvpUsedInstances({})
+    ServerData.PVPInstances.SetPvpCurrentInstance({})
     PvpInstanceManager.loadPvpInstances()
 end
 
@@ -98,8 +95,8 @@ PvpInstanceManager.getNextInstance = function()
     for key, value in pairs(pvpInstances) do
         if not usedInstances[key] then
             changedInstance = true
+            usedInstances[currentInstance.id] = true
             currentInstance = value
-            usedInstances[currentInstance.id] = currentInstance
             break;
         end
     end
@@ -183,10 +180,8 @@ PvpInstanceManager.getPermanentExtractionPoints = function(cellX, cellY)
     return points
 end
 
--- TODO: Check if works well in MP environment
-
 local function OnLoad()
-    PvpInstanceManager.loadPvpInstancesNew()
+    PvpInstanceManager.loadPvpInstances()
 end
 
 Events.OnLoad.Add(OnLoad)
