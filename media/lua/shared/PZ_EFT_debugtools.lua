@@ -39,6 +39,29 @@ function debug_getPosition()
     print(s)
 end
 
+function debug_getZeroPosition(rootx, rooty)
+    local p = getPlayer()
+
+    local psq = p:getSquare()
+
+    local x = psq:getX()
+    local y = psq:getY()
+
+    local cx = math.floor(x / 300)
+    local cy = math.floor(y / 300)
+
+    local rx = x - (cx * 300)
+    local ry = y - (cy * 300)
+
+    local zeroX = (rootx * 300)  + rx
+    local zeroY = (rooty * 300)  + ry
+
+    local s = "RootCellX: " .. rootx .. " RootCellY: " .. rooty .. " ZeroX: " .. zeroX .. " ZeroY: " .. zeroY
+
+    Clipboard.setClipboard(s)
+    print(s)
+end
+
 function debug_testCountdown()
     sendClientCommand("PZEFT-Time", "StartCountdown", {stopTime = 30})
 end
