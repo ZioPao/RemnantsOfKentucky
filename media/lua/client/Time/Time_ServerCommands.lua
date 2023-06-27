@@ -10,7 +10,11 @@ end
 ---------------------
 
 local OnServerCommand = function(module, command, args)
-    if module == 'PZEFT-Time' and ServerCommands[command] then
+
+    if module ~= 'PZEFT-Time' then return end
+
+    --debugPrint("On Server Command - PZEFT-Time")
+    if ServerCommands[command] then
         ServerCommands[command](args)
     end
 end

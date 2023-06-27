@@ -6,6 +6,12 @@ require "ISUI/ISPanel"
 require "ISUI/ISRichTextPanel"
 require "ISUI/ISButton"
 
+
+local DebugTime = {
+    
+}
+
+
 -- TODO Make this local
 TimePanel = ISPanel:derive("TimePanel")
 
@@ -29,14 +35,28 @@ local function FormatTime(time)
     local minutes = math.floor((time%3600)/60)
     local seconds = math.floor(time%60)
 
+    local addedColor = ""
+    if minutes == 0 and seconds < 30 then
+        local r = 1/(seconds/2)
+        local g = 1 - r
+        local b = 1 - r
+        addedColor = string.format(" <RGB:%.2f,%.2f,%.2f> ", 1, g, b)
+    else
+        addedColor = string.format(" <RGB:%.2f,%.2f,%.2f> ", 1, 1, 1)
+    end
+
+    debugPrint(addedColor)
+
+    local finalString = string.format(" %s <CENTRE> %02d:%02d", addedColor, minutes, seconds)
+
     -- TODO Check the current time, depending on this change color of the time on the panel.
-    return string.format(" <CENTRE> %02d:%02d", minutes, seconds)
+    return finalString
 end
 
 function TimePanel:render()
     local timeNumber = tonumber(ClientState.currentTime)
-    if timeNumber == nil then
-        timeNumber = ZombRand(1,1000)
+    if timeNumber == nil or timeNumber <= 0 then
+        self:close()
     end
 	self.textPanel:setText(FormatTime(timeNumber))
 	self.textPanel.textDirty = true
@@ -45,7 +65,7 @@ function TimePanel:render()
     -- todo In game timer will fade out after some seconds
     -- TODO if we do it via update it could be faster depending on the framerate. Keep this in mind
 
-    self.color.a = self.timeText.color.a - 0.0001
+    --self.color.a = self.timeText.color.a - 0.0001
 
 end
 
@@ -78,6 +98,9 @@ end
 
 function TimePanel.OnOpen()
 
+    debug_testCountdown()
+
+    -- todo force set time to prevent issues 
     local width = 300
     local height = 100
     local padding = 50

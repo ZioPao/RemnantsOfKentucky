@@ -14,7 +14,7 @@ function EFT_Timer.Update()
 	local currTime = os_time()
 
 	local currSeconds = currTime - EFT_Timer.startTime
-	print(currSeconds)
+	--print(currSeconds)
 	sendServerCommand("PZEFT-Time", "ReceiveTimeUpdate", {currSeconds})
 
 	if currSeconds >= EFT_Timer.lastFuncTime + EFT_Timer.timeBetweenFunc then

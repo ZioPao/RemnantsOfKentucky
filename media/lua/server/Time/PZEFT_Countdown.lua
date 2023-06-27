@@ -14,8 +14,17 @@ function EFT_Countdown.Update()
 	local currTime = os_time()
 	--print(currTime)
 	local currSeconds = EFT_Countdown.stopTime - currTime
-	print(currSeconds)
-	sendServerCommand("PZEFT-Time", "ReceiveTimeUpdate", {currSeconds})
+	--print(currSeconds)
+
+	-- TODO THIS IS JUST FOR DEBUG
+
+	if not isServer() then
+		sendServerCommand(getPlayer(), "PZEFT-Time", "ReceiveTimeUpdate", {currSeconds})
+
+	else
+		sendServerCommand("PZEFT-Time", "ReceiveTimeUpdate", {currSeconds})
+
+	end
 
 	if currTime >= EFT_Countdown.stopTime then
 		print("STOP COUNTDOWN! Running func!")
