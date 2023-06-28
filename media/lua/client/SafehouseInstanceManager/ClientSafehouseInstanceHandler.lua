@@ -24,8 +24,6 @@ ClientSafehouseInstanceHandler.refreshSafehouseAllocation = function()
     sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {
         teleport = false
     })
-
-    
 end
 
 --- This check is on the client side. Maybe somehow move to the server but that might be costly.

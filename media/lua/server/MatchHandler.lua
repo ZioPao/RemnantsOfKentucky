@@ -1,3 +1,5 @@
+if (not isServer()) and not (not isServer() and not isClient()) then return end
+
 require "PZ_EFT_debugtools"
 
 local MatchHandler = {}
