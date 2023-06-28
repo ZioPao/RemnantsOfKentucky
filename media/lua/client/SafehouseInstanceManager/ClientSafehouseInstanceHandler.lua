@@ -2,24 +2,6 @@ require "PZ_EFT_debugtools"
 
 ClientSafehouseInstanceHandler = ClientSafehouseInstanceHandler or {}
 
---- On create player
---- Teleport player to a "neutral"square to remove from any potential safehouse
---- Request safehouse allocation of player from server
----@param player IsoPlayer
-ClientSafehouseInstanceHandler.onCreatePlayer = function(_, player)
-    if player == getPlayer() then
-        -- On join, request safehouse allocation data
-        debugPrint("On Create Player, RequestSafehouseAllocation")
-
-        -- Request safe house allocation, which in turn will teleport the player to the assigned safehouse
-        sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {
-            teleport = true
-        })
-    end
-end
-
-Events.OnCreatePlayer.Add(ClientSafehouseInstanceHandler.onCreatePlayer)
-
 ClientSafehouseInstanceHandler.refreshSafehouseAllocation = function()
     sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {
         teleport = false
@@ -39,7 +21,9 @@ ClientSafehouseInstanceHandler.isInSafehouse = function()
 
         local sq = player:getSquare()
 
-        if not sq then return end
+        if not sq then
+            return
+        end
 
         if sq:getZ() ~= 0 then
             return false;
@@ -54,3 +38,22 @@ ClientSafehouseInstanceHandler.isInSafehouse = function()
         end
     end
 end
+
+--- On player initialise
+--- Request safehouse allocation of player from server
+---@param player IsoPlayer
+ClientSafehouseInstanceHandler.onPlayerInit = function(player)
+    if player and player == getPlayer() then
+        local md = player:getModData()
+        md.PZEFT = md.PZEFT or {}
+        if not md.PZEFT.safehouse then
+            -- Request safe house allocation, which in turn will teleport the player to the assigned safehouse
+            sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {
+                teleport = true
+            })
+            Events.OnPlayerUpdate.Remove(ClientSafehouseInstanceHandler.onPlayerInit)
+        end
+    end
+end
+
+Events.OnPlayerUpdate.Add(ClientSafehouseInstanceHandler.onPlayerInit)

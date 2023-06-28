@@ -1,4 +1,4 @@
-local MODULE = "PZ-EFT-TELEPORT"
+local MODULE = "PZEFT-TELEPORT"
 
 local ServerCommands = {}
 

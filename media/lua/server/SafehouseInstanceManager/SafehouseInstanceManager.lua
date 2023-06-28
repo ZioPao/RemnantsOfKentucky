@@ -149,3 +149,4 @@ local function OnLoad()
 end
 
 Events.OnLoad.Add(OnLoad)
+Events.OnServerStarted.Add(OnLoad)

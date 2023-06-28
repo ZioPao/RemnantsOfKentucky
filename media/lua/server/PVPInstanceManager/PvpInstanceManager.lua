@@ -7,34 +7,6 @@ local pvpInstanceSettings = PZ_EFT_CONFIG.PVPInstanceSettings
 
 PvpInstanceManager = PvpInstanceManager or {}
 
--- DEBUGGING FUNCTIONS --
-
-PvpInstanceManager.debug = PvpInstanceManager.debug or {}
-PvpInstanceManager.debug.getPvpInstances = function()
-    local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
-    for key, value in pairs(pvpInstances) do
-        debugPrint("Key: " .. key)
-    end
-end
-
-PvpInstanceManager.debug.getUsedPvpInstances = function()
-    local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
-    for key, value in pairs(usedInstances) do
-        debugPrint("Key: " .. key)
-    end
-end
-
-PvpInstanceManager.debug.getCurrentInstance = function()
-    local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
-    if currentInstance then
-        debugPrint(currentInstance.id)
-    else
-        debugPrint(nil)
-    end
-end
-
-------------------------
-
 --- Form an instance id using the cell X and Y
 ---@param cellX number
 ---@param cellY number
@@ -187,3 +159,4 @@ local function OnLoad()
 end
 
 Events.OnLoad.Add(OnLoad)
+Events.OnServerStarted.Add(OnLoad)

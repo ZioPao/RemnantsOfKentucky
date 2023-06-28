@@ -1,7 +1,7 @@
 if (not isServer()) and not (not isServer() and not isClient()) then return end
 
 require "PZ_EFT_debugtools"
-
+LuaEventManager.AddEvent("PZEFT_ServerModDataReady")
 
 local PZ_EFT = "PZ-EFT"
 local KEY_PVP_INSTANCES = "PZ-EFT-PVP-INSTANCES"
@@ -24,7 +24,11 @@ ServerData.GlobalModDataInit = function(isNewGame)
     ModData.getOrCreate(KEY_SAFEHOUSE_INSTANCES)
     ModData.getOrCreate(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
     ModData.getOrCreate(KEY_BANK_ACCOUNTS)
+
+    if not isNewGame then triggerEvent("PZEFT_ServerModDataReady") end
 end
+
+Events.OnInitGlobalModData.Add(ServerData.GlobalModDataInit)
 
 ServerData.ClearAllData = function(state)
     ModData.remove(KEY_PVP_INSTANCES)
@@ -33,8 +37,9 @@ ServerData.ClearAllData = function(state)
     ModData.remove(KEY_SAFEHOUSE_INSTANCES)
     ModData.remove(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
     ModData.remove(KEY_BANK_ACCOUNTS)
-end
 
+    ServerData.GlobalModDataInit(state)
+end
 
 ServerData.PVPInstances = ServerData.PVPInstances or {}
 
@@ -114,4 +119,39 @@ ServerData.Bank.SetBankAccounts = function(data)
     ModData.add(KEY_BANK_ACCOUNTS, data)
 end
 
-Events.OnInitGlobalModData.Add(ServerData.GlobalModDataInit)
+
+ServerData.debug = ServerData.debug or {}
+
+ServerData.debug.print_pvp_instances = function()
+    local data = ModData.getOrCreate(KEY_PVP_INSTANCES)
+    PZEFT_UTILS.PrintTable(data)
+end
+
+ServerData.debug.print_pvp_usedinstances = function()
+    local data = ModData.getOrCreate(KEY_PVP_USEDINSTANCES)
+    PZEFT_UTILS.PrintTable(data)
+end
+
+ServerData.debug.print_pvp_currentinstance = function()
+    local data = ModData.getOrCreate(KEY_PVP_CURRENTINSTANCE)
+    PZEFT_UTILS.PrintTable(data)
+end
+
+ServerData.debug.print_safehouses = function()
+    local data = ModData.getOrCreate(KEY_SAFEHOUSE_INSTANCES)
+    PZEFT_UTILS.PrintTable(data)
+end
+
+ServerData.debug.print_assignedsafehouses = function()
+    local data = ModData.getOrCreate(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
+    PZEFT_UTILS.PrintTable(data)
+end
+
+ServerData.debug.print_bankaccounts = function()
+    local data = ModData.getOrCreate(KEY_BANK_ACCOUNTS)
+    PZEFT_UTILS.PrintTable(data)
+end
+
+local function OnServerModDataReady() sendServerCommand("PZEFT", "SeverModDataReady", {}) end
+
+Events.PZEFT_ServerModDataReady.Add(OnServerModDataReady)
