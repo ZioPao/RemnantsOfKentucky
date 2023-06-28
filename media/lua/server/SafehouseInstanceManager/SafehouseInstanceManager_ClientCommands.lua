@@ -1,6 +1,7 @@
 if (not isServer()) and not (not isServer() and not isClient()) then return end
 
 require "PZ_EFT_debugtools"
+require "TeleportManager"
 
 local MODULE = 'PZEFT-Safehouse'
 
@@ -11,7 +12,7 @@ local ClientCommands = {}
 ---@param args Table {teleport=true/false}
 ClientCommands.RequestSafehouseAllocation = function(playerObj, args)
     if args.teleport then
-        PZEFT_UTILS.TeleportPlayer(playerObj,302,302,0)
+        TeleportManager.Teleport(playerObj,302,302,0)
     end
 
     local safehouseKey = SafehouseInstanceManager.getOrAssignSafehouse(playerObj)
@@ -22,7 +23,7 @@ ClientCommands.RequestSafehouseAllocation = function(playerObj, args)
     -- TODO Clean Inventory Box here to be sure that it doesn't contain old items.
 
     if args.teleport then
-        PZEFT_UTILS.TeleportPlayer(playerObj, safehouseInstance.x, safehouseInstance.y, safehouseInstance.z)
+        TeleportManager.Teleport(playerObj, safehouseInstance.x, safehouseInstance.y, safehouseInstance.z)
     end
 
     if args.cleanStorage then

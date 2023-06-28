@@ -1,6 +1,7 @@
 if (not isServer()) and not (not isServer() and not isClient()) then return end
 
 require "PZ_EFT_debugtools"
+require "TeleportManager"
 
 local MatchHandler = {}
 
@@ -40,7 +41,7 @@ function MatchHandler:start()
 
       if coords then
         local pl = playersArray:get(i)
-        PZEFT_UTILS.TeleportPlayer(pl, coords.x, coords.y, coords.z)
+        TeleportManager.Teleport(pl, coords.x, coords.y, coords.z)        
       end
   end
 
@@ -60,7 +61,7 @@ function MatchHandler:extractPlayer(playerUsername)
     local safehouseKey = SafehouseInstanceManager.getPlayerSafehouseKey(playerUsername)
     local safehouseInstance = SafehouseInstanceManager.getSafehouseInstanceByKey(safehouseKey)
     local player = getPlayerByUserName(playerUsername)
-    PZEFT_UTILS.TeleportPlayer(player, safehouseInstance.x, safehouseInstance.y, safehouseInstance.z)
+    TeleportManager.Teleport(player, safehouseInstance.x, safehouseInstance.y, safehouseInstance.z)
 end
 
 function MatchHandler:handleZombieSpawns(currentTime)
