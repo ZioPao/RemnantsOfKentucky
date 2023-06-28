@@ -11,10 +11,10 @@ end
 ---@param amount integer
 ---@param successCallbackModule string
 ---@param successCallbackCommand string
----@param successCallbackArgs table/string/integer
+---@param successCallbackArgs table
 ---@param failCallbackModule string
 ---@param failCallbackCommand string
----@param failCallbackArgs table/string/integer
+---@param failCallbackArgs table
 ClientBankManager.TryProcessTransaction = function(amount, successCallbackModule, successCallbackCommand,
     successCallbackArgs, failCallbackModule, failCallbackCommand, failCallbackArgs)
     sendClientCommand('PZEFT-BankAccount', "ProcessTransaction", {
