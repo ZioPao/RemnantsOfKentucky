@@ -20,3 +20,5 @@ AdminClientShopManager.adjustItem = function(fullType, newMultiplier, sellMultip
     shopItems[fullType].multiplier = newMultiplier or shopItems[fullType].multiplier
     shopItems[fullType].sellMultiplier = sellMultiplier or shopItems[fullType].sellMultiplier
 end
+
+--TODO Refresh daily items with % split between high value and low value
