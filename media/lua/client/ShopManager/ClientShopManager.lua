@@ -18,11 +18,11 @@ ClientShopManager.TryBuy = function(item, quantity)
         data, data)
 end
 
---- Try sell an item for quantity
----@param item Table
----@param qunatity Number
-ClientShopManager.TrySell = function(item, quantity)
+--- Try sell items for quantity
+---@param data Table {{item = {}, quantity = {}}...}
+ClientShopManager.TrySell = function(data)
     -- TODO: Verify that player has item + quantity
+    -- TOOD: Cater for multiple items
     local totalPrice = item.basePrice * item.multiplier * item.sellMultiplier * quantity
     local data = {
         item = item,
@@ -35,6 +35,12 @@ end
 
 ClientShopManager.HasRequiredItems = function(item, quantity)
     -- TODO: Verify that player has item + quantity
+    return true
+end
+
+
+ClientShopManager.CanBuy = function()
+    -- TODO: Verify that player has money + box next to safehouse door has capacity
     return true
 end
 
