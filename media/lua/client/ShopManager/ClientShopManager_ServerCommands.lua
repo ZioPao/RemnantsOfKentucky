@@ -7,12 +7,7 @@ local ServerCommands = {}
 
 --- Add items to inventory
 ServerCommands.BuyItems = function(args)
-    local item = args.item
-    local quantity = args.quantity
-
-    local player = getPlayer()
-    local inventory = player:getInventory()
-    inventory:AddItems(item.fullType, quantity)
+    --TODO: When buying, items are delivered in a cardboard box next to the safehouse's front door
 end
 
 ServerCommands.SellItems = function(args)
