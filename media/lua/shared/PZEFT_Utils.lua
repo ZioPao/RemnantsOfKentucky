@@ -125,3 +125,19 @@ PZEFT_UTILS.GetCellOfPlayer = function(player)
 
     return {x = cx, y = cy}
 end
+
+--- Copy orig into result
+---@param orig Table
+---@param result Table
+PZEFT_UTILS.CopyTable = function(orig, result)
+    local copy
+    if type(orig) == "table" then
+        copy = {}
+        for key, value in pairs(orig) do
+            copy[key] = PZEFT_UTILS.CopyTable(value)
+        end
+    else
+        copy = orig
+    end
+    result = copy
+end

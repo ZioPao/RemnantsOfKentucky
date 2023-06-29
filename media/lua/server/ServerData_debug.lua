@@ -37,6 +37,13 @@ ClientCommands.print_bankaccounts = function()
     ServerData.debug.print_bankaccounts()
 end
 
+ClientCommands.print_shopitems = function()
+    ServerData.debug.print_shopitems()
+end
+
+ClientCommands.transmitShopItems = function()
+    ServerShopManager.transmitShopItems()
+end
 
 local OnClientCommand = function(module, command, playerObj, args)
     if module == MODULE and ClientCommands[command] then

@@ -8,6 +8,7 @@ end
 
 --- Add or decreases an amount to a bank account
 --- The callback will be the server command that the server will send if transaction is processed successfully
+--- If inventory check is defined, the server checks for inventory type + quantity
 ---@param amount integer
 ---@param successCallbackModule string
 ---@param successCallbackCommand string
@@ -15,8 +16,9 @@ end
 ---@param failCallbackModule string
 ---@param failCallbackCommand string
 ---@param failCallbackArgs table
+---@param inventoryCheck table
 ClientBankManager.TryProcessTransaction = function(amount, successCallbackModule, successCallbackCommand,
-    successCallbackArgs, failCallbackModule, failCallbackCommand, failCallbackArgs)
+    successCallbackArgs, failCallbackModule, failCallbackCommand, failCallbackArgs, inventoryCheck)
     sendClientCommand('PZEFT-BankAccount', "ProcessTransaction", {
         amount = amount,
         onSuccess = {
@@ -28,7 +30,8 @@ ClientBankManager.TryProcessTransaction = function(amount, successCallbackModule
             callbackModule = failCallbackModule,
             callbackCommand = failCallbackCommand,
             callbackArgs = failCallbackArgs
-        }
+        },
+        inventoryCheck = inventoryCheck
     })
 end
 

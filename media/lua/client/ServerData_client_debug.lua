@@ -31,3 +31,7 @@ end
 function ServerData_client_debug.print_bankaccounts()
     sendClientCommand("SERVER_DEBUG", "print_bankaccounts", {})
 end
+
+function ServerData_client_debug.print_shopitems()
+    sendClientCommand("SERVER_DEBUG", "print_shopitems", {})
+end

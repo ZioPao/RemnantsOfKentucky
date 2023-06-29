@@ -4,6 +4,7 @@ local MODULE = 'PZEFT-BankAccount'
 
 local ServerCommands = {}
 
+--- Update bank account information with data from server
 ServerCommands.UpdateBankAccount = function(args)
     local player = getPlayer()
     local md = player:getModData()
