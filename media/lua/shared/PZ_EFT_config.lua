@@ -2,6 +2,7 @@ PZ_EFT_CONFIG = PZ_EFT_CONFIG or {}
 
 PZ_EFT_CONFIG.Debug = true
 
+--Cells containing safehouses for initialisation
 PZ_EFT_CONFIG.SafehouseCells = {{
     x = 1,
     y = 1
@@ -43,18 +44,18 @@ PZ_EFT_CONFIG.SafehouseInstanceSettings = {
 }
 
 PZ_EFT_CONFIG.PVPInstanceSettings = {
-    xLength = 2,
-    yLength = 3,
+    xLength = 1,
+    yLength = 2,
 
     buffer = 1,
 
-    firstXCellPos = 3,
+    firstXCellPos = 2,
     firstYCellPos = 2,
 
-    xRepeat = 2,
+    xRepeat = 4,
     yRepeat = 2,
 
-    randomExtractionPointCount = 0
+    randomExtractionPointCount = 1
 }
 
 PZ_EFT_CONFIG.MatchSettings = {
@@ -65,7 +66,7 @@ PZ_EFT_CONFIG.MatchSettings = {
 --- Spawn points - world coordinates if PVP instance starts at cell 0,0
 
 PZ_EFT_CONFIG.Spawnpoints = {}
---[[
+
 table.insert(PZ_EFT_CONFIG.Spawnpoints, {
     x = 5,
     y = 5,
@@ -83,13 +84,13 @@ table.insert(PZ_EFT_CONFIG.Spawnpoints, {
     y = 200,
     z = 0
 })
---]]
+
 --- Extraction point that will always be available, assuming PVP instance North Eastern point is at cell 0,0
 --- Time taken to extract
 --- Radius of extraction zone
 PZ_EFT_CONFIG.PermanentExtractionPoints = {}
 
---[[
+
 table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
     x = 5,
     y = 5,
@@ -105,13 +106,12 @@ table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
     time = 10,
     radius = 1,
 })
---]]
 
 --- Extraction point that won't always be available (PZ_EFT_CONFIG.PVPInstanceSettings.randomExtractionPointCount), assuming PVP instance North Eastern point is at cell 0,0
 --- Time taken to extract
 --- Radius of extraction zone
 PZ_EFT_CONFIG.RandomExtractionPoints = {}
---[[
+
 table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
     x = 500,
     y = 550,
@@ -135,4 +135,3 @@ table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
     time = 10,
     radius = 1,
 })
---]]

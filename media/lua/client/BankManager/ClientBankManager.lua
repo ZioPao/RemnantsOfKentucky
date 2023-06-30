@@ -8,15 +8,17 @@ end
 
 --- Add or decreases an amount to a bank account
 --- The callback will be the server command that the server will send if transaction is processed successfully
+--- If inventory check is defined, the server checks for inventory type + quantity
 ---@param amount integer
 ---@param successCallbackModule string
 ---@param successCallbackCommand string
----@param successCallbackArgs table/string/integer
+---@param successCallbackArgs table
 ---@param failCallbackModule string
 ---@param failCallbackCommand string
----@param failCallbackArgs table/string/integer
+---@param failCallbackArgs table
+---@param inventoryCheck table
 ClientBankManager.TryProcessTransaction = function(amount, successCallbackModule, successCallbackCommand,
-    successCallbackArgs, failCallbackModule, failCallbackCommand, failCallbackArgs)
+    successCallbackArgs, failCallbackModule, failCallbackCommand, failCallbackArgs, inventoryCheck)
     sendClientCommand('PZEFT-BankAccount', "ProcessTransaction", {
         amount = amount,
         onSuccess = {
@@ -28,21 +30,22 @@ ClientBankManager.TryProcessTransaction = function(amount, successCallbackModule
             callbackModule = failCallbackModule,
             callbackCommand = failCallbackCommand,
             callbackArgs = failCallbackArgs
-        }
+        },
+        inventoryCheck = inventoryCheck
     })
 end
 
---- On create player
---- Teleport player to a "neutral"square to remove from any potential safehouse
---- Request safehouse allocation of player from server
+--- On player initialise, request bank account info
 ---@param player IsoPlayer
-ClientBankManager.onCreatePlayer = function(_, player)
-	if player == getPlayer() then
-        --On join, request safehouse allocation data
-        debugPrint("On Create Player, RequestSafehouseAllocation")
-        --Request safe house allocation, which in turn will teleport the player to the assigned safehouse
-        ClientBankManager.getAccount(true)
+ClientBankManager.onPlayerInit = function(player)
+    if player and player == getPlayer() then
+        local md = player:getModData()
+        md.PZEFT = md.PZEFT or {}
+        if not md.PZEFT.accountBalance then
+            ClientBankManager.getAccount(true)
+            Events.OnPlayerUpdate.Remove(ClientBankManager.onPlayerInit)
+        end
     end
 end
 
-Events.OnCreatePlayer.Add(ClientBankManager.onCreatePlayer)
+Events.OnPlayerUpdate.Add(ClientBankManager.onPlayerInit)

@@ -1,3 +1,5 @@
+if (not isServer()) and not (not isServer() and not isClient()) then return end
+
 require "PZ_EFT_debugtools"
 
 local MODULE = 'PZEFT-BankAccount'
@@ -17,7 +19,15 @@ end
 --- Also calls the RequestBankAccount->UpdateBankAccount command
 ---@param args {amount=x, onSuccess = {callbackModule="abc", callbackCommand="abc", callbackArgs={args...}}, onFail = {callbackModule="abc", callbackCommand="abc", callbackArgs={args...}}}
 ClientCommands.ProcessTransaction = function(playerObj, args)
-    --amount, callbackCommand, callbackArgs
+    --amount, callbackCommand, callbackArgs, inventoryCheck
+
+    if inventoryCheck then
+        --args.item
+        --args.quantity
+        --args.totalPrice
+        
+    end
+
     local result = ServerBankManager.processTransaction(playerObj:getUsername(), args.amount)
 
     if result.success then
@@ -30,6 +40,7 @@ ClientCommands.ProcessTransaction = function(playerObj, args)
         end
     end
 
+    --Send updated bank account details to player
     ClientCommands.RequestBankAccount(playerObj, nil)
 end
 

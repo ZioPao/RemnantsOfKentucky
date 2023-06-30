@@ -1,21 +1,5 @@
 PZEFT_UTILS = PZEFT_UTILS or {}
 
---- Teleports player to world coordinates
----@param player IsoPlayer
----@param x number
----@param y number
----@param z number
-PZEFT_UTILS.TeleportPlayer = function(player, x, y, z)
-    assert(player ~= nil, "PZEFT_UTILS.TeleportPlayer: Player cannot be nil")
-
-    player:setX(x)
-    player:setY(y)
-    player:setZ(z)
-    player:setLx(x)
-    player:setLy(y)
-    player:setLz(z)
-end
-
 --- Maps world coordinates starting at cell 0,0 to different cell coordinates
 ---@param coordinateList {x=0,y=0,z=0}
 ---@param cellX number
@@ -126,4 +110,34 @@ PZEFT_UTILS.IsPointWithinDimensions = function(rootX, rootY, north, south, east,
     local maxY = rootY + south
 
     return posX >= minX and posX <= maxX and posY >= minY and posY <= maxY
+end
+
+PZEFT_UTILS.GetCellOfPlayer = function(player)
+    if not player then return end
+
+    local psq = player:getSquare()
+
+    local x = psq:getX()
+    local y = psq:getY()
+
+    local cx = math.floor(x / 300)
+    local cy = math.floor(y / 300)
+
+    return {x = cx, y = cy}
+end
+
+--- Copy orig into result
+---@param orig Table
+---@param result Table
+PZEFT_UTILS.CopyTable = function(orig, result)
+    local copy
+    if type(orig) == "table" then
+        copy = {}
+        for key, value in pairs(orig) do
+            copy[key] = PZEFT_UTILS.CopyTable(value)
+        end
+    else
+        copy = orig
+    end
+    result = copy
 end

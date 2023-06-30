@@ -1,15 +1,15 @@
-require "PZ_EFT_debugtools"
-
-local MODULE = 'PZEFT-BankAccount'
+local MODULE = "PZEFT-TELEPORT"
 
 local ServerCommands = {}
 
---- Update bank account information with data from server
-ServerCommands.UpdateBankAccount = function(args)
+ServerCommands.Teleport = function(args)
     local player = getPlayer()
-    local md = player:getModData()
-    md.PZEFT = md.PZEFT or {}
-    md.PZEFT.accountBalance = args.account
+    player:setX(args.x)
+    player:setY(args.y)
+    player:setZ(args.z)
+    player:setLx(args.x)
+    player:setLy(args.y)
+    player:setLz(args.z)
 end
 
 local OnServerCommand = function(module, command, args)

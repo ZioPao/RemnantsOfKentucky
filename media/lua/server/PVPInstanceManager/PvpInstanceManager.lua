@@ -1,37 +1,11 @@
+if (not isServer()) and not (not isServer() and not isClient()) then return end
+
 require "PZ_EFT_debugtools"
 require "PZ_EFT_config"
 
 local pvpInstanceSettings = PZ_EFT_CONFIG.PVPInstanceSettings
 
 PvpInstanceManager = PvpInstanceManager or {}
-
--- DEBUGGING FUNCTIONS --
-
-PvpInstanceManager.debug = PvpInstanceManager.debug or {}
-PvpInstanceManager.debug.getPvpInstances = function()
-    local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
-    for key, value in pairs(pvpInstances) do
-        debugPrint("Key: " .. key)
-    end
-end
-
-PvpInstanceManager.debug.getUsedPvpInstances = function()
-    local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
-    for key, value in pairs(usedInstances) do
-        debugPrint("Key: " .. key)
-    end
-end
-
-PvpInstanceManager.debug.getCurrentInstance = function()
-    local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
-    if currentInstance then
-        debugPrint(currentInstance.id)
-    else
-        debugPrint(nil)
-    end
-end
-
-------------------------
 
 --- Form an instance id using the cell X and Y
 ---@param cellX number
@@ -42,13 +16,10 @@ PvpInstanceManager.getInstanceID = function(cellX, cellY)
 end
 
 --- clear existing PVP instance and reload PVP instances
-PvpInstanceManager.loadPvpInstancesNew = function()
-    if clearInstances then
-        ServerData.PVPInstances.SetPvpInstances({})
-        ServerData.PVPInstances.SetPvpUsedInstances({})
-        ServerData.PVPInstances.SetPvpCurrentInstance(nil)
-    end
-
+PvpInstanceManager.reset = function(clearInstances)
+    ServerData.PVPInstances.SetPvpInstances({})
+    ServerData.PVPInstances.SetPvpUsedInstances({})
+    ServerData.PVPInstances.SetPvpCurrentInstance({})
     PvpInstanceManager.loadPvpInstances()
 end
 
@@ -98,8 +69,8 @@ PvpInstanceManager.getNextInstance = function()
     for key, value in pairs(pvpInstances) do
         if not usedInstances[key] then
             changedInstance = true
+            usedInstances[currentInstance.id] = true
             currentInstance = value
-            usedInstances[currentInstance.id] = currentInstance
             break;
         end
     end
@@ -183,10 +154,9 @@ PvpInstanceManager.getPermanentExtractionPoints = function(cellX, cellY)
     return points
 end
 
--- TODO: Check if works well in MP environment
-
 local function OnLoad()
-    PvpInstanceManager.loadPvpInstancesNew()
+    PvpInstanceManager.loadPvpInstances()
 end
 
 Events.OnLoad.Add(OnLoad)
+Events.OnServerStarted.Add(OnLoad)

@@ -1,3 +1,5 @@
+if (not isServer()) and not (not isServer() and not isClient()) then return end
+
 require "PZ_EFT_debugtools"
 require "PZ_EFT_config"
 
@@ -31,6 +33,14 @@ end
 ---@return "wx-wy-wz"
 SafehouseInstanceManager.getSafehouseInstanceID = function(wx, wy, wz)
     return wx .. "-" .. wy .. "-" .. wz
+end
+
+SafehouseInstanceManager.reset = function()
+    ServerData.SafehouseInstances.SetSafehouseInstances({})
+    ServerData.SafehouseInstances.SetSafehouseAssignedInstances({})
+    for i,v in ipairs(PZ_EFT_CONFIG.SafehouseCells) do
+        SafehouseInstanceManager.loadSafehouseInstances(v.x,v.y)
+    end
 end
 
 --- Load safehouse instances using relative cell coordinates.
@@ -132,9 +142,11 @@ SafehouseInstanceManager.getOrAssignSafehouse = function(player)
     return playerSafehouseKey
 end
 
--- TODO: Check if works well in MP environment
 local function OnLoad()
-    SafehouseInstanceManager.loadSafehouseInstances(1, 1)
+    for i,v in ipairs(PZ_EFT_CONFIG.SafehouseCells) do
+        SafehouseInstanceManager.loadSafehouseInstances(v.x,v.y)
+    end
 end
 
 Events.OnLoad.Add(OnLoad)
+Events.OnServerStarted.Add(OnLoad)
