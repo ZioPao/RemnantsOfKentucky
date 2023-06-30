@@ -1,24 +1,14 @@
 -- Used in conjuction with a BaseTimer\TimerHandler\CountdownHandler
--- TODO ISRichTextPanel that will show the time related stuff. Could be a timer or a countdown
--- TODO This shouldn't be constantly visible
 
 require "ISUI/ISPanel"
 require "ISUI/ISRichTextPanel"
 require "ISUI/ISButton"
 
-
-local DebugTime = {
-    
-}
-
-
 -- TODO Make this local
 TimePanel = ISPanel:derive("TimePanel")
 
-
 function TimePanel:new(x, y, width, height, isStartingMatch)
     local o = ISPanel:new(x, y, width, height)
-	--local o = 
     setmetatable(o, self)
     self.__index = self
 
@@ -98,15 +88,12 @@ end
 
 function TimePanel.OnOpen()
 
-    debug_testCountdown()
-
-    -- todo force set time to prevent issues 
+    --debug_testCountdown()
     local width = 300
     local height = 100
     local padding = 50
     local posX = getCore():getScreenWidth() - width - padding
     local posY = getCore():getScreenHeight() - height - padding
-
 
     local panel = TimePanel:new(posX, posY, width, height, true)
     panel:initialise()
