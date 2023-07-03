@@ -141,3 +141,40 @@ PZEFT_UTILS.CopyTable = function(orig, result)
     end
     result = copy
 end
+
+-- Function to shuffle a table
+PZEFT_UTILS.ShuffleTable = function(t)
+    for i = #t, 2, -1 do
+        local j = math.random(i)
+        t[i], t[j] = t[j], t[i]
+    end
+    return t
+end
+
+--- Function to pick random key-value pairs from a table without repetitions
+PZEFT_UTILS.PickRandomPairsWithoutRepetitions = function(table, count)
+    local totalPairs = 0
+    for _ in pairs(table) do
+        totalPairs = totalPairs + 1
+    end
+
+    if count >= totalPairs then
+        return table -- Return the whole table if requested count is greater or equal to the number of pairs
+    end
+
+    -- Shuffle the keys of the table randomly
+    local shuffledKeys = {}
+    for key in pairs(table) do
+        table.insert(shuffledKeys, key)
+    end
+    PZEFT_UTILS.ShuffleTable(shuffledKeys)
+
+    -- Select the first 'count' pairs from the shuffled keys
+    local pickedPairs = {}
+    for i = 1, count do
+        local key = shuffledKeys[i]
+        pickedPairs[key] = table[key]
+    end
+
+    return pickedPairs
+end
