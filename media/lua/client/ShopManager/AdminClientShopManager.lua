@@ -7,18 +7,64 @@ require "ClientData"
 AdminClientShopManager = AdminClientShopManager or {}
 
 --- Transmit prices to server, which then will be transmitted back to clients
-AdminClientShopManager.transmitPrices = function()
+AdminClientShopManager.transmitShopItems = function()
     local shopItems = ClientData.Shop.GetShopItems()
-    sendClientCommand('PZEFT-Shop', 'transmitPrices', shopItems)
+    sendClientCommand('PZEFT-Shop', 'transmitShopItems', shopItems)
 end
 
 --- Adjust an item's price multiplier
 ---@param fullType String
 ---@param newMultiplier decimal
+---@return boolean
 AdminClientShopManager.adjustItem = function(fullType, newMultiplier, sellMultiplier)
     local shopItems = ClientData.Shop.GetShopItems()
-    shopItems[fullType].multiplier = newMultiplier or shopItems[fullType].multiplier
-    shopItems[fullType].sellMultiplier = sellMultiplier or shopItems[fullType].sellMultiplier
+    shopItems.items = shopItems.items or {}
+    
+    if not shopItems.items[fullType] then 
+        print("ERROR: AdminClientShopManager.adjustItem - Adjusted " .. fullType .. " doesn't exist!")
+        return false 
+    end
+
+    shopItems.items[fullType].multiplier = newMultiplier or shopItems.items[fullType].multiplier
+    shopItems.items[fullType].sellMultiplier = sellMultiplier or shopItems.items[fullType].sellMultiplier
+
+    return true
 end
 
+
 --TODO Refresh daily items with % split between high value and low value
+--- Manually refreshes the daily items
+AdminClientShopManager.refreshDailyItems = function()
+    local shopItems = ClientData.Shop.GetShopItems()
+    shopItems.dailyInventory = shopItems.dailyInventory or {}
+    if not shopItems.items then 
+        print("ERROR: AdminClientShopManager.refreshDailyItems - No shop items found!")
+        return
+    end 
+
+    --TODO: Get daily inventory count?
+    --TODO: Sandbox options
+    local split = 0.5
+    local count = 10
+    
+    local highValueItemsCount = math.floor(count * split)
+    local lowValueItemsCount = count - highValueItemsCount
+
+    local highValueItems = shopItems.tags["HIGHVALUE"]
+    local lowValueItems = shopItems.tags["LOWVALUE"]
+
+    local highValueTableFullTypes = PZEFT_UTILS.PickRandomPairsWithoutRepetitions(highValueItems, highValueItemsCount)
+    local lowValueTableFullTypes = PZEFT_UTILS.PickRandomPairsWithoutRepetitions(lowValueItems, lowValueItemsCount)
+
+    shopItems.dailyInventory = {}
+
+    for id,_ in pairs(highValueTableFullTypes) do
+        shopItems.dailyInventory[id] = shopItems.items[id]
+    end
+
+    for id,_ in pairs(lowValueTableFullTypes) do
+        shopItems.dailyInventory[id] = shopItems.items[id]
+    end
+
+    sendClientCommand('PZEFT-Shop', 'transmitShopItems', shopItems)
+end

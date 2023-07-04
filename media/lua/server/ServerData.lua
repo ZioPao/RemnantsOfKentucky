@@ -131,18 +131,18 @@ ServerData.Shop = ServerData.Shop or {}
 
 --- Get table of shop items
 ---@return Table Of ["fulltype"] = {basePrice = basePrice, multiplier = initialMultiplier or 1 }
-ServerData.Bank.GetShopItems = function()
+ServerData.Shop.GetShopItems = function()
     return ModData.getOrCreate(KEY_SHOP_ITEMS)
 end
 
 --- Set table of shop items
 ---@param data Table Of ["fulltype"] = {basePrice = basePrice, multiplier = initialMultiplier or 1 }
-ServerData.Bank.SetShopItems = function(data)
+ServerData.Shop.SetShopItems = function(data)
     ModData.add(KEY_SHOP_ITEMS, data)
 end
 
 --- Transmits table of shop items to clients
-ServerData.Bank.TransmitShopItems = function()
+ServerData.Shop.TransmitShopItems = function()
     ModData.transmit(KEY_SHOP_ITEMS)
 end
 

@@ -7,10 +7,9 @@ local MODULE = 'PZEFT-Shop'
 local ClientCommands = {}
 
 --- Recieve updated shop item list from admin client and transmit it back to all clients
-ClientCommands.transmitPrices = function(player, data)
-    --TODO: Confirm that player is admin?
-    ServerData.Bank.SetShopItems(data)
-    ServerData.Bank.TransmitShopItems()
+ClientCommands.transmitShopItems = function(player, data)
+    ServerData.Shop.SetShopItems(data)
+    ServerData.Shop.TransmitShopItems()
 end
 
 local OnClientCommand = function(module, command, playerObj, args)
