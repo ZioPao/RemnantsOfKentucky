@@ -86,7 +86,7 @@ end
 -------------------------
 -- Mostly debug stuff
 
-function TimePanel.OnOpen()
+function TimePanel.Open()
 
     --debug_testCountdown()
     local width = 300

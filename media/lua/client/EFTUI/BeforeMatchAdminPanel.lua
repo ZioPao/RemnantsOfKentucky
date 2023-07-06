@@ -4,8 +4,7 @@ BeforeMatchAdminPanel = ISCollapsableWindow:derive("BeforeMatchAdminPanel")
 BeforeMatchAdminPanel.instance = nil
 
 function BeforeMatchAdminPanel:new(x, y, width, height, coords)
-    local o = {}
-    o = ISCollapsableWindow:new(x, y, width, height)
+    local o = ISCollapsableWindow:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
 
@@ -20,29 +19,40 @@ function BeforeMatchAdminPanel:new(x, y, width, height, coords)
     o.buttonBorderColor = { r = 0.7, g = 0.7, b = 0.7, a = 0.5 }
     o.moveWithMouse = true
 
+    o.isStartingMatch = false
 
-    AdminBeforeMatchMenu.instance = o
+    BeforeMatchAdminPanel.instance = o
     return o
 end
 
 function BeforeMatchAdminPanel:createChildren()
-    self.panelInfo = ISPanel:new(0, 10, self:getWidth(), self:getHeight()/4)
+    ISCollapsableWindow.createChildren(self)
+
+
+    self.panelInfo = ISRichTextPanel:new(0, 20, self:getWidth(), self:getHeight()/4)
+    self.panelInfo.autosetheight = false
+    self.panelInfo.background = true
+	self.panelInfo.backgroundColor = {r=0, g=0, b=0, a=0.5}
+    self.panelInfo.borderColor = {r=0.4, g=0.4, b=0.4, a=1}
+    self.panelInfo:initialise()
+    self.panelInfo:paginate()
     self:addChild(self.panelInfo)
 
-    self.labelInstancesAvailable = ISLabel:new(10, 10, 25, "", 1, 1, 1, 1, UIFont.Small, true)
-    self.labelInstancesAvailable:initialise()
-    self.labelInstancesAvailable:instantiate()
-    self.panelInfo:addChild(self.labelInstancesAvailable)
+    -- self.labelInstancesAvailable = ISRichTextPanel:new(0, 0, self.panelInfo:getWidth(), 25)
+    -- self.labelInstancesAvailable:initialise()
+    -- self.labelInstancesAvailable:instantiate()
+    -- self.panelInfo:addChild(self.labelInstancesAvailable)
 
-    self.labelSafehousesAssigned = ISLabel:new(10, self.labelInstancesAvailable:getBottom() + 10, 25, "", 1, 1, 1, 1, UIFont.Small, true)
-    self.labelSafehousesAssigned:initialise()
-    self.labelSafehousesAssigned:instantiate()
-    self.panelInfo:addChild(self.labelSafehousesAssigned)
+    -- self.labelSafehousesAssigned = ISLabel:new(10, self.labelInstancesAvailable:getBottom() + 10, 25, "", 1, 1, 1, 1, UIFont.Small, true)
+    -- self.labelSafehousesAssigned:initialise()
+    -- self.labelSafehousesAssigned:instantiate()
+    -- self.panelInfo:addChild(self.labelSafehousesAssigned)
 
     -----------------------
 
-    local xPadding = 10
-    local yOffset = self.panelInfo:getBottom() + 10
+    local xPadding = 20
+    local yPadding = 20
+    local yOffset = self.panelInfo:getBottom() + yPadding
 
     local btnWidth = self:getWidth() - xPadding*2
     local btnHeight = 25
@@ -53,7 +63,7 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnStartMatch:setEnable(false)
     self:addChild(self.btnStartMatch)
 
-    yOffset = yOffset + self.btnStartMatch:getHeight() + 10
+    yOffset = yOffset + self.btnStartMatch:getHeight() + yPadding
 
     self.btnMatchOptions = ISButton:new(xPadding, yOffset, btnWidth, btnHeight, getText("IGUI_AdminPanelBeforeMatch_MatchOptions"), self, self.onClick )
     self.btnMatchOptions.internal = "MATCH_OPTIONS"
@@ -61,7 +71,7 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnMatchOptions:setEnable(false)
     self:addChild(self.btnMatchOptions)
 
-    yOffset = yOffset + self.btnReload:getHeight() + 10
+    yOffset = yOffset + self.btnMatchOptions:getHeight() + yPadding
 
     self.btnManagePlayers = ISButton:new(xPadding, yOffset, btnWidth, btnHeight, getText("IGUI_AdminPanelBeforeMatch_ManagePlayers"), self, self.onClick )
     self.btnManagePlayers.internal = "MANAGE_PLAYERS"
@@ -83,32 +93,45 @@ function BeforeMatchAdminPanel:onClick(btn)
     if btn.internal == 'START_MATCH' then
         self.isStartingMatch = true
         -- TODO Start timer. Show it on screen 
+        debug_testCountdown()
+        TimePanel.Open()
     elseif btn.internal == 'MATCH_OPTIONS' then
     elseif btn.internal == 'MANAGE_PLAYERS' then
 
     elseif btn.internal == 'STOP' then
         self.isStartingMatch = false
+        TimePanel.Close()
+        -- TODO Stop countdown
     end
 
 end
 
 function BeforeMatchAdminPanel:update()
-
+    ISCollapsableWindow.update(self)
     -- When starting the match, we'll disable the start button and enable the stop one
     self.btnStartMatch:setEnable(not self.isStartingMatch)
+    self.btnMatchOptions:setEnable(not self.isStartingMatch)
+    self.btnManagePlayers:setEnable(not self.isStartingMatch)
+
+
     self.btnStop:setVisible(self.isStartingMatch)
     self.btnStop:setEnable(self.isStartingMatch)
 
 
+
+    -- Handles Panel Info stuff
+    local instancesAvailableStr = getText("IGUI_AdminPanelBeforeMatch_InstancesAvailable", 100) .."\n" .. getText("IGUI_AdminPanelBeforeMatch_SafehousesAssigned", 55)
+    
+    self.panelInfo:setText(instancesAvailableStr)
+    self.panelInfo.textDirty = true
+
+
 end
 
-function BeforeMatchAdminPanel:setVisible(visible)
-    self.javaObject:setVisible(visible)
-end
-
-function BeforeMatchAdminPanel.OnOpenPanel(coords)
-    local pnl = BeforeMatchAdminPanel:new(50, 200, 200, 400)
+function BeforeMatchAdminPanel.OnOpenPanel()
+    local pnl = BeforeMatchAdminPanel:new(50, 200, 400, 500)
     pnl:initialise()
+    pnl:instantiate()
     pnl:addToUIManager()
     pnl:bringToTop()
     return pnl
