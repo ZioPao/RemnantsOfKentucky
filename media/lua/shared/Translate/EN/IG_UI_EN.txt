@@ -6,6 +6,21 @@ IG_UI_EN = {
     IGUI_AdminPanelBeforeMatch_ManagePlayers = "Manage Players",
     IGUI_AdminPanelBeforeMatch_Stop = "Stop",
 
+    IGUI_AdminPanelBeforeMatch_Unassign = "Unassign",
+    IGUI_AdminPanelBeforeMatch_Tooltip_Unassign = "Unassign",
+
+    IGUI_AdminPanelBeforeMatch_CleanStorage = "Clean Storage",
+    IGUI_AdminPanelBeforeMatch_Tooltip_CleanStorage = "Clean Storage",
+    
+    IGUI_AdminPanelBeforeMatch_StarterKit = "Give Starter Kit",
+    IGUI_AdminPanelBeforeMatch_Tooltip_StarterKit = "Give Starter Kit",
+    
+    IGUI_AdminPanelBeforeMatch_WipeEverything = "WIPE EVERYTHING",
+    IGUI_AdminPanelBeforeMatch_Tooltip_WipeEverything = "Wipe everything about the selected player",
+
+
+    
+
     
 
 }

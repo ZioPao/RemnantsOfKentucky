@@ -34,6 +34,7 @@ function BeforeMatchAdminPanel:createChildren()
     self.panelInfo.background = true
 	self.panelInfo.backgroundColor = {r=0, g=0, b=0, a=0.5}
     self.panelInfo.borderColor = {r=0.4, g=0.4, b=0.4, a=1}
+    self.panelInfo.marginTop = self.panelInfo:getHeight()/2
     self.panelInfo:initialise()
     self.panelInfo:paginate()
     self:addChild(self.panelInfo)
@@ -97,7 +98,7 @@ function BeforeMatchAdminPanel:onClick(btn)
         TimePanel.Open()
     elseif btn.internal == 'MATCH_OPTIONS' then
     elseif btn.internal == 'MANAGE_PLAYERS' then
-
+        self.openedPanel = ManagePlayersPanel.Open(self:getRight(), self:getBottom() - self:getHeight())
     elseif btn.internal == 'STOP' then
         self.isStartingMatch = false
         TimePanel.Close()
@@ -126,6 +127,24 @@ function BeforeMatchAdminPanel:update()
     self.panelInfo.textDirty = true
 
 
+    -- TODO Maybe use a ontick since this isn't updated every tick and we'd want it to be fluid
+    -- Updates right panel position
+    if self.openedPanel then
+        self.openedPanel:setX(self:getRight())
+        self.openedPanel:setY(self:getBottom() - self:getHeight())
+    end
+
+
+end
+
+function BeforeMatchAdminPanel:close()
+
+    if self.openedPanel then
+        self.openedPanel:close()
+    end
+
+    ISCollapsableWindow.close(self)
+
 end
 
 function BeforeMatchAdminPanel.OnOpenPanel()
@@ -137,3 +156,4 @@ function BeforeMatchAdminPanel.OnOpenPanel()
     return pnl
 end
 
+--------------------------------------------------------------------
