@@ -1,0 +1,11 @@
+IG_UI_EN = {
+    IGUI_AdminPanelBeforeMatch_InstancesAvailable = "Instances available: %1",
+    IGUI_AdminPanelBeforeMatch_SafehousesAssigned = "Safehouses assigned: %1",
+    IGUI_AdminPanelBeforeMatch_StartMatch = "Start Match",
+    IGUI_AdminPanelBeforeMatch_MatchOptions = "Match Options",
+    IGUI_AdminPanelBeforeMatch_ManagePlayers = "Manage Players",
+    IGUI_AdminPanelBeforeMatch_Stop = "Stop",
+
+    
+
+}
