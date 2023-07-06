@@ -3,7 +3,7 @@
 BeforeMatchAdminPanel = ISCollapsableWindow:derive("BeforeMatchAdminPanel")
 BeforeMatchAdminPanel.instance = nil
 
-function BeforeMatchAdminPanel:new(x, y, width, height, coords)
+function BeforeMatchAdminPanel:new(x, y, width, height)
     local o = ISCollapsableWindow:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
@@ -27,7 +27,6 @@ end
 
 function BeforeMatchAdminPanel:createChildren()
     ISCollapsableWindow.createChildren(self)
-
 
     self.panelInfo = ISRichTextPanel:new(0, 20, self:getWidth(), self:getHeight()/4)
     self.panelInfo.autosetheight = false
@@ -142,7 +141,8 @@ function BeforeMatchAdminPanel:close()
     if self.openedPanel then
         self.openedPanel:close()
     end
-
+    self:setvisible(false)
+    self:removeFromUIManager()
     ISCollapsableWindow.close(self)
 
 end
