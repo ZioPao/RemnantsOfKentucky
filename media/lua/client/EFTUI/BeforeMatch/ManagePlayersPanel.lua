@@ -5,6 +5,7 @@ local FONT_HGT_LARGE = getTextManager():getFontHeight(UIFont.Large)
 local HEADER_HGT = FONT_HGT_MEDIUM + 2 * 2
 local ENTRY_HGT = FONT_HGT_MEDIUM + 2 * 2
 
+-- TODO Make it local
 ManagePlayersPanel = ISCollapsableWindow:derive("ManagePlayersPanel")
 
 function ManagePlayersPanel.Open(x,y)
@@ -164,6 +165,8 @@ function ManagePlayersPanel:onClick(button)
     elseif button.internal == 'STARTER_KIT' then
         -- TODO Give Starter kit to selected player
     elseif button.internal == 'WIPE_EVERYTHING' then
+        local text = " <CENTRE> Are you sure you want to wipe out everything? <LINE> You can't come back from this."
+        self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20)
 
     end
 end
@@ -185,8 +188,10 @@ function ManagePlayersPanel:update()
 end
 
 function ManagePlayersPanel:close()
-    self:setVisible(false)
-    self:removeFromUIManager()
+    if self.confirmationPanel then
+        self.confirmationPanel:close()
+    end
+    ISCollapsableWindow.close(self)
 end
 
 --************************************************************************--

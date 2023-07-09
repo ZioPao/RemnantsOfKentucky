@@ -141,8 +141,8 @@ function BeforeMatchAdminPanel:close()
     if self.openedPanel then
         self.openedPanel:close()
     end
-    self:setvisible(false)
-    self:removeFromUIManager()
+    --self:setvisible(false)
+    --self:removeFromUIManager()
     ISCollapsableWindow.close(self)
 
 end
