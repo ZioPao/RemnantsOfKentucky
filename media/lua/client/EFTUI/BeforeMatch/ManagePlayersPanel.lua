@@ -8,7 +8,7 @@ local ENTRY_HGT = FONT_HGT_MEDIUM + 2 * 2
 -- TODO Make it local
 ManagePlayersPanel = ISCollapsableWindow:derive("ManagePlayersPanel")
 
-function ManagePlayersPanel.Open(x,y)
+function ManagePlayersPanel.Open(x, y)
     if ManagePlayersPanel.instance then
         ManagePlayersPanel.instance:close()
     end
@@ -51,7 +51,7 @@ function ManagePlayersPanel:initialise()
         self:fillList()
     end
 
-    self.panel = ISTabPanel:new(10, top + entryHgt + 10 , (self.width - 10 * 2) / 1.5, self.height + top - 50)
+    self.panel = ISTabPanel:new(10, top + entryHgt + 10, (self.width - 10 * 2) / 1.5, self.height + top - 50)
     self.panel:initialise()
     self.panel.borderColor = { r = 0, g = 0, b = 0, a = 0 }
     self.panel.target = self
@@ -71,7 +71,8 @@ function ManagePlayersPanel:initialise()
     local deleteDataIco = getTexture("media/ui/deleteDataIcon.png") -- www.flaticon.com/free-icons/delete Delete icons created by Kiranshastry - Flaticon
 
     -- Middle button
-    self.btnCleanStorage = ISButton:new(btnX, btnY, btnSize, btnSize / 1.5, getText("IGUI_AdminPanelBeforeMatch_CleanStorage"), self, ManagePlayersPanel.onClick)
+    self.btnCleanStorage = ISButton:new(btnX, btnY, btnSize, btnSize / 1.5,
+        getText("IGUI_AdminPanelBeforeMatch_CleanStorage"), self, ManagePlayersPanel.onClick)
     self.btnCleanStorage.internal = "CLEAN_STORAGE"
     self.btnCleanStorage:setTooltip(getText("IGUI_AdminPanelBeforeMatch_Tooltip_CleanStorage"))
     self.btnCleanStorage:setImage(openIco)
@@ -82,7 +83,8 @@ function ManagePlayersPanel:initialise()
     self.btnCleanStorage.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
     self:addChild(self.btnCleanStorage)
 
-    self.btnUnassign = ISButton:new(btnX, btnY - self.btnCleanStorage:getHeight() - 10, btnSize, btnSize / 1.5, getText("IGUI_AdminPanelBeforeMatch_Unassign"), self, ManagePlayersPanel.onClick)
+    self.btnUnassign = ISButton:new(btnX, btnY - self.btnCleanStorage:getHeight() - 10, btnSize, btnSize / 1.5,
+        getText("IGUI_AdminPanelBeforeMatch_Unassign"), self, ManagePlayersPanel.onClick)
     self.btnUnassign.internal = "UNASSIGN"
     self.btnUnassign:setTooltip(getText("IGUI_AdminPanelBeforeMatch_Unassign"))
     self.btnUnassign:setImage(refreshListIco)
@@ -93,7 +95,8 @@ function ManagePlayersPanel:initialise()
     self.btnUnassign.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
     self:addChild(self.btnUnassign)
 
-    self.btnStarterKit = ISButton:new(btnX, btnY + self.btnCleanStorage:getHeight() + 10, btnSize, btnSize / 1.5, getText("IGUI_AdminPanelBeforeMatch_StarterKit"), self, ManagePlayersPanel.onClick)
+    self.btnStarterKit = ISButton:new(btnX, btnY + self.btnCleanStorage:getHeight() + 10, btnSize, btnSize / 1.5,
+        getText("IGUI_AdminPanelBeforeMatch_StarterKit"), self, ManagePlayersPanel.onClick)
     self.btnStarterKit.internal = "STARTER_KIT"
     self.btnStarterKit:setTooltip(getText("IGUI_AdminPanelBeforeMatch_Tooltip_StarterKit"))
     self.btnStarterKit:setImage(deleteDataIco)
@@ -109,10 +112,11 @@ function ManagePlayersPanel:initialise()
 
 
     local xPadding = 20
-    local normalBtnWidth = self:getWidth() - xPadding*2
+    local normalBtnWidth = self:getWidth() - xPadding * 2
     local normalBtnHeight = 25
 
-    self.btnWipeEverything = ISButton:new(xPadding, self:getHeight() - normalBtnHeight - 10, normalBtnWidth, normalBtnHeight / 1.5, getText("IGUI_AdminPanelBeforeMatch_WipeEverything"), self, ManagePlayersPanel.onClick)
+    self.btnWipeEverything = ISButton:new(xPadding, self:getHeight() - normalBtnHeight - 10, normalBtnWidth,
+        normalBtnHeight / 1.5, getText("IGUI_AdminPanelBeforeMatch_WipeEverything"), self, ManagePlayersPanel.onClick)
     self.btnWipeEverything.internal = "WIPE_EVERYTHING"
     self.btnWipeEverything:setTooltip(getText("IGUI_AdminPanelBeforeMatch_Tooltip_WipeEverything"))
     self.btnWipeEverything:setImage(deleteDataIco)
@@ -131,12 +135,9 @@ function ManagePlayersPanel:initialise()
     self.panel:addView("Players", self.mainCategory)
     self.panel:activateView("Players")
     self:fillList()
-
-
 end
 
 function ManagePlayersPanel:fillList()
-
     local players
     if isClient() then
         players = getOnlinePlayers()
@@ -148,7 +149,6 @@ function ManagePlayersPanel:fillList()
     self.mainCategory:initList(players)
 end
 
-
 function ManagePlayersPanel:prerender()
     self:drawRect(0, 0, self.width, self.height, self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g,
         self.backgroundColor.b)
@@ -157,17 +157,15 @@ function ManagePlayersPanel:prerender()
 end
 
 function ManagePlayersPanel:onClick(button)
-
     if button.internal == 'UNASSIGN' then
 
     elseif button.internal == 'CLEAN_STORAGE' then
-        
+
     elseif button.internal == 'STARTER_KIT' then
         -- TODO Give Starter kit to selected player
     elseif button.internal == 'WIPE_EVERYTHING' then
         local text = " <CENTRE> Are you sure you want to wipe out everything? <LINE> You can't come back from this."
         self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20)
-
     end
 end
 
