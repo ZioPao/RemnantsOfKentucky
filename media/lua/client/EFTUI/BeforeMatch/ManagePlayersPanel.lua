@@ -164,8 +164,14 @@ function ManagePlayersPanel:onClick(button)
     elseif button.internal == 'STARTER_KIT' then
         -- TODO Give Starter kit to selected player
     elseif button.internal == 'WIPE_EVERYTHING' then
+
+        local function onConfirmWipe()
+            print("Wipe")
+        end
+
+
         local text = " <CENTRE> Are you sure you want to wipe out everything? <LINE> You can't come back from this."
-        self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20)
+        self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, onConfirmWipe)
     end
 end
 

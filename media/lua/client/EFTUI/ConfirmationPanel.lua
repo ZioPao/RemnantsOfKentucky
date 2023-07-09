@@ -1,13 +1,23 @@
 -- todo make it local
 ConfirmationPanel = ISPanel:derive("ConfirmationPanel")
 
-function ConfirmationPanel:new(x, y, width, height, alertText)
+---Starts a new confirmation panel
+---@param x number
+---@param y number
+---@param width number
+---@param height number
+---@param alertText string
+---@param onConfirmFunc function
+---@return ISPanel
+function ConfirmationPanel:new(x, y, width, height, alertText, onConfirmFunc)
     local o = ISPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
 
     o:initialise()
     o.alertText = alertText
+    o.isOpen = true
+    o.onConfirmFunc = onConfirmFunc
     ConfirmationPanel.instance = o
     return o
 end
@@ -63,6 +73,7 @@ end
 function ConfirmationPanel:onClick(btn)
     if btn.internal == 'YES' then
         print("YES")
+        self.onConfirmFunc()
         self:close()
     elseif btn.internal == 'NO' then
         print("NO")
@@ -70,15 +81,23 @@ function ConfirmationPanel:onClick(btn)
     end
 end
 
+
+
+function ConfirmationPanel:close()
+    if self.isOpen then
+        self.isOpen = false
+    end
+    ISPanel.close(self)
+end
+
 -------------------------
 -- Mostly debug stuff
 
--- TODO This should open from another panel
-function ConfirmationPanel.Open(alertText, x, y)
+function ConfirmationPanel.Open(alertText, x, y, onConfirmFunc)
     local width = 500
     local height = 120
 
-    local panel = ConfirmationPanel:new(x, y, width, height, alertText)
+    local panel = ConfirmationPanel:new(x, y, width, height, alertText, onConfirmFunc)
     panel:initialise()
     panel:addToUIManager()
     panel:bringToTop()
