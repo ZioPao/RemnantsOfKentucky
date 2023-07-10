@@ -1,4 +1,3 @@
--- todo make it local
 ConfirmationPanel = ISPanel:derive("ConfirmationPanel")
 
 ---Starts a new confirmation panel

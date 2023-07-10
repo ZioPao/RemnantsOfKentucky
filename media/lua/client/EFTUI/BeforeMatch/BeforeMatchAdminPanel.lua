@@ -146,6 +146,7 @@ function BeforeMatchAdminPanel:close()
 end
 
 function BeforeMatchAdminPanel.OnOpenPanel()
+    -- TODO Make it scale based on resolution
     local width = 400
     local height = 500
 
@@ -160,4 +161,3 @@ function BeforeMatchAdminPanel.OnOpenPanel()
     return pnl
 end
 
---------------------------------------------------------------------

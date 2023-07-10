@@ -136,6 +136,7 @@ function DuringMatchAdminPanel:close()
 end
 
 function DuringMatchAdminPanel.OnOpenPanel()
+    -- TODO Make it scale based on resolution
     local width = 400
     local height = 300
 
