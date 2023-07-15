@@ -8,17 +8,19 @@ local ServerCommands = {}
 --- Add items to inventory
 ServerCommands.BuyItems = function(args)
     --TODO: When buying, items are delivered in a cardboard box next to the safehouse's front door
+    --TODO: Handle multiple items
 end
 
 ServerCommands.SellItems = function(args)
-    local item = args.item
-    local quantity = args.quantity
-
     local player = getPlayer()
     local inventory = player:getInventory()
-    --Get all items in inventory
-    --Remove items that fit the criteria for x amount of quantity
-    --TODO: REMOVE ITEM FOR QUANTITY
+
+    --TODO: Handle multiple items
+    for _, itemData in ipairs(args) do 
+        --Get all items in inventory
+        --Remove items that fit the criteria for x amount of quantity
+        --TODO: REMOVE ITEM FOR QUANTITY 
+    end
 end
 
 ServerCommands.BuyFailed = function(args)

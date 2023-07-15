@@ -1,5 +1,6 @@
 ClientBankManager = ClientBankManager or {}
 
+--TODO: When opening shop menu, get account
 --- Get account information by username
 ---@param isInitialise boolean
 ClientBankManager.getAccount = function(isInitialise)
@@ -18,7 +19,7 @@ end
 ---@param failCallbackArgs table
 ---@param inventoryCheck table
 ClientBankManager.TryProcessTransaction = function(amount, successCallbackModule, successCallbackCommand,
-    successCallbackArgs, failCallbackModule, failCallbackCommand, failCallbackArgs, inventoryCheck)
+    successCallbackArgs, failCallbackModule, failCallbackCommand, failCallbackArgs)
     sendClientCommand('PZEFT-BankAccount', "ProcessTransaction", {
         amount = amount,
         onSuccess = {
@@ -30,8 +31,7 @@ ClientBankManager.TryProcessTransaction = function(amount, successCallbackModule
             callbackModule = failCallbackModule,
             callbackCommand = failCallbackCommand,
             callbackArgs = failCallbackArgs
-        },
-        inventoryCheck = inventoryCheck
+        }
     })
 end
 
