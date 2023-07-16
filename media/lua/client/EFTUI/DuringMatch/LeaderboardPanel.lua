@@ -1,12 +1,12 @@
 --Leaderboard
 -- The leaderboard would be a special menu everyone can access from safehouses
--- that show who has the most amount of cash (combined with both balance and player inventory / stash) 
+-- that show who has the most amount of cash (combined with both balance and player inventory / stash)
 
 local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
 local FONT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium)
 local FONT_HGT_LARGE = getTextManager():getFontHeight(UIFont.Large)
 
-local FONT_SCALE = FONT_HGT_SMALL / 16      -- TODO To be used to scale based on font scaling
+local FONT_SCALE = FONT_HGT_SMALL / 16 -- TODO To be used to scale based on font scaling
 local HEADER_HGT = FONT_HGT_MEDIUM + 2 * 2
 local ENTRY_HGT = FONT_HGT_MEDIUM + 2 * 2
 
@@ -19,10 +19,10 @@ function LeadearboardPanel.Open(x, y)
     end
 
     -- TODO Make it scale based on resolution
-    local height = 600
-    local width = 800
+    local width = 600
+    local height = 700
 
-    local modal = LeadearboardPanel:new(x, y, height, width)
+    local modal = LeadearboardPanel:new(x, y, width, height)
     modal:initialise()
     modal:addToUIManager()
     modal.instance:setKeyboardFocus()
@@ -36,7 +36,7 @@ function LeadearboardPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
     o.borderColor = { r = 0.4, g = 1, b = 0.4, a = 0.2 }
-    o.backgroundColor = { r = 0, g = 0, b = 0, a = 0.8}
+    o.backgroundColor = { r = 0, g = 0, b = 0, a = 0.8 }
     o.resizable = false
     o.moveWithMouse = true
 
@@ -46,16 +46,29 @@ end
 
 function LeadearboardPanel:initialise()
     ISCollapsableWindow.initialise(self)
-
 end
 
 function LeadearboardPanel:createChildren()
     ISCollapsableWindow.createChildren(self)
-    local top = 40
+    local yOffset = 30
     local xOffset = 10
+    local yMargin = 15
+    local entryHgt = FONT_HGT_SMALL + 2 * 10
 
-    local entryHgt = FONT_HGT_SMALL + 2 * 2
-    self.filterEntry = ISTextEntryBox:new("Players", xOffset, top, self:getWidth() - 10*2 , entryHgt)
+    self.labelLeaderboard = ISRichTextPanel:new(0, yOffset, self.width, 15)
+    self.labelLeaderboard:initialise()
+    self.labelLeaderboard.marginTop = 0
+    self.labelLeaderboard.autosetheight = true
+    self.labelLeaderboard.background = false
+    self.labelLeaderboard.backgroundColor = { r = 0, g = 0, b = 0, a = 0 }
+    self.labelLeaderboard.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 1 }
+    self.labelLeaderboard:setText(" <CENTRE> <H1> Leaderboard")
+    self.labelLeaderboard:paginate()
+    self:addChild(self.labelLeaderboard)
+
+    yOffset = yOffset + self.labelLeaderboard:getHeight() + yMargin
+
+    self.filterEntry = ISTextEntryBox:new("Players", xOffset, yOffset, self:getWidth() - 10 * 2, entryHgt)
     self.filterEntry:initialise()
     self.filterEntry:instantiate()
     self.filterEntry:setClearButton(true)
@@ -66,7 +79,9 @@ function LeadearboardPanel:createChildren()
         self:fillList()
     end
 
-    self.panel = ISTabPanel:new(xOffset, top + entryHgt + 10, self:getWidth() - xOffset*2 , self:getHeight() + top )
+    yOffset = yOffset + self.filterEntry:getHeight() + yMargin
+
+    self.panel = ISTabPanel:new(xOffset, yOffset, self:getWidth() - xOffset * 2, self:getHeight() - yOffset)
     self.panel:initialise()
     self.panel.borderColor = { r = 0, g = 0, b = 0, a = 0 }
     self.panel.target = self
@@ -81,26 +96,54 @@ function LeadearboardPanel:createChildren()
     self.panel:activateView("")
     self:fillList()
 
+    -- local entryHgt = FONT_HGT_SMALL + 2 * 10
+    -- top = self.labelLeaderboard:getHeight() + top + 10
+
+    -- self.filterEntry = ISTextEntryBox:new("Players", xOffset, top, self:getWidth() - 10 * 2, entryHgt)
+    -- self.filterEntry:initialise()
+    -- self.filterEntry:instantiate()
+    -- self.filterEntry:setClearButton(true)
+    -- self.filterEntry:setText("")
+    -- self:addChild(self.filterEntry)
+
+    -- self.filterEntry.onTextChange = function()
+    --     self:fillList()
+    -- end
+
+    -- top = top + entryHgt + 40
+
+    -- self.panel = ISTabPanel:new(xOffset, top, self:getWidth() - xOffset * 2, self:getHeight() + top)
+    -- self.panel:initialise()
+    -- self.panel.borderColor = { r = 0, g = 0, b = 0, a = 0 }
+    -- self.panel.target = self
+    -- self.panel.equalTabWidth = false
+    -- self.panel.tabTransparency = 0
+    -- self.panel.tabHeight = 0
+    -- self:addChild(self.panel)
+
+    -- self.mainCategory = LeaderboardScrollingTable:new(0, 0, self.panel.width, self.panel.height, self)
+    -- self.mainCategory:initialise()
+    -- self.panel:addView("", self.mainCategory)
+    -- self.panel:activateView("")
+    -- self:fillList()
 end
 
 function LeadearboardPanel:fillList()
-
-    -- TODO Should be able to list EVERY player that has ever played, not only online ones. Save everything in a global mod data table
+    --[[
+        TODO Should be able to list EVERY player that has ever played, not only online ones.
+        Save everything in a global mod data table
+    ]]
     local players
     if isClient() then
         players = getOnlinePlayers()
     else
         players = {}
-
         -- TODO ONly for test
-        for i=1,20 do
-            table.insert(players, {pl=getPlayer(), balance=ZombRand(1000)})
+        for i = 1, 20 do
+            table.insert(players, { pl = getPlayer(), balance = ZombRand(1000) })
         end
     end
 
-
-
-    
     self.mainCategory:initList(players)
 end
 
@@ -165,8 +208,6 @@ end
 function LeaderboardScrollingTable:initList(module)
     self.datas:clear()
 
-    -- TODO Order it based on the balance.
-
     -- Orders it based on balance
     local function SortByBalance(a, b)
         return a.balance > b.balance
@@ -174,13 +215,11 @@ function LeaderboardScrollingTable:initList(module)
 
     table.sort(module, SortByBalance)
 
-
-
-
     for i = 1, #module do
         local playerTab = module[i]
         local username = module[i].pl:getUsername()
 
+        -- Filters it based on the filterEntry
         if self.viewer.filterEntry:getInternalText() ~= "" and string.trim(self.viewer.filterEntry:getInternalText()) == nil or string.contains(string.lower(username), string.lower(string.trim(self.viewer.filterEntry:getInternalText()))) then
             self.datas:addItem(username, playerTab)
         end
@@ -201,6 +240,7 @@ function LeaderboardScrollingTable:drawDatas(y, item, alt)
         self:drawRect(0, (y), self:getWidth(), self.itemheight, 0.3, 0.7, 0.35, 0.15)
     end
 
+    -- TODO Customize colors
     if alt then
         self:drawRect(0, (y), self:getWidth(), self.itemheight, 0.3, 0.6, 0.5, 0.5)
     end
@@ -208,10 +248,7 @@ function LeaderboardScrollingTable:drawDatas(y, item, alt)
     self:drawRectBorder(0, (y), self:getWidth(), self.itemheight, a, self.borderColor.r, self.borderColor.g,
         self.borderColor.b)
 
-    local iconX = 4
-    local iconSize = FONT_HGT_SMALL
     local xOffset = 10
-
     local clipX = self.columns[1].size
     local clipX2 = self.columns[2].size
     local clipY = math.max(0, y + self:getYScroll())
@@ -222,10 +259,8 @@ function LeaderboardScrollingTable:drawDatas(y, item, alt)
     self:clearStencilRect()
 
     -- Balance
-    --local balance = GetBalance(item.item)      
+    --TODO local balance = GetBalance(item.item)
     self:drawText(tostring(item.item.balance), self.columns[2].size + xOffset, y + 4, 1, 1, 1, a, self.font)
-
-
 
     return y + self.itemheight
 end
