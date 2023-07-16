@@ -19,16 +19,27 @@ ClientShopManager.TryBuy = function(item, quantity)
 end
 
 --- Try sell items for quantity
----@param data table {{item = {}, quantity = {}}...}
-ClientShopManager.TrySell = function(data)
-    -- TODO: Verify that player has item + quantity
-    -- TOOD: Cater for multiple items
-    local totalPrice = item.basePrice * item.multiplier * item.sellMultiplier * quantity
-    local data = {
-        item = item,
-        quantity = quantity,
-        totalPrice = totalPrice
-    }
+--- See PZ_EFT_ShopItems_Config.addItem for item value
+---@param sellData Table {{item = {}, quantity = 0}...}
+ClientShopManager.TrySell = function(sellData)
+    local hasData = false
+    local data = {}
+    data.items = {}
+    data.totalPrice = 0
+
+    for _, itemData in ipairs(sellData) do 
+        if itemData and itemData.item and itemData.quantity then
+            local totalPrice = itemData.item.basePrice * itemData.itm.multiplier * itemData.item.sellMultiplier * itemData.quantity
+            data.totalPrice = data.totalPrice + totalPrice
+            table.insert(data.items, itemData)
+            hasData = true
+        else
+            print("ERROR: ClientShopManager.TrySell - Invalid sellData")
+        end
+    end
+
+    if not hasData or not ClientShopManager.HasRequiredItems(data) then return end
+
     ClientBankManager.TryProcessTransaction(totalPrice, "PZEFT-Shop", "SellItems", data, "PZEFT-Shop", "SellFailed",
         data, data)
 end

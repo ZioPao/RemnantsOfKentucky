@@ -10,7 +10,6 @@ end
 
 --- This check is on the client side. Maybe somehow move to the server but that might be costly.
 ClientSafehouseInstanceHandler.isInSafehouse = function()
-    local player = getPlayer()
     if not ClientState.IsInRaid then
         local player = getPlayer()
         local md = player:getModData()
@@ -37,6 +36,16 @@ ClientSafehouseInstanceHandler.isInSafehouse = function()
             })
         end
     end
+end
+
+ClientSafehouseInstanceHandler.getSafehouse = function()
+    local player = getPlayer()
+    local md = player:getModData()
+    if not md.PZEFT or not md.PZEFT.safehouse then
+        return nil
+    end
+
+    return md.PZEFT.safehouse;
 end
 
 --- On player initialise

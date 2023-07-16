@@ -1,5 +1,4 @@
 require "PZEFT_debugtools"
-LuaEventManager.AddEvent("PZEFT_ClientModDataReady")
 
 local ServerCommands = {}
 

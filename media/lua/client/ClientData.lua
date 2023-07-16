@@ -1,4 +1,5 @@
 local KEY_SHOP_ITEMS = "PZ-EFT-SHOP-ITEMS"
+LuaEventManager.AddEvent("PZEFT_ClientModDataReady")
 
 ClientData = ClientData or {}
 

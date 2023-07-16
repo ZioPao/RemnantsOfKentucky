@@ -6,7 +6,7 @@ local isRefreshSafehouseAllocationUpdateActive = false
 --TODO: Maybe handle other event subscriptions to remove unnecessary overhead
 
 local function EveryOneMinute_InRaid_Events()
-    if getAccountUpdateActive then
+    if getAccountUpdateActive then --TODO: Maybe call getAccount when opening shop menu instead
         getAccountUpdateActive = false
         Events.EveryOneMinute.Remove(ClientBankManager.getAccount)
     end
