@@ -20,16 +20,17 @@ end
 
 --- Try sell items for quantity
 --- See PZ_EFT_ShopItems_Config.addItem for item value
----@param sellData Table {{item = {}, quantity = 0}...}
+---@param sellData table {{item = {}, quantity = 0}...}
 ClientShopManager.TrySell = function(sellData)
     local hasData = false
     local data = {}
     data.items = {}
     data.totalPrice = 0
+    local totalPrice
 
     for _, itemData in ipairs(sellData) do 
         if itemData and itemData.item and itemData.quantity then
-            local totalPrice = itemData.item.basePrice * itemData.itm.multiplier * itemData.item.sellMultiplier * itemData.quantity
+            totalPrice = itemData.item.basePrice * itemData.itm.multiplier * itemData.item.sellMultiplier * itemData.quantity
             data.totalPrice = data.totalPrice + totalPrice
             table.insert(data.items, itemData)
             hasData = true
