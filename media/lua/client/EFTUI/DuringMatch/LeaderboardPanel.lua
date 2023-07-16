@@ -18,8 +18,8 @@ function LeadearboardPanel.Open(x, y)
     end
 
     -- TODO Make it scale based on resolution
-    local height = 350
-    local width = 700
+    local height = 600
+    local width = 800
 
     local modal = LeadearboardPanel:new(x, y, height, width)
     modal:initialise()
@@ -34,19 +34,21 @@ function LeadearboardPanel:new(x, y, width, height)
     o = ISCollapsableWindow:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
-    o.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 1 }
-    o.backgroundColor = { r = 0, g = 0, b = 0, a = 1 }
+    o.borderColor = { r = 0.4, g = 1, b = 0.4, a = 0.2 }
+    o.backgroundColor = { r = 0, g = 0, b = 0, a = 0.8}
     o.resizable = false
     o.moveWithMouse = true
+
     LeadearboardPanel.instance = o
     return o
 end
 
 function LeadearboardPanel:initialise()
     local top = 40
+    local xOffset = 10
 
     local entryHgt = FONT_HGT_SMALL + 2 * 2
-    self.filterEntry = ISTextEntryBox:new("Players", 10, top, (self:getWidth() - 10 * 2) / 1.5, entryHgt)
+    self.filterEntry = ISTextEntryBox:new("Players", xOffset, top, self:getWidth() - 10 , entryHgt)
     self.filterEntry:initialise()
     self.filterEntry:instantiate()
     self.filterEntry:setClearButton(true)
@@ -57,7 +59,7 @@ function LeadearboardPanel:initialise()
         self:fillList()
     end
 
-    self.panel = ISTabPanel:new(10, top + entryHgt + 10, (self:getWidth() - 10 * 2) / 1.5, self:getHeight() + top - 50)
+    self.panel = ISTabPanel:new(xOffset, top + entryHgt + 10, self:getWidth() - xOffset*2 , self:getHeight() + top )
     self.panel:initialise()
     self.panel.borderColor = { r = 0, g = 0, b = 0, a = 0 }
     self.panel.target = self
@@ -81,6 +83,24 @@ function LeadearboardPanel:fillList()
         players = getOnlinePlayers()
     else
         players = ArrayList.new()
+        players:add(getPlayer())
+        players:add(getPlayer())
+        players:add(getPlayer())
+        players:add(getPlayer())
+        players:add(getPlayer())
+        players:add(getPlayer())
+        players:add(getPlayer())
+        players:add(getPlayer())
+        players:add(getPlayer())
+        players:add(getPlayer())
+        players:add(getPlayer())
+        players:add(getPlayer())
+        players:add(getPlayer())
+        players:add(getPlayer())
+        players:add(getPlayer())
+        players:add(getPlayer())
+        players:add(getPlayer())
+        players:add(getPlayer())
         players:add(getPlayer())
     end
 
@@ -132,10 +152,10 @@ function LeaderboardScrollingTable:createChildren()
     self.datas = ISScrollingListBox:new(0, HEADER_HGT, self.width, self.height - bottomHgt + 10)
     self.datas:initialise()
     self.datas:instantiate()
-    self.datas.itemheight = FONT_HGT_SMALL + 4 * 2
+    self.datas.itemheight = FONT_HGT_LARGE + 4 * 2
     self.datas.selected = 0
     self.datas.joypadParent = self
-    self.datas.font = UIFont.NewSmall
+    self.datas.font = UIFont.Large
     self.datas.doDrawItem = self.drawDatas
     self.datas.drawBorder = true
     self.datas:addColumn("", 0)

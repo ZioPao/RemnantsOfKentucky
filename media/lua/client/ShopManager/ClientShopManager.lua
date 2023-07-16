@@ -4,8 +4,8 @@ require "BankManager/ClientBankManager"
 ClientShopManager = ClientShopManager or {}
 
 --- Try buy an item for quantity
----@param item Table
----@param qunatity Number
+---@param item table
+---@param quantity number
 ClientShopManager.TryBuy = function(item, quantity)
     -- TODO: Verify that player has item + quantity
     local totalPrice = item.basePrice * item.multiplier * quantity
@@ -19,7 +19,7 @@ ClientShopManager.TryBuy = function(item, quantity)
 end
 
 --- Try sell items for quantity
----@param data Table {{item = {}, quantity = {}}...}
+---@param data table {{item = {}, quantity = {}}...}
 ClientShopManager.TrySell = function(data)
     -- TODO: Verify that player has item + quantity
     -- TOOD: Cater for multiple items
