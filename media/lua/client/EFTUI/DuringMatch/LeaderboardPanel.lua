@@ -1,11 +1,12 @@
 --Leaderboard
 -- The leaderboard would be a special menu everyone can access from safehouses
---that show who has the most amount of cash (combined with both balance and player inventory / stash) 
+-- that show who has the most amount of cash (combined with both balance and player inventory / stash) 
 
 local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
 local FONT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium)
 local FONT_HGT_LARGE = getTextManager():getFontHeight(UIFont.Large)
 
+local FONT_SCALE = FONT_HGT_SMALL / 16      -- TODO To be used to scale based on font scaling
 local HEADER_HGT = FONT_HGT_MEDIUM + 2 * 2
 local ENTRY_HGT = FONT_HGT_MEDIUM + 2 * 2
 
@@ -44,11 +45,17 @@ function LeadearboardPanel:new(x, y, width, height)
 end
 
 function LeadearboardPanel:initialise()
+    ISCollapsableWindow.initialise(self)
+
+end
+
+function LeadearboardPanel:createChildren()
+    ISCollapsableWindow.createChildren(self)
     local top = 40
     local xOffset = 10
 
     local entryHgt = FONT_HGT_SMALL + 2 * 2
-    self.filterEntry = ISTextEntryBox:new("Players", xOffset, top, self:getWidth() - 10 , entryHgt)
+    self.filterEntry = ISTextEntryBox:new("Players", xOffset, top, self:getWidth() - 10*2 , entryHgt)
     self.filterEntry:initialise()
     self.filterEntry:instantiate()
     self.filterEntry:setClearButton(true)
@@ -70,9 +77,10 @@ function LeadearboardPanel:initialise()
 
     self.mainCategory = LeaderboardScrollingTable:new(0, 0, self.panel.width, self.panel.height, self)
     self.mainCategory:initialise()
-    self.panel:addView("Players", self.mainCategory)
-    self.panel:activateView("Players")
+    self.panel:addView("", self.mainCategory)
+    self.panel:activateView("")
     self:fillList()
+
 end
 
 function LeadearboardPanel:fillList()
@@ -82,28 +90,17 @@ function LeadearboardPanel:fillList()
     if isClient() then
         players = getOnlinePlayers()
     else
-        players = ArrayList.new()
-        players:add(getPlayer())
-        players:add(getPlayer())
-        players:add(getPlayer())
-        players:add(getPlayer())
-        players:add(getPlayer())
-        players:add(getPlayer())
-        players:add(getPlayer())
-        players:add(getPlayer())
-        players:add(getPlayer())
-        players:add(getPlayer())
-        players:add(getPlayer())
-        players:add(getPlayer())
-        players:add(getPlayer())
-        players:add(getPlayer())
-        players:add(getPlayer())
-        players:add(getPlayer())
-        players:add(getPlayer())
-        players:add(getPlayer())
-        players:add(getPlayer())
+        players = {}
+
+        -- TODO ONly for test
+        for i=1,20 do
+            table.insert(players, {pl=getPlayer(), balance=ZombRand(1000)})
+        end
     end
 
+
+
+    
     self.mainCategory:initList(players)
 end
 
@@ -158,18 +155,35 @@ function LeaderboardScrollingTable:createChildren()
     self.datas.font = UIFont.Large
     self.datas.doDrawItem = self.drawDatas
     self.datas.drawBorder = true
-    self.datas:addColumn("", 0)
+    self.datas:addColumn("Player", 0)
+    self.datas:addColumn("Balance", 200)
     self:addChild(self.datas)
 end
 
+---Initialize and sort the list
+---@param module table
 function LeaderboardScrollingTable:initList(module)
     self.datas:clear()
 
     -- TODO Order it based on the balance.
-    for i = 0, module:size() - 1 do
-        local pl = module:get(i)
-        local username = pl:getUsername()
-        self.datas:addItem(username, pl)
+
+    -- Orders it based on balance
+    local function SortByBalance(a, b)
+        return a.balance > b.balance
+    end
+
+    table.sort(module, SortByBalance)
+
+
+
+
+    for i = 1, #module do
+        local playerTab = module[i]
+        local username = module[i].pl:getUsername()
+
+        if self.viewer.filterEntry:getInternalText() ~= "" and string.trim(self.viewer.filterEntry:getInternalText()) == nil or string.contains(string.lower(username), string.lower(string.trim(self.viewer.filterEntry:getInternalText()))) then
+            self.datas:addItem(username, playerTab)
+        end
     end
 end
 
@@ -194,8 +208,24 @@ function LeaderboardScrollingTable:drawDatas(y, item, alt)
     self:drawRectBorder(0, (y), self:getWidth(), self.itemheight, a, self.borderColor.r, self.borderColor.g,
         self.borderColor.b)
 
-    -- TODO ADD BALANCE
+    local iconX = 4
+    local iconSize = FONT_HGT_SMALL
     local xOffset = 10
-    self:drawText(item.text, xOffset, y + 4, 1, 1, 1, a, self.font)
+
+    local clipX = self.columns[1].size
+    local clipX2 = self.columns[2].size
+    local clipY = math.max(0, y + self:getYScroll())
+    local clipY2 = math.min(self.height, y + self:getYScroll() + self.itemheight)
+
+    self:setStencilRect(clipX, clipY, clipX2 - clipX, clipY2 - clipY)
+    self:drawText(item.item.pl:getUsername(), xOffset, y + 4, 1, 1, 1, a, self.font)
+    self:clearStencilRect()
+
+    -- Balance
+    --local balance = GetBalance(item.item)      
+    self:drawText(tostring(item.item.balance), self.columns[2].size + xOffset, y + 4, 1, 1, 1, a, self.font)
+
+
+
     return y + self.itemheight
 end
