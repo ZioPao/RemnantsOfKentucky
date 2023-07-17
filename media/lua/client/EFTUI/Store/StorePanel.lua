@@ -48,7 +48,7 @@ function ShopPanel:new(x, y, width, height, character)
     self.__index = self
     o.character = character
     o.playerNum = character and character:getPlayerNum() or -1
-    o:setResizable(true)
+    o:setResizable(false)
     o.lineH = 10
     o.fgBar = { r = 0, g = 0.6, b = 0, a = 0.7 }
     o.craftInProgress = false
@@ -81,6 +81,8 @@ function ShopPanel:createChildren()
     self.panel:setAnchorBottom(true)
     self.panel.borderColor = { r = 0, g = 0, b = 0, a = 0 }
     self.panel.onActivateView = ShopPanel.onActivateView
+    self.panel.tabHeight = 50
+
     self.panel.target = self
     self.panel:setEqualTabWidth(false)
     self:addChild(self.panel)
@@ -93,7 +95,7 @@ function ShopPanel:createChildren()
     essentialItemsCat:initialise()
     essentialItemsCat:setAnchorRight(true)
     essentialItemsCat:setAnchorBottom(true)
-    self.panel:addView("Essential Items", essentialItemsCat)
+    self.panel:addView("Essential Items", essentialItemsCat, self.width/3 - 2)
     essentialItemsCat.parent = self
     essentialItemsCat.category = 1
     table.insert(self.categories, essentialItemsCat)
@@ -103,16 +105,21 @@ function ShopPanel:createChildren()
     dailyItemsCat:initialise()
     dailyItemsCat:setAnchorRight(true)
     dailyItemsCat:setAnchorBottom(true)
-    self.panel:addView("Daily Items", dailyItemsCat)
+    self.panel:addView("Daily Items", dailyItemsCat, self.width/3 - 2)
     dailyItemsCat.parent = self
     dailyItemsCat.category = 2
-    dailyItemsCat.tabWidth = 1500
     table.insert(self.categories, dailyItemsCat)
 
 
     --* SELL MENU *--
-    -- TODO This shouldn't be a tab
-
+    local sellCat = ISPanel:new(0, 0, self.width, self.panel.height - self.panel.tabHeight)
+    sellCat:initialise()
+    sellCat:setAnchorRight(true)
+    sellCat:setAnchorBottom(true)
+    self.panel:addView("Sell Items", sellCat, self.width/3 - 2)
+    sellCat.parent = self
+    sellCat.category = 3
+    table.insert(self.categories, sellCat)
 
 
     -- self.essentialItems = {1,2,3,4}

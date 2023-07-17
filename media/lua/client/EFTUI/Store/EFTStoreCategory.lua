@@ -188,8 +188,8 @@ function EFTStoreCategory:create()
     self.recipes.MEDIUM_FONT_HGT = self.MEDIUM_FONT_HGT
 
 
-    self.filterLabel = ISLabel:new(4, 2, entryHgt, getText("IGUI_CraftUI_Name_Filter"),1,1,1,1,UIFont.Small, true)
-    self:addChild(self.filterLabel)
+    --self.filterLabel = ISLabel:new(4, 2, entryHgt, getText("IGUI_CraftUI_Name_Filter"),1,1,1,1,UIFont.Small, true)
+    --self:addChild(self.filterLabel)
 
     local width = ((self.width/3) - getTextManager():MeasureStringX(UIFont.Small, getText("IGUI_CraftUI_Name_Filter"))) - 98
     -- self.filterEntry = ISTextEntryBox:new("", getTextManager():MeasureStringX(UIFont.Small, getText("IGUI_CraftUI_Name_Filter")) + 9, 2, width, fontHgtSmall)

@@ -1,0 +1,1 @@
+-- TODO A basic confirmation panel when you're buying stuff. Asks how how much stuff you want of that specific object and then exec the transaction
