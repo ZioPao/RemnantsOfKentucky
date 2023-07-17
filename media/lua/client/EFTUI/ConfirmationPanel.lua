@@ -8,7 +8,7 @@ ConfirmationPanel = ISPanel:derive("ConfirmationPanel")
 ---@param alertText string
 ---@param onConfirmFunc function
 ---@return ISPanel
-function ConfirmationPanel:new(x, y, width, height, alertText, onConfirmFunc)
+function ConfirmationPanel:new(x, y, width, height, alertText, onConfirmFunc, onConfirmVar)
     local o = ISPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
@@ -17,16 +17,13 @@ function ConfirmationPanel:new(x, y, width, height, alertText, onConfirmFunc)
     o.alertText = alertText
     o.isOpen = true
     o.onConfirmFunc = onConfirmFunc
+    o.onConfirmVar = onConfirmVar
     ConfirmationPanel.instance = o
     return o
 end
 
-function ConfirmationPanel:render()
-    ISPanel.render(self)
-end
-
-function ConfirmationPanel:initialise()
-    ISPanel.initialise(self)
+function ConfirmationPanel:createChildren()
+    ISPanel.createChildren(self)
     self.borderColor = { r = 1, g = 0, b = 0, a = 1 }
 
     self.textPanel = ISRichTextPanel:new(0, 0, self.width, self.height)
@@ -69,10 +66,11 @@ function ConfirmationPanel:initialise()
     self:addChild(self.btnNo)
 end
 
+
 function ConfirmationPanel:onClick(btn)
     if btn.internal == 'YES' then
         print("YES")
-        self.onConfirmFunc()
+        self.onConfirmFunc(self.onConfirmVar)
         self:close()
     elseif btn.internal == 'NO' then
         print("NO")
@@ -92,11 +90,11 @@ end
 -------------------------
 -- Mostly debug stuff
 
-function ConfirmationPanel.Open(alertText, x, y, onConfirmFunc)
+function ConfirmationPanel.Open(alertText, x, y, onConfirmFunc, onConfirmVar)
     local width = 500
     local height = 120
 
-    local panel = ConfirmationPanel:new(x, y, width, height, alertText, onConfirmFunc)
+    local panel = ConfirmationPanel:new(x, y, width, height, alertText, onConfirmFunc, onConfirmVar)
     panel:initialise()
     panel:addToUIManager()
     panel:bringToTop()

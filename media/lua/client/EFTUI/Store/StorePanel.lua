@@ -1,4 +1,3 @@
--- Placeholder
 -- 3 Tabs
 
 -- Essential items tab, with basic weapons, bandages, ammo, food, and water available for sale
@@ -58,10 +57,24 @@ function ShopPanel:new(x, y, width, height, character)
 end
 
 --**********************************************--
+---Returns a table containing the essential items
+---@return table
+local function FetchEssentialItems()
+    return {}
+end
+
+---Returns a table containing the daily items. TODO get them from the server?
+---@return table
+local function FetchDailyItems()
+    return {}
+end
+
 function ShopPanel:initialise()
     ISCollapsableWindow.initialise(self)
 
     -- TODO Essential items list should be fixed
+    self.essentialitems = FetchEssentialItems()
+    self.dailyItems = FetchDailyItems()
 
 
     -- TODO Daily items should be randomly generated, based on server?
@@ -95,6 +108,7 @@ function ShopPanel:createChildren()
     essentialItemsCat:initialise()
     essentialItemsCat:setAnchorRight(true)
     essentialItemsCat:setAnchorBottom(true)
+    -- TODO Add items to the essential items scrolling list
     self.panel:addView("Essential Items", essentialItemsCat, self.width/3 - 2)
     essentialItemsCat.parent = self
     essentialItemsCat.category = 1
@@ -105,6 +119,7 @@ function ShopPanel:createChildren()
     dailyItemsCat:initialise()
     dailyItemsCat:setAnchorRight(true)
     dailyItemsCat:setAnchorBottom(true)
+    -- TODO Add items to the daily items scrolling list
     self.panel:addView("Daily Items", dailyItemsCat, self.width/3 - 2)
     dailyItemsCat.parent = self
     dailyItemsCat.category = 2
@@ -112,7 +127,7 @@ function ShopPanel:createChildren()
 
 
     --* SELL MENU *--
-    local sellCat = ISPanel:new(0, 0, self.width, self.panel.height - self.panel.tabHeight)
+    local sellCat = SellPanel:new(0, 0, self.width, self.panel.height - self.panel.tabHeight)
     sellCat:initialise()
     sellCat:setAnchorRight(true)
     sellCat:setAnchorBottom(true)

@@ -26,17 +26,17 @@ function EFTStoreCategory:update()
 
     -- self.filterAll:setX(self.width / 3 - self.filterAll.width)
     -- self.filterEntry:setWidth(self.filterAll.x - 5 - self.filterEntry.x)
-    -- self.recipes:setWidth(self.width / 3)
+    -- self.items:setWidth(self.width / 3)
 end
 
 function EFTStoreCategory:prerender()
-    self.recipes.backgroundColor.a = 0.8
-    self.recipes.doDrawItem = EFTStoreCategory.drawRecipesMap
+    self.items.backgroundColor.a = 0.8
+    self.items.doDrawItem = EFTStoreCategory.drawRecipesMap
 end
 
 function EFTStoreCategory:filter()
-    self.recipes:clear()
-    self.recipes:setScrollHeight(0)
+    self.items:clear()
+    self.items:setScrollHeight(0)
     local items = self.parent.recipesList[self.category]
     -- if self.filteringAll then
     --     items = self.parent.allRecipesList
@@ -47,18 +47,18 @@ function EFTStoreCategory:filter()
     --local filterText = string.trim(self.filterEntry:getInternalText())
     -- if filterText == "" then
     --     for i,item in ipairs(items) do
-    --         self.recipes:addItem(i,item)
+    --         self.items:addItem(i,item)
     --     end
     -- else
     --     filterText = string.lower(filterText)
     --     for i,item in ipairs(items) do
     --         if string.contains(string.lower(item.recipe:getName()), filterText) then
-    --             self.recipes:addItem(i,item)
+    --             self.items:addItem(i,item)
     --         end
     --     end
     -- end
 
-    table.sort(self.recipes.items, function(a,b)
+    table.sort(self.items.items, function(a,b)
         a = a.item
         b = b.item
         if a.available and not b.available then return true end
@@ -85,6 +85,9 @@ function EFTStoreCategory:syncAllFilters()
 end
 
 function EFTStoreCategory:drawRecipesMap(y, item, alt)
+
+    -- TODO What was this for?
+
     local baseItemDY = 0
     if item.item.customRecipeName then
         baseItemDY = self.SMALL_FONT_HGT
@@ -147,15 +150,15 @@ end
 
 function EFTStoreCategory:getFavoriteX()
     -- scrollbar width=17 but only 13 pixels wide visually
-    local scrollBarWid = self.recipes:isVScrollBarVisible() and 13 or 0
-    return self.recipes:getWidth() - scrollBarWid - self.favPadX - self.favWidth - self.favPadX
+    local scrollBarWid = self.items:isVScrollBarVisible() and 13 or 0
+    return self.items:getWidth() - scrollBarWid - self.favPadX - self.favWidth - self.favPadX
 end
 
 function EFTStoreCategory:isMouseOverFavorite(x)
-    return (x >= self:getFavoriteX()) and not self.recipes:isMouseOverScrollBar()
+    return (x >= self:getFavoriteX()) and not self.items:isMouseOverScrollBar()
 end
 
-function EFTStoreCategory:onMouseDown_Recipes(x, y)
+function EFTStoreCategory:onMouseDown(x, y)
     local row = self:rowAt(x, y)
     if row == -1 then return end
     if self.parent:isMouseOverFavorite(x) then
@@ -169,23 +172,23 @@ function EFTStoreCategory:create()
     local fontHgtSmall = self.SMALL_FONT_HGT
     local entryHgt = fontHgtSmall + 2 * 2
 
-    self.recipes = ISScrollingListBox:new(1, entryHgt + 25, self.width / 3, self.height - (entryHgt + 25))
-    self.recipes:initialise()
-    self.recipes:instantiate()
-    self.recipes:setAnchorRight(false) -- resize in update()
-    self.recipes:setAnchorBottom(true)
-    self.recipes.itemheight = 2 + self.MEDIUM_FONT_HGT + 32 + 4
-    self.recipes.selected = 0
-    self.recipes.doDrawItem = EFTStoreCategory.drawRecipesMap
-    self.recipes.onMouseDown = EFTStoreCategory.onMouseDown_Recipes
-    self.recipes.onMouseDoubleClick = EFTStoreCategory.onMouseDoubleClick_Recipes
-    self.recipes.joypadParent = self
---    self.recipes.resetSelectionOnChangeFocus = true
-    self.recipes.drawBorder = false
-    self:addChild(self.recipes)
+    self.items = ISScrollingListBox:new(1, entryHgt + 25, self.width / 3, self.height - (entryHgt + 25))
+    self.items:initialise()
+    self.items:instantiate()
+    self.items:setAnchorRight(false) -- resize in update()
+    self.items:setAnchorBottom(true)
+    self.items.itemheight = 2 + self.MEDIUM_FONT_HGT + 32 + 4
+    self.items.selected = 0
+    self.items.doDrawItem = EFTStoreCategory.drawRecipesMap
+    self.items.onMouseDown = EFTStoreCategory.onMouseDown
+    self.items.onMouseDoubleClick = EFTStoreCategory.onDoubleClick
+    self.items.joypadParent = self
+--    self.items.resetSelectionOnChangeFocus = true
+    self.items.drawBorder = false
+    self:addChild(self.items)
 
-    self.recipes.SMALL_FONT_HGT = self.SMALL_FONT_HGT
-    self.recipes.MEDIUM_FONT_HGT = self.MEDIUM_FONT_HGT
+    self.items.SMALL_FONT_HGT = self.SMALL_FONT_HGT
+    self.items.MEDIUM_FONT_HGT = self.MEDIUM_FONT_HGT
 
 
     --self.filterLabel = ISLabel:new(4, 2, entryHgt, getText("IGUI_CraftUI_Name_Filter"),1,1,1,1,UIFont.Small, true)
@@ -207,18 +210,13 @@ function EFTStoreCategory:create()
     -- self:addChild(self.filterAll)
 end
 
-function EFTStoreCategory:onFilterAll(index, selected)
---    self.filteringAll = selected
---    self:filter()
-end
-
 function EFTStoreCategory:addToFavorite(fromKeyboard)
-    if self.recipes:size() == 0 then return end
-    local selectedIndex = self.recipes:rowAt(self.recipes:getMouseX(), self.recipes:getMouseY())
+    if self.items:size() == 0 then return end
+    local selectedIndex = self.items:rowAt(self.items:getMouseX(), self.items:getMouseY())
     if fromKeyboard == true then
-        selectedIndex = self.recipes.selected
+        selectedIndex = self.items.selected
     end
-    local selectedItem = self.recipes.items[selectedIndex].item
+    local selectedItem = self.items.items[selectedIndex].item
     selectedItem.favorite = not selectedItem.favorite
     if self.character then
         self.character:getModData()[self.shopPanel:getFavoriteModDataString(selectedItem.recipe)] = selectedItem.favorite
@@ -226,7 +224,7 @@ function EFTStoreCategory:addToFavorite(fromKeyboard)
     self.shopPanel:refresh()
 end
 
-function EFTStoreCategory:onMouseDoubleClick_Recipes(x, y)
+function EFTStoreCategory:onDoubleClick(x, y)
     local row = self:rowAt(x, y)
     if row == -1 then return end
     if x < self.parent:getFavoriteX() then
