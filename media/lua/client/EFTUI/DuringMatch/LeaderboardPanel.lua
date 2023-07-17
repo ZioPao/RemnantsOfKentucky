@@ -6,7 +6,7 @@ local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
 local FONT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium)
 local FONT_HGT_LARGE = getTextManager():getFontHeight(UIFont.Large)
 
-local FONT_SCALE = FONT_HGT_SMALL / 16 -- TODO To be used to scale based on font scaling
+local FONT_SCALE = FONT_HGT_MEDIUM / 14
 local HEADER_HGT = FONT_HGT_MEDIUM + 2 * 2
 local ENTRY_HGT = FONT_HGT_MEDIUM + 2 * 2
 
@@ -19,8 +19,8 @@ function LeadearboardPanel.Open(x, y)
     end
 
     -- TODO Make it scale based on resolution
-    local width = 600
-    local height = 700
+    local width = 400 * FONT_SCALE
+    local height = 600 * FONT_SCALE
 
     local modal = LeadearboardPanel:new(x, y, width, height)
     modal:initialise()
@@ -89,43 +89,11 @@ function LeadearboardPanel:createChildren()
     self.panel.tabTransparency = 0
     self.panel.tabHeight = 0
     self:addChild(self.panel)
-
     self.mainCategory = LeaderboardScrollingTable:new(0, 0, self.panel.width, self.panel.height, self)
     self.mainCategory:initialise()
     self.panel:addView("", self.mainCategory)
     self.panel:activateView("")
     self:fillList()
-
-    -- local entryHgt = FONT_HGT_SMALL + 2 * 10
-    -- top = self.labelLeaderboard:getHeight() + top + 10
-
-    -- self.filterEntry = ISTextEntryBox:new("Players", xOffset, top, self:getWidth() - 10 * 2, entryHgt)
-    -- self.filterEntry:initialise()
-    -- self.filterEntry:instantiate()
-    -- self.filterEntry:setClearButton(true)
-    -- self.filterEntry:setText("")
-    -- self:addChild(self.filterEntry)
-
-    -- self.filterEntry.onTextChange = function()
-    --     self:fillList()
-    -- end
-
-    -- top = top + entryHgt + 40
-
-    -- self.panel = ISTabPanel:new(xOffset, top, self:getWidth() - xOffset * 2, self:getHeight() + top)
-    -- self.panel:initialise()
-    -- self.panel.borderColor = { r = 0, g = 0, b = 0, a = 0 }
-    -- self.panel.target = self
-    -- self.panel.equalTabWidth = false
-    -- self.panel.tabTransparency = 0
-    -- self.panel.tabHeight = 0
-    -- self:addChild(self.panel)
-
-    -- self.mainCategory = LeaderboardScrollingTable:new(0, 0, self.panel.width, self.panel.height, self)
-    -- self.mainCategory:initialise()
-    -- self.panel:addView("", self.mainCategory)
-    -- self.panel:activateView("")
-    -- self:fillList()
 end
 
 function LeadearboardPanel:fillList()
