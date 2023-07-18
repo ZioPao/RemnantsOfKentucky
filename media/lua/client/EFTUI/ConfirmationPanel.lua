@@ -66,7 +66,6 @@ function ConfirmationPanel:createChildren()
     self:addChild(self.btnNo)
 end
 
-
 function ConfirmationPanel:onClick(btn)
     if btn.internal == 'YES' then
         print("YES")
@@ -78,16 +77,10 @@ function ConfirmationPanel:onClick(btn)
     end
 end
 
-function ConfirmationPanel:update()
-    ISPanel.update(self)
-
-    -- if self.parentPanel ~= nil and not self.parentPanel:getIsVisible() then
-    --     self:close()
-    -- end
-end
-
 function ConfirmationPanel:close()
     print("Closing confirmation panel")
+
+    -- TODO Refactor this
     if self.isOpen then
         self.isOpen = false
     end

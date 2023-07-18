@@ -1,6 +1,10 @@
---Leaderboard
--- The leaderboard would be a special menu everyone can access from safehouses
--- that show who has the most amount of cash (combined with both balance and player inventory / stash)
+--[[
+    The leaderboard is a special menu that everyone can access from safehouses.
+    It will show a list of all the players who have played on the server, sorted by
+    balance on that player account.
+]]
+
+
 
 local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
 local FONT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium)

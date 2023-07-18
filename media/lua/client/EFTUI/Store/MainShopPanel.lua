@@ -1,33 +1,47 @@
--- 3 Tabs
+--[[
+    3 tabs in total
 
--- Essential items tab, with basic weapons, bandages, ammo, food, and water available for sale
--- A daily tab, where each day, 10-20 random, mostly high-value items, would be available for sale. Junk items, like staples, or corkscrews could pop up in here, but it should primarily remain something players would need for their runs.
--- A sell tab, where players can drag items in from their inventory and sell them for cash directly into their account balance.
+    Essential items tab, with basic weapons, bandages, ammo, food, and water available for sale
 
--- Visible balance from all three tabs (Maybe on top?), purchased items should be sent directly at the entrance of the safehouse (inside I guess)
--- The box where items will be placed has a limit of weight
+    A daily tab, where each day, 10-20 random, mostly high-value items, would be available
+    for sale. Junk items, like staples, or corkscrews could pop up in here, but it should
+    primarily remain something players would need for their runs.
+
+    A sell tab, where players can drag items in from their inventory and sell them
+    for cash directly into their account balance.
+
+    Visible balance from all three tabs (Maybe on top?), purchased items should be sent
+    directly at the entrance of the safehouse (inside I guess). The box where items will
+    be placed should have a limit of weight
+]]
+
 
 -- TODO Add filtering
+-- TODO add visible player balance
 
 require "ISUI/ISCollapsableWindow"
 
-ShopPanel = ISCollapsableWindow:derive("ShopPanel")
-ShopPanel.instance = nil
-ShopPanel.largeFontHeight = getTextManager():getFontHeight(UIFont.Large)
-ShopPanel.mediumFontHeight = getTextManager():getFontHeight(UIFont.Medium)
-ShopPanel.smallFontHeight = getTextManager():getFontHeight(UIFont.Small)
-ShopPanel.bottomInfoHeight = ShopPanel.smallFontHeight * 2
+local CustomTabPanel = require("EFTUI/Store/CustomTabPanel")
+local StoreCategory = require("EFTUI/Store/StoreCategory")
+local SellPanel = require("EFTUI/Store/SellPanel")
+
+MainShopPanel = ISCollapsableWindow:derive("MainShopPanel")
+MainShopPanel.instance = nil
+MainShopPanel.largeFontHeight = getTextManager():getFontHeight(UIFont.Large)
+MainShopPanel.mediumFontHeight = getTextManager():getFontHeight(UIFont.Medium)
+MainShopPanel.smallFontHeight = getTextManager():getFontHeight(UIFont.Small)
+MainShopPanel.bottomInfoHeight = MainShopPanel.smallFontHeight * 2
 
 
-function ShopPanel.Open()
-    ShopPanel.instance = ShopPanel:new(0, 0, 800, 600, getPlayer())
-    ShopPanel.instance:initialise()
-    ShopPanel.instance:addToUIManager()
-    ShopPanel.instance:setVisible(true)
-    ShopPanel.instance:setEnabled(true)
+function MainShopPanel.Open()
+    MainShopPanel.instance = MainShopPanel:new(0, 0, 800, 600, getPlayer())
+    MainShopPanel.instance:initialise()
+    MainShopPanel.instance:addToUIManager()
+    MainShopPanel.instance:setVisible(true)
+    MainShopPanel.instance:setEnabled(true)
 end
 
-function ShopPanel:new(x, y, width, height, character)
+function MainShopPanel:new(x, y, width, height, character)
     local o = {}
     if x == 0 and y == 0 then
         x = (getCore():getScreenWidth() / 2) - (width / 2)
@@ -38,7 +52,7 @@ function ShopPanel:new(x, y, width, height, character)
     o.minimumHeight = 600
     setmetatable(o, self)
     if getCore():getKey("Forward") ~= 44 then -- hack, seriously, need a way to detect qwert/azerty keyboard :(
-        ShopPanel.qwertyConfiguration = false
+        MainShopPanel.qwertyConfiguration = false
     end
 
     o.title = "Shop"
@@ -54,10 +68,9 @@ function ShopPanel:new(x, y, width, height, character)
     return o
 end
 
-function ShopPanel:close()
+function MainShopPanel:close()
     -- Closes tabs
-
-    print("Closing ShopPanel")
+    --print("Closing MainShopPanel")
     self.panel:close()
     self.essentialItemsCat:close()
     self.dailyItemsCat:close()
@@ -68,7 +81,7 @@ end
 
 --**********************************************--
 
-function ShopPanel:initialise()
+function MainShopPanel:initialise()
     ISCollapsableWindow.initialise(self)
 
     ---Returns a table containing the essential items
@@ -77,16 +90,16 @@ function ShopPanel:initialise()
         -- TODO Only for test
         local items = getAllItems()
         local essentialItems = {}
-    
+
         for i = 0, 25 do
-            local itemContainer = {item = items:get(i), cost = ZombRand(1000)}
+            local itemContainer = { item = items:get(i), cost = ZombRand(1000) }
             essentialItems[i] = itemContainer
             --tab.items:addItem(i, items:get(i))
         end
-    
+
         return essentialItems
     end
-    
+
     ---Returns a table containing the daily items. TODO get them from the server?
     ---@return table
     local function FetchDailyItems()
@@ -104,16 +117,16 @@ function ShopPanel:initialise()
     -- TODO Sellable items must be present in a list
 end
 
-function ShopPanel:createChildren()
+function MainShopPanel:createChildren()
     ISCollapsableWindow.createChildren(self)
     local th = self:titleBarHeight()
     local rh = self.resizable and self:resizeWidgetHeight() or 0
-    self.panel = EFTTabPanel:new(0, th, self.width, self.height - th - rh - ShopPanel.bottomInfoHeight)
+    self.panel = CustomTabPanel:new(0, th, self.width, self.height - th - rh - MainShopPanel.bottomInfoHeight)
     self.panel:initialise()
     self.panel:setAnchorRight(true)
     self.panel:setAnchorBottom(true)
     self.panel.borderColor = { r = 0, g = 0, b = 0, a = 0 }
-    self.panel.onActivateView = ShopPanel.onActivateView
+    self.panel.onActivateView = MainShopPanel.onActivateView
     self.panel.tabHeight = 50
 
     self.panel.target = self
@@ -124,7 +137,7 @@ function ShopPanel:createChildren()
 
 
     --* ESSENTIAL ITEMS *--
-    self.essentialItemsCat = EFTStoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
+    self.essentialItemsCat = StoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
     self.essentialItemsCat:initialise(self.essentialitems)
     self.essentialItemsCat:setAnchorRight(true)
     self.essentialItemsCat:setAnchorBottom(true)
@@ -135,7 +148,7 @@ function ShopPanel:createChildren()
     table.insert(self.categories, self.essentialItemsCat)
 
     --* DAILY ITEMS *--
-    self.dailyItemsCat = EFTStoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
+    self.dailyItemsCat = StoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
     self.dailyItemsCat:initialise(self.dailyItems)
     self.dailyItemsCat:setAnchorRight(true)
     self.dailyItemsCat:setAnchorBottom(true)
@@ -163,7 +176,7 @@ function ShopPanel:createChildren()
     -- for i = 1, #self.essentialItems do
 
     --     local essentialItem = self.essentialItems[i]
-    --     local cat = EFTStoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
+    --     local cat = StoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
     --     cat:initialise()
     --     cat:setAnchorRight(true)
     --     cat:setAnchorBottom(true)
@@ -177,10 +190,10 @@ function ShopPanel:createChildren()
 
     -- end
 
-    -- self.itemsListBox = ISScrollingListBox:new(1, 30, self.width / 3, self.height - (59 + ShopPanel.bottomInfoHeight))
+    -- self.itemsListBox = ISScrollingListBox:new(1, 30, self.width / 3, self.height - (59 + MainShopPanel.bottomInfoHeight))
     -- self.itemsListBox:initialise()
     -- self.itemsListBox:instantiate()
-    -- self.itemsListBox.itemheight = math.max(ShopPanel.smallFontHeight, 22)
+    -- self.itemsListBox.itemheight = math.max(MainShopPanel.smallFontHeight, 22)
     -- self.itemsListBox.font = UIFont.NewSmall
     -- self.itemsListBox.doDrawItem = self.drawItems
     -- self.itemsListBox.drawBorder = true
@@ -191,7 +204,7 @@ function ShopPanel:createChildren()
     --     local i = self.recipesListH[k]
     --     local l = self.recipesList[i]
     --     --for i,l in pairs(self.recipesList) do
-    --     local cat1 = EFTStoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
+    --     local cat1 = StoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
     --     cat1:initialise()
     --     cat1:setAnchorRight(true)
     --     cat1:setAnchorBottom(true)
@@ -206,13 +219,13 @@ function ShopPanel:createChildren()
     --     table.insert(self.categories, cat1)
     -- end
 
-    -- self.craftOneButton = ISButton:new(0, self.height - ShopPanel.bottomInfoHeight - 20 - 15, 50, 25,
-    --     getText("IGUI_CraftUI_ButtonCraftOne"), self, ShopPanel.craft)
+    -- self.craftOneButton = ISButton:new(0, self.height - MainShopPanel.bottomInfoHeight - 20 - 15, 50, 25,
+    --     getText("IGUI_CraftUI_ButtonCraftOne"), self, MainShopPanel.craft)
     -- self.craftOneButton:initialise()
     -- self:addChild(self.craftOneButton)
 
-    -- self.craftAllButton = ISButton:new(0, self.height - ShopPanel.bottomInfoHeight - 20 - 15, 50, 25,
-    --     getText("IGUI_CraftUI_ButtonCraftAll"), self, ShopPanel.craftAll)
+    -- self.craftAllButton = ISButton:new(0, self.height - MainShopPanel.bottomInfoHeight - 20 - 15, 50, 25,
+    --     getText("IGUI_CraftUI_ButtonCraftAll"), self, MainShopPanel.craftAll)
     -- self.craftAllButton:initialise()
     -- self:addChild(self.craftAllButton)
 
@@ -220,23 +233,23 @@ function ShopPanel:createChildren()
     -- self.taskLabel = ISLabel:new(4, 5, 19, "", 1, 1, 1, 1, UIFont.Small, true)
     -- self:addChild(self.taskLabel)
 
-    -- self.addIngredientButton = ISButton:new(0, self.height - ShopPanel.bottomInfoHeight - 20 - 15, 50, 25,
-    --     getText("IGUI_CraftUI_ButtonAddIngredient"), self, ShopPanel.onAddIngredient)
+    -- self.addIngredientButton = ISButton:new(0, self.height - MainShopPanel.bottomInfoHeight - 20 - 15, 50, 25,
+    --     getText("IGUI_CraftUI_ButtonAddIngredient"), self, MainShopPanel.onAddIngredient)
     -- self.addIngredientButton:initialise()
     -- self:addChild(self.addIngredientButton)
     -- self.addIngredientButton:setVisible(false)
 
-    -- --    self.tickBox = ISTickBox:new(0, 0, 100, 20, "", self, ShopPanel.tickBoxChange)
+    -- --    self.tickBox = ISTickBox:new(0, 0, 100, 20, "", self, MainShopPanel.tickBoxChange)
     -- --    self.tickBox.onlyOnePossibility = true
     -- --    self.tickBox.choicesColor = {r=1, g=1, b=1, a=1}
     -- --    self.tickBox:initialise()
     -- --    self:addChild(self.tickBox)
 
     -- -- For non-evolved recipes
-    -- self.ingredientPanel = ISScrollingListBox:new(1, 30, self.width / 3, self.height - (59 + ShopPanel.bottomInfoHeight))
+    -- self.ingredientPanel = ISScrollingListBox:new(1, 30, self.width / 3, self.height - (59 + MainShopPanel.bottomInfoHeight))
     -- self.ingredientPanel:initialise()
     -- self.ingredientPanel:instantiate()
-    -- self.ingredientPanel.itemheight = math.max(ShopPanel.smallFontHeight, 22)
+    -- self.ingredientPanel.itemheight = math.max(MainShopPanel.smallFontHeight, 22)
     -- self.ingredientPanel.font = UIFont.NewSmall
     -- self.ingredientPanel.doDrawItem = self.drawNonEvolvedIngredient
     -- self.ingredientPanel.drawBorder = true
@@ -245,10 +258,10 @@ function ShopPanel:createChildren()
 
     -- -- For evolved recipes
     -- self.ingredientListbox = ISScrollingListBox:new(1, 30, self.width / 3,
-    --     self.height - (59 + ShopPanel.bottomInfoHeight))
+    --     self.height - (59 + MainShopPanel.bottomInfoHeight))
     -- self.ingredientListbox:initialise()
     -- self.ingredientListbox:instantiate()
-    -- self.ingredientListbox.itemheight = math.max(ShopPanel.smallFontHeight, 22)
+    -- self.ingredientListbox.itemheight = math.max(MainShopPanel.smallFontHeight, 22)
     -- self.ingredientListbox.selected = 0
     -- self.ingredientListbox.joypadParent = self
     -- self.ingredientListbox.font = UIFont.NewSmall
@@ -272,7 +285,7 @@ function ShopPanel:createChildren()
 end
 
 ---Logic based on ISCraftingUI
-function ShopPanel:refresh()
+function MainShopPanel:refresh()
     local selectedView = self.panel.activeView.name
     self.panel:activateView(selectedView)
 end

@@ -1,12 +1,16 @@
+--[[
+    A simple modification of the original ISTabPanel
+]]
+
 require "ISUI/ISTabPanel"
 
-EFTTabPanel = ISTabPanel:derive("EFTTabPanel")
+local CustomTabPanel = ISTabPanel:derive("CustomTabPanel")
 
 ---Simple override of ISTabPanel, adds tabWidth as a parameter
 ---@param name string
 ---@param view any
 ---@param tabWidth number
-function EFTTabPanel:addView(name, view, tabWidth)
+function CustomTabPanel:addView(name, view, tabWidth)
 	local viewObject = {}
 	viewObject.name = name
 	viewObject.view = view
@@ -31,7 +35,7 @@ function EFTTabPanel:addView(name, view, tabWidth)
 	end
 end
 
-function EFTTabPanel:render()
+function CustomTabPanel:render()
 	local newViewList = {}
 	local tabDragSelected = -1
 	if self.draggingTab and not self.isDragging and ISTabPanel.xMouse > -1 and ISTabPanel.xMouse ~= self:getMouseX() then -- do we move the mouse since we have let the left button down ?
@@ -104,14 +108,14 @@ function EFTTabPanel:render()
 
 				if not self.blinkTabAlphaIncrease then
 					self.blinkTabAlpha = self.blinkTabAlpha -
-					0.1 * self.tabTransparency * (UIManager.getMillisSinceLastRender() / 33.3)
+						0.1 * self.tabTransparency * (UIManager.getMillisSinceLastRender() / 33.3)
 					if self.blinkTabAlpha < 0 then
 						self.blinkTabAlpha = 0
 						self.blinkTabAlphaIncrease = true
 					end
 				else
 					self.blinkTabAlpha = self.blinkTabAlpha +
-					0.1 * self.tabTransparency * (UIManager.getMillisSinceLastRender() / 33.3)
+						0.1 * self.tabTransparency * (UIManager.getMillisSinceLastRender() / 33.3)
 					if self.blinkTabAlpha > self.tabTransparency then
 						self.blinkTabAlpha = self.tabTransparency
 						self.blinkTabAlphaIncrease = false
@@ -119,16 +123,16 @@ function EFTTabPanel:render()
 				end
 				alpha = self.blinkTabAlpha
 				self:drawTextureScaled(ISTabPanel.tabUnSelected, x, 0, tabWidth, self.tabHeight - 1, self
-				.tabTransparency, 1, 1, 1)
+					.tabTransparency, 1, 1, 1)
 				self:drawRect(x, 0, tabWidth, self.tabHeight - 1, alpha, 1, 1, 1)
 			elseif shouldBlink then
 				alpha = self.blinkTabAlpha
 				self:drawTextureScaled(ISTabPanel.tabUnSelected, x, 0, tabWidth, self.tabHeight - 1, self
-				.tabTransparency, 1, 1, 1)
+					.tabTransparency, 1, 1, 1)
 				self:drawRect(x, 0, tabWidth, self.tabHeight - 1, alpha, 1, 1, 1)
 			else
 				self:drawTextureScaled(ISTabPanel.tabUnSelected, x, 0, tabWidth, self.tabHeight - 1, self
-				.tabTransparency, 1, 1, 1)
+					.tabTransparency, 1, 1, 1)
 				if self:getMouseY() >= 0 and self:getMouseY() < self.tabHeight and self:isMouseOver() and self:getTabIndexAtX(self:getMouseX()) == i then
 					viewObject.fade:setFadeIn(true)
 				else
@@ -179,7 +183,9 @@ function EFTTabPanel:render()
 	end
 end
 
-function EFTTabPanel:close()
+function CustomTabPanel:close()
 	print("Closing EFT Tab Panel")
 	ISTabPanel.close(self)
 end
+
+return CustomTabPanel

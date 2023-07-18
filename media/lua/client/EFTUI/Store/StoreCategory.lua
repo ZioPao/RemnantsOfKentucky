@@ -1,11 +1,13 @@
 local BuyQuantityPanel = require("EFTUI/Store/BuyQuantityPanel")
 
-EFTStoreCategory = ISPanelJoypad:derive("EFTStoreCategory")
-EFTStoreCategory.instance = nil
-EFTStoreCategory.SMALL_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Small):getLineHeight()
-EFTStoreCategory.MEDIUM_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Medium):getLineHeight()
+----
 
-function EFTStoreCategory:new(x, y, width, height, shopPanel)
+local StoreCategory = ISPanelJoypad:derive("StoreCategory")
+StoreCategory.instance = nil
+StoreCategory.SMALL_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Small):getLineHeight()
+StoreCategory.MEDIUM_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Medium):getLineHeight()
+
+function StoreCategory:new(x, y, width, height, shopPanel)
     local o = {}
     o = ISPanelJoypad:new(x, y, width, height)
     setmetatable(o, self)
@@ -13,11 +15,20 @@ function EFTStoreCategory:new(x, y, width, height, shopPanel)
 
     o.shopPanel = shopPanel
     o:noBackground()
-    EFTStoreCategory.instance = o
+    StoreCategory.instance = o
     return o
 end
 
-function EFTStoreCategory:createChildren()
+function StoreCategory:close()
+    print("Closing StoreCategory")
+    self.buyPanel:removeFromUIManager()
+    self.buyPanel:close()
+    ISPanelJoypad.close(self)
+end
+
+----------------------------------
+
+function StoreCategory:createChildren()
     local fontHgtSmall = self.SMALL_FONT_HGT
     local entryHgt = fontHgtSmall + 2 * 2
 
@@ -28,8 +39,8 @@ function EFTStoreCategory:createChildren()
     self.items:setAnchorBottom(true)
     self.items.itemHeight = 2 + self.MEDIUM_FONT_HGT + 32 + 4
     self.items.selected = 0
-    self.items.doDrawItem = EFTStoreCategory.doDrawItem
-    self.items.onMouseDown = EFTStoreCategory.onMouseDownItems
+    self.items.doDrawItem = StoreCategory.doDrawItem
+    self.items.onMouseDown = StoreCategory.onMouseDownItems
     self.items.joypadParent = self
     self.items.drawBorder = false
     self:addChild(self.items)
@@ -53,32 +64,22 @@ end
 
 ---Initialise a category, giving an items table
 ---@param itemsTable table
-function EFTStoreCategory:initialise(itemsTable)
+function StoreCategory:initialise(itemsTable)
     ISPanelJoypad.initialise(self)
 
     self.itemsTable = itemsTable
- 
 end
 
-function EFTStoreCategory:close()
-    print("Closing EFTStoreCategory")
-    self.buyPanel:removeFromUIManager()
-    self.buyPanel:close()
-    ISPanelJoypad.close(self)
-end
-
-function EFTStoreCategory:update()
+function StoreCategory:update()
     if not self.parent:getIsVisible() then return end
 end
 
-function EFTStoreCategory:prerender()
+function StoreCategory:prerender()
     self.items.backgroundColor.a = 0.8
-    self.items.doDrawItem = EFTStoreCategory.doDrawItem
+    self.items.doDrawItem = StoreCategory.doDrawItem
 end
 
-function EFTStoreCategory:doDrawItem(y, item, alt)
-    local baseItemDY = 0
-
+function StoreCategory:doDrawItem(y, item, alt)
     if y + self:getYScroll() >= self.height then return y + item.height end
     if y + item.height + self:getYScroll() <= 0 then return y + item.height end
 
@@ -91,11 +92,9 @@ function EFTStoreCategory:doDrawItem(y, item, alt)
         self:drawRect(0, (y), self:getWidth(), item.height - 1, 0.3, 0.7, 0.35, 0.15)
     end
 
-
     -- Items are stored in a table that works as a container, let's unpack them here to make it more readable
     local inventoryItem = item.item.item
     local itemCost = item.item.cost
-
 
     --* ITEM NAME *--
     self:drawText(inventoryItem:getName(), 6, y + 2, 1, 1, 1, a, UIFont.Medium)
@@ -103,46 +102,10 @@ function EFTStoreCategory:doDrawItem(y, item, alt)
     --* ITEM COST *--
     self:drawText(itemCost .. " $", self:getWidth() - 100, y + 2, 1, 1, 1, a, UIFont.Medium)
 
-
-
-
-    -- local itemTexture = item.item
-    -- if itemTexture then
-    --     local texWidth = itemTexture:getWidthOrig()
-    --     local texHeight = itemTexture:getHeightOrig()
-    --     if texWidth <= 32 and texHeight <= 32 then
-    --         self:drawTexture(itemTexture, 6 + (32 - texWidth) / 2, y + 2 + self.MEDIUM_FONT_HGT + baseItemDY +
-    --         (32 - texHeight) / 2, a, 1, 1, 1)
-    --     else
-    --         self:drawTextureScaledAspect(itemTexture, 6, y + 2 + self.MEDIUM_FONT_HGT + baseItemDY, 32, 32, a, 1, 1, 1)
-    --     end
-    --     -- local name = item.item.evolved and item.item.resultName or item.item.itemName
-    --     -- self:drawText(name, texWidth + 20, y + 2 + self.MEDIUM_FONT_HGT + baseItemDY + (32 - self.SMALL_FONT_HGT) / 2 - 2, 1, 1, 1, a, UIFont.Small)
-    -- end
-
-    -- local categoryUI = self.parent
-    -- local favoriteStar = nil
-    -- local favoriteAlpha = a
-    -- if item.index == self.mouseoverselected and not self:isMouseOverScrollBar() then
-    --     if self:getMouseX() >= categoryUI:getFavoriteX() then
-    --         favoriteStar = item.item.favorite and categoryUI.favCheckedTex or categoryUI.favNotCheckedTex
-    --         favoriteAlpha = 0.9
-    --     else
-    --         favoriteStar = item.item.favorite and categoryUI.favoriteStar or categoryUI.favNotCheckedTex
-    --         favoriteAlpha = item.item.favorite and a or 0.3
-    --     end
-    -- elseif item.item.favorite then
-    --     favoriteStar = categoryUI.favoriteStar
-    -- end
-    -- if favoriteStar then
-    --     self:drawTexture(favoriteStar, categoryUI:getFavoriteX() + categoryUI.favPadX,
-    --         y + (item.height / 2 - favoriteStar:getHeight() / 2), favoriteAlpha, 1, 1, 1)
-    -- end
-
     return y + item.height
 end
 
-function EFTStoreCategory:onMouseDownItems(x, y)
+function StoreCategory:onMouseDownItems(x, y)
     if #self.items == 0 then return end
     local row = self:rowAt(x, y)
 
@@ -172,3 +135,5 @@ function EFTStoreCategory:onMouseDownItems(x, y)
 
     self.parent.buyPanel:setSelectedItem(self.items[self.selected].item)
 end
+
+return StoreCategory

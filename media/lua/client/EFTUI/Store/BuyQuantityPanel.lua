@@ -1,5 +1,7 @@
--- TODO A basic confirmation panel when you're buying stuff. Asks how how much stuff you want of that specific object and then exec the transaction
-
+--[[
+    A panel that will appear on the right of the scrolling list.
+    Asks how how much stuff you want of that specific object, show the total cost, and has a button to exec the transaction
+]]
 local BuyQuantityPanel = ISPanel:derive("BuyQuantityPanel")
 
 ---Starts a new quantity panel
@@ -63,14 +65,11 @@ function BuyQuantityPanel:setSelectedItem(item)
     self.selectedItem = item
 end
 
-
 function BuyQuantityPanel:getCostForSelectedItem()
     local itemCost = self.selectedItem["cost"]
     local finalCost = tonumber(self.entryAmount:getInternalText()) * itemCost
     return finalCost
 end
-
-
 
 function BuyQuantityPanel:onConfirmBuy()
     print("Confirm buy")
@@ -84,11 +83,12 @@ function BuyQuantityPanel:onStartBuy()
 
     -- Starts separate confirmation panel
 
-    local text =" <CENTRE> Are you sure you want to buy " .. tostring(self.entryAmount:getInternalText()) .. " of " .. self.selectedItem["item"]:getName() .. " for " .. tostring(self:getCostForSelectedItem()) .. "$ ?"
+    local text = " <CENTRE> Are you sure you want to buy " ..
+    tostring(self.entryAmount:getInternalText()) ..
+    " of " .. self.selectedItem["item"]:getName() .. " for " .. tostring(self:getCostForSelectedItem()) .. "$ ?"
 
     self.confirmationPanel = ConfirmationPanel.Open(text, self.mainPanel:getX(),
         self.mainPanel:getY() + self.mainPanel:getHeight() + 20, self, self.onConfirmBuy)
-
 end
 
 function BuyQuantityPanel:onClick(btn)
@@ -101,7 +101,6 @@ function BuyQuantityPanel:render()
     ISPanel.render(self)
 
     if self.selectedItem ~= nil then
-
         -- TODO Add print of total cost based on amount
 
         local actualItem = self.selectedItem["item"]
@@ -110,7 +109,8 @@ function BuyQuantityPanel:render()
         local finalCost = tonumber(self.entryAmount:getInternalText()) * itemCost
 
         local itemNameStr = " <CENTRE> " .. actualItem:getName()
-        local itemFinalCostStr = " <CENTRE> " .. itemCost .. "$ x " .. tostring(self.entryAmount:getInternalText()) .. "$ = " .. tostring(finalCost) .. "$"
+        local itemFinalCostStr = " <CENTRE> " ..
+        itemCost .. "$ x " .. tostring(self.entryAmount:getInternalText()) .. "$ = " .. tostring(finalCost) .. "$"
 
         local finalStr = itemNameStr .. " <LINE> " .. itemFinalCostStr
 
@@ -132,12 +132,10 @@ function BuyQuantityPanel:render()
             end
         end
     end
-
 end
 
-
 function BuyQuantityPanel:close()
-    print("Closing BuyQuantityPanel")
+    --print("Closing BuyQuantityPanel")
 
     if self.confirmationPanel then
         self.confirmationPanel:close()

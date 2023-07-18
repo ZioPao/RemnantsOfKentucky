@@ -1,6 +1,6 @@
 -- TODO Users should be able to drag n drop items in this panel to sell them. Opens confirmation panel. Compatible with Tarkov UI
 
-SellPanel = ISPanel:derive("SellPanel")
+local SellPanel = ISPanel:derive("SellPanel")
 
 
 function SellPanel:new(x, y, width, height)
@@ -10,3 +10,5 @@ function SellPanel:new(x, y, width, height)
 
     return o
 end
+
+return SellPanel
