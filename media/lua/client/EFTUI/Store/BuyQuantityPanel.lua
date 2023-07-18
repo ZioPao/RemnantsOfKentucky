@@ -7,11 +7,16 @@ BuyQuantityPanel = ConfirmationPanel:derive("BuyQuantityPanel")
 ---@param y number
 ---@param width number
 ---@param height number
----@param item InventoryItem
+---@param item? InventoryItem
 ---@return ISPanel
 function BuyQuantityPanel:new(x, y, width, height, item)
+    local confirmationText
 
-    local confirmationText = "Are you sure you wanna buy " .. item:getName() .. "?"
+    if item then
+        confirmationText = "Are you sure you wanna buy " .. item:getName() .. "?"
+    else
+        confirmationText = "Select an item"
+    end
 
     local o = ConfirmationPanel:new(x, y, width, height, confirmationText, self.onConfirmBuy, self)
     setmetatable(o, self)
@@ -33,8 +38,20 @@ function BuyQuantityPanel:createChildren()
     self.btnNo:setTitle("Cancel")
 
     -- TODO Add entry for amount
+    self.entryAmount = ISTextEntryBox:new("", 10, self.height/2, self.width - 20, 25)
+    self.entryAmount:initialise()
+    self.entryAmount:instantiate()
+    self.entryAmount:setText("")
+    self.entryAmount:setClearButton(true)
+    self.entryAmount:setOnlyNumbers(true)
+    self:addChild(self.entryAmount)
 
+end
 
+function BuyQuantityPanel:update()
+    ISPanel.update(self)
+
+    
 end
 
 

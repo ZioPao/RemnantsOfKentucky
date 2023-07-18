@@ -60,7 +60,17 @@ end
 ---Returns a table containing the essential items
 ---@return table
 local function FetchEssentialItems()
-    return {}
+
+    -- TODO Only for test
+    local items = getAllItems()
+    local essentialItems = {}
+
+    for i=0, 10 do
+        essentialItems[i] = items:get(i)
+        --tab.items:addItem(i, items:get(i))
+    end
+
+    return essentialItems
 end
 
 ---Returns a table containing the daily items. TODO get them from the server?
@@ -73,8 +83,8 @@ function ShopPanel:initialise()
     ISCollapsableWindow.initialise(self)
 
     -- TODO Essential items list should be fixed
-    self.essentialitems = FetchEssentialItems()
-    self.dailyItems = FetchDailyItems()
+    -- self.essentialitems = FetchEssentialItems()
+    -- self.dailyItems = FetchDailyItems()
 
 
     -- TODO Daily items should be randomly generated, based on server?
@@ -105,18 +115,19 @@ function ShopPanel:createChildren()
 
     --* ESSENTIAL ITEMS *--
     local essentialItemsCat = EFTStoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
-    essentialItemsCat:initialise()
+    essentialItemsCat:initialise(FetchEssentialItems())
     essentialItemsCat:setAnchorRight(true)
     essentialItemsCat:setAnchorBottom(true)
+    --FetchEssentialItems(essentialItemsCat)
     -- TODO Add items to the essential items scrolling list
     self.panel:addView("Essential Items", essentialItemsCat, self.width/3 - 2)
     essentialItemsCat.parent = self
-    essentialItemsCat.category = 1
+    essentialItemsCat.category = 1  
     table.insert(self.categories, essentialItemsCat)
 
     --* DAILY ITEMS *--
     local dailyItemsCat = EFTStoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
-    dailyItemsCat:initialise()
+    dailyItemsCat:initialise(FetchDailyItems())
     dailyItemsCat:setAnchorRight(true)
     dailyItemsCat:setAnchorBottom(true)
     -- TODO Add items to the daily items scrolling list

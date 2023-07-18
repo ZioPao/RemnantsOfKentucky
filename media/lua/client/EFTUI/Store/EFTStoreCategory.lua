@@ -7,9 +7,58 @@ EFTStoreCategory.instance = nil
 EFTStoreCategory.SMALL_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Small):getLineHeight()
 EFTStoreCategory.MEDIUM_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Medium):getLineHeight()
 
-function EFTStoreCategory:initialise()
+---Initialise a category, giving an items table
+---@param itemsTable table
+function EFTStoreCategory:initialise(itemsTable)
     ISPanelJoypad.initialise(self)
-    self:create()
+    local fontHgtSmall = self.SMALL_FONT_HGT
+    local entryHgt = fontHgtSmall + 2 * 2
+
+    self.items = ISScrollingListBox:new(1, entryHgt + 25, self.width / 2, self.height - (entryHgt + 25))
+    self.items:initialise()
+    self.items:instantiate()
+    self.items:setAnchorRight(false) -- resize in update()
+    self.items:setAnchorBottom(true)
+    self.items.itemHeight = 2 + self.MEDIUM_FONT_HGT + 32 + 4
+    self.items.selected = 0
+    self.items.doDrawItem = EFTStoreCategory.doDrawItem
+    self.items.onMouseDown = EFTStoreCategory.onMouseDown
+    self.items.onMouseDoubleClick = EFTStoreCategory.onDoubleClick
+    self.items.joypadParent = self
+    --    self.items.resetSelectionOnChangeFocus = true
+    self.items.drawBorder = false
+    self:addChild(self.items)
+
+    self.items.SMALL_FONT_HGT = self.SMALL_FONT_HGT
+    self.items.MEDIUM_FONT_HGT = self.MEDIUM_FONT_HGT
+
+
+    for i = 1, #itemsTable do
+        self.items:addItem(i, itemsTable[i])
+    end
+
+
+    self.buyPanel = BuyQuantityPanel:new(self.items:getRight() + 10, entryHgt + 25, self.width/2 - 20, self.height/2, nil)
+    self.buyPanel:initialise()
+    self:addChild(self.buyPanel)
+    
+    --self.filterLabel = ISLabel:new(4, 2, entryHgt, getText("IGUI_CraftUI_Name_Filter"),1,1,1,1,UIFont.Small, true)
+    --self:addChild(self.filterLabel)
+
+    --local width = ((self.width/3) - getTextManager():MeasureStringX(UIFont.Small, getText("IGUI_CraftUI_Name_Filter"))) - 98
+    -- self.filterEntry = ISTextEntryBox:new("", getTextManager():MeasureStringX(UIFont.Small, getText("IGUI_CraftUI_Name_Filter")) + 9, 2, width, fontHgtSmall)
+    -- self.filterEntry:initialise()
+    -- self.filterEntry:instantiate()
+    -- self.filterEntry:setText("")
+    -- self.filterEntry:setClearButton(true)
+    -- self:addChild(self.filterEntry)
+    -- self.lastText = self.filterEntry:getInternalText()
+
+    -- self.filterAll = ISTickBox:new(self.filterEntry.x + self.filterEntry.width + 5, 2, 20, entryHgt, "", self, self.onFilterAll)
+    -- self.filterAll:initialise()
+    -- self.filterAll:addOption(getText("IGUI_FilterAll"))
+    -- self.filterAll:setWidthToFit()
+    -- self:addChild(self.filterAll)
 end
 
 function EFTStoreCategory:update()
@@ -31,7 +80,7 @@ end
 
 function EFTStoreCategory:prerender()
     self.items.backgroundColor.a = 0.8
-    self.items.doDrawItem = EFTStoreCategory.drawRecipesMap
+    self.items.doDrawItem = EFTStoreCategory.doDrawItem
 end
 
 function EFTStoreCategory:filter()
@@ -58,7 +107,9 @@ function EFTStoreCategory:filter()
     --     end
     -- end
 
-    table.sort(self.items.items, function(a,b)
+    -- TODO Make this for items, not recipes
+
+    table.sort(self.items.items, function(a, b)
         a = a.item
         b = b.item
         if a.available and not b.available then return true end
@@ -72,7 +123,7 @@ end
 function EFTStoreCategory:syncAllFilters()
     local text = self.filterEntry:getInternalText()
     local filterAll = self.filterAll:isSelected(1)
-    for _,ui in ipairs(self.parent.categories) do
+    for _, ui in ipairs(self.parent.categories) do
         if (ui ~= self) and (not ui:isVisible()) then
             if text ~= ui.filterEntry:getInternalText() then
                 ui.filterEntry:setText(text)
@@ -84,48 +135,53 @@ function EFTStoreCategory:syncAllFilters()
     end
 end
 
-function EFTStoreCategory:drawRecipesMap(y, item, alt)
-
-    -- TODO What was this for?
-
+function EFTStoreCategory:doDrawItem(y, item, alt)
     local baseItemDY = 0
-    if item.item.customRecipeName then
-        baseItemDY = self.SMALL_FONT_HGT
-        item.height = self.itemheight + baseItemDY
-    end
 
     if y + self:getYScroll() >= self.height then return y + item.height end
     if y + item.height + self:getYScroll() <= 0 then return y + item.height end
 
     local a = 0.9
 
-    if not item.item.available then
-        a = 0.3
-    end
-
-    self:drawRectBorder(0, (y), self:getWidth(), item.height - 1, a, self.borderColor.r, self.borderColor.g, self.borderColor.b)
-
+    -- Border of single item
+    self:drawRectBorder(0, (y), self:getWidth(), item.height - 1, a, self.borderColor.r, self.borderColor.g,
+        self.borderColor.b)
     if self.selected == item.index then
         self:drawRect(0, (y), self:getWidth(), item.height - 1, 0.3, 0.7, 0.35, 0.15)
     end
 
-    self:drawText(item.item.recipe:getName(), 6, y + 2, 1, 1, 1, a, UIFont.Medium)
+    self:drawText(item.item:getName(), 6, y + 2, 1, 1, 1, a, UIFont.Medium)
     if item.item.customRecipeName then
         self:drawText(item.item.customRecipeName, 6, y + 2 + self.MEDIUM_FONT_HGT, 1, 1, 1, a, UIFont.Small)
     end
 
     local textWidth = 0
-    if item.item.texture then
-        local texWidth = item.item.texture:getWidthOrig()
-        local texHeight = item.item.texture:getHeightOrig()
-        if texWidth <= 32 and texHeight <= 32 then
-            self:drawTexture(item.item.texture,6+(32-texWidth)/2,y+2+self.MEDIUM_FONT_HGT+baseItemDY+(32-texHeight)/2,a,1,1,1)
-        else
-            self:drawTextureScaledAspect(item.item.texture,6,y+2+self.MEDIUM_FONT_HGT+baseItemDY,32,32,a,1,1,1)
-        end
-        local name = item.item.evolved and item.item.resultName or item.item.itemName
-        self:drawText(name, texWidth + 20, y + 2 + self.MEDIUM_FONT_HGT + baseItemDY + (32 - self.SMALL_FONT_HGT) / 2 - 2, 1, 1, 1, a, UIFont.Small)
+    local iconX = 100
+    local iconSize = 50
+
+    local icon = item.item:getIcon()
+    if item.item:getIconsForTexture() and not item.item:getIconsForTexture():isEmpty() then
+        icon = item.item:getIconsForTexture():get(0)
     end
+    if icon then
+        local texture = getTexture("Item_" .. icon)
+        if texture then
+            self:drawTextureScaledAspect2(texture, self:getWidth() - iconSize*2, y + (self.itemHeight - iconSize) / 2, iconSize, iconSize,  1, 1, 1, 1)
+        end
+    end
+    -- local itemTexture = item.item
+    -- if itemTexture then
+    --     local texWidth = itemTexture:getWidthOrig()
+    --     local texHeight = itemTexture:getHeightOrig()
+    --     if texWidth <= 32 and texHeight <= 32 then
+    --         self:drawTexture(itemTexture, 6 + (32 - texWidth) / 2, y + 2 + self.MEDIUM_FONT_HGT + baseItemDY +
+    --         (32 - texHeight) / 2, a, 1, 1, 1)
+    --     else
+    --         self:drawTextureScaledAspect(itemTexture, 6, y + 2 + self.MEDIUM_FONT_HGT + baseItemDY, 32, 32, a, 1, 1, 1)
+    --     end
+    --     -- local name = item.item.evolved and item.item.resultName or item.item.itemName
+    --     -- self:drawText(name, texWidth + 20, y + 2 + self.MEDIUM_FONT_HGT + baseItemDY + (32 - self.SMALL_FONT_HGT) / 2 - 2, 1, 1, 1, a, UIFont.Small)
+    -- end
 
     local categoryUI = self.parent
     local favoriteStar = nil
@@ -142,7 +198,8 @@ function EFTStoreCategory:drawRecipesMap(y, item, alt)
         favoriteStar = categoryUI.favoriteStar
     end
     if favoriteStar then
-        self:drawTexture(favoriteStar, categoryUI:getFavoriteX() + categoryUI.favPadX, y + (item.height / 2 - favoriteStar:getHeight() / 2), favoriteAlpha,1,1,1)
+        self:drawTexture(favoriteStar, categoryUI:getFavoriteX() + categoryUI.favPadX,
+            y + (item.height / 2 - favoriteStar:getHeight() / 2), favoriteAlpha, 1, 1, 1)
     end
 
     return y + item.height
@@ -168,48 +225,6 @@ function EFTStoreCategory:onMouseDown(x, y)
     end
 end
 
-function EFTStoreCategory:create()
-    local fontHgtSmall = self.SMALL_FONT_HGT
-    local entryHgt = fontHgtSmall + 2 * 2
-
-    self.items = ISScrollingListBox:new(1, entryHgt + 25, self.width / 3, self.height - (entryHgt + 25))
-    self.items:initialise()
-    self.items:instantiate()
-    self.items:setAnchorRight(false) -- resize in update()
-    self.items:setAnchorBottom(true)
-    self.items.itemheight = 2 + self.MEDIUM_FONT_HGT + 32 + 4
-    self.items.selected = 0
-    self.items.doDrawItem = EFTStoreCategory.drawRecipesMap
-    self.items.onMouseDown = EFTStoreCategory.onMouseDown
-    self.items.onMouseDoubleClick = EFTStoreCategory.onDoubleClick
-    self.items.joypadParent = self
---    self.items.resetSelectionOnChangeFocus = true
-    self.items.drawBorder = false
-    self:addChild(self.items)
-
-    self.items.SMALL_FONT_HGT = self.SMALL_FONT_HGT
-    self.items.MEDIUM_FONT_HGT = self.MEDIUM_FONT_HGT
-
-
-    --self.filterLabel = ISLabel:new(4, 2, entryHgt, getText("IGUI_CraftUI_Name_Filter"),1,1,1,1,UIFont.Small, true)
-    --self:addChild(self.filterLabel)
-
-    local width = ((self.width/3) - getTextManager():MeasureStringX(UIFont.Small, getText("IGUI_CraftUI_Name_Filter"))) - 98
-    -- self.filterEntry = ISTextEntryBox:new("", getTextManager():MeasureStringX(UIFont.Small, getText("IGUI_CraftUI_Name_Filter")) + 9, 2, width, fontHgtSmall)
-    -- self.filterEntry:initialise()
-    -- self.filterEntry:instantiate()
-    -- self.filterEntry:setText("")
-    -- self.filterEntry:setClearButton(true)
-    -- self:addChild(self.filterEntry)
-    -- self.lastText = self.filterEntry:getInternalText()
-    
-    -- self.filterAll = ISTickBox:new(self.filterEntry.x + self.filterEntry.width + 5, 2, 20, entryHgt, "", self, self.onFilterAll)
-    -- self.filterAll:initialise()
-    -- self.filterAll:addOption(getText("IGUI_FilterAll"))
-    -- self.filterAll:setWidthToFit()
-    -- self:addChild(self.filterAll)
-end
-
 function EFTStoreCategory:addToFavorite(fromKeyboard)
     if self.items:size() == 0 then return end
     local selectedIndex = self.items:rowAt(self.items:getMouseX(), self.items:getMouseY())
@@ -219,7 +234,8 @@ function EFTStoreCategory:addToFavorite(fromKeyboard)
     local selectedItem = self.items.items[selectedIndex].item
     selectedItem.favorite = not selectedItem.favorite
     if self.character then
-        self.character:getModData()[self.shopPanel:getFavoriteModDataString(selectedItem.recipe)] = selectedItem.favorite
+        self.character:getModData()[self.shopPanel:getFavoriteModDataString(selectedItem.recipe)] = selectedItem
+        .favorite
     end
     self.shopPanel:refresh()
 end
@@ -228,7 +244,7 @@ function EFTStoreCategory:onDoubleClick(x, y)
     local row = self:rowAt(x, y)
     if row == -1 then return end
     if x < self.parent:getFavoriteX() then
-        self.parent.parent:craft()
+        --self.parent.parent:craft()
     elseif not self:isMouseOverScrollBar() then
         self.parent:addToFavorite(false)
     end
