@@ -171,7 +171,7 @@ function ManagePlayersPanel:onClick(button)
 
 
         local text = " <CENTRE> Are you sure you want to wipe out everything? <LINE> You can't come back from this."
-        self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, onConfirmWipe)
+        self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, self, onConfirmWipe)
     end
 end
 

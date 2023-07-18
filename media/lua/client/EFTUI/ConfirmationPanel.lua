@@ -8,7 +8,7 @@ ConfirmationPanel = ISPanel:derive("ConfirmationPanel")
 ---@param alertText string
 ---@param onConfirmFunc function
 ---@return ISPanel
-function ConfirmationPanel:new(x, y, width, height, alertText, onConfirmFunc, onConfirmVar)
+function ConfirmationPanel:new(x, y, width, height, alertText, parentPanel, onConfirmFunc)
     local o = ISPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
@@ -17,7 +17,7 @@ function ConfirmationPanel:new(x, y, width, height, alertText, onConfirmFunc, on
     o.alertText = alertText
     o.isOpen = true
     o.onConfirmFunc = onConfirmFunc
-    o.onConfirmVar = onConfirmVar
+    o.parentPanel = parentPanel
     ConfirmationPanel.instance = o
     return o
 end
@@ -70,7 +70,7 @@ end
 function ConfirmationPanel:onClick(btn)
     if btn.internal == 'YES' then
         print("YES")
-        self.onConfirmFunc(self.onConfirmVar)
+        self.onConfirmFunc(self.parentPanel)
         self:close()
     elseif btn.internal == 'NO' then
         print("NO")
@@ -78,9 +78,16 @@ function ConfirmationPanel:onClick(btn)
     end
 end
 
+function ConfirmationPanel:update()
+    ISPanel.update(self)
 
+    -- if self.parentPanel ~= nil and not self.parentPanel:getIsVisible() then
+    --     self:close()
+    -- end
+end
 
 function ConfirmationPanel:close()
+    print("Closing confirmation panel")
     if self.isOpen then
         self.isOpen = false
     end
@@ -90,11 +97,11 @@ end
 -------------------------
 -- Mostly debug stuff
 
-function ConfirmationPanel.Open(alertText, x, y, onConfirmFunc, onConfirmVar)
+function ConfirmationPanel.Open(alertText, x, y, parentPanel, onConfirmFunc)
     local width = 500
     local height = 120
 
-    local panel = ConfirmationPanel:new(x, y, width, height, alertText, onConfirmFunc, onConfirmVar)
+    local panel = ConfirmationPanel:new(x, y, width, height, alertText, parentPanel, onConfirmFunc)
     panel:initialise()
     panel:addToUIManager()
     panel:bringToTop()

@@ -7,6 +7,8 @@
 -- Visible balance from all three tabs (Maybe on top?), purchased items should be sent directly at the entrance of the safehouse (inside I guess)
 -- The box where items will be placed has a limit of weight
 
+-- TODO Add filtering
+
 require "ISUI/ISCollapsableWindow"
 
 ShopPanel = ISCollapsableWindow:derive("ShopPanel")
@@ -39,9 +41,6 @@ function ShopPanel:new(x, y, width, height, character)
         ShopPanel.qwertyConfiguration = false
     end
 
-    o.LabelDash = "-"
-    o.LabelDashWidth = getTextManager():MeasureStringX(UIFont.Small, o.LabelDash)
-
     o.title = "Shop"
     self.__index = self
     o.character = character
@@ -60,38 +59,43 @@ function ShopPanel:close()
 
     print("Closing ShopPanel")
     self.panel:close()
+    self.essentialItemsCat:close()
+    self.dailyItemsCat:close()
+    self.sellCat:close()
 
     ISCollapsableWindow.close(self)
 end
 
 --**********************************************--
----Returns a table containing the essential items
----@return table
-local function FetchEssentialItems()
-    -- TODO Only for test
-    local items = getAllItems()
-    local essentialItems = {}
-
-    for i = 0, 25 do
-        essentialItems[i] = items:get(i)
-        --tab.items:addItem(i, items:get(i))
-    end
-
-    return essentialItems
-end
-
----Returns a table containing the daily items. TODO get them from the server?
----@return table
-local function FetchDailyItems()
-    return {}
-end
 
 function ShopPanel:initialise()
     ISCollapsableWindow.initialise(self)
 
+    ---Returns a table containing the essential items
+    ---@return table
+    local function FetchEssentialItems()
+        -- TODO Only for test
+        local items = getAllItems()
+        local essentialItems = {}
+    
+        for i = 0, 25 do
+            local itemContainer = {item = items:get(i), cost = ZombRand(1000)}
+            essentialItems[i] = itemContainer
+            --tab.items:addItem(i, items:get(i))
+        end
+    
+        return essentialItems
+    end
+    
+    ---Returns a table containing the daily items. TODO get them from the server?
+    ---@return table
+    local function FetchDailyItems()
+        return {}
+    end
+
     -- TODO Essential items list should be fixed
-    -- self.essentialitems = FetchEssentialItems()
-    -- self.dailyItems = FetchDailyItems()
+    self.essentialitems = FetchEssentialItems()
+    self.dailyItems = FetchDailyItems()
 
 
     -- TODO Daily items should be randomly generated, based on server?
@@ -120,37 +124,37 @@ function ShopPanel:createChildren()
 
 
     --* ESSENTIAL ITEMS *--
-    local essentialItemsCat = EFTStoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
-    essentialItemsCat:initialise(FetchEssentialItems())
-    essentialItemsCat:setAnchorRight(true)
-    essentialItemsCat:setAnchorBottom(true)
+    self.essentialItemsCat = EFTStoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
+    self.essentialItemsCat:initialise(self.essentialitems)
+    self.essentialItemsCat:setAnchorRight(true)
+    self.essentialItemsCat:setAnchorBottom(true)
     -- TODO Add items to the essential items scrolling list
-    self.panel:addView("Essential Items", essentialItemsCat, self.width / 3 - 2)
-    essentialItemsCat.parent = self
-    essentialItemsCat.category = 1
-    table.insert(self.categories, essentialItemsCat)
+    self.panel:addView("Essential Items", self.essentialItemsCat, self.width / 3 - 2)
+    self.essentialItemsCat.parent = self
+    self.essentialItemsCat.category = 1
+    table.insert(self.categories, self.essentialItemsCat)
 
     --* DAILY ITEMS *--
-    local dailyItemsCat = EFTStoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
-    dailyItemsCat:initialise(FetchDailyItems())
-    dailyItemsCat:setAnchorRight(true)
-    dailyItemsCat:setAnchorBottom(true)
+    self.dailyItemsCat = EFTStoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
+    self.dailyItemsCat:initialise(self.dailyItems)
+    self.dailyItemsCat:setAnchorRight(true)
+    self.dailyItemsCat:setAnchorBottom(true)
     -- TODO Add items to the daily items scrolling list
-    self.panel:addView("Daily Items", dailyItemsCat, self.width / 3 - 2)
-    dailyItemsCat.parent = self
-    dailyItemsCat.category = 2
-    table.insert(self.categories, dailyItemsCat)
+    self.panel:addView("Daily Items", self.dailyItemsCat, self.width / 3 - 2)
+    self.dailyItemsCat.parent = self
+    self.dailyItemsCat.category = 2
+    table.insert(self.categories, self.dailyItemsCat)
 
 
     --* SELL MENU *--
-    local sellCat = SellPanel:new(0, 0, self.width, self.panel.height - self.panel.tabHeight)
-    sellCat:initialise()
-    sellCat:setAnchorRight(true)
-    sellCat:setAnchorBottom(true)
-    self.panel:addView("Sell Items", sellCat, self.width / 3 - 2)
-    sellCat.parent = self
-    sellCat.category = 3
-    table.insert(self.categories, sellCat)
+    self.sellCat = SellPanel:new(0, 0, self.width, self.panel.height - self.panel.tabHeight)
+    self.sellCat:initialise()
+    self.sellCat:setAnchorRight(true)
+    self.sellCat:setAnchorBottom(true)
+    self.panel:addView("Sell Items", self.sellCat, self.width / 3 - 2)
+    self.sellCat.parent = self
+    self.sellCat.category = 3
+    table.insert(self.categories, self.sellCat)
 
 
     -- self.essentialItems = {1,2,3,4}

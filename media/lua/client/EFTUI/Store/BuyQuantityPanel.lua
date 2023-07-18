@@ -41,11 +41,9 @@ function BuyQuantityPanel:createChildren()
     self.textPanel:setText("")
     self.textPanel:paginate()
 
-    -- TODO Add entry for amount
-    self.entryAmount = ISTextEntryBox:new("", 10, self.height / 2, self.width / 2 - 10, 25)
+    self.entryAmount = ISTextEntryBox:new("1", 10, self.height / 2, self.width / 2 - 10, 25)
     self.entryAmount:initialise()
     self.entryAmount:instantiate()
-    self.entryAmount:setText("")
     self.entryAmount:setClearButton(true)
     self.entryAmount:setOnlyNumbers(true)
     self:addChild(self.entryAmount)
@@ -59,13 +57,20 @@ function BuyQuantityPanel:createChildren()
     self:addChild(self.btnBuy)
 end
 
---***** Setters ******--
-
 ---Set the item that's been selected from the list
 ---@param item Item
 function BuyQuantityPanel:setSelectedItem(item)
     self.selectedItem = item
 end
+
+
+function BuyQuantityPanel:getCostForSelectedItem()
+    local itemCost = self.selectedItem["cost"]
+    local finalCost = tonumber(self.entryAmount:getInternalText()) * itemCost
+    return finalCost
+end
+
+
 
 function BuyQuantityPanel:onConfirmBuy()
     print("Confirm buy")
@@ -74,10 +79,16 @@ end
 function BuyQuantityPanel:onStartBuy()
     print("Buy")
 
+
+    -- TODO Disable text entry for the amount of items from here
+
     -- Starts separate confirmation panel
-    local text = " <CENTRE> Are you sure you wanna buy X amount of this item?"
+
+    local text =" <CENTRE> Are you sure you want to buy " .. tostring(self.entryAmount:getInternalText()) .. " of " .. self.selectedItem["item"]:getName() .. " for " .. tostring(self:getCostForSelectedItem()) .. "$ ?"
+
     self.confirmationPanel = ConfirmationPanel.Open(text, self.mainPanel:getX(),
-        self.mainPanel:getY() + self.mainPanel:getHeight() + 20, self.onConfirmBuy, self)
+        self.mainPanel:getY() + self.mainPanel:getHeight() + 20, self, self.onConfirmBuy)
+
 end
 
 function BuyQuantityPanel:onClick(btn)
@@ -86,38 +97,52 @@ function BuyQuantityPanel:onClick(btn)
     end
 end
 
-function BuyQuantityPanel:update()
-    ISPanel.update(self)
+function BuyQuantityPanel:render()
+    ISPanel.render(self)
 
-    if self.mainPanel:getJavaObject() == nil then self:close() end
+    if self.selectedItem ~= nil then
 
-    if self.selectedItem == nil then return end
+        -- TODO Add print of total cost based on amount
+
+        local actualItem = self.selectedItem["item"]
+        local itemCost = self.selectedItem["cost"]
+
+        local finalCost = tonumber(self.entryAmount:getInternalText()) * itemCost
+
+        local itemNameStr = " <CENTRE> " .. actualItem:getName()
+        local itemFinalCostStr = " <CENTRE> " .. itemCost .. "$ x " .. tostring(self.entryAmount:getInternalText()) .. "$ = " .. tostring(finalCost) .. "$"
+
+        local finalStr = itemNameStr .. " <LINE> " .. itemFinalCostStr
 
 
-    self.textPanel:setText(" <CENTRE> " .. self.selectedItem:getName())
-    self.textPanel:paginate()
+        -- Text
+        self.textPanel:setText(finalStr)
+        self.textPanel:paginate()
 
-
-    -- TODO Update icon here
-
-    -- FIXME this doesn't stop!!!
-    local icon = self.selectedItem:getIcon()
-    --print(icon)
-    local iconSize = 50
-
-    if self.selectedItem:getIconsForTexture() and not self.selectedItem:getIconsForTexture():isEmpty() then
-        icon = self.selectedItem:getIconsForTexture():get(0)
-    end
-    if icon then
-        local texture = getTexture("Item_" .. icon)
-        if texture then
-            self:drawTextureScaledAspect2(texture, 0, 0, iconSize, iconSize, 1, 1, 1, 1)
+        local icon = actualItem:getIcon()
+        if actualItem:getIconsForTexture() and not actualItem:getIconsForTexture():isEmpty() then
+            icon = actualItem:getIconsForTexture():get(0)
+        end
+        if icon then
+            --print(icon)
+            local texture = getTexture("Item_" .. icon)
+            if texture then
+                --print("Found texture, rendering")
+                self:drawTextureScaledAspect2(texture, self.textPanel.x + 20, self.textPanel.y + 20, 50, 50, 1, 1, 1, 1)
+            end
         end
     end
+
 end
+
 
 function BuyQuantityPanel:close()
     print("Closing BuyQuantityPanel")
+
+    if self.confirmationPanel then
+        self.confirmationPanel:close()
+    end
+
     ISPanel.close(self)
 end
 

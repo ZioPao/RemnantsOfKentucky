@@ -180,5 +180,6 @@ function EFTTabPanel:render()
 end
 
 function EFTTabPanel:close()
+	print("Closing EFT Tab Panel")
 	ISTabPanel.close(self)
 end

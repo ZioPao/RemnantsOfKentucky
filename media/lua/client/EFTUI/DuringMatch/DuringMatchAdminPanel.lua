@@ -86,9 +86,9 @@ function DuringMatchAdminPanel:createChildren()
     self:addChild(self.btnStop)
 end
 
-function DuringMatchAdminPanel.OnConfirmStop()
+function DuringMatchAdminPanel:onConfirmStop()
     print("Confirm! Teleporting back everyone")
-    DuringMatchAdminPanel.instance:setIsMatchEnded(true)
+    self:setIsMatchEnded(true)
 
 end
 
@@ -97,7 +97,7 @@ function DuringMatchAdminPanel:onClick(btn)
 
     if btn.internal == 'STOP' then
         local text = " <CENTRE> Are you sure you want to stop the match? Every player will be teleported back to their safehouse."
-        self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, DuringMatchAdminPanel.OnConfirmStop)
+        self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, self, self.onConfirmStop)
         -- TODO Stop match, teleports back everyone to their safehouses
     end
 end
