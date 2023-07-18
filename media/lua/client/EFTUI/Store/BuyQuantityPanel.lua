@@ -1,6 +1,6 @@
 -- TODO A basic confirmation panel when you're buying stuff. Asks how how much stuff you want of that specific object and then exec the transaction
 
-BuyQuantityPanel = ISPanel:derive("BuyQuantityPanel")
+local BuyQuantityPanel = ISPanel:derive("BuyQuantityPanel")
 
 ---Starts a new quantity panel
 ---@param x number
@@ -15,22 +15,10 @@ function BuyQuantityPanel:new(x, y, width, height, mainPanel)
 
     o:initialise()
     o.mainPanel = mainPanel
-    o.backgroundColor = { r = 0, g =0, b = 0, a = 0.7 }
+    o.backgroundColor = { r = 0, g = 0, b = 0, a = 0.7 }
 
     BuyQuantityPanel.instance = o
     return o
-end
-
-function BuyQuantityPanel:onConfirmBuy()
-    print("Confirm buy")
-end
-
-function BuyQuantityPanel:onStartBuy()
-    print("Buy")
-
-    -- Starts separate confirmation panel
-    local text = " <CENTRE> Are you sure you wanna buy X amount of this item?"
-    self.confirmationPanel = ConfirmationPanel.Open(text, self.mainPanel:getX(), self.mainPanel:getY() + self.mainPanel:getHeight() + 20, self.onConfirmBuy, self)
 end
 
 function BuyQuantityPanel:createChildren()
@@ -54,7 +42,7 @@ function BuyQuantityPanel:createChildren()
     self.textPanel:paginate()
 
     -- TODO Add entry for amount
-    self.entryAmount = ISTextEntryBox:new("", 10, self.height/2, self.width/2 - 10, 25)
+    self.entryAmount = ISTextEntryBox:new("", 10, self.height / 2, self.width / 2 - 10, 25)
     self.entryAmount:initialise()
     self.entryAmount:instantiate()
     self.entryAmount:setText("")
@@ -63,41 +51,74 @@ function BuyQuantityPanel:createChildren()
     self:addChild(self.entryAmount)
 
 
-    self.btnBuy = ISButton:new(self.entryAmount:getRight() + 10, self.height/2, self.width/2 - 20, 25, "Buy", self, self.onClick)
+    self.btnBuy = ISButton:new(self.entryAmount:getRight() + 10, self.height / 2, self.width / 2 - 20, 25, "Buy", self,
+        self.onClick)
     self.btnBuy.internal = "BUY"
     self.btnBuy:initialise()
     self.btnBuy:setEnable(true)
     self:addChild(self.btnBuy)
 end
 
+--***** Setters ******--
+
+---Set the item that's been selected from the list
+---@param item Item
+function BuyQuantityPanel:setSelectedItem(item)
+    self.selectedItem = item
+end
+
+function BuyQuantityPanel:onConfirmBuy()
+    print("Confirm buy")
+end
+
+function BuyQuantityPanel:onStartBuy()
+    print("Buy")
+
+    -- Starts separate confirmation panel
+    local text = " <CENTRE> Are you sure you wanna buy X amount of this item?"
+    self.confirmationPanel = ConfirmationPanel.Open(text, self.mainPanel:getX(),
+        self.mainPanel:getY() + self.mainPanel:getHeight() + 20, self.onConfirmBuy, self)
+end
+
 function BuyQuantityPanel:onClick(btn)
     if btn.internal == 'BUY' then
         self:onStartBuy()
     end
-
 end
+
 function BuyQuantityPanel:update()
     ISPanel.update(self)
 
+    if self.mainPanel:getJavaObject() == nil then self:close() end
+
+    if self.selectedItem == nil then return end
+
+
+    self.textPanel:setText(" <CENTRE> " .. self.selectedItem:getName())
+    self.textPanel:paginate()
+
+
     -- TODO Update icon here
 
+    -- FIXME this doesn't stop!!!
+    local icon = self.selectedItem:getIcon()
+    --print(icon)
+    local iconSize = 50
+
+    if self.selectedItem:getIconsForTexture() and not self.selectedItem:getIconsForTexture():isEmpty() then
+        icon = self.selectedItem:getIconsForTexture():get(0)
+    end
+    if icon then
+        local texture = getTexture("Item_" .. icon)
+        if texture then
+            self:drawTextureScaledAspect2(texture, 0, 0, iconSize, iconSize, 1, 1, 1, 1)
+        end
+    end
 end
 
-
--------------------------
--- Mostly debug stuff
-
-function BuyQuantityPanel.Open(x, y)
-    local width = 500
-    local height = 120
-
-    local panel = BuyQuantityPanel:new(x, y, width, height)
-    panel:initialise()
-    panel:addToUIManager()
-    panel:bringToTop()
-    return panel
+function BuyQuantityPanel:close()
+    print("Closing BuyQuantityPanel")
+    ISPanel.close(self)
 end
 
-function BuyQuantityPanel.Close()
-    BuyQuantityPanel.instance:close()
-end
+return BuyQuantityPanel

@@ -2,6 +2,8 @@
 --**                    ROBERT JOHNSON                     **
 --***********************************************************
 
+local BuyQuantityPanel = require("EFTUI/Store/BuyQuantityPanel")
+
 EFTStoreCategory = ISPanelJoypad:derive("EFTStoreCategory")
 EFTStoreCategory.instance = nil
 EFTStoreCategory.SMALL_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Small):getLineHeight()
@@ -38,30 +40,27 @@ function EFTStoreCategory:initialise(itemsTable)
     self.items.itemHeight = 2 + self.MEDIUM_FONT_HGT + 32 + 4
     self.items.selected = 0
     self.items.doDrawItem = EFTStoreCategory.doDrawItem
-    --self.items.onMouseDown = EFTStoreCategory.onMouseDownItems
-    --self.items.onMouseDoubleClick = EFTStoreCategory.onDoubleClick
+    self.items.onMouseDown = EFTStoreCategory.onMouseDownItems
     self.items.joypadParent = self
-    --    self.items.resetSelectionOnChangeFocus = true
     self.items.drawBorder = false
     self:addChild(self.items)
 
     self.items.SMALL_FONT_HGT = self.SMALL_FONT_HGT
     self.items.MEDIUM_FONT_HGT = self.MEDIUM_FONT_HGT
 
-
     for i = 1, #itemsTable do
         self.items:addItem(i, itemsTable[i])
     end
 
     local buyPanelX = self.items:getRight() + 10
-    local buyPanelY = entryHgt + self.items:getHeight()/6
-    local buyPanelWidth = self.width/2 - 20
-    local buyPanelHeight = self.height - self.items:getHeight()/3
+    local buyPanelY = entryHgt
+    local buyPanelWidth = self.width / 2 - 20
+    local buyPanelHeight = self.height - 20
 
     self.buyPanel = BuyQuantityPanel:new(buyPanelX, buyPanelY, buyPanelWidth, buyPanelHeight, self.shopPanel)
     self.buyPanel:initialise()
     self:addChild(self.buyPanel)
-    
+
     --self.filterLabel = ISLabel:new(4, 2, entryHgt, getText("IGUI_CraftUI_Name_Filter"),1,1,1,1,UIFont.Small, true)
     --self:addChild(self.filterLabel)
 
@@ -81,21 +80,15 @@ function EFTStoreCategory:initialise(itemsTable)
     -- self:addChild(self.filterAll)
 end
 
+function EFTStoreCategory:close()
+    print("Closing EFTStoreCategory")
+    self.buyPanel:removeFromUIManager()
+    self.buyPanel:close()
+    ISPanelJoypad.close(self)
+end
+
 function EFTStoreCategory:update()
     if not self.parent:getIsVisible() then return end
-    -- local text = string.trim(self.filterEntry:getInternalText())
-    -- local filterAll = self.filterAll:isSelected(1)
-
-    -- if (text ~= self.lastText) or (filterAll ~= self.filteringAll) then
-    --     self.filteringAll = filterAll
-    --     --self:filter()     TODO NO FILTERS
-    --     self.lastText = text
-    --     --self:syncAllFilters()
-    -- end
-
-    -- self.filterAll:setX(self.width / 3 - self.filterAll.width)
-    -- self.filterEntry:setWidth(self.filterAll.x - 5 - self.filterEntry.x)
-    -- self.items:setWidth(self.width / 3)
 end
 
 function EFTStoreCategory:prerender()
@@ -186,7 +179,8 @@ function EFTStoreCategory:doDrawItem(y, item, alt)
     if icon then
         local texture = getTexture("Item_" .. icon)
         if texture then
-            self:drawTextureScaledAspect2(texture, self:getWidth() - iconSize*2, y + iconSize/4, iconSize, iconSize,  1, 1, 1, 1)
+            self:drawTextureScaledAspect2(texture, self:getWidth() - iconSize * 2, y + iconSize / 4, iconSize, iconSize,
+                1, 1, 1, 1)
         end
     end
     -- local itemTexture = item.item
@@ -236,17 +230,34 @@ function EFTStoreCategory:isMouseOverFavorite(x)
 end
 
 function EFTStoreCategory:onMouseDownItems(x, y)
-
-    -- TODO Check if we're clicking this panel!
-    print("Onmousedown")
-
+    if #self.items == 0 then return end
     local row = self:rowAt(x, y)
-    if row == -1 then return end
-    if self.parent:isMouseOverFavorite(x) then
-        self.parent:addToFavorite(false)
-    elseif not self:isMouseOverScrollBar() then
-        self.selected = row
+
+    if row > #self.items then
+        row = #self.items
     end
+    if row < 1 then
+        row = 1
+    end
+
+    -- RJ: If you select the same item it unselect it
+    --if self.selected == y then
+    --if self.selected == y then
+    --self.selected = -1;
+    --return;
+    --end
+
+    getSoundManager():playUISound("UISelectListItem")
+
+    self.selected = row
+
+    if self.onmousedown then
+        self.onmousedown(self.target, self.items[self.selected].item)
+    end
+
+    -- TODO Send data to the BuyQuantityPanel
+
+    self.parent.buyPanel:setSelectedItem(self.items[self.selected].item)
 end
 
 function EFTStoreCategory:addToFavorite(fromKeyboard)
@@ -259,7 +270,7 @@ function EFTStoreCategory:addToFavorite(fromKeyboard)
     selectedItem.favorite = not selectedItem.favorite
     if self.character then
         self.character:getModData()[self.shopPanel:getFavoriteModDataString(selectedItem.recipe)] = selectedItem
-        .favorite
+            .favorite
     end
     self.shopPanel:refresh()
 end

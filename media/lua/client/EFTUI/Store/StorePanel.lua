@@ -7,7 +7,6 @@
 -- Visible balance from all three tabs (Maybe on top?), purchased items should be sent directly at the entrance of the safehouse (inside I guess)
 -- The box where items will be placed has a limit of weight
 
-
 require "ISUI/ISCollapsableWindow"
 
 ShopPanel = ISCollapsableWindow:derive("ShopPanel")
@@ -56,16 +55,24 @@ function ShopPanel:new(x, y, width, height, character)
     return o
 end
 
+function ShopPanel:close()
+    -- Closes tabs
+
+    print("Closing ShopPanel")
+    self.panel:close()
+
+    ISCollapsableWindow.close(self)
+end
+
 --**********************************************--
 ---Returns a table containing the essential items
 ---@return table
 local function FetchEssentialItems()
-
     -- TODO Only for test
     local items = getAllItems()
     local essentialItems = {}
 
-    for i=0, 25 do
+    for i = 0, 25 do
         essentialItems[i] = items:get(i)
         --tab.items:addItem(i, items:get(i))
     end
@@ -91,7 +98,6 @@ function ShopPanel:initialise()
 
 
     -- TODO Sellable items must be present in a list
-
 end
 
 function ShopPanel:createChildren()
@@ -118,9 +124,8 @@ function ShopPanel:createChildren()
     essentialItemsCat:initialise(FetchEssentialItems())
     essentialItemsCat:setAnchorRight(true)
     essentialItemsCat:setAnchorBottom(true)
-    --FetchEssentialItems(essentialItemsCat)
     -- TODO Add items to the essential items scrolling list
-    self.panel:addView("Essential Items", essentialItemsCat, self.width/3 - 2)
+    self.panel:addView("Essential Items", essentialItemsCat, self.width / 3 - 2)
     essentialItemsCat.parent = self
     essentialItemsCat.category = 1
     table.insert(self.categories, essentialItemsCat)
@@ -131,7 +136,7 @@ function ShopPanel:createChildren()
     dailyItemsCat:setAnchorRight(true)
     dailyItemsCat:setAnchorBottom(true)
     -- TODO Add items to the daily items scrolling list
-    self.panel:addView("Daily Items", dailyItemsCat, self.width/3 - 2)
+    self.panel:addView("Daily Items", dailyItemsCat, self.width / 3 - 2)
     dailyItemsCat.parent = self
     dailyItemsCat.category = 2
     table.insert(self.categories, dailyItemsCat)
@@ -142,7 +147,7 @@ function ShopPanel:createChildren()
     sellCat:initialise()
     sellCat:setAnchorRight(true)
     sellCat:setAnchorBottom(true)
-    self.panel:addView("Sell Items", sellCat, self.width/3 - 2)
+    self.panel:addView("Sell Items", sellCat, self.width / 3 - 2)
     sellCat.parent = self
     sellCat.category = 3
     table.insert(self.categories, sellCat)
@@ -264,15 +269,6 @@ end
 
 ---Logic based on ISCraftingUI
 function ShopPanel:refresh()
-
     local selectedView = self.panel.activeView.name
     self.panel:activateView(selectedView)
-
-end
-
-function ShopPanel:drawItems(y, item, alt)
-    if y + self:getYScroll() >= self.height then return y + self.itemheight end
-    if y + self.itemheight + self:getYScroll() <= 0 then return y + self.itemheight end
-
-    return y + self.itemheight
 end
