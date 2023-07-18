@@ -7,6 +7,22 @@ EFTStoreCategory.instance = nil
 EFTStoreCategory.SMALL_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Small):getLineHeight()
 EFTStoreCategory.MEDIUM_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Medium):getLineHeight()
 
+function EFTStoreCategory:new(x, y, width, height, shopPanel)
+    local o = {}
+    o = ISPanelJoypad:new(x, y, width, height)
+    setmetatable(o, self)
+    self.__index = self
+    o.shopPanel = shopPanel
+    o.favoriteStar = getTexture("media/ui/FavoriteStar.png")
+    o.favCheckedTex = getTexture("media/ui/FavoriteStarChecked.png")
+    o.favNotCheckedTex = getTexture("media/ui/FavoriteStarUnchecked.png")
+    o.favPadX = 20
+    o.favWidth = o.favoriteStar and o.favoriteStar:getWidth() or 13
+    o:noBackground()
+    EFTStoreCategory.instance = o
+    return o
+end
+
 ---Initialise a category, giving an items table
 ---@param itemsTable table
 function EFTStoreCategory:initialise(itemsTable)
@@ -14,7 +30,7 @@ function EFTStoreCategory:initialise(itemsTable)
     local fontHgtSmall = self.SMALL_FONT_HGT
     local entryHgt = fontHgtSmall + 2 * 2
 
-    self.items = ISScrollingListBox:new(1, entryHgt + 25, self.width / 2, self.height - (entryHgt + 25))
+    self.items = ISScrollingListBox:new(1, entryHgt, self.width / 2, self.height - (entryHgt))
     self.items:initialise()
     self.items:instantiate()
     self.items:setAnchorRight(false) -- resize in update()
@@ -22,8 +38,8 @@ function EFTStoreCategory:initialise(itemsTable)
     self.items.itemHeight = 2 + self.MEDIUM_FONT_HGT + 32 + 4
     self.items.selected = 0
     self.items.doDrawItem = EFTStoreCategory.doDrawItem
-    self.items.onMouseDown = EFTStoreCategory.onMouseDown
-    self.items.onMouseDoubleClick = EFTStoreCategory.onDoubleClick
+    --self.items.onMouseDown = EFTStoreCategory.onMouseDownItems
+    --self.items.onMouseDoubleClick = EFTStoreCategory.onDoubleClick
     self.items.joypadParent = self
     --    self.items.resetSelectionOnChangeFocus = true
     self.items.drawBorder = false
@@ -37,8 +53,12 @@ function EFTStoreCategory:initialise(itemsTable)
         self.items:addItem(i, itemsTable[i])
     end
 
+    local buyPanelX = self.items:getRight() + 10
+    local buyPanelY = entryHgt + self.items:getHeight()/6
+    local buyPanelWidth = self.width/2 - 20
+    local buyPanelHeight = self.height - self.items:getHeight()/3
 
-    self.buyPanel = BuyQuantityPanel:new(self.items:getRight() + 10, entryHgt + 25, self.width/2 - 20, self.height/2, nil)
+    self.buyPanel = BuyQuantityPanel:new(buyPanelX, buyPanelY, buyPanelWidth, buyPanelHeight, self.shopPanel)
     self.buyPanel:initialise()
     self:addChild(self.buyPanel)
     
@@ -157,7 +177,7 @@ function EFTStoreCategory:doDrawItem(y, item, alt)
 
     local textWidth = 0
     local iconX = 100
-    local iconSize = 50
+    local iconSize = 25
 
     local icon = item.item:getIcon()
     if item.item:getIconsForTexture() and not item.item:getIconsForTexture():isEmpty() then
@@ -166,7 +186,7 @@ function EFTStoreCategory:doDrawItem(y, item, alt)
     if icon then
         local texture = getTexture("Item_" .. icon)
         if texture then
-            self:drawTextureScaledAspect2(texture, self:getWidth() - iconSize*2, y + (self.itemHeight - iconSize) / 2, iconSize, iconSize,  1, 1, 1, 1)
+            self:drawTextureScaledAspect2(texture, self:getWidth() - iconSize*2, y + iconSize/4, iconSize, iconSize,  1, 1, 1, 1)
         end
     end
     -- local itemTexture = item.item
@@ -215,7 +235,11 @@ function EFTStoreCategory:isMouseOverFavorite(x)
     return (x >= self:getFavoriteX()) and not self.items:isMouseOverScrollBar()
 end
 
-function EFTStoreCategory:onMouseDown(x, y)
+function EFTStoreCategory:onMouseDownItems(x, y)
+
+    -- TODO Check if we're clicking this panel!
+    print("Onmousedown")
+
     local row = self:rowAt(x, y)
     if row == -1 then return end
     if self.parent:isMouseOverFavorite(x) then
@@ -243,26 +267,10 @@ end
 function EFTStoreCategory:onDoubleClick(x, y)
     local row = self:rowAt(x, y)
     if row == -1 then return end
+
     if x < self.parent:getFavoriteX() then
         --self.parent.parent:craft()
     elseif not self:isMouseOverScrollBar() then
         self.parent:addToFavorite(false)
     end
-end
-
-function EFTStoreCategory:new(x, y, width, height, shopPanel)
-    local o = {}
-    o = ISPanelJoypad:new(x, y, width, height)
-    setmetatable(o, self)
-    self.__index = self
-    o.shopPanel = shopPanel
-    o.character = shopPanel.character
-    o.favoriteStar = getTexture("media/ui/FavoriteStar.png")
-    o.favCheckedTex = getTexture("media/ui/FavoriteStarChecked.png")
-    o.favNotCheckedTex = getTexture("media/ui/FavoriteStarUnchecked.png")
-    o.favPadX = 20
-    o.favWidth = o.favoriteStar and o.favoriteStar:getWidth() or 13
-    o:noBackground()
-    EFTStoreCategory.instance = o
-    return o
 end

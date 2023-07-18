@@ -65,7 +65,7 @@ local function FetchEssentialItems()
     local items = getAllItems()
     local essentialItems = {}
 
-    for i=0, 10 do
+    for i=0, 25 do
         essentialItems[i] = items:get(i)
         --tab.items:addItem(i, items:get(i))
     end
@@ -122,7 +122,7 @@ function ShopPanel:createChildren()
     -- TODO Add items to the essential items scrolling list
     self.panel:addView("Essential Items", essentialItemsCat, self.width/3 - 2)
     essentialItemsCat.parent = self
-    essentialItemsCat.category = 1  
+    essentialItemsCat.category = 1
     table.insert(self.categories, essentialItemsCat)
 
     --* DAILY ITEMS *--
