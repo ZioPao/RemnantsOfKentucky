@@ -130,6 +130,7 @@ function BeforeMatchAdminPanel:update()
 
 
     -- TODO Maybe use a ontick since this isn't updated every tick and we'd want it to be fluid
+    -- FIX this should be on a Render, not update
     -- Updates right panel position
     if self.openedPanel then
         self.openedPanel:setX(self:getRight())

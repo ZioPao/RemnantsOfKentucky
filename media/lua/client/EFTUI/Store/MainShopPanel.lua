@@ -51,9 +51,6 @@ function MainShopPanel:new(x, y, width, height, character)
     o.minimumWidth = 800
     o.minimumHeight = 600
     setmetatable(o, self)
-    if getCore():getKey("Forward") ~= 44 then -- hack, seriously, need a way to detect qwert/azerty keyboard :(
-        MainShopPanel.qwertyConfiguration = false
-    end
 
     o.title = "Shop"
     self.__index = self
@@ -68,14 +65,12 @@ function MainShopPanel:new(x, y, width, height, character)
     return o
 end
 
+---Closes all the related tabs too
 function MainShopPanel:close()
-    -- Closes tabs
-    --print("Closing MainShopPanel")
     self.panel:close()
     self.essentialItemsCat:close()
     self.dailyItemsCat:close()
     self.sellCat:close()
-
     ISCollapsableWindow.close(self)
 end
 
@@ -101,23 +96,9 @@ function MainShopPanel:initialise()
         return essentialItems
     end
 
-    ---Returns a table containing the daily items. TODO get them from the server?
-    ---@return table
-    local function FetchDailyItems()
-        -- TODO: Execute AdminClientShopManager.refreshDailyItems() command manually for now before this.
-        -- TODO USE: return ClientShopManager.GetDailyItems()
-        return {}
-    end
 
-    -- TODO Essential items list should be fixed
-    self.essentialitems = FetchEssentialItems()
-    self.dailyItems = FetchDailyItems()
-
-
-    -- TODO Daily items should be randomly generated, based on server?
-
-
-    -- TODO Sellable items must be present in a list
+    self.essentialitems = FetchEssentialItems() -- TODO Use ClientShopManager.GetEssentialItems()
+    self.dailyItems = {} -- TODO Use ClientShopManager.GetDailyItems()
 end
 
 function MainShopPanel:createChildren()
@@ -143,7 +124,6 @@ function MainShopPanel:createChildren()
     self.essentialItemsCat:initialise(self.essentialitems)
     self.essentialItemsCat:setAnchorRight(true)
     self.essentialItemsCat:setAnchorBottom(true)
-    -- TODO Add items to the essential items scrolling list
     self.panel:addView("Essential Items", self.essentialItemsCat, self.width / 3 - 2)
     self.essentialItemsCat.parent = self
     self.essentialItemsCat.category = 1
@@ -154,7 +134,6 @@ function MainShopPanel:createChildren()
     self.dailyItemsCat:initialise(self.dailyItems)
     self.dailyItemsCat:setAnchorRight(true)
     self.dailyItemsCat:setAnchorBottom(true)
-    -- TODO Add items to the daily items scrolling list
     self.panel:addView("Daily Items", self.dailyItemsCat, self.width / 3 - 2)
     self.dailyItemsCat.parent = self
     self.dailyItemsCat.category = 2
@@ -172,6 +151,4 @@ function MainShopPanel:createChildren()
 
     -- Set default stuff
     self.panel:activateView("Essential Items")
-
-
 end

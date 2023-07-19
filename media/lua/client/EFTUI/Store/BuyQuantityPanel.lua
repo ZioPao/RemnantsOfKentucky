@@ -43,15 +43,20 @@ function BuyQuantityPanel:createChildren()
     self.textPanel:setText("")
     self.textPanel:paginate()
 
-    self.entryAmount = ISTextEntryBox:new("1", 10, self.height / 2, self.width / 2 - 10, 25)
+    local xMargin = 10
+    local yMargin = 20
+    local elementHeight = 50
+
+    self.entryAmount = ISTextEntryBox:new("1", xMargin, elementHeight + (self.height / 2), self.width - xMargin * 2, elementHeight)
     self.entryAmount:initialise()
     self.entryAmount:instantiate()
     self.entryAmount:setClearButton(true)
     self.entryAmount:setOnlyNumbers(true)
+    self.entryAmount:setMaxTextLength(2)
     self:addChild(self.entryAmount)
 
 
-    self.btnBuy = ISButton:new(self.entryAmount:getRight() + 10, self.height / 2, self.width / 2 - 20, 25, "Buy", self,
+    self.btnBuy = ISButton:new(xMargin, self.entryAmount:getBottom() + yMargin, self.width - xMargin*2, elementHeight*2, "Buy", self,
         self.onClick)
     self.btnBuy.internal = "BUY"
     self.btnBuy:initialise()
@@ -106,6 +111,12 @@ function BuyQuantityPanel:render()
         local actualItem = self.selectedItem["item"]
         local itemCost = self.selectedItem["cost"]
 
+        local entryAmountText = self.entryAmount:getInternalText()
+
+        if entryAmountText == nil or entryAmountText == "" or entryAmountText == "0" then
+            self.entryAmount:setText("1")
+        end
+
         local finalCost = tonumber(self.entryAmount:getInternalText()) * itemCost
 
         local itemNameStr = " <CENTRE> " .. actualItem:getName()
@@ -133,6 +144,7 @@ function BuyQuantityPanel:render()
         end
     end
 end
+
 
 function BuyQuantityPanel:close()
     --print("Closing BuyQuantityPanel")

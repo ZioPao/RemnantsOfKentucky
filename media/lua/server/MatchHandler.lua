@@ -31,9 +31,8 @@ function MatchHandler:initialise()
     return true
 end
 
-
+---Setup teleporting players to their spawn points
 function MatchHandler:start()
-  -- * Setup teleporting players to their spawn points
   local playersArray = getOnlinePlayers()
   for i=0, playersArray:size() do
       -- Fetch spawn point and delete it

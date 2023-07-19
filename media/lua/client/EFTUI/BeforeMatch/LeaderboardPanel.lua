@@ -209,7 +209,7 @@ function LeadearboardPanel:fillList()
         players = getOnlinePlayers()
     else
         players = {}
-        -- TODO ONly for test
+        -- DEBUG Only for test
         for i = 1, 20 do
             table.insert(players, { pl = getPlayer(), balance = ZombRand(1000) })
         end
