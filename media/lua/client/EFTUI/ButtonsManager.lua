@@ -3,8 +3,8 @@
 ---
 BUTTONS_DATA_TEXTURES = {
     LeaderboardButton = {
-        ON = getTexture("media/textures/leaderboard_on.png"),
-        OFF = getTexture("media/textures/leaderboard_off.png")
+        ON = getTexture("media/textures/Leaderboard_on.png"),       -- TODO These icons are obviously temporary.
+        OFF = getTexture("media/textures/Leaderboard_off.png")
     }
 }
 
