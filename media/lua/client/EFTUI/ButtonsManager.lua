@@ -2,7 +2,7 @@
 
 ---
 BUTTONS_DATA_TEXTURES = {
-    LeadearboardButton = {
+    LeaderboardButton = {
         ON = getTexture("media/textures/leaderboard_on.png"),
         OFF = getTexture("media/textures/leaderboard_off.png")
     }
@@ -17,9 +17,8 @@ ButtonManager = {}
 function ButtonManager.AddNewButton(buttonModule, onClick)
     local xMax = ISEquippedItem.instance.x - 5
     local yMax = ISEquippedItem.instance:getBottom() + 5
+
     ---@type Texture
-
-
     local texture = BUTTONS_DATA_TEXTURES[buttonModule].OFF
     local textureW, textureH = texture:getWidth(), texture:getHeight()
     ButtonManager[buttonModule] = ISButton:new(xMax, yMax, textureW, textureH, "", nil, onClick)
