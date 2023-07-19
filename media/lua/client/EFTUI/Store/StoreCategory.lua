@@ -60,6 +60,9 @@ function StoreCategory:createChildren()
     self.buyPanel = BuyQuantityPanel:new(buyPanelX, buyPanelY, buyPanelWidth, buyPanelHeight, self.shopPanel)
     self.buyPanel:initialise()
     self:addChild(self.buyPanel)
+
+    -- TODO Select the first item
+
 end
 
 ---Initialise a category, giving an items table

@@ -132,7 +132,6 @@ function MainShopPanel:createChildren()
     self.panel.target = self
     self.panel:setEqualTabWidth(false)
     self:addChild(self.panel)
-
     self.categories = {}
 
 
@@ -158,7 +157,6 @@ function MainShopPanel:createChildren()
     self.dailyItemsCat.category = 2
     table.insert(self.categories, self.dailyItemsCat)
 
-
     --* SELL MENU *--
     self.sellCat = SellPanel:new(0, 0, self.width, self.panel.height - self.panel.tabHeight)
     self.sellCat:initialise()
@@ -169,123 +167,8 @@ function MainShopPanel:createChildren()
     self.sellCat.category = 3
     table.insert(self.categories, self.sellCat)
 
-
-    -- self.essentialItems = {1,2,3,4}
-    -- self.dailyItems = {}
-
-    -- for i = 1, #self.essentialItems do
-
-    --     local essentialItem = self.essentialItems[i]
-    --     local cat = StoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
-    --     cat:initialise()
-    --     cat:setAnchorRight(true)
-    --     cat:setAnchorBottom(true)
-    --     local catName =  "Test" .. tostring(essentialItem)
-    --     self.panel:addView(catName, cat)
-    --     cat.infoText = getText("UI_CraftingUI")
-    --     cat.parent = self
-    --     cat.category = i
-
-    --     table.insert(self.categories, cat)
-
-    -- end
-
-    -- self.itemsListBox = ISScrollingListBox:new(1, 30, self.width / 3, self.height - (59 + MainShopPanel.bottomInfoHeight))
-    -- self.itemsListBox:initialise()
-    -- self.itemsListBox:instantiate()
-    -- self.itemsListBox.itemheight = math.max(MainShopPanel.smallFontHeight, 22)
-    -- self.itemsListBox.font = UIFont.NewSmall
-    -- self.itemsListBox.doDrawItem = self.drawItems
-    -- self.itemsListBox.drawBorder = true
-    -- self.itemsListBox:setVisible(false)
-    -- self:addChild(self.itemsListBox)
-
-    -- for k = 1, #self.recipesListH, 1 do
-    --     local i = self.recipesListH[k]
-    --     local l = self.recipesList[i]
-    --     --for i,l in pairs(self.recipesList) do
-    --     local cat1 = StoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
-    --     cat1:initialise()
-    --     cat1:setAnchorRight(true)
-    --     cat1:setAnchorBottom(true)
-    --     local catName = getTextOrNull("IGUI_CraftCategory_" .. i) or i
-    --     self.panel:addView(catName, cat1)
-    --     cat1.infoText = getText("UI_CraftingUI")
-    --     cat1.parent = self
-    --     cat1.category = i
-    --     for s, d in ipairs(l) do
-    --         cat1.recipes:addItem(s, d)
-    --     end
-    --     table.insert(self.categories, cat1)
-    -- end
-
-    -- self.craftOneButton = ISButton:new(0, self.height - MainShopPanel.bottomInfoHeight - 20 - 15, 50, 25,
-    --     getText("IGUI_CraftUI_ButtonCraftOne"), self, MainShopPanel.craft)
-    -- self.craftOneButton:initialise()
-    -- self:addChild(self.craftOneButton)
-
-    -- self.craftAllButton = ISButton:new(0, self.height - MainShopPanel.bottomInfoHeight - 20 - 15, 50, 25,
-    --     getText("IGUI_CraftUI_ButtonCraftAll"), self, MainShopPanel.craftAll)
-    -- self.craftAllButton:initialise()
-    -- self:addChild(self.craftAllButton)
+    -- Set default stuff
+    self.panel:activateView("Essential Items")
 
 
-    -- self.taskLabel = ISLabel:new(4, 5, 19, "", 1, 1, 1, 1, UIFont.Small, true)
-    -- self:addChild(self.taskLabel)
-
-    -- self.addIngredientButton = ISButton:new(0, self.height - MainShopPanel.bottomInfoHeight - 20 - 15, 50, 25,
-    --     getText("IGUI_CraftUI_ButtonAddIngredient"), self, MainShopPanel.onAddIngredient)
-    -- self.addIngredientButton:initialise()
-    -- self:addChild(self.addIngredientButton)
-    -- self.addIngredientButton:setVisible(false)
-
-    -- --    self.tickBox = ISTickBox:new(0, 0, 100, 20, "", self, MainShopPanel.tickBoxChange)
-    -- --    self.tickBox.onlyOnePossibility = true
-    -- --    self.tickBox.choicesColor = {r=1, g=1, b=1, a=1}
-    -- --    self.tickBox:initialise()
-    -- --    self:addChild(self.tickBox)
-
-    -- -- For non-evolved recipes
-    -- self.ingredientPanel = ISScrollingListBox:new(1, 30, self.width / 3, self.height - (59 + MainShopPanel.bottomInfoHeight))
-    -- self.ingredientPanel:initialise()
-    -- self.ingredientPanel:instantiate()
-    -- self.ingredientPanel.itemheight = math.max(MainShopPanel.smallFontHeight, 22)
-    -- self.ingredientPanel.font = UIFont.NewSmall
-    -- self.ingredientPanel.doDrawItem = self.drawNonEvolvedIngredient
-    -- self.ingredientPanel.drawBorder = true
-    -- self.ingredientPanel:setVisible(false)
-    -- self:addChild(self.ingredientPanel)
-
-    -- -- For evolved recipes
-    -- self.ingredientListbox = ISScrollingListBox:new(1, 30, self.width / 3,
-    --     self.height - (59 + MainShopPanel.bottomInfoHeight))
-    -- self.ingredientListbox:initialise()
-    -- self.ingredientListbox:instantiate()
-    -- self.ingredientListbox.itemheight = math.max(MainShopPanel.smallFontHeight, 22)
-    -- self.ingredientListbox.selected = 0
-    -- self.ingredientListbox.joypadParent = self
-    -- self.ingredientListbox.font = UIFont.NewSmall
-    -- self.ingredientListbox.doDrawItem = self.drawEvolvedIngredient
-    -- self.ingredientListbox:setOnMouseDoubleClick(self, self.onDblClickIngredientListbox)
-    -- self.ingredientListbox.drawBorder = true
-    -- self.ingredientListbox:setVisible(false)
-    -- --    self.ingredientListbox.resetSelectionOnChangeFocus = true
-    -- self:addChild(self.ingredientListbox)
-    -- self.ingredientListbox.PoisonTexture = self.PoisonTexture
-
-    -- self.noteRichText = ISRichTextLayout:new(self.width)
-    -- self.noteRichText:setMargins(0, 0, 0, 0)
-    -- self.noteRichText:setText(getText("IGUI_CraftUI_Note"))
-    -- self.noteRichText.textDirty = true
-
-    -- self.keysRichText = ISRichTextLayout:new(self.width)
-    -- self.keysRichText:setMargins(5, 0, 5, 0)
-
-    --self:refresh()
-end
-
----Logic based on ISCraftingUI
-function MainShopPanel:refresh()
-    local selectedView = self.panel.activeView.name
-    self.panel:activateView(selectedView)
 end

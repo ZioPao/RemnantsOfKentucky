@@ -1,25 +1,123 @@
 --[[
-    The leaderboard is a special menu that everyone can access from safehouses.
+    The leaderboard is a special menu that everyone can access from their safehouses.
     It will show a list of all the players who have played on the server, sorted by
     balance on that player account.
 ]]
 
-
-
 local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
 local FONT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium)
 local FONT_HGT_LARGE = getTextManager():getFontHeight(UIFont.Large)
-
 local FONT_SCALE = FONT_HGT_MEDIUM / 14
 local HEADER_HGT = FONT_HGT_MEDIUM + 2 * 2
 local ENTRY_HGT = FONT_HGT_MEDIUM + 2 * 2
 
--- TODO Make it local
+local LeaderboardScrollingTable = ISPanel:derive("LeaderboardScrollingTable")
+
+function LeaderboardScrollingTable:new(x, y, width, height, viewer)
+    local o = ISPanel:new(x, y, width, height)
+    setmetatable(o, self)
+
+    o.listHeaderColor = { r = 0.4, g = 0.4, b = 0.4, a = 0.3 }
+    o.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 0 }
+    o.backgroundColor = { r = 0, g = 0, b = 0, a = 0.0 }
+    o.buttonBorderColor = { r = 0.7, g = 0.7, b = 0.7, a = 0.5 }
+    o.totalResult = 0
+    o.viewer = viewer
+
+    LeaderboardScrollingTable.instance = o
+    return o
+end
+
+function LeaderboardScrollingTable:createChildren()
+    local btnHgt = math.max(25, FONT_HGT_SMALL + 3 * 2)
+    local bottomHgt = 5 + FONT_HGT_SMALL * 2 + 5 + btnHgt + 20 + FONT_HGT_LARGE + HEADER_HGT + ENTRY_HGT
+
+    self.datas = ISScrollingListBox:new(0, HEADER_HGT, self.width, self.height - bottomHgt + 10)
+    self.datas:initialise()
+    self.datas:instantiate()
+    self.datas.itemheight = FONT_HGT_LARGE + 4 * 2
+    self.datas.selected = 0
+    self.datas.joypadParent = self
+    self.datas.font = UIFont.Large
+    self.datas.doDrawItem = self.drawDatas
+    self.datas.drawBorder = true
+    self.datas:addColumn("Player", 0)
+    self.datas:addColumn("Balance", 200)
+    self:addChild(self.datas)
+end
+
+---Initialize and sort the list
+---@param module table
+function LeaderboardScrollingTable:initList(module)
+    self.datas:clear()
+
+    -- Orders it based on balance
+    local function SortByBalance(a, b)
+        return a.balance > b.balance
+    end
+
+    table.sort(module, SortByBalance)
+
+    for i = 1, #module do
+        local playerTab = module[i]
+        local username = module[i].pl:getUsername()
+
+        -- Filters it based on the filterEntry
+        if self.viewer.filterEntry:getInternalText() ~= "" and string.trim(self.viewer.filterEntry:getInternalText()) == nil or string.contains(string.lower(username), string.lower(string.trim(self.viewer.filterEntry:getInternalText()))) then
+            self.datas:addItem(username, playerTab)
+        end
+    end
+end
+
+function LeaderboardScrollingTable:update()
+    self.datas.doDrawItem = self.drawDatas
+end
+
+function LeaderboardScrollingTable:drawDatas(y, item, alt)
+    if y + self:getYScroll() + self.itemheight < 0 or y + self:getYScroll() >= self.height then
+        return y + self.itemheight
+    end
+    local a = 0.9
+
+    if self.selected == item.index then
+        self:drawRect(0, (y), self:getWidth(), self.itemheight, 0.3, 0.7, 0.35, 0.15)
+    end
+
+    -- TODO Customize colors
+    if alt then
+        self:drawRect(0, (y), self:getWidth(), self.itemheight, 0.3, 0.6, 0.5, 0.5)
+    end
+
+    self:drawRectBorder(0, (y), self:getWidth(), self.itemheight, a, self.borderColor.r, self.borderColor.g,
+        self.borderColor.b)
+
+    local xOffset = 10
+    local clipX = self.columns[1].size
+    local clipX2 = self.columns[2].size
+    local clipY = math.max(0, y + self:getYScroll())
+    local clipY2 = math.min(self.height, y + self:getYScroll() + self.itemheight)
+
+    self:setStencilRect(clipX, clipY, clipX2 - clipX, clipY2 - clipY)
+    self:drawText(item.item.pl:getUsername(), xOffset, y + 4, 1, 1, 1, a, self.font)
+    self:clearStencilRect()
+
+    -- Balance
+    --TODO local balance = GetBalance(item.item)
+    self:drawText(tostring(item.item.balance), self.columns[2].size + xOffset, y + 4, 1, 1, 1, a, self.font)
+
+    return y + self.itemheight
+end
+
+--************************************************************************--
+
+-- TODO Make this local
 LeadearboardPanel = ISCollapsableWindow:derive("LeadearboardPanel")
 
 function LeadearboardPanel.Open(x, y)
-    if LeadearboardPanel.instance then
+    if LeadearboardPanel.instance and LeadearboardPanel.instance:getIsVisible() then
         LeadearboardPanel.instance:close()
+        ButtonManager["LeaderboardButton"]:setImage(BUTTONS_DATA_TEXTURES["LeaderboardButton"].OFF)
+        return
     end
 
     -- TODO Make it scale based on resolution
@@ -30,6 +128,7 @@ function LeadearboardPanel.Open(x, y)
     modal:initialise()
     modal:addToUIManager()
     modal.instance:setKeyboardFocus()
+    ButtonManager["LeaderboardButton"]:setImage(BUTTONS_DATA_TEXTURES["LeaderboardButton"].ON)
 
     return modal
 end
@@ -139,100 +238,4 @@ end
 
 --************************************************************************--
 
-
-LeaderboardScrollingTable = ISPanel:derive("LeaderboardScrollingTable")
-
-function LeaderboardScrollingTable:new(x, y, width, height, viewer)
-    local o = ISPanel:new(x, y, width, height)
-    setmetatable(o, self)
-
-    o.listHeaderColor = { r = 0.4, g = 0.4, b = 0.4, a = 0.3 }
-    o.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 0 }
-    o.backgroundColor = { r = 0, g = 0, b = 0, a = 0.0 }
-    o.buttonBorderColor = { r = 0.7, g = 0.7, b = 0.7, a = 0.5 }
-    o.totalResult = 0
-    o.viewer = viewer
-
-    LeaderboardScrollingTable.instance = o
-    return o
-end
-
-function LeaderboardScrollingTable:createChildren()
-    local btnHgt = math.max(25, FONT_HGT_SMALL + 3 * 2)
-    local bottomHgt = 5 + FONT_HGT_SMALL * 2 + 5 + btnHgt + 20 + FONT_HGT_LARGE + HEADER_HGT + ENTRY_HGT
-
-    self.datas = ISScrollingListBox:new(0, HEADER_HGT, self.width, self.height - bottomHgt + 10)
-    self.datas:initialise()
-    self.datas:instantiate()
-    self.datas.itemheight = FONT_HGT_LARGE + 4 * 2
-    self.datas.selected = 0
-    self.datas.joypadParent = self
-    self.datas.font = UIFont.Large
-    self.datas.doDrawItem = self.drawDatas
-    self.datas.drawBorder = true
-    self.datas:addColumn("Player", 0)
-    self.datas:addColumn("Balance", 200)
-    self:addChild(self.datas)
-end
-
----Initialize and sort the list
----@param module table
-function LeaderboardScrollingTable:initList(module)
-    self.datas:clear()
-
-    -- Orders it based on balance
-    local function SortByBalance(a, b)
-        return a.balance > b.balance
-    end
-
-    table.sort(module, SortByBalance)
-
-    for i = 1, #module do
-        local playerTab = module[i]
-        local username = module[i].pl:getUsername()
-
-        -- Filters it based on the filterEntry
-        if self.viewer.filterEntry:getInternalText() ~= "" and string.trim(self.viewer.filterEntry:getInternalText()) == nil or string.contains(string.lower(username), string.lower(string.trim(self.viewer.filterEntry:getInternalText()))) then
-            self.datas:addItem(username, playerTab)
-        end
-    end
-end
-
-function LeaderboardScrollingTable:update()
-    self.datas.doDrawItem = self.drawDatas
-end
-
-function LeaderboardScrollingTable:drawDatas(y, item, alt)
-    if y + self:getYScroll() + self.itemheight < 0 or y + self:getYScroll() >= self.height then
-        return y + self.itemheight
-    end
-    local a = 0.9
-
-    if self.selected == item.index then
-        self:drawRect(0, (y), self:getWidth(), self.itemheight, 0.3, 0.7, 0.35, 0.15)
-    end
-
-    -- TODO Customize colors
-    if alt then
-        self:drawRect(0, (y), self:getWidth(), self.itemheight, 0.3, 0.6, 0.5, 0.5)
-    end
-
-    self:drawRectBorder(0, (y), self:getWidth(), self.itemheight, a, self.borderColor.r, self.borderColor.g,
-        self.borderColor.b)
-
-    local xOffset = 10
-    local clipX = self.columns[1].size
-    local clipX2 = self.columns[2].size
-    local clipY = math.max(0, y + self:getYScroll())
-    local clipY2 = math.min(self.height, y + self:getYScroll() + self.itemheight)
-
-    self:setStencilRect(clipX, clipY, clipX2 - clipX, clipY2 - clipY)
-    self:drawText(item.item.pl:getUsername(), xOffset, y + 4, 1, 1, 1, a, self.font)
-    self:clearStencilRect()
-
-    -- Balance
-    --TODO local balance = GetBalance(item.item)
-    self:drawText(tostring(item.item.balance), self.columns[2].size + xOffset, y + 4, 1, 1, 1, a, self.font)
-
-    return y + self.itemheight
-end
+--return LeadearboardPanel
