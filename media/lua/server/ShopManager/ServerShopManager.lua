@@ -34,7 +34,7 @@ ServerShopManager.loadShopPrices = function()
     local shopItems = ServerData.Shop.GetShopItems()
     shopItems.items = shopItems.items or {}
     shopItems.tags = shopItems.tags or {}
-    shopItems.doInitShopItems = true
+    shopItems.doInitShopItems = true --TODO: Remove, just for testing.
     if shopItems.doInitShopItems then
         shopItems.doInitShopItems = nil
         for i, v in pairs(PZ_EFT_ShopItems_Config.data) do
