@@ -87,6 +87,7 @@ function MainShopPanel:initialise()
     ---Returns a table containing the essential items
     ---@return table
     local function FetchEssentialItems()
+        -- TODO USE: return ClientShopManager.GetEssentialItems()
         -- TODO Only for test
         local items = getAllItems()
         local essentialItems = {}
@@ -103,6 +104,8 @@ function MainShopPanel:initialise()
     ---Returns a table containing the daily items. TODO get them from the server?
     ---@return table
     local function FetchDailyItems()
+        -- TODO: Execute AdminClientShopManager.refreshDailyItems() command manually for now before this.
+        -- TODO USE: return ClientShopManager.GetDailyItems()
         return {}
     end
 

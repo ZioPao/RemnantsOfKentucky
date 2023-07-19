@@ -27,10 +27,17 @@ ServerData.GlobalModDataInit = function(isNewGame)
     ModData.getOrCreate(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
     ModData.getOrCreate(KEY_BANK_ACCOUNTS)
 
-    
-    local doInitShopItems = not ModData.exists(KEY_SHOP_ITEMS)
+    local doInitShopItems = true
+
+    if ModData.exists(KEY_SHOP_ITEMS) then
+        doInitShopItems = false
+    end
+
     local data = ModData.getOrCreate(KEY_SHOP_ITEMS)
     data.doInitShopItems = doInitShopItems
+    if data.doInitShopItems then
+        ServerShopManager.loadShopPrices()
+    end
 
     if not isNewGame then triggerEvent("PZEFT_ServerModDataReady") end
 end

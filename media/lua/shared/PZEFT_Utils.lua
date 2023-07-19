@@ -154,7 +154,7 @@ end
 --- Function to pick random key-value pairs from a table without repetitions
 PZEFT_UTILS.PickRandomPairsWithoutRepetitions = function(table, count)
     local totalPairs = 0
-    for _ in pairs(table) do
+    for k,v in pairs(table) do
         totalPairs = totalPairs + 1
     end
 
@@ -164,8 +164,8 @@ PZEFT_UTILS.PickRandomPairsWithoutRepetitions = function(table, count)
 
     -- Shuffle the keys of the table randomly
     local shuffledKeys = {}
-    for key in pairs(table) do
-        table.insert(shuffledKeys, key)
+    for k,v in pairs(table) do
+        table.insert(shuffledKeys, k)
     end
     PZEFT_UTILS.ShuffleTable(shuffledKeys)
 
