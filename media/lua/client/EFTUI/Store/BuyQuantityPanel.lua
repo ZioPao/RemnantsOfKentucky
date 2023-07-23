@@ -9,6 +9,7 @@ local BuyQuantityPanel = ISPanel:derive("BuyQuantityPanel")
 ---@param y number
 ---@param width number
 ---@param height number
+---@param mainPanel ISCollapsableWindow
 ---@return ISPanel
 function BuyQuantityPanel:new(x, y, width, height, mainPanel)
     local o = ISPanel:new(x, y, width, height)
@@ -47,7 +48,8 @@ function BuyQuantityPanel:createChildren()
     local yMargin = 20
     local elementHeight = 50
 
-    self.entryAmount = ISTextEntryBox:new("1", xMargin, elementHeight + (self.height / 2), self.width - xMargin * 2, elementHeight)
+    self.entryAmount = ISTextEntryBox:new("1", xMargin, elementHeight + (self.height / 2), self.width - xMargin * 2,
+        elementHeight)
     self.entryAmount:initialise()
     self.entryAmount:instantiate()
     self.entryAmount:setClearButton(true)
@@ -56,7 +58,8 @@ function BuyQuantityPanel:createChildren()
     self:addChild(self.entryAmount)
 
 
-    self.btnBuy = ISButton:new(xMargin, self.entryAmount:getBottom() + yMargin, self.width - xMargin*2, elementHeight*2, "Buy", self,
+    self.btnBuy = ISButton:new(xMargin, self.entryAmount:getBottom() + yMargin, self.width - xMargin * 2, elementHeight *
+        2, "Buy", self,
         self.onClick)
     self.btnBuy.internal = "BUY"
     self.btnBuy:initialise()
@@ -77,6 +80,7 @@ function BuyQuantityPanel:getCostForSelectedItem()
 end
 
 function BuyQuantityPanel:onConfirmBuy()
+    -- TODO Add Transaction function here
     print("Confirm buy")
 end
 
@@ -89,8 +93,8 @@ function BuyQuantityPanel:onStartBuy()
     -- Starts separate confirmation panel
 
     local text = " <CENTRE> Are you sure you want to buy " ..
-    tostring(self.entryAmount:getInternalText()) ..
-    " of " .. self.selectedItem["item"]:getName() .. " for " .. tostring(self:getCostForSelectedItem()) .. "$ ?"
+        tostring(self.entryAmount:getInternalText()) ..
+        " of " .. self.selectedItem["item"]:getName() .. " for " .. tostring(self:getCostForSelectedItem()) .. "$ ?"
 
     self.confirmationPanel = ConfirmationPanel.Open(text, self.mainPanel:getX(),
         self.mainPanel:getY() + self.mainPanel:getHeight() + 20, self, self.onConfirmBuy)
@@ -106,13 +110,9 @@ function BuyQuantityPanel:render()
     ISPanel.render(self)
 
     if self.selectedItem ~= nil then
-        -- TODO Add print of total cost based on amount
-
         local actualItem = self.selectedItem["item"]
         local itemCost = self.selectedItem["cost"]
-
         local entryAmountText = self.entryAmount:getInternalText()
-
         if entryAmountText == nil or entryAmountText == "" or entryAmountText == "0" then
             self.entryAmount:setText("1")
         end
@@ -121,12 +121,12 @@ function BuyQuantityPanel:render()
 
         local itemNameStr = " <CENTRE> " .. actualItem:getName()
         local itemFinalCostStr = " <CENTRE> " ..
-        itemCost .. "$ x " .. tostring(self.entryAmount:getInternalText()) .. "$ = " .. tostring(finalCost) .. "$"
+            itemCost .. "$ x " .. tostring(self.entryAmount:getInternalText()) .. "$ = " .. tostring(finalCost) .. "$"
 
         local finalStr = itemNameStr .. " <LINE> " .. itemFinalCostStr
 
 
-        -- Text
+        -- Updates the text in the panel
         self.textPanel:setText(finalStr)
         self.textPanel:paginate()
 
@@ -135,20 +135,15 @@ function BuyQuantityPanel:render()
             icon = actualItem:getIconsForTexture():get(0)
         end
         if icon then
-            --print(icon)
             local texture = getTexture("Item_" .. icon)
             if texture then
-                --print("Found texture, rendering")
                 self:drawTextureScaledAspect2(texture, self.textPanel.x + 20, self.textPanel.y + 20, 50, 50, 1, 1, 1, 1)
             end
         end
     end
 end
 
-
 function BuyQuantityPanel:close()
-    --print("Closing BuyQuantityPanel")
-
     if self.confirmationPanel then
         self.confirmationPanel:close()
     end

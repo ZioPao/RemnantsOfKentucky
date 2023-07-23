@@ -55,7 +55,7 @@ function MatchHandler:killAlivePlayers()
 end
 
 --- Extract the player and return to safehouse
----@param playerUsername number
+---@param playerUsername string
 function MatchHandler:extractPlayer(playerUsername)
     local safehouseKey = SafehouseInstanceManager.getPlayerSafehouseKey(playerUsername)
     local safehouseInstance = SafehouseInstanceManager.getSafehouseInstanceByKey(safehouseKey)

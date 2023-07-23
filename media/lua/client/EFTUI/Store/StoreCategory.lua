@@ -61,8 +61,12 @@ function StoreCategory:createChildren()
     self.buyPanel:initialise()
     self:addChild(self.buyPanel)
 
-    -- TODO Select the first item
-
+    -- Select first item in the list automatically
+    if #self.itemsTable > 1 then
+        self.items.selected = 1
+        local selectedItem = self.items.items[self.items.selected].item
+        self.buyPanel:setSelectedItem(selectedItem)
+    end
 end
 
 ---Initialise a category, giving an items table
@@ -108,6 +112,9 @@ function StoreCategory:doDrawItem(y, item, alt)
     return y + item.height
 end
 
+---This is run on the the ScrollingBoxList!
+---@param x any
+---@param y any
 function StoreCategory:onMouseDownItems(x, y)
     if #self.items == 0 then return end
     local row = self:rowAt(x, y)
@@ -119,17 +126,8 @@ function StoreCategory:onMouseDownItems(x, y)
         row = 1
     end
 
-    -- RJ: If you select the same item it unselect it
-    --if self.selected == y then
-    --if self.selected == y then
-    --self.selected = -1;
-    --return;
-    --end
-
     getSoundManager():playUISound("UISelectListItem")
-
     self.selected = row
-
     if self.onmousedown then
         self.onmousedown(self.target, self.items[self.selected].item)
     end

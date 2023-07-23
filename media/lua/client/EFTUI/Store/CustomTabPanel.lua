@@ -173,7 +173,7 @@ function CustomTabPanel:render()
 				self.tabHeight - 1, 0.8, 1, 1, 1)
 			self:drawTextCentre(ISTabPanel.viewDragging.name,
 				inset + (self.draggingTab * (tabWidth + gap)) + (self:getMouseX() - ISTabPanel.xMouse) + (tabWidth / 2),
-				3, 1, 1, 1, 1, UIFont.Normal)
+				3, 1, 1, 1, 1, UIFont.Medium)
 		else
 			self:drawTextureScaled(ISTabPanel.tabSelected, inset + (self:getMouseX() - ISTabPanel.xMouse), 0, tabWidth,
 				self.tabHeight - 1, 0.8, 1, 1, 1)
@@ -184,7 +184,7 @@ function CustomTabPanel:render()
 end
 
 function CustomTabPanel:close()
-	print("Closing EFT Tab Panel")
+	--print("Closing EFT Tab Panel")
 	ISTabPanel.close(self)
 end
 
