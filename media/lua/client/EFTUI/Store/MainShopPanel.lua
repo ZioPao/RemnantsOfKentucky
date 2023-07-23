@@ -140,7 +140,7 @@ function MainShopPanel:createChildren()
     table.insert(self.categories, self.dailyItemsCat)
 
     --* SELL MENU *--
-    self.sellCat = SellPanel:new(0, 0, self.width, self.panel.height - self.panel.tabHeight)
+    self.sellCat = SellPanel:new(0, 0, self.width, self.panel.height)
     self.sellCat:initialise()
     self.sellCat:setAnchorRight(true)
     self.sellCat:setAnchorBottom(true)
