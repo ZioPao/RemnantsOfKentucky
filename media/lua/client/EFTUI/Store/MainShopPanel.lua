@@ -18,7 +18,6 @@
 
 -- TODO Add filtering
 -- TODO add visible player balance
-
 require "ISUI/ISCollapsableWindow"
 
 local CustomTabPanel = require("EFTUI/Store/CustomTabPanel")

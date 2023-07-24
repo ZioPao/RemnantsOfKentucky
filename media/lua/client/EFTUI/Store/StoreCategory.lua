@@ -1,7 +1,7 @@
 local BuyQuantityPanel = require("EFTUI/Store/BuyQuantityPanel")
 
 ----
-
+-- TODO this looks a bit strange compared to the sell menu, add a border!
 local StoreCategory = ISPanelJoypad:derive("StoreCategory")
 StoreCategory.instance = nil
 StoreCategory.SMALL_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Small):getLineHeight()
