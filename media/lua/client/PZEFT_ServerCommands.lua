@@ -8,6 +8,14 @@ ServerCommands.SeverModDataReady = function(playerObj)
     triggerEvent("PZEFT_ClientModDataReady")
 end
 
+--- Sets {id, x, y, spawnPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}, extractionPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}}
+--- Or use ClientCommands.print_pvp_currentinstance() to print current instance on the server's console
+ServerCommands.SetCurrentInstance = function(instanceData)
+    local md = getPlayer():getModData()
+    md.currentInstance = md.currentInstance or {}
+    md.currentInstance = instanceData
+end
+
 local OnServerCommand = function(module, command, args)
     if module == MODULE and ServerCommands[command] then
         debugPrint("Server Command - " .. MODULE .. "." .. command)

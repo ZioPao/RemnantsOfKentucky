@@ -91,6 +91,17 @@ PvpInstanceManager.getCurrentInstance = function()
     return ServerData.PVPInstances.GetPvpCurrentInstance()
 end
 
+--- Sends the current instance to all players
+PvpInstanceManager.sendCurrentInstance = function()
+    local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
+    sendServerCommand("PZEFT", "SetCurrentInstance", currentInstance)
+end
+
+--- Clears the players' current instance
+PvpInstanceManager.sendClearCurrentInstance = function()
+    sendServerCommand("PZEFT", "SetCurrentInstance", {})
+end
+
 ---Consumes a spawnpoint.
 ---@return {x=5, y=5, z=0}
 PvpInstanceManager.popRandomSpawnPoint = function()
