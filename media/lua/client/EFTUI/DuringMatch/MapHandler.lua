@@ -15,32 +15,19 @@ function EFTMapHandler:new(symbolsAPI)
 end
 
 function EFTMapHandler:write()
-
-    -- TODO Get extraction points list
-    local extractionPoints = {}
-
-    table.insert(extractionPoints, {x=ZombRand(-500, 500), y=ZombRand(-500, 500)})
-    table.insert(extractionPoints, {x=ZombRand(-500, 500), y=ZombRand(-500, 500)})
-    table.insert(extractionPoints, {x=ZombRand(-500, 500), y=ZombRand(-500, 500)})
-    table.insert(extractionPoints, {x=ZombRand(-500, 500), y=ZombRand(-500, 500)})
-    table.insert(extractionPoints, {x=ZombRand(-500, 500), y=ZombRand(-500, 500)})
-    table.insert(extractionPoints, {x=ZombRand(-500, 500), y=ZombRand(-500, 500)})
-
-
-    --TODO Get relative coordinates based on the instance id
-    local instanceCoords = {x=getPlayer():getX(), y=getPlayer():getY()}     -- TODO Only for test
+    local instance = getPlayer():getModData().currentInstance
+    local extractionPoints = instance.extractionPoints
 
     --Loop through extraction points and add the note on the map
     for i=1, #extractionPoints do
 		local singleExtractionPoint = extractionPoints[i]
-        local x = instanceCoords.x + singleExtractionPoint.x
-        local y = instanceCoords.y + singleExtractionPoint.y
+        local x = instance.x + singleExtractionPoint.x
+        local y = instance.y + singleExtractionPoint.y
 
-        -- TODO Maybe use an icon?
-        local textSymbol = self.symbolsAPI:addTexture("PZEFT-Exit", x, y)
-		textSymbol:setRGBA(0, 0, 0, 1.0)
-		textSymbol:setAnchor(0.0, 0.0)
-		textSymbol:setScale(ISMap.SCALE)
+        local iconSymbol = self.symbolsAPI:addTexture("PZEFT-Exit", x, y)
+		iconSymbol:setRGBA(0, 0, 0, 1.0)
+		iconSymbol:setAnchor(0.0, 0.0)
+		iconSymbol:setScale(ISMap.SCALE)
     end
 
 end
@@ -69,3 +56,5 @@ function ISWorldMap:instantiate()
     self.eftMapHandler:clear()
     self.eftMapHandler:write()
 end
+-- getWorldMarkers():addGridSquareMarker("circle_center", "circle_only_highlight", sq, r, g, b, true, 1)
+-- getWorldMarkers():addPlayerHomingPoint(player, sq:getX(), sq:getY(), data.worldMarkerData.r, data.worldMarkerData.g, data.worldMarkerData.b, 5)
