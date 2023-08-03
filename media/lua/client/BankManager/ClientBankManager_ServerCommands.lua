@@ -6,15 +6,15 @@ local ServerCommands = {}
 
 --- Update bank account information with data from server
 ServerCommands.UpdateBankAccount = function(args)
-    local player = getPlayer()
-    local md = player:getModData()
-    md.PZEFT = md.PZEFT or {}
-    md.PZEFT.accountBalance = args.account
+    if not args then print('ERROR: ServerCommands.UpdateBankAccount - Tried to update bank account without ARGS') return end
+
+    local md = PZEFT_UTILS.GetPlayerModData()
+    md.accountBalance = args.account
 end
 
 local OnServerCommand = function(module, command, args)
     if module == MODULE and ServerCommands[command] then
-        debugPrint("Server Command - " .. MODULE .. "." .. command)
+        --debugPrint("Server Command - " .. MODULE .. "." .. command)
         ServerCommands[command](args)
     end
 end

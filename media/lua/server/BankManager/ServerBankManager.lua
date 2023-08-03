@@ -1,18 +1,16 @@
-if (not isServer()) and not (not isServer() and not isClient()) then return end
+if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then return end
 
 ServerBankManager = ServerBankManager or {}
 
 --- Get account information by username
 ---@param username string
-ServerBankManager.getOrCreateAccount = function(username, isInitialise)
+ServerBankManager.getOrCreateAccount = function(username)
     local accounts = ServerData.Bank.GetBankAccounts()
     local account = accounts[username]
     if not account then
-        print("ServerBankManager.addAmountToAccount: Account " .. username .. " doesn't exist!")
-        if isInitialise then
-            accounts[username] = 0
-            account = accounts[username]
-        end
+        print("ServerBankManager.addAmountToAccount: Account " .. username .. " doesn't exist! Creating one.")
+        accounts[username] = {balance = 0}
+        account = accounts[username]
     end
 
     return account
@@ -31,11 +29,11 @@ ServerBankManager.processTransaction = function(username, amount)
     end
 
     --If amount is decreased
-    if amount < 0 and accounts[username] + amount < 0 then
+    if amount < 0 and accounts[username].balance + amount < 0 then
         return {success = false, account = accounts[username]}
     end
 
-    accounts[username] = accounts[username] + amount
+    accounts[username].balance = accounts[username].balance + amount
 
     return {success = true, account = accounts[username]}
 end

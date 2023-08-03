@@ -1,4 +1,4 @@
-if (not isServer()) and not (not isServer() and not isClient()) then return end
+if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then return end
 
 require "PZ_EFT_debugtools"
 
@@ -11,7 +11,7 @@ local ClientCommands = {}
 ---@param args Table {isInitialise=true/false} 
 ClientCommands.RequestBankAccount = function(playerObj, args)
     args = args or {}
-    local account = ServerBankManager.getOrCreateAccount(playerObj:getUsername(), args.isInitialise)
+    local account = ServerBankManager.getOrCreateAccount(playerObj:getUsername())
     sendServerCommand(playerObj, MODULE, 'UpdateBankAccount', {account=account})
 end
 
@@ -41,7 +41,7 @@ ClientCommands.ProcessTransaction = function(playerObj, args)
     end
 
     --Send updated bank account details to player
-    ClientCommands.RequestBankAccount(playerObj, nil)
+    ClientCommands.RequestBankAccount(playerObj)
 end
 
 local OnClientCommand = function(module, command, playerObj, args)

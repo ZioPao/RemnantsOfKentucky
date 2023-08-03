@@ -1,4 +1,4 @@
-if (not isServer()) and not (not isServer() and not isClient()) then return end
+if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then return end
 
 require "PZ_EFT_debugtools"
 require "TeleportManager"
@@ -33,7 +33,7 @@ end
 
 local OnClientCommand = function(module, command, playerObj, args)
     if module == MODULE and ClientCommands[command] then
-        debugPrint("Client Command - " .. MODULE .. "." .. command)
+        --debugPrint("Client Command - " .. MODULE .. "." .. command)
         ClientCommands[command](playerObj, args)
     end
 end

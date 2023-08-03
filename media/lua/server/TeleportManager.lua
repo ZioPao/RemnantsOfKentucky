@@ -1,4 +1,4 @@
-if (not isServer()) and not (not isServer() and not isClient()) then return end
+if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then return end
 
 TeleportManager = TeleportManager or {}
 

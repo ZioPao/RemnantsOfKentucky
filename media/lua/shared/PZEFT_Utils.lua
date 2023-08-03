@@ -178,3 +178,13 @@ PZEFT_UTILS.PickRandomPairsWithoutRepetitions = function(table, count)
 
     return pickedPairs
 end
+
+PZEFT_UTILS.GetObjectModData = function(obj)
+    local md = obj:getModData()
+    md.PZEFT = md.PZEFT or {}
+    return md.PZEFT
+end
+
+PZEFT_UTILS.GetPlayerModData = function(obj)
+    return PZEFT_UTILS.GetObjectModData(getPlayer())
+end

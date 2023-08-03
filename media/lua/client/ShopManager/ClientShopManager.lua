@@ -55,10 +55,9 @@ ClientShopManager.TrySell = function(sellData)
 end
 
 ClientShopManager.CanBuy = function(totalPrice)
-    local player = getPlayer()
-    local md = player:getModData()
-    if md and md.PZEFT and md.PZEFT.accountBalance then
-        return md.PZEFT.accountBalance >= totalPrice
+    local md = PZEFT_UTILS.GetPlayerModData()
+    if md.accountBalance then
+        return md.accountBalance >= totalPrice
     end
 
     return false

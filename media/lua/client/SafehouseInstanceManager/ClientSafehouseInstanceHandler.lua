@@ -11,10 +11,9 @@ end
 --- This check is on the client side. Maybe somehow move to the server but that might be costly.
 ClientSafehouseInstanceHandler.isInSafehouse = function()
     if not ClientState.IsInRaid then
-        local player = getPlayer()
-        local md = player:getModData()
+        local md = PZEFT_UTILS.GetPlayerModData()
 
-        if not md.PZEFT or not md.PZEFT.safehouse then
+        if not md.safehouse then
             return
         end
 
@@ -29,7 +28,7 @@ ClientSafehouseInstanceHandler.isInSafehouse = function()
         end
 
         local dimensions = PZ_EFT_CONFIG.SafehouseInstanceSettings.dimensions
-        if not PZEFT_UTILS.IsPointWithinDimensions(md.PZEFT.safehouse.x, md.PZEFT.safehouse.y, dimensions.n,
+        if not PZEFT_UTILS.IsPointWithinDimensions(md.safehouse.x, md.safehouse.y, dimensions.n,
             dimensions.s, dimensions.e, dimensions.w, sq:getX(), sq:getY()) then
             sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {
                 teleport = true
@@ -39,13 +38,12 @@ ClientSafehouseInstanceHandler.isInSafehouse = function()
 end
 
 ClientSafehouseInstanceHandler.getSafehouse = function()
-    local player = getPlayer()
-    local md = player:getModData()
-    if not md.PZEFT or not md.PZEFT.safehouse then
+    local md = PZEFT_UTILS.GetPlayerModData()
+    if not md.safehouse then
         return nil
     end
 
-    return md.PZEFT.safehouse;
+    return md.safehouse;
 end
 
 --- On player initialise
@@ -53,9 +51,8 @@ end
 ---@param player IsoPlayer
 ClientSafehouseInstanceHandler.onPlayerInit = function(player)
     if player and player == getPlayer() then
-        local md = player:getModData()
-        md.PZEFT = md.PZEFT or {}
-        if not md.PZEFT.safehouse then
+        local md = PZEFT_UTILS.GetPlayerModData()
+        if not md.safehouse then
             -- Request safe house allocation, which in turn will teleport the player to the assigned safehouse
             sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {
                 teleport = true

@@ -18,7 +18,6 @@ end
 
 local OnServerCommand = function(module, command, args)
     if module == MODULE and ServerCommands[command] then
-        debugPrint("Server Command - " .. MODULE .. "." .. command)
         ServerCommands[command](args)
     end
 end

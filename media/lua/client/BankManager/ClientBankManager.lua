@@ -1,10 +1,19 @@
 ClientBankManager = ClientBankManager or {}
 
---TODO: When opening shop menu, get account
+--TODO: When opening shop menu, request account
 --- Get account information by username
----@param isInitialise boolean
-ClientBankManager.getAccount = function(isInitialise)
-    sendClientCommand('PZEFT-BankAccount', "RequestBankAccount", {isInitialise=isInitialise})
+ClientBankManager.requestBankAccountFromServer = function()
+    local md = PZEFT_UTILS.GetPlayerModData()
+    md.accountBalance = nil
+
+    sendClientCommand('PZEFT-BankAccount', "RequestBankAccount", {})
+end
+
+--- Returns account balance from player's mod data
+---@param {balance: amount} Table
+ClientBankManager.getPlayerBankAccountBalance = function()
+    local md = PZEFT_UTILS.GetPlayerModData()
+    return md.accountBalance
 end
 
 --- Add or decreases an amount to a bank account
@@ -34,18 +43,3 @@ ClientBankManager.TryProcessTransaction = function(amount, successCallbackModule
         }
     })
 end
-
---- On player initialise, request bank account info
----@param player IsoPlayer
-ClientBankManager.onPlayerInit = function(player)
-    if player and player == getPlayer() then
-        local md = player:getModData()
-        md.PZEFT = md.PZEFT or {}
-        if not md.PZEFT.accountBalance then
-            ClientBankManager.getAccount(true)
-            Events.OnPlayerUpdate.Remove(ClientBankManager.onPlayerInit)
-        end
-    end
-end
-
-Events.OnPlayerUpdate.Add(ClientBankManager.onPlayerInit)

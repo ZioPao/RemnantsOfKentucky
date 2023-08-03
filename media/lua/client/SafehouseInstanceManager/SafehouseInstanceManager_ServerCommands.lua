@@ -8,10 +8,8 @@ local ServerCommands = {}
 --- Update mod data of player with recieved safehouse data
 ---@param {x=0, y=0,z=0} Safehouse Instance
 ServerCommands.SetSafehouse = function(safehouseInstance)
-    local player = getPlayer()
-    local md = player:getModData()
-    md.PZEFT = md.PZEFT or {}
-    md.PZEFT.safehouse = safehouseInstance
+    local md = PZEFT_UTILS.GetPlayerModData()
+    md.safehouse = safehouseInstance
 end
 
 ServerCommands.CleanStorage = function(safehouseInstance)
@@ -37,7 +35,7 @@ end
 
 local OnServerCommand = function(module, command, args)
     if module == MODULE and ServerCommands[command] then
-        debugPrint("Server Command - " .. MODULE .. "." .. command)
+        --debugPrint("Server Command - " .. MODULE .. "." .. command)
         ServerCommands[command](args)
     end
 end
