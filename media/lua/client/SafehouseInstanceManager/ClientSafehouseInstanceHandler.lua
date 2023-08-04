@@ -17,7 +17,7 @@ ClientSafehouseInstanceHandler.isInSafehouse = function()
             return
         end
 
-        local sq = player:getSquare()
+        local sq = getPlayer():getSquare()
 
         if not sq then
             return

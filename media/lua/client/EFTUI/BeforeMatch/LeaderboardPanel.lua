@@ -201,14 +201,17 @@ end
 
 function LeadearboardPanel:fillList()
     --[[
-        TODO Should be able to list EVERY player that has ever played, not only online ones.
+        -- TODO Should be able to list EVERY player that has ever played, not only online ones.
         Save everything in a global mod data table
     ]]
-    local players
+    local players = {}
     if isClient() then
-        players = getOnlinePlayers()
+        local temp = getOnlinePlayers()
+        for i = 0, temp:size() - 1 do
+            table.insert(players, { pl = temp:get(i), balance = ZombRand(1000) })
+        end
+
     else
-        players = {}
         -- DEBUG Only for test
         for i = 1, 20 do
             table.insert(players, { pl = getPlayer(), balance = ZombRand(1000) })
