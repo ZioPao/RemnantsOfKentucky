@@ -52,4 +52,28 @@ end
 
 Events.OnCreatePlayer.Add(ButtonManager.CreateButtons)
 
+----------------------------------------------------------
 
+require "ISUI/ISAdminPanelUI"
+local _ISAdminPanelUICreate = ISAdminPanelUI.create
+
+function ISAdminPanelUI:create()
+    _ISAdminPanelUICreate(self)
+
+    local function OpenAdminMenu()
+        -- TODO Add check if we're inside a match
+        if true then
+            BeforeMatchAdminPanel.OnOpenPanel()
+        else
+            DuringMatchAdminPanel.OnOpenPanel()
+        end
+    end
+
+
+    local lastButton = self.children[self.IDMax-1].internal == "CANCEL" and self.children[self.IDMax-2] or self.children[self.IDMax-1]
+    self.btnOpenAdminMenu = ISButton:new(lastButton.x, lastButton.y + 5 + lastButton.height, self.sandboxOptionsBtn.width, self.sandboxOptionsBtn.height, "EFT Admin Menu", self, OpenAdminMenu)
+    self.btnOpenAdminMenu:initialise()
+    self.btnOpenAdminMenu:instantiate()
+    self.btnOpenAdminMenu.borderColor = self.buttonBorderColor
+    self:addChild(self.btnOpenAdminMenu)
+end
