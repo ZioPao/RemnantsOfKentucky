@@ -88,6 +88,7 @@ function DuringMatchAdminPanel:onConfirmStop()
     -- TODO The teleporting stuff should be run on the server, not here
     print("Confirm! Teleporting back everyone")
     self:setIsMatchEnded(true)
+    sendClientCommand("PZEFT-Time", "StartMatchEndCountdown", {stopTime = 10})
 
 end
 
@@ -111,7 +112,6 @@ function DuringMatchAdminPanel:update()
 
     if self:getIsMatchEnded() then
         matchInfo = matchInfo .. " <BR> <CENTRE> <RED> MATCH HAS ENDED!"
-        sendClientCommand("PZEFT-Time", "StartmatchEndCountdown", {stopTime = 10})
     end
 
     self.panelInfo:setText(matchInfo)
