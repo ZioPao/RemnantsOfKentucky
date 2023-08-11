@@ -39,8 +39,6 @@ end
 
 
 
-
-
 ---------------------------------------
 
 
@@ -87,18 +85,18 @@ function DuringMatchAdminPanel:createChildren()
 end
 
 function DuringMatchAdminPanel:onConfirmStop()
+    -- TODO The teleporting stuff should be run on the server, not here
     print("Confirm! Teleporting back everyone")
     self:setIsMatchEnded(true)
 
 end
 
 function DuringMatchAdminPanel:onClick(btn)
-
-
     if btn.internal == 'STOP' then
         local text = " <CENTRE> Are you sure you want to stop the match? Every player will be teleported back to their safehouse."
+
+        -- TODO The teleporting stuff should be run on the server, not here
         self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, self, self.onConfirmStop)
-        -- TODO Stop match, teleports back everyone to their safehouses
     end
 end
 
@@ -113,8 +111,8 @@ function DuringMatchAdminPanel:update()
 
     if self:getIsMatchEnded() then
         matchInfo = matchInfo .. " <BR> <CENTRE> <RED> MATCH HAS ENDED!"
+        sendClientCommand("PZEFT-Time", "StartmatchEndCountdown", {stopTime = 10})
     end
-
 
     self.panelInfo:setText(matchInfo)
     self.panelInfo.textDirty = true
@@ -135,6 +133,8 @@ function DuringMatchAdminPanel:close()
     ISCollapsableWindow.close(self)
 end
 
+--*****************************************
+
 function DuringMatchAdminPanel.OnOpenPanel()
     -- TODO Make it scale based on resolution
     local width = 400
@@ -149,4 +149,15 @@ function DuringMatchAdminPanel.OnOpenPanel()
     pnl:addToUIManager()
     pnl:bringToTop()
     return pnl
+end
+
+---Check if there's a panel already open, and closes it
+---@return boolean wasOpen 
+function DuringMatchAdminPanel.OnClosePanel()
+    local wasOpen = false
+    if DuringMatchAdminPanel.instance then
+        DuringMatchAdminPanel.instance:close()
+        wasOpen = true
+    end
+    return wasOpen
 end

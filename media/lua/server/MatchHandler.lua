@@ -13,7 +13,10 @@ function MatchHandler:new()
     setmetatable(o, self)
     self.__index = self
 
-    o.instance = PvpInstanceManager.getNextInstance()
+    o.pvpInstance = PvpInstanceManager.getNextInstance()
+
+
+    MatchHandler.currenthandler = o
 
     return o
 end
@@ -21,14 +24,11 @@ end
 function MatchHandler:initialise()
     if self.instance == nil then
         debugPrint("PZ_EFT: No more instances found!")
-        return false
+        MatchHandler.currenthandler = nil
+        return
     end
 
-    --* Start a countdown until the start of the game
-    self.countdown = CountdownHandler:new(30, self.start)       -- 30 seconds
-    self.countdown:initialise()
-
-    return true
+    self:start()
 end
 
 ---Setup teleporting players to their spawn points
@@ -63,8 +63,30 @@ function MatchHandler:extractPlayer(playerUsername)
     TeleportManager.Teleport(player, safehouseInstance.x, safehouseInstance.y, safehouseInstance.z)
 end
 
+function MatchHandler:stopMatch()
+
+    -- Teleport back everyone
+    local playersArray = getOnlinePlayers()
+    for i=0, playersArray:size() do
+        local pl = playersArray:get(i)
+        local playerUsername = pl:getUsername()
+        local safehouseKey = SafehouseInstanceManager.getPlayerSafehouseKey(playerUsername)
+        local safehouseInstance = SafehouseInstanceManager.getSafehouseInstanceByKey(safehouseKey)
+        TeleportManager.Teleport(pl, safehouseInstance.x, safehouseInstance.y, safehouseInstance.z)
+    end
+end
+
+
+
 function MatchHandler:handleZombieSpawns(currentTime)
     -- TODO We need to manage the zombie spawns depending on the time.
+end
+
+
+--*********************-
+
+function MatchHandler.GetHandler()
+    return MatchHandler.currenthandler
 end
 
 return MatchHandler

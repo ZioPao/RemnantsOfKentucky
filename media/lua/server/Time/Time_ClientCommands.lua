@@ -2,15 +2,36 @@ local ClientCommands = {}
 
 local Countdown = require("Time/PZEFT_Countdown")
 local Timer = require("Time/PZEFT_Timer")
+local MatchHandler = require("MatchHandler")
 
 
 local function test()
     print("Done!")
 end
 
-ClientCommands.StartCountdown = function(_, args)
-    --print("PZFET-Time: countdown setup")
-    Countdown.Setup(args.stopTime, test)
+ClientCommands.StartMatchCountdown = function(playerObj, args)
+    local function StartMatch()
+        print("Start Match")
+        local handler = MatchHandler:new()
+        handler:initialise()
+
+        -- Closes automatically the admin panel\switch it to the during match one
+        sendServerCommand(playerObj, 'PZEFT-UI', 'SwitchMatchAdminUI', {startingState='BEFORE'})
+    end
+    Countdown.Setup(args.stopTime, StartMatch)
+end
+
+ClientCommands.StartMatchEndCountdown = function(playerObj, args)
+
+    local function StopMatch()
+        local handler = MatchHandler.GetHandler()
+        if handler then handler:stopMatch() end
+
+        sendServerCommand(playerObj, 'PZEFT-UI', 'SwitchMatchAdminUI', {startingState='DURING'})
+    end
+
+    Countdown.Setup(args.stopTime, StopMatch)
+
 end
 
 ClientCommands.StartTimer = function(_, args)

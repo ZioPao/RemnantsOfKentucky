@@ -45,7 +45,9 @@ end
 
 function TimePanel:render()
     local timeNumber = tonumber(ClientState.currentTime)
-    if timeNumber == nil or timeNumber <= 0 then
+    if timeNumber == nil then return end
+
+    if timeNumber <= 0 then
         self:close()
     end
     self.textPanel:setText(FormatTime(timeNumber))

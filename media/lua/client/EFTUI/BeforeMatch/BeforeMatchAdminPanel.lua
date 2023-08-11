@@ -95,8 +95,8 @@ end
 function BeforeMatchAdminPanel:onClick(btn)
     if btn.internal == 'START_MATCH' then
         self.isStartingMatch = true
-        -- TODO Start timer. Show it on screen
-        debug_testCountdown()
+        -- Start timer. Show it on screen
+        sendClientCommand("PZEFT-Time", "StartMatchCountdown", {stopTime = 30})
         TimePanel.Open()
     elseif btn.internal == 'MATCH_OPTIONS' then
     elseif btn.internal == 'MANAGE_PLAYERS' then
@@ -146,6 +146,9 @@ function BeforeMatchAdminPanel:close()
     ISCollapsableWindow.close(self)
 end
 
+
+--*****************************************--
+
 function BeforeMatchAdminPanel.OnOpenPanel()
     -- TODO Make it scale based on resolution
     local width = 400
@@ -162,3 +165,13 @@ function BeforeMatchAdminPanel.OnOpenPanel()
     return pnl
 end
 
+---Check if there's a panel already open, and closes it
+---@return boolean wasOpen 
+function BeforeMatchAdminPanel.OnClosePanel()
+    local wasOpen = false
+    if BeforeMatchAdminPanel.instance then
+        BeforeMatchAdminPanel.instance:close()
+        wasOpen = true
+    end
+    return wasOpen
+end
