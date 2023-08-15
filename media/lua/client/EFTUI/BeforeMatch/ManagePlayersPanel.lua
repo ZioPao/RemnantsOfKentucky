@@ -1,16 +1,14 @@
 local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
 local FONT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium)
 local FONT_HGT_LARGE = getTextManager():getFontHeight(UIFont.Large)
-
 local HEADER_HGT = FONT_HGT_MEDIUM + 2 * 2
 local ENTRY_HGT = FONT_HGT_MEDIUM + 2 * 2
-
-
 local FONT_SCALE = FONT_HGT_SMALL / 16
 if FONT_SCALE < 1 then
     FONT_SCALE = 1
 end
 
+-------------------------------
 
 -- TODO Make it local
 ManagePlayersPanel = ISCollapsableWindow:derive("ManagePlayersPanel")
@@ -171,14 +169,14 @@ function ManagePlayersPanel:onClick(button)
     elseif button.internal == 'STARTER_KIT' then
         -- TODO Give Starter kit to selected player
     elseif button.internal == 'WIPE_EVERYTHING' then
-
         local function onConfirmWipe()
             print("Wipe")
         end
 
 
         local text = " <CENTRE> Are you sure you want to wipe out everything? <LINE> You can't come back from this."
-        self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, self, onConfirmWipe)
+        self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, self,
+            onConfirmWipe)
     end
 end
 

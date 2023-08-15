@@ -4,6 +4,10 @@
     balance on that player account.
 ]]
 
+
+
+-- TODO use GetBankAccounts from the server
+
 local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
 local FONT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium)
 local FONT_HGT_LARGE = getTextManager():getFontHeight(UIFont.Large)
@@ -50,22 +54,21 @@ end
 ---@param module table
 function LeaderboardScrollingTable:initList(module)
     self.datas:clear()
-
+    -- TODO This is not like this anymore, fix it
     -- Orders it based on balance
-    local function SortByBalance(a, b)
-        return a.balance > b.balance
-    end
+    -- local function SortByBalance(a, b)
+    --     return a.balance > b.balance
+    -- end
 
-    table.sort(module, SortByBalance)
+    -- table.sort(module, SortByBalance)
 
-    for i = 1, #module do
-        local playerTab = module[i]
-        local username = module[i].pl:getUsername()
+    if module == nil then return end
 
-        -- Filters it based on the filterEntry
+    for username, balance in ipairs(module) do
         if self.viewer.filterEntry:getInternalText() ~= "" and string.trim(self.viewer.filterEntry:getInternalText()) == nil or string.contains(string.lower(username), string.lower(string.trim(self.viewer.filterEntry:getInternalText()))) then
-            self.datas:addItem(username, playerTab)
+            self.datas:addItem(username, balance)
         end
+
     end
 end
 
@@ -147,6 +150,20 @@ function LeadearboardPanel:new(x, y, width, height)
     return o
 end
 
+
+
+
+--- SETTERS
+function LeadearboardPanel.SetBankAccounts(accounts)
+    if LeadearboardPanel.instance then
+        print("Setting bank accounts to LeaderboardPanel")
+        LeadearboardPanel.bankAccounts = accounts
+    end
+
+end
+
+
+
 function LeadearboardPanel:initialise()
     ISCollapsableWindow.initialise(self)
 end
@@ -204,21 +221,30 @@ function LeadearboardPanel:fillList()
         -- TODO Should be able to list EVERY player that has ever played, not only online ones.
         Save everything in a global mod data table
     ]]
-    local players = {}
-    if isClient() then
-        local temp = getOnlinePlayers()
-        for i = 0, temp:size() - 1 do
-            table.insert(players, { pl = temp:get(i), balance = ZombRand(1000) })
-        end
+    -- local players = {}
+    -- if isClient() then
+    --     local temp = getOnlinePlayers()
+    --     for i = 0, temp:size() - 1 do
+    --         table.insert(players, { pl = temp:get(i), balance = ZombRand(1000) })
+    --     end
 
-    else
-        -- DEBUG Only for test
-        for i = 1, 20 do
-            table.insert(players, { pl = getPlayer(), balance = ZombRand(1000) })
-        end
-    end
+    -- else
+    --     -- DEBUG Only for test
+    --     for i = 1, 20 do
+    --         table.insert(players, { pl = getPlayer(), balance = ZombRand(1000) })
+    --     end
+    -- end
 
-    self.mainCategory:initList(players)
+    
+
+    -- TODO Request stuff from server, wait 1-2 seconds, show them
+    sendClientCommand('PZEFT-BankAccount', 'TransmitBankAccounts', {})
+
+
+    -- TODO Wait 5 seconds or so to update the list
+    --while LeadearboardPanel.bankAccounts == nil do print("Waiting for accounts") end
+
+    self.mainCategory:initList(LeadearboardPanel.bankAccounts)
 end
 
 function LeadearboardPanel:prerender()

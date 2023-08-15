@@ -12,6 +12,16 @@ ServerCommands.UpdateBankAccount = function(args)
     md.accountBalance = args.account
 end
 
+
+--- Receive the updated bank accounts from the server
+---@param args table {accounts=accounts}
+ServerCommands.ReceiveBankAccounts = function(args)
+    if args.accounts then
+        print("Setting accounts")
+        LeadearboardPanel.SetBankAccounts(args.accounts)
+    end
+end
+
 local OnServerCommand = function(module, command, args)
     if module == MODULE and ServerCommands[command] then
         --debugPrint("Server Command - " .. MODULE .. "." .. command)

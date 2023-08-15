@@ -44,6 +44,15 @@ ClientCommands.ProcessTransaction = function(playerObj, args)
     ClientCommands.RequestBankAccount(playerObj)
 end
 
+
+--- Sends the full table of Bank accounts to a client, to be used in the leaderboard
+---@param playerObj IsoPlayer
+ClientCommands.TransmitBankAccounts = function(playerObj, _)
+    local accounts = ServerData.Bank.GetBankAccounts()
+    sendServerCommand(playerObj, MODULE, 'ReceiveBankAccounts', {accounts=accounts})
+end
+
+
 local OnClientCommand = function(module, command, playerObj, args)
     if module == MODULE and ClientCommands[command] then
         debugPrint("Client Command - " .. MODULE .. "." .. command)
