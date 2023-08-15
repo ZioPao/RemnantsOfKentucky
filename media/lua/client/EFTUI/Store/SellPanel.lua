@@ -2,7 +2,7 @@
     Users should be able to drag n drop items in this panel to sell them.
     Opens confirmation panel when you select "Sell". Compatible with Tarkov UI
 ]]
-    local SellPanel = ISPanel:derive("SellPanel")
+local SellPanel = ISPanel:derive("SellPanel")
 
 
 function SellPanel:new(x, y, width, height)
@@ -14,10 +14,9 @@ function SellPanel:new(x, y, width, height)
 end
 
 function SellPanel:createChildren()
-
     local padding = 10
 
-	self.sellList = ISScrollingListBox:new(padding, padding, (self.width - padding*2)/2, self.height - padding*4)
+    self.sellList = ISScrollingListBox:new(padding, padding, (self.width - padding * 2) / 2, self.height - padding * 4)
     self.sellList:initialise()
     self.sellList:instantiate()
     self.sellList.itemheight = 22
@@ -33,7 +32,7 @@ function SellPanel:createChildren()
     local infoX = self.sellList:getRight() + padding
     local infoY = padding
 
-    self.infoPanel = ISRichTextPanel:new(infoX, infoY, (self.width - padding*2)/2, (self.height - padding*4)/2)
+    self.infoPanel = ISRichTextPanel:new(infoX, infoY, (self.width - padding * 2) / 2, (self.height - padding * 4) / 2)
     self.infoPanel:initialise()
     self:addChild(self.infoPanel)
     self.infoPanel.defaultFont = UIFont.Medium
@@ -50,7 +49,7 @@ function SellPanel:createChildren()
     self.infoPanel:setText("")
     self.infoPanel:paginate()
 
-    infoY = infoY*2 + self.infoPanel:getBottom()
+    infoY = infoY * 2 + self.infoPanel:getBottom()
 
     self.btnSell = ISButton:new(infoX, infoY, self.infoPanel:getWidth() - padding, 50, "Sell", self, self.onClick)
     self.btnSell.internal = "SELL"
@@ -58,7 +57,6 @@ function SellPanel:createChildren()
     self.btnSell:setEnable(false)
     self:addChild(self.btnSell)
 end
-
 
 ---Triggered when the user drags a item into the scrollingList
 function SellPanel:updateInfoPanel()
@@ -68,7 +66,6 @@ function SellPanel:updateInfoPanel()
 end
 
 function SellPanel:onDragItem(x, y)
-
     if self.vscroll then
         self.vscroll.scrolling = false
     end
@@ -93,24 +90,22 @@ function SellPanel:onDragItem(x, y)
     end
 
     self.parent:updateInfoPanel()
-
-
 end
 
 function SellPanel:onDrawItem(y, item, alt)
-    self:drawRectBorder(0, (y), self:getWidth(), self.itemheight - 1, 0.9, self.borderColor.r, self.borderColor.g, self.borderColor.b);
-
+    self:drawRectBorder(0, (y), self:getWidth(), self.itemheight - 1, 0.9, self.borderColor.r, self.borderColor.g,
+        self.borderColor.b);
     if self.selected == item.index then
-		self:drawRect(0, (y), self:getWidth(), self.itemheight - 1, 0.3, 0.7, 0.35, 0.15)
+        self:drawRect(0, (y), self:getWidth(), self.itemheight - 1, 0.3, 0.7, 0.35, 0.15)
     end
 
     local itemName = item.item:getName()
-	self:drawText(itemName, 25, y + 2, 1, 1, 1, 0.9, self.font)
+    self:drawText(itemName, 25, y + 2, 1, 1, 1, 0.9, self.font)
 
-    self:drawTextureScaledAspect(item.item:getTex(), 5, y + 2, 18, 18, 1, item.item:getR(), item.item:getG(), item.item:getB())
+    self:drawTextureScaledAspect(item.item:getTex(), 5, y + 2, 18, 18, 1, item.item:getR(), item.item:getG(),
+        item.item:getB())
 
     return y + self.itemheight
-
 end
 
 return SellPanel

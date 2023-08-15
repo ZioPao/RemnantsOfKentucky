@@ -97,7 +97,7 @@ function MainShopPanel:initialise()
 
 
     self.essentialitems = FetchEssentialItems() -- TODO Use ClientShopManager.GetEssentialItems()
-    self.dailyItems = {} -- TODO Use ClientShopManager.GetDailyItems()
+    self.dailyItems = {}                        -- TODO Use ClientShopManager.GetDailyItems()
 end
 
 function MainShopPanel:createChildren()

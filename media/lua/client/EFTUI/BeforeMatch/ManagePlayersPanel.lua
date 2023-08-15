@@ -5,6 +5,13 @@ local FONT_HGT_LARGE = getTextManager():getFontHeight(UIFont.Large)
 local HEADER_HGT = FONT_HGT_MEDIUM + 2 * 2
 local ENTRY_HGT = FONT_HGT_MEDIUM + 2 * 2
 
+
+local FONT_SCALE = FONT_HGT_SMALL / 16
+if FONT_SCALE < 1 then
+    FONT_SCALE = 1
+end
+
+
 -- TODO Make it local
 ManagePlayersPanel = ISCollapsableWindow:derive("ManagePlayersPanel")
 
@@ -13,7 +20,7 @@ function ManagePlayersPanel.Open(x, y)
         ManagePlayersPanel.instance:close()
     end
 
-    local modal = ManagePlayersPanel:new(x, y, 350, 500)
+    local modal = ManagePlayersPanel:new(x, y, 350 * FONT_SCALE, 500)
     modal:initialise()
     modal:addToUIManager()
     modal.instance:setKeyboardFocus()
