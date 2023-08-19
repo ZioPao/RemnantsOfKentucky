@@ -29,7 +29,7 @@ MainShopPanel.instance = nil
 MainShopPanel.largeFontHeight = getTextManager():getFontHeight(UIFont.Large)
 MainShopPanel.mediumFontHeight = getTextManager():getFontHeight(UIFont.Medium)
 MainShopPanel.smallFontHeight = getTextManager():getFontHeight(UIFont.Small)
-MainShopPanel.bottomInfoHeight = MainShopPanel.smallFontHeight * 2
+MainShopPanel.bottomInfoHeight = MainShopPanel.smallFontHeight * 4
 
 
 function MainShopPanel.Open()
@@ -63,7 +63,6 @@ function MainShopPanel:new(x, y, width, height, character)
     o:setWantKeyEvents(true)
     return o
 end
-
 ---Closes all the related tabs too
 function MainShopPanel:close()
     self.panel:close()
@@ -77,6 +76,14 @@ end
 
 function MainShopPanel:initialise()
     ISCollapsableWindow.initialise(self)
+
+    self.accountBalance = ClientBankManager.getPlayerBankAccountBalance()
+    -- Fetch bank account
+    if self.accountBalance == nil then
+        ClientBankManager.requestBankAccountFromServer()
+    end
+
+
 
     ---Returns a table containing the essential items
     ---@return table
@@ -104,6 +111,8 @@ function MainShopPanel:createChildren()
     ISCollapsableWindow.createChildren(self)
     local th = self:titleBarHeight()
     local rh = self.resizable and self:resizeWidgetHeight() or 0
+
+
     self.panel = CustomTabPanel:new(0, th, self.width, self.height - th - rh - MainShopPanel.bottomInfoHeight)
     self.panel:initialise()
     self.panel:setAnchorRight(true)
@@ -115,11 +124,14 @@ function MainShopPanel:createChildren()
     self.panel.target = self
     self.panel:setEqualTabWidth(false)
     self:addChild(self.panel)
+
+
+    -------------------------
     self.categories = {}
 
 
     --* ESSENTIAL ITEMS *--
-    self.essentialItemsCat = StoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
+    self.essentialItemsCat = StoreCategory:new(0, 0, self.width, self.panel.height, self)
     self.essentialItemsCat:initialise(self.essentialitems)
     self.essentialItemsCat:setAnchorRight(true)
     self.essentialItemsCat:setAnchorBottom(true)
@@ -129,7 +141,7 @@ function MainShopPanel:createChildren()
     table.insert(self.categories, self.essentialItemsCat)
 
     --* DAILY ITEMS *--
-    self.dailyItemsCat = StoreCategory:new(0, 0, self.width, self.panel.height - self.panel.tabHeight, self)
+    self.dailyItemsCat = StoreCategory:new(0, 0, self.width, self.panel.height, self)
     self.dailyItemsCat:initialise(self.dailyItems)
     self.dailyItemsCat:setAnchorRight(true)
     self.dailyItemsCat:setAnchorBottom(true)
@@ -150,4 +162,26 @@ function MainShopPanel:createChildren()
 
     -- Set default stuff
     self.panel:activateView("Essential Items")
+
+
+    -- BALANCE PANEL
+
+    self.balancePanel = ISRichTextPanel:new(0, self.height - MainShopPanel.bottomInfoHeight, self.width, MainShopPanel.bottomInfoHeight)
+    self.balancePanel:initialise()
+    self:addChild(self.balancePanel)
+    self.accountBalance = ClientBankManager.getPlayerBankAccountBalance()
+    local balanceText = "Current Balance: "
+    if self.accountBalance then
+
+        -- TODO Just for test, delete this
+        if isClient() then
+            balanceText = balanceText .. self.accountBalance.balance
+        else
+            balanceText = balanceText .. "15051$"
+        end
+    else
+        balanceText = "ERROR! NO BALANCE"
+    end
+    self.balancePanel:setText(balanceText)
+    self.balancePanel:paginate()
 end

@@ -2,11 +2,11 @@
     Users should be able to drag n drop items in this panel to sell them.
     Opens confirmation panel when you select "Sell". Compatible with Tarkov UI
 ]]
-local SellPanel = ISPanel:derive("SellPanel")
+local SellPanel = ISPanelJoypad:derive("SellPanel")
 
 
 function SellPanel:new(x, y, width, height)
-    local o = ISPanel:new(x, y, width, height)
+    local o = ISPanelJoypad:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
 
@@ -14,19 +14,23 @@ function SellPanel:new(x, y, width, height)
 end
 
 function SellPanel:createChildren()
-    local padding = 10
+    local fontHgtSmall = EFTGenericUI.SMALL_FONT_HGT
+    local entryHgt = fontHgtSmall + 2 * 2
 
-    self.sellList = ISScrollingListBox:new(padding, padding, (self.width - padding * 2) / 2, self.height - padding * 4)
+    self.sellList = ISScrollingListBox:new(1, entryHgt, self.width / 2, self.height - (entryHgt))
     self.sellList:initialise()
     self.sellList:instantiate()
-    self.sellList.itemheight = 22
+    self.sellList:setAnchorRight(false) -- resize in update()
+    self.sellList:setAnchorBottom(true)
+    self.sellList.itemHeight = 2 + EFTGenericUI.MEDIUM_FONT_HGT + 32 + 4
     self.sellList.selected = 0
-    self.sellList.joypadParent = self
-    self.sellList.font = UIFont.NewSmall
     self.sellList.doDrawItem = self.onDrawItem
     self.sellList.onMouseUp = self.onDragItem
+    self.sellList.joypadParent = self
     self.sellList.drawBorder = true
     self:addChild(self.sellList)
+
+    local padding = 10
 
     --* Info panels and buttons, on the right
     local infoX = self.sellList:getRight() + padding
@@ -57,6 +61,10 @@ function SellPanel:createChildren()
     self.btnSell:setEnable(false)
     self:addChild(self.btnSell)
 end
+
+
+----------------------------------
+
 
 ---Triggered when the user drags a item into the scrollingList
 function SellPanel:updateInfoPanel()
@@ -94,7 +102,7 @@ end
 
 function SellPanel:onDrawItem(y, item, alt)
     self:drawRectBorder(0, (y), self:getWidth(), self.itemheight - 1, 0.9, self.borderColor.r, self.borderColor.g,
-        self.borderColor.b);
+        self.borderColor.b)
     if self.selected == item.index then
         self:drawRect(0, (y), self:getWidth(), self.itemheight - 1, 0.3, 0.7, 0.35, 0.15)
     end
