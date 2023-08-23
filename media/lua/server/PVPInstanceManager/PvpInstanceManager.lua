@@ -23,6 +23,21 @@ PvpInstanceManager.reset = function(clearInstances)
     PvpInstanceManager.loadPvpInstances()
 end
 
+--- Refreshes the extractions. Used for when you change some values regarding spawnpoints and extractions.
+---@param local any
+PvpInstanceManager.refreshPvpInstancesExtractions = function()
+    local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
+    for key, value in pairs(pvpInstances) do
+        local permanentExtractions = PvpInstanceManager.getPermanentExtractionPoints(iX, iY)
+        permanentExtractions = permanentExtractions or {}
+        local randomExtractions = PvpInstanceManager.getRandomExtractionPoints(iX, iY, pvpInstanceSettings.randomExtractionPointCount)
+        randomExtractions = randomExtractions or {}
+
+        value.extractionPoints = PZEFT_UTILS.MergeIPairs(randomExtractions, permanentExtractions)
+    end
+    ServerData.PVPInstances.SetPvpInstances(pvpInstances)
+end
+
 --- load PVP instances and add them to the stores
 PvpInstanceManager.loadPvpInstances = function()
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
@@ -35,13 +50,15 @@ PvpInstanceManager.loadPvpInstances = function()
             local id = PvpInstanceManager.getInstanceID(iX, iY)
 
             local permanentExtractions = PvpInstanceManager.getPermanentExtractionPoints(iX, iY)
+            permanentExtractions = permanentExtractions or {}
             local randomExtractions = PvpInstanceManager.getRandomExtractionPoints(iX, iY, pvpInstanceSettings.randomExtractionPointCount)
+            randomExtractions = randomExtractions or {}
 
             pvpInstances[id] = {
                 id = id,
                 x = iX,
                 y = iY,
-                spawnPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.Spawnpoints, iX, iY),
+                spawnPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.Spawnpoints, iX, iY, {"name"}),
                 extractionPoints = PZEFT_UTILS.MergeIPairs(randomExtractions, permanentExtractions)
             }
 
@@ -70,7 +87,7 @@ PvpInstanceManager.getNextInstance = function()
         if not usedInstances[key] then
             changedInstance = true
             usedInstances[currentInstance.id] = true
-            currentInstance = value
+            currentInstance = {id = key}
             break;
         end
     end
@@ -82,18 +99,20 @@ PvpInstanceManager.getNextInstance = function()
 
     ServerData.PVPInstances.SetPvpUsedInstances(usedInstances)
     ServerData.PVPInstances.SetPvpCurrentInstance(currentInstance)
-    return currentInstance
+    return pvpInstances[currentInstance.id]
 end
 
 --- Get the current active instance
 ---@return {id, x, y, spawnPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}, extractionPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}}
 PvpInstanceManager.getCurrentInstance = function()
-    return ServerData.PVPInstances.GetPvpCurrentInstance()
+    local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
+    local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
+    return pvpInstances[currentInstance.id]
 end
 
 --- Sends the current instance to all players
 PvpInstanceManager.sendCurrentInstance = function()
-    local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
+    local currentInstance = PvpInstanceManager.getCurrentInstance()
     sendServerCommand("PZEFT", "SetCurrentInstance", currentInstance)
 end
 
@@ -105,7 +124,7 @@ end
 ---Consumes a spawnpoint.
 ---@return {x=5, y=5, z=0}
 PvpInstanceManager.popRandomSpawnPoint = function()
-    local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
+    local currentInstance = PvpInstanceManager.getCurrentInstance()
     local size = #currentInstance.spawnPoints
 
     if size <= 0 then
@@ -126,9 +145,9 @@ end
 ---@param cellX number
 ---@param cellY number
 ---@param count number
----@return {{x=5, y=5, z=0, time=0, radius=1, extractionSquares={{x=1,y=1,z=1}}}
+---@return {x1=5, y1=5, z1=0, x2=5, y2=5, z2=0, time=0}
 PvpInstanceManager.getRandomExtractionPoints = function(cellX, cellY, count)
-    local extractionPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.RandomExtractionPoints, cellX, cellY, {"time", "radius"})
+    local extractionPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.RandomExtractionPoints, cellX, cellY, {"name", "time"})
 
     local extractionPointCount = #extractionPoints
     if extractionPointCount <= count then
@@ -142,8 +161,6 @@ PvpInstanceManager.getRandomExtractionPoints = function(cellX, cellY, count)
         local randIndex = ZombRand(size)+1
         local extractionPoint = extractionPoints[randIndex]
 
-        extractionPoint.extractionSquares = PZEFT_UTILS.getSurroundingGridCoordinates(extractionPoint, extractionPoint.radius)
-
         table.insert(activeExtractionPoints, extractionPoint)
         table.remove(extractionPoints, randIndex)
     end
@@ -154,13 +171,9 @@ end
 --- Gets a permanent set of extraction points for given an instance
 ---@param cellX number
 ---@param cellY number
----@return {{x=5, y=5, z=0, time=0, radius=1, extractionSquares={{x=1,y=1,z=1}}}
+---@return {x1=5, y1=5, z1=0, x2=5, y2=5, z2=0, time=0}
 PvpInstanceManager.getPermanentExtractionPoints = function(cellX, cellY)
-    local points = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.PermanentExtractionPoints, cellX, cellY, {"time", "radius"})
-
-    for _, value in ipairs(points) do
-        value.extractionSquares = PZEFT_UTILS.getSurroundingGridCoordinates(value, value.radius)
-    end
+    local points = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.PermanentExtractionPoints, cellX, cellY, {"name", "time"})
 
     return points
 end

@@ -8,15 +8,29 @@ PZEFT_UTILS = PZEFT_UTILS or {}
 ---@return {{x=0,y=0,z=0}, {x=0,y=0,z=0}}
 PZEFT_UTILS.MapWorldCoordinatesToCell = function(coordinateList, cellX, cellY, otherArgs)
     local mappedCoordinates = {}
+
+    if not coordinateList then return nil end
+
     for index, point in ipairs(coordinateList) do
         local wX = cellX * 300
         local wY = cellY * 300
-
-        local newEntry = {
-            x = wX + point.x,
-            y = wY + point.y,
-            z = point.z
-        }
+        local newEntry
+        if point.x ~= nil then
+            newEntry = {
+                x = wX + point.x,
+                y = wY + point.y,
+                z = point.z
+            }
+        elseif point.x1 ~= nil then
+            newEntry = {
+                x1 = wX + point.x1,
+                y1 = wY + point.y1,
+                z1 = point.z1,
+                x2 = wX + point.x1,
+                y2 = wY + point.y1,
+                z2 = point.z2
+            }
+        end
 
         if otherArgs then
             for _, arg in ipairs(otherArgs) do

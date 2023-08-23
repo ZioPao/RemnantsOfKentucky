@@ -55,7 +55,7 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
     xRepeat = 4,
     yRepeat = 2,
 
-    randomExtractionPointCount = 1
+    randomExtractionPointCount = 1 --TODO: Maybe sandbox options
 }
 
 PZ_EFT_CONFIG.MatchSettings = {
@@ -68,70 +68,179 @@ PZ_EFT_CONFIG.MatchSettings = {
 PZ_EFT_CONFIG.Spawnpoints = {}
 
 table.insert(PZ_EFT_CONFIG.Spawnpoints, {
-    x = 5,
-    y = 5,
+    name = "SOUTHERN SHORE SPAWN #1",
+    x = 525,
+    y = 559,
     z = 0
 })
 
 table.insert(PZ_EFT_CONFIG.Spawnpoints, {
-    x = 67,
-    y = 24,
+    name = "SOUTHERN SHORE SPAWN #2",
+    x = 219,
+    y = 540,
     z = 0
 })
 
 table.insert(PZ_EFT_CONFIG.Spawnpoints, {
-    x = 402,
-    y = 200,
+    name = "SOUTHERN SHORE SPAWN #3",
+    x = 34,
+    y = 524,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "RADIO TOWER SPAWN",
+    x = 715,
+    y = 503,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "WESTERN SHORE SPAWN #1",
+    x = 848,
+    y = 445,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "WESTERN SHORE SPAWN #2",
+    x = 854,
+    y = 226,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "MEDICAL CENTER BATHROOMS SPAWN",
+    x = 153,
+    y = 425,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "EASTERN SHORE SPAWN #1",
+    x = 29,
+    y = 412,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "EASTERN SHORE SPAWN #2",
+    x = 57,
+    y = 331,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "EASTERN SHORE SPAWN #3",
+    x = 149,
+    y = 231,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "FACTORY SPAWN #1",
+    x = 494,
+    y = 410,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "FACTORY SPAWN #2",
+    x = 318,
+    y = 388,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "SOUTHERN MILITARY CAMP SPAWN #1",
+    x = 369,
+    y = 490,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "SOUTHERN MILITARY CAMP SPAWN #2",
+    x = 459,
+    y = 473,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "NORTHERN SHORE SPAWN #1",
+    x = 575,
+    y = 120,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "NORTHERN SHORE SPAWN #2",
+    x = 369,
+    y = 62,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "TRAILER PARK SPAWN",
+    x = 699,
+    y = 316,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "EASTERN MILITARY CAMP SPAWN #1",
+    x = 341,
+    y = 183,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "GARAGE SPAWN",
+    x = 588,
+    y = 249,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "NORTHERN MILITARY CAMP SPAWN #1",
+    x = 463,
+    y = 198,
+    z = 0
+})
+
+table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+    name = "STORAGE CENTER SPAWN",
+    x = 571,
+    y = 397,
     z = 0
 })
 
 --- Extraction point that will always be available, assuming PVP instance North Eastern point is at cell 0,0
 --- Time taken to extract
---- Radius of extraction zone
 PZ_EFT_CONFIG.PermanentExtractionPoints = {}
 
 
 table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
-    x = 5,
-    y = 5,
-    z = 0,
+    name = "extract point 1",
+    x1 = 5,
+    y1 = 5,
+    z1 = 0,
+    x2 = 5,
+    y2 = 5,
+    z2 = 0,
     time = 10,
-    radius = 1,
-})
-
-table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
-    x = 5,
-    y = 58,
-    z = 2,
-    time = 10,
-    radius = 1,
 })
 
 --- Extraction point that won't always be available (PZ_EFT_CONFIG.PVPInstanceSettings.randomExtractionPointCount), assuming PVP instance North Eastern point is at cell 0,0
 --- Time taken to extract
---- Radius of extraction zone
 PZ_EFT_CONFIG.RandomExtractionPoints = {}
 
 table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
-    x = 500,
-    y = 550,
-    z = 1,
+    name = "extract point 1",
+    x1 = 5,
+    y1 = 5,
+    z1 = 0,
+    x2 = 5,
+    y2 = 5,
+    z2 = 0,
     time = 10,
-    radius = 1,
-})
-
-table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
-    x = 200,
-    y = 300,
-    z = 0,
-    time = 10,
-    radius = 1,
-})
-
-table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
-    x = 54,
-    y = 56,
-    z = 0,
-    time = 10,
-    radius = 1,
 })

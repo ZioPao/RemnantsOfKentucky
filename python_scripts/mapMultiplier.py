@@ -1,20 +1,21 @@
 import shutil
 import os
 
-# TODO placeholders
-start_x = 1
-start_y = 1
+start_x = 4
+start_y = 2
 
-max_x = 7
-max_y = 7
+x_grid_len = 4
+y_grid_len = 4
 
-inc_x = 2
-inc_y = 3
+buffer = 1
+
+inc_x = 2 + buffer
+inc_y = 3 + buffer
 
 cwd = os.getcwd()
 
-input_dir = os.path.join(cwd, "python_scripts", "input")
-output_dir = os.path.join(cwd, "python_scripts", "output")
+input_dir = os.path.join(cwd, "input")
+output_dir = os.path.join(cwd, "output")
 
 if not os.path.exists(output_dir):
     os.mkdir(output_dir)
@@ -23,16 +24,17 @@ if not os.path.exists(output_dir):
 def copyLoop(base_string):
     original_file = base_string.format(x=start_x, y=start_y)
     original_file_path = os.path.join(input_dir, original_file)
+    print("Copy Loop: " + base_string)
+    print("original_file: " + original_file)
+    print("original_file_path: " + original_file_path)
 
     curr_x = 0
     curr_y = 0
 
-    for x in range(start_x, max_x, inc_x):
-        curr_x = curr_x + x
-
-        for y in range(start_y, max_y, inc_y):
-
-            curr_y = curr_y + y
+    for x in range(0, x_grid_len * inc_x, inc_x):
+        curr_x = start_x + x
+        for y in range(0, y_grid_len * inc_y, inc_y):
+            curr_y = start_y + y
             curr_file = base_string.format(x=curr_x, y=curr_y)
             curr_file_path = os.path.join(output_dir, curr_file)
 
