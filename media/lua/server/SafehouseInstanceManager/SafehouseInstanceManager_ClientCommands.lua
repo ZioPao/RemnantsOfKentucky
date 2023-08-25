@@ -12,7 +12,7 @@ local ClientCommands = {}
 ---@param args Table {teleport=true/false}
 ClientCommands.RequestSafehouseAllocation = function(playerObj, args)
     if args.teleport then
-        TeleportManager.Teleport(playerObj,302,302,0)
+        TeleportManager.Teleport(playerObj,302,302,0) --TODO: Teleport to empty area
     end
 
     local safehouseKey = SafehouseInstanceManager.getOrAssignSafehouse(playerObj)

@@ -86,8 +86,8 @@ PvpInstanceManager.getNextInstance = function()
     for key, value in pairs(pvpInstances) do
         if not usedInstances[key] then
             changedInstance = true
-            usedInstances[currentInstance.id] = true
-            currentInstance = {id = key}
+            usedInstances[key] = true
+            currentInstance.id = key
             break;
         end
     end

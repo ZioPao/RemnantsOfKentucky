@@ -10,6 +10,8 @@ end
 
 --- This check is on the client side. Maybe somehow move to the server but that might be costly.
 ClientSafehouseInstanceHandler.isInSafehouse = function()
+    if isDebugEnabled() then return end
+
     if not ClientState.IsInRaid then
         local md = PZEFT_UTILS.GetPlayerModData()
 
