@@ -10,7 +10,7 @@ local CustomTabPanel = ISTabPanel:derive("CustomTabPanel")
 ---@param name string
 ---@param view any
 ---@param tabWidth number
-function CustomTabPanel:addView(name, view, tabWidth)
+function CustomTabPanel:addView(name, view, tabWidth, addedHeight)
 	local viewObject = {}
 	viewObject.name = name
 	viewObject.view = view
@@ -18,7 +18,7 @@ function CustomTabPanel:addView(name, view, tabWidth)
 	viewObject.fade = UITransition.new()
 	table.insert(self.viewList, viewObject)
 	-- the view have to be under our tab
-	view:setY(self.tabHeight)
+	view:setY(self.tabHeight + addedHeight)
 	--	view:initialise()
 	self:addChild(view)
 	view.parent = self
