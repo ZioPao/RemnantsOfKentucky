@@ -17,7 +17,10 @@ function SellPanel:createChildren()
     local fontHgtSmall = EFTGenericUI.SMALL_FONT_HGT
     local entryHgt = fontHgtSmall + 2 * 2
 
-    self.sellList = ISScrollingListBox:new(10, entryHgt, self.width / 2, self.height - (entryHgt))
+    local xMargin = 10
+
+
+    self.sellList = ISScrollingListBox:new(xMargin, entryHgt, self.width / 2, self.height - (entryHgt))
     self.sellList:initialise()
     self.sellList:instantiate()
     self.sellList:setAnchorRight(false) -- resize in update()
@@ -33,7 +36,7 @@ function SellPanel:createChildren()
     --* Info panels and buttons, on the right
     local infoPanelWidth = self.width / 2 - 20
     local infoPanelHeight = self.height - entryHgt
-    local infoPanelX = self.width - infoPanelWidth - 10
+    local infoPanelX = self.width - infoPanelWidth - xMargin
     local infoPanelY = entryHgt
 
 
@@ -41,7 +44,7 @@ function SellPanel:createChildren()
     self.infoPanel:initialise()
     self:addChild(self.infoPanel)
 
-    self.btnSell = ISButton:new(10, self.infoPanel:getHeight()/2, self.infoPanel:getWidth() - padding*2, 50, "Sell", self, self.onClick)
+    self.btnSell = ISButton:new(xMargin, self.infoPanel:getHeight()/2, self.infoPanel:getWidth() - xMargin*2, 50, "Sell", self, self.onClick)
     self.btnSell.internal = "SELL"
     self.btnSell:initialise()
     self.btnSell:setEnable(false)
