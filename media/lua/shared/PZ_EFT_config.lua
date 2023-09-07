@@ -221,11 +221,33 @@ PZ_EFT_CONFIG.PermanentExtractionPoints = {}
 
 table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
     name = "extract point 1",
-    x1 = 5,
-    y1 = 5,
+    x1 = 37,
+    y1 = 528,
     z1 = 0,
-    x2 = 5,
-    y2 = 5,
+    x2 = 39,
+    y2 = 538,
+    z2 = 0,
+    time = 10,
+})
+
+table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
+    name = "extract point 2",
+    x1 = 812,
+    y1 = 227,
+    z1 = 0,
+    x2 = 831,
+    y2 = 230,
+    z2 = 0,
+    time = 10,
+})
+
+table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
+    name = "extract point 3",
+    x1 = 769,
+    y1 = 470,
+    z1 = 0,
+    x2 = 777,
+    y2 = 472,
     z2 = 0,
     time = 10,
 })
@@ -234,6 +256,7 @@ table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
 --- Time taken to extract
 PZ_EFT_CONFIG.RandomExtractionPoints = {}
 
+--[[
 table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
     name = "extract point 1",
     x1 = 5,
@@ -244,3 +267,4 @@ table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
     z2 = 0,
     time = 10,
 })
+--]]
