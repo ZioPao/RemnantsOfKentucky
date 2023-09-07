@@ -31,6 +31,10 @@ ClientCommands.RequestSafehouseAllocation = function(playerObj, args)
     end
 end
 
+ClientCommands.SendPlayersToSafehouse = function()
+    --TODO: Teleport players to safehouse
+end
+
 local OnClientCommand = function(module, command, playerObj, args)
     if module == MODULE and ClientCommands[command] then
         --debugPrint("Client Command - " .. MODULE .. "." .. command)
