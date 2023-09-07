@@ -26,7 +26,7 @@ function StoreCategory:createChildren()
     local fontHgtSmall = EFTGenericUI.SMALL_FONT_HGT
     local entryHgt = fontHgtSmall + 2 * 2
 
-    self.items = ISScrollingListBox:new(1, entryHgt, self.width / 2, self.height - (entryHgt))
+    self.items = ISScrollingListBox:new(10, entryHgt, self.width / 2, self.height - entryHgt)
     self.items:initialise()
     self.items:instantiate()
     self.items:setAnchorRight(false) -- resize in update()
@@ -42,10 +42,12 @@ function StoreCategory:createChildren()
     self.items.SMALL_FONT_HGT = EFTGenericUI.SMALL_FONT_HGT
     self.items.MEDIUM_FONT_HGT = EFTGenericUI.MEDIUM_FONT_HGT
 
-    local buyPanelX = self.items:getRight() + 10
-    local buyPanelY = entryHgt
     local buyPanelWidth = self.width / 2 - 20
-    local buyPanelHeight = self.height - 20
+    local buyPanelHeight = self.height - entryHgt
+    local buyPanelX = self.width - buyPanelWidth - 10
+    local buyPanelY = entryHgt
+
+
 
     self.buyPanel = BuyQuantityPanel:new(buyPanelX, buyPanelY, buyPanelWidth, buyPanelHeight, self.shopPanel)
     self.buyPanel:initialise()

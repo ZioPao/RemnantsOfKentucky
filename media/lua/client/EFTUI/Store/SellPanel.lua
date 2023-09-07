@@ -17,7 +17,10 @@ function SellPanel:createChildren()
     local fontHgtSmall = EFTGenericUI.SMALL_FONT_HGT
     local entryHgt = fontHgtSmall + 2 * 2
 
-    self.sellList = ISScrollingListBox:new(1, entryHgt, self.width / 2, self.height - (entryHgt))
+    local xMargin = 10
+
+
+    self.sellList = ISScrollingListBox:new(xMargin, entryHgt, self.width / 2, self.height - (entryHgt))
     self.sellList:initialise()
     self.sellList:instantiate()
     self.sellList:setAnchorRight(false) -- resize in update()
@@ -30,38 +33,18 @@ function SellPanel:createChildren()
     self.sellList.drawBorder = true
     self:addChild(self.sellList)
 
-    local padding = 10
-
     --* Info panels and buttons, on the right
-
-    local infoPanelX = self.sellList:getRight() + 10
     local infoPanelWidth = self.width / 2 - 20
-    local infoPanelHeight = self.height - 20
+    local infoPanelHeight = self.height - entryHgt
+    local infoPanelX = self.width - infoPanelWidth - xMargin
+    local infoPanelY = entryHgt
 
-    self.infoPanel = ISPanel:new(infoPanelX, entryHgt, infoPanelWidth, infoPanelHeight)
+
+    self.infoPanel = ISPanel:new(infoPanelX, infoPanelY, infoPanelWidth, infoPanelHeight)
     self.infoPanel:initialise()
     self:addChild(self.infoPanel)
 
-
-    -- self.infoPanel = ISRichTextPanel:new(infoX, infoY, (self.width - padding * 2) / 2, (self.height - padding * 4) / 2)
-    -- self.infoPanel:initialise()
-    -- self:addChild(self.infoPanel)
-    -- self.infoPanel.defaultFont = UIFont.Medium
-    -- self.infoPanel.anchorTop = true
-    -- self.infoPanel.anchorLeft = false
-    -- self.infoPanel.anchorBottom = true
-    -- self.infoPanel.anchorRight = false
-    -- self.infoPanel.marginLeft = 0
-    -- self.infoPanel.marginTop = padding
-    -- self.infoPanel.marginRight = 0
-    -- self.infoPanel.marginBottom = 0
-    -- self.infoPanel.autosetheight = false
-    -- self.infoPanel.background = false
-    -- self.infoPanel:setText("")
-    -- self.infoPanel:paginate()
-
-
-    self.btnSell = ISButton:new(padding, self.infoPanel:getHeight()/2, self.infoPanel:getWidth() - padding*2, 50, "Sell", self, self.onClick)
+    self.btnSell = ISButton:new(xMargin, self.infoPanel:getHeight()/2, self.infoPanel:getWidth() - xMargin*2, 50, "Sell", self, self.onClick)
     self.btnSell.internal = "SELL"
     self.btnSell:initialise()
     self.btnSell:setEnable(false)

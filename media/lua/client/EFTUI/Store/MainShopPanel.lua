@@ -40,6 +40,11 @@ function MainShopPanel.Open()
     MainShopPanel.instance:setEnabled(true)
 end
 
+-- Debug only
+function MainShopPanel.ForceClose()
+    MainShopPanel.instance:close()
+end
+
 function MainShopPanel:new(x, y, width, height, character)
     local o = {}
     if x == 0 and y == 0 then
@@ -112,8 +117,8 @@ function MainShopPanel:createChildren()
     local th = self:titleBarHeight()
     local rh = self.resizable and self:resizeWidgetHeight() or 0
 
-
-    self.panel = CustomTabPanel:new(0, th, self.width, self.height - th - rh - MainShopPanel.bottomInfoHeight)
+    --* MAIN PANEL *--
+    self.panel = CustomTabPanel:new(0, th, self.width, self.height - th - rh)
     self.panel:initialise()
     self.panel:setAnchorRight(true)
     self.panel:setAnchorBottom(true)
@@ -126,36 +131,61 @@ function MainShopPanel:createChildren()
     self:addChild(self.panel)
 
 
+    --* BALANCE PANEL *--
+    self.balancePanel = ISRichTextPanel:new(0, th + self.panel.tabHeight, self.width, 10)
+    self.balancePanel.background = false
+    self.balancePanel.backgroundColor = { r = 0, g = 0, b = 0, a = 0.5 }
+    self.balancePanel.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 1 }
+    self.balancePanel:initialise()
+    self:addChild(self.balancePanel)
+    self.accountBalance = ClientBankManager.getPlayerBankAccountBalance()
+    local balanceText = "<SIZE:large>Current Balance: "
+    if self.accountBalance then
+
+        -- TODO Just for test, delete this
+        if isClient() then
+            balanceText = balanceText .. self.accountBalance.balance
+        else
+            balanceText = balanceText .. "TEST AMOUNT$"
+        end
+    else
+        balanceText = "ERROR! NO BALANCE"
+    end
+    self.balancePanel:setText(balanceText)
+    self.balancePanel:paginate()
     -------------------------
     self.categories = {}
 
+    local addedHeight = self.balancePanel.height
+    local catHeight = self.height - th - rh - addedHeight - 50
+
 
     --* ESSENTIAL ITEMS *--
-    self.essentialItemsCat = StoreCategory:new(0, 0, self.width, self.panel.height, self)
+    self.essentialItemsCat = StoreCategory:new(0, 0, self.width, catHeight, self)
     self.essentialItemsCat:initialise(self.essentialitems)
     self.essentialItemsCat:setAnchorRight(true)
     self.essentialItemsCat:setAnchorBottom(true)
-    self.panel:addView("Essential Items", self.essentialItemsCat, self.width / 3 - 2)
+    self.panel:addView("Essential Items", self.essentialItemsCat, self.width / 3 - 2, addedHeight)
     self.essentialItemsCat.parent = self
     self.essentialItemsCat.category = 1
     table.insert(self.categories, self.essentialItemsCat)
 
     --* DAILY ITEMS *--
-    self.dailyItemsCat = StoreCategory:new(0, 0, self.width, self.panel.height, self)
+    self.dailyItemsCat = StoreCategory:new(0, 0, self.width, catHeight, self)
     self.dailyItemsCat:initialise(self.dailyItems)
     self.dailyItemsCat:setAnchorRight(true)
     self.dailyItemsCat:setAnchorBottom(true)
-    self.panel:addView("Daily Items", self.dailyItemsCat, self.width / 3 - 2)
+    self.panel:addView("Daily Items", self.dailyItemsCat, self.width / 3 - 2, addedHeight)
     self.dailyItemsCat.parent = self
     self.dailyItemsCat.category = 2
     table.insert(self.categories, self.dailyItemsCat)
 
     --* SELL MENU *--
-    self.sellCat = SellPanel:new(0, 0, self.width, self.panel.height)
+    self.sellCat = SellPanel:new(0, 0, self.width, catHeight)
     self.sellCat:initialise()
     self.sellCat:setAnchorRight(true)
     self.sellCat:setAnchorBottom(true)
-    self.panel:addView("Sell Items", self.sellCat, self.width / 3 - 2)
+    self.panel:addView("Sell Items", self.sellCat, self.width / 3 - 2, addedHeight)
     self.sellCat.parent = self
     self.sellCat.category = 3
     table.insert(self.categories, self.sellCat)
@@ -163,25 +193,4 @@ function MainShopPanel:createChildren()
     -- Set default stuff
     self.panel:activateView("Essential Items")
 
-
-    -- BALANCE PANEL
-
-    self.balancePanel = ISRichTextPanel:new(0, self.height - MainShopPanel.bottomInfoHeight, self.width, MainShopPanel.bottomInfoHeight)
-    self.balancePanel:initialise()
-    self:addChild(self.balancePanel)
-    self.accountBalance = ClientBankManager.getPlayerBankAccountBalance()
-    local balanceText = "Current Balance: "
-    if self.accountBalance then
-
-        -- TODO Just for test, delete this
-        if isClient() then
-            balanceText = balanceText .. self.accountBalance.balance
-        else
-            balanceText = balanceText .. "15051$"
-        end
-    else
-        balanceText = "ERROR! NO BALANCE"
-    end
-    self.balancePanel:setText(balanceText)
-    self.balancePanel:paginate()
 end
