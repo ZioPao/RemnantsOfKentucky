@@ -54,6 +54,7 @@ end
 --- Extract the player and return to safehouse
 ---@param playerUsername string
 function MatchHandler:extractPlayer(playerUsername)
+    --TODO PAO: Look at client/ClientMatchHandlers/ExtractionHandler to check for when player enters/exists extraction zone. Subscribe to event if needed.
     local player = getPlayerByUserName(playerUsername)
     SafehouseInstanceManager.sendPlayerToSafehouse(player)
 end

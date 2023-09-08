@@ -18,10 +18,14 @@ end
 
 ServerCommands.SetClientStateIsInRaid = function(value)
     ClientState.IsInRaid = value
+    if value == false then
+        ClientState.IsInExtractionArea = false
+    end
 end
 
 ServerCommands.CommitDieIfInRaid = function()
     if ClientState.IsInRaid then
+        ClientState.IsInExtractionArea = false
         getPlayer():getBodyDamage():setHealth(0);
     end
 end

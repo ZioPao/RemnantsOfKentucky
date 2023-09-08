@@ -202,3 +202,10 @@ end
 PZEFT_UTILS.GetPlayerModData = function(obj)
     return PZEFT_UTILS.GetObjectModData(getPlayer())
 end
+
+PZEFT_UTILS.IsInRectangle = function(pos, area)
+    local inXRange = (pos.x >= area.x1 and pos.x <= area.x2) or (pos.x >= area.x2 and pos.x <= area.x1)
+    local inYRange = (pos.y >= area.y1 and pos.y <= area.y2) or (pos.y >= area.y2 and pos.y <= area.y1)
+    local inZRange = (pos.z >= area.z1 and pos.z <= area.z2) or (pos.z >= area.z2 and pos.z <= area.z1)
+    return inXRange and inYRange and inZRange
+end

@@ -19,7 +19,7 @@ end
 PvpInstanceManager.reset = function(clearInstances)
     ServerData.PVPInstances.SetPvpInstances({})
     ServerData.PVPInstances.SetPvpUsedInstances({})
-    ServerData.PVPInstances.SetPvpCurrentInstance({})
+    ServerData.PVPInstances.SetPvpCurrentInstance({}, true)
     PvpInstanceManager.loadPvpInstances()
 end
 
@@ -98,7 +98,7 @@ PvpInstanceManager.getNextInstance = function()
     end
 
     ServerData.PVPInstances.SetPvpUsedInstances(usedInstances)
-    ServerData.PVPInstances.SetPvpCurrentInstance(currentInstance)
+    ServerData.PVPInstances.SetPvpCurrentInstance(currentInstance, true)
     return pvpInstances[currentInstance.id]
 end
 
@@ -136,7 +136,7 @@ PvpInstanceManager.popRandomSpawnPoint = function()
     local spawnPoint = currentInstance.spawnPoints[randIndex]
     table.remove(currentInstance.spawnPoints, randIndex)
 
-    ServerData.PVPInstances.SetPvpCurrentInstance(currentInstance)
+    ServerData.PVPInstances.SetPvpCurrentInstance(currentInstance, true)
 
     return spawnPoint
 end

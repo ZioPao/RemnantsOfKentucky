@@ -87,8 +87,12 @@ end
 
 --- Set PVP current instance data
 ---@param data {id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
-ServerData.PVPInstances.SetPvpCurrentInstance = function(data)
+ServerData.PVPInstances.SetPvpCurrentInstance = function(data, doTransmit)
     ModData.add(KEY_PVP_CURRENTINSTANCE, data)
+
+    if doTransmit then
+        ModData.transmit(KEY_PVP_CURRENTINSTANCE)
+    end
 end
 
 ServerData.SafehouseInstances = ServerData.SafehouseInstances or {}
