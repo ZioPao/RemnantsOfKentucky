@@ -16,6 +16,16 @@ ServerCommands.SetCurrentInstance = function(instanceData)
     md.currentInstance = instanceData
 end
 
+ServerCommands.SetClientStateIsInRaid = function(value)
+    ClientState.IsInRaid = value
+end
+
+ServerCommands.CommitDieIfInRaid = function()
+    if ClientState.IsInRaid then
+        getPlayer():getBodyDamage():setHealth(0);
+    end
+end
+
 local OnServerCommand = function(module, command, args)
     if module == MODULE and ServerCommands[command] then
         ServerCommands[command](args)

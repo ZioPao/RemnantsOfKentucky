@@ -48,14 +48,8 @@ function debug_getZeroPosition(rootx, rooty)
     local x = psq:getX()
     local y = psq:getY()
 
-    local cx = math.floor(x / 300)
-    local cy = math.floor(y / 300)
-
-    local rx = x - (cx * 300)
-    local ry = y - (cy * 300)
-
-    local zeroX = (rootx * 300)  + rx
-    local zeroY = (rooty * 300)  + ry
+    local zeroX = x - (rootx * 300)
+    local zeroY = y - (rooty * 300)
 
     local s = "RootCellX: " .. rootx .. " RootCellY: " .. rooty .. " ZeroX: " .. zeroX .. " ZeroY: " .. zeroY
 

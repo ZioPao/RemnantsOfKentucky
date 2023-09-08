@@ -1,4 +1,6 @@
-if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then return end
+if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then
+    return
+end
 
 require "PZ_EFT_debugtools"
 require "PZ_EFT_config"
@@ -38,8 +40,8 @@ end
 SafehouseInstanceManager.reset = function()
     ServerData.SafehouseInstances.SetSafehouseInstances({})
     ServerData.SafehouseInstances.SetSafehouseAssignedInstances({})
-    for i,v in ipairs(PZ_EFT_CONFIG.SafehouseCells) do
-        SafehouseInstanceManager.loadSafehouseInstances(v.x,v.y)
+    for i, v in ipairs(PZ_EFT_CONFIG.SafehouseCells) do
+        SafehouseInstanceManager.loadSafehouseInstances(v.x, v.y)
     end
 end
 
@@ -52,8 +54,10 @@ SafehouseInstanceManager.loadSafehouseInstances = function(cellX, cellY)
 
     for y = 0, safehouseSettings.safehouseGrid.y.count - 1 do
         for x = 0, safehouseSettings.safehouseGrid.x.count - 1 do
-            local relativeX = safehouseSettings.firstSafehouse.relative.x + (x * safehouseSettings.safehouseGrid.x.spacing)
-            local relativeY = safehouseSettings.firstSafehouse.relative.y + (y * safehouseSettings.safehouseGrid.y.spacing)
+            local relativeX = safehouseSettings.firstSafehouse.relative.x +
+                                  (x * safehouseSettings.safehouseGrid.x.spacing)
+            local relativeY = safehouseSettings.firstSafehouse.relative.y +
+                                  (y * safehouseSettings.safehouseGrid.y.spacing)
             local relativeZ = safehouseSettings.firstSafehouse.relative.z
 
             local wX = (cellX * 300) + relativeX
@@ -142,9 +146,26 @@ SafehouseInstanceManager.getOrAssignSafehouse = function(player)
     return playerSafehouseKey
 end
 
+SafehouseInstanceManager.sendPlayerToSafehouse = function(player)
+    --TODO don't send admin
+    local playerSafehouseKey = SafehouseInstanceManager.getOrAssignSafehouse(player)
+    local safehouse = SafehouseInstanceManager.getSafehouseInstanceByKey(playerSafehouseKey)
+    TeleportManager.Teleport(player, safehouse.x, safehouse.y, safehouse.z)
+    sendServerCommand(player, "PZEFT", "SetClientStateIsInRaid", false)
+end
+
+SafehouseInstanceManager.sendPlayersToSafehouse = function()
+    --TODO don't send admin
+    local playersArray = getOnlinePlayers()
+    for i = 0, playersArray:size() - 1 do
+        local player = playersArray:get(i)
+        SafehouseInstanceManager.sendPlayerToSafehouse(player)
+    end
+end
+
 local function OnLoad()
-    for i,v in ipairs(PZ_EFT_CONFIG.SafehouseCells) do
-        SafehouseInstanceManager.loadSafehouseInstances(v.x,v.y)
+    for i, v in ipairs(PZ_EFT_CONFIG.SafehouseCells) do
+        SafehouseInstanceManager.loadSafehouseInstances(v.x, v.y)
     end
 end
 

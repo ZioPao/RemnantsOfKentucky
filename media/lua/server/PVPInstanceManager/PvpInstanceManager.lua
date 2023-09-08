@@ -178,6 +178,21 @@ PvpInstanceManager.getPermanentExtractionPoints = function(cellX, cellY)
     return points
 end
 
+PvpInstanceManager.teleportPlayersToInstance = function()
+    local currentInstance = PvpInstanceManager.getCurrentInstance()
+
+    local temp = getOnlinePlayers()
+    for i = 0, temp:size() - 1 do
+        local player = temp:get(i)
+        local spawnPoint = PvpInstanceManager.popRandomSpawnPoint()
+        if not spawnPoint then return end --no more spawnpoints available
+        TeleportManager.Teleport(player, spawnPoint.x, spawnPoint.y, spawnPoint.z)
+        sendServerCommand(player, "PZEFT", "SetClientStateIsInRaid", true)
+    end
+    
+    PvpInstanceManager.sendCurrentInstance()
+end
+
 local function OnLoad()
     PvpInstanceManager.loadPvpInstances()
 end

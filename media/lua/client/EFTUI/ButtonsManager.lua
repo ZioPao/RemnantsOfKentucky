@@ -1,3 +1,4 @@
+require "ClientState"
 -- Override ISSafetyUI to have a instance of that so we can reference it later
 local og_ISSafetyUI = ISSafetyUI.new
 
@@ -61,8 +62,7 @@ function ISAdminPanelUI:create()
     _ISAdminPanelUICreate(self)
 
     local function OpenAdminMenu()
-        -- TODO Add check if we're inside a match
-        if true then
+        if not ClientState.IsInRaid then
             BeforeMatchAdminPanel.OnOpenPanel()
         else
             DuringMatchAdminPanel.OnOpenPanel()

@@ -11,19 +11,19 @@ PZ_EFT_CONFIG.SafehouseCells = {{
 PZ_EFT_CONFIG.SafehouseInstanceSettings = {
     firstSafehouse = {
         relative = {
-            x = 8,
-            y = 19,
+            x = 138,
+            y = 48,
             z = 0
         }
     },
     safehouseGrid = {
         x = {
-            count = 1,
-            spacing = 60
+            count = 4,
+            spacing = 15
         },
         y = {
-            count = 1,
-            spacing = 60
+            count = 9,
+            spacing = 15
         }
     },
 
@@ -220,7 +220,7 @@ PZ_EFT_CONFIG.PermanentExtractionPoints = {}
 
 
 table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
-    name = "extract point 1",
+    name = "Extract 1",
     x1 = 37,
     y1 = 528,
     z1 = 0,
@@ -231,7 +231,7 @@ table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
 })
 
 table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
-    name = "extract point 2",
+    name = "Extract 2",
     x1 = 812,
     y1 = 227,
     z1 = 0,
@@ -242,7 +242,7 @@ table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
 })
 
 table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
-    name = "extract point 3",
+    name = "Extract 3",
     x1 = 769,
     y1 = 470,
     z1 = 0,

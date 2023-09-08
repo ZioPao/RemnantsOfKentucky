@@ -45,6 +45,14 @@ ClientCommands.transmitShopItems = function()
     ServerShopManager.transmitShopItems()
 end
 
+ClientCommands.teleportPlayersToInstance = function()
+    PvpInstanceManager.teleportPlayersToInstance()
+end
+
+ClientCommands.sendPlayersToSafehouse = function()
+    SafehouseInstanceManager.sendPlayersToSafehouse()
+end
+
 local OnClientCommand = function(module, command, playerObj, args)
     if module == MODULE and ClientCommands[command] then
         debugPrint("Client Command - " .. MODULE .. "." .. command)
