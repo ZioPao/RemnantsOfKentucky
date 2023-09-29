@@ -45,6 +45,7 @@ PZ_EFT_CONFIG.SafehouseInstanceSettings = {
     },
 
     --- relative to entrance
+    --- no building/disassembly
     safehouseStaticRoom = {
         x1 = 38 - relativeSafehouseEntrance.x,
         y1 = 25 - relativeSafehouseEntrance.y,
@@ -53,12 +54,14 @@ PZ_EFT_CONFIG.SafehouseInstanceSettings = {
     },
 
     --- relative to entrance
+    --- for context menu check
     safehouseComputer = {
         x = 41 - relativeSafehouseEntrance.x,
         y = 24 - relativeSafehouseEntrance.y
     },
     
     --- relative to entrance
+    --- for shop and wipe stuff
     safehouseStorage = {
         {x = 39 - relativeSafehouseEntrance.x, y = 21 - relativeSafehouseEntrance.y},
         {x = 40 - relativeSafehouseEntrance.x, y = 21 - relativeSafehouseEntrance.y},
@@ -66,6 +69,7 @@ PZ_EFT_CONFIG.SafehouseInstanceSettings = {
     },
 
     --- relative to entrance
+    --- for building check
     safehouseEntranceNoBuildArea = {
         x1 = 37 - relativeSafehouseEntrance.x,
         y1 = 28 - relativeSafehouseEntrance.y,
@@ -74,6 +78,7 @@ PZ_EFT_CONFIG.SafehouseInstanceSettings = {
     },
 
     ---Dimensions of safehouse, relative to the entrance
+    --- for is in safehouse check
     dimensions = {
         n = 9,
         s = 1,
@@ -83,17 +88,25 @@ PZ_EFT_CONFIG.SafehouseInstanceSettings = {
 }
 
 PZ_EFT_CONFIG.PVPInstanceSettings = {
+    -- x length of map in cells
     xLength = 2,
+    -- y length of map in cells
     yLength = 3,
 
+    -- equal space between instances in all directions
     buffer = 1,
 
+    -- first instance x cell position
     firstXCellPos = 5,
+    -- first instance y cell position
     firstYCellPos = 5,
 
+    -- how many times instances repeat in an x direction
     xRepeat = 4,
+    -- how many times instances repeat in a y direction
     yRepeat = 4,
 
+    -- number of random extraction points for each instance
     randomExtractionPointCount = 0
 }
 
