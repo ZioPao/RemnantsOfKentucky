@@ -4,29 +4,38 @@ PZ_EFT_CONFIG.Debug = true
 
 --Cells containing safehouses for initialisation
 PZ_EFT_CONFIG.SafehouseCells = {{
-    x = 1,
+    x = 0,
+    y = 0
+},
+{
+    x = 0,
     y = 1
 }}
+
+local relativeSafehouseEntrance = {
+    x = 37,
+    y = 29,
+    z = 0
+}
 
 PZ_EFT_CONFIG.SafehouseInstanceSettings = {
     firstSafehouse = {
         relative = {
-            x = 138,
-            y = 48,
-            z = 0
+            x = relativeSafehouseEntrance.x,
+            y = relativeSafehouseEntrance.y,
+            z = relativeSafehouseEntrance.z
         }
     },
     safehouseGrid = {
         x = {
-            count = 4,
-            spacing = 15
+            count = 7,
+            spacing = 40
         },
         y = {
-            count = 9,
-            spacing = 15
+            count = 7,
+            spacing = 40
         }
     },
-
     -- Storage boxes will be placed always in the same point inside a safehouse.
     -- Relative position from the safehouse's spawn point
     storageRelativePosition = {
@@ -34,11 +43,40 @@ PZ_EFT_CONFIG.SafehouseInstanceSettings = {
         y = 1,
     },
 
+    --- relative to entrance
+    safehouseStaticRoom = {
+        x1 = 38 - relativeSafehouseEntrance.x,
+        y1 = 25 - relativeSafehouseEntrance.y,
+        x2 = 41 - relativeSafehouseEntrance.x,
+        y2 = 21 - relativeSafehouseEntrance.y
+    },
+
+    --- relative to entrance
+    safehouseComputer = {
+        x = 41 - relativeSafehouseEntrance.x,
+        y = 24 - relativeSafehouseEntrance.y
+    },
+    
+    --- relative to entrance
+    safehouseStorage = {
+        {x = 39 - relativeSafehouseEntrance.x, y = 21 - relativeSafehouseEntrance.y},
+        {x = 40 - relativeSafehouseEntrance.x, y = 21 - relativeSafehouseEntrance.y},
+        {x = 41 - relativeSafehouseEntrance.x, y = 21 - relativeSafehouseEntrance.y},
+    },
+
+    --- relative to entrance
+    safehouseEntranceNoBuildArea = {
+        x1 = 37 - relativeSafehouseEntrance.x,
+        y1 = 28 - relativeSafehouseEntrance.y,
+        x2 = 41 - relativeSafehouseEntrance.x,
+        y2 = 29 - relativeSafehouseEntrance.y
+    },
+
     ---Dimensions of safehouse, relative to the entrance
     dimensions = {
-        n = 16,
+        n = 9,
         s = 1,
-        e = 1,
+        e = 4,
         w = 6
     }
 }
@@ -49,8 +87,8 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
 
     buffer = 1,
 
-    firstXCellPos = 2,
-    firstYCellPos = 2,
+    firstXCellPos = 5,
+    firstYCellPos = 5,
 
     xRepeat = 4,
     yRepeat = 2,

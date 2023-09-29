@@ -10,7 +10,7 @@ end
 
 --- This check is on the client side. Maybe somehow move to the server but that might be costly.
 ClientSafehouseInstanceHandler.isInSafehouse = function()
-    if isDebugEnabled() then return end
+    --if isDebugEnabled() then return end
 
     if not ClientState.IsInRaid then
         local md = PZEFT_UTILS.GetPlayerModData()
@@ -30,7 +30,7 @@ ClientSafehouseInstanceHandler.isInSafehouse = function()
         end
 
         local dimensions = PZ_EFT_CONFIG.SafehouseInstanceSettings.dimensions
-        if not PZEFT_UTILS.IsPointWithinDimensions(md.safehouse.x, md.safehouse.y, dimensions.n,
+        if getPlayer():isOutside() or not PZEFT_UTILS.IsPointWithinDimensions(md.safehouse.x, md.safehouse.y, dimensions.n,
             dimensions.s, dimensions.e, dimensions.w, sq:getX(), sq:getY()) then
             sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {
                 teleport = true

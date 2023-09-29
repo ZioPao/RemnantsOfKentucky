@@ -13,6 +13,7 @@ ServerCommands.SetSafehouse = function(safehouseInstance)
 end
 
 ServerCommands.CleanStorage = function(safehouseInstance)
+    --TODO Use PZ_EFT_CONFIG.SafehouseInstanceSettings.safehouseStorage instaed
     local x = safehouseInstance.x + PZ_EFT_CONFIG.SafehouseInstanceSettings.storageRelativePosition.x
     local y = safehouseInstance.y + PZ_EFT_CONFIG.SafehouseInstanceSettings.storageRelativePosition.y
     local sq = getCell():getGridSquare(x, y, 0)
