@@ -147,6 +147,10 @@ end
 ---@param count number
 ---@return {x1=5, y1=5, z1=0, x2=5, y2=5, z2=0, time=0}
 PvpInstanceManager.getRandomExtractionPoints = function(cellX, cellY, count)
+    if not count then
+        return {}
+    end
+    
     local extractionPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.RandomExtractionPoints, cellX, cellY, {"name", "time"})
 
     local extractionPointCount = #extractionPoints

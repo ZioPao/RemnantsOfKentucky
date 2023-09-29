@@ -12,6 +12,7 @@ PZ_EFT_CONFIG.SafehouseCells = {{
     y = 1
 }}
 
+--- For creating relative coordinates, no need to map coordinates or do manual math.
 local relativeSafehouseEntrance = {
     x = 37,
     y = 29,
@@ -82,8 +83,8 @@ PZ_EFT_CONFIG.SafehouseInstanceSettings = {
 }
 
 PZ_EFT_CONFIG.PVPInstanceSettings = {
-    xLength = 1,
-    yLength = 2,
+    xLength = 2,
+    yLength = 3,
 
     buffer = 1,
 
@@ -91,9 +92,9 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
     firstYCellPos = 5,
 
     xRepeat = 4,
-    yRepeat = 2,
+    yRepeat = 4,
 
-    randomExtractionPointCount = 1 --TODO: Maybe sandbox options
+    randomExtractionPointCount = 0
 }
 
 PZ_EFT_CONFIG.MatchSettings = {
