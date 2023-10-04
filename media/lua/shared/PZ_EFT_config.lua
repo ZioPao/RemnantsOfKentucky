@@ -4,12 +4,12 @@ PZ_EFT_CONFIG.Debug = true
 
 --Cells containing safehouses for initialisation
 PZ_EFT_CONFIG.SafehouseCells = {{
-    x = 0,
-    y = 0
+    x = 100,
+    y = 100
 },
 {
-    x = 0,
-    y = 1
+    x = 100,
+    y = 101
 }}
 
 --- For creating relative coordinates, no need to map coordinates or do manual math.
@@ -97,14 +97,14 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
     buffer = 1,
 
     -- first instance x cell position
-    firstXCellPos = 5,
+    firstXCellPos = 0,
     -- first instance y cell position
-    firstYCellPos = 5,
+    firstYCellPos = 0,
 
     -- how many times instances repeat in an x direction
-    xRepeat = 4,
+    xRepeat = 10,
     -- how many times instances repeat in a y direction
-    yRepeat = 4,
+    yRepeat = 10,
 
     -- number of random extraction points for each instance
     randomExtractionPointCount = 0
