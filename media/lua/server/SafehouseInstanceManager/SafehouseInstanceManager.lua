@@ -147,7 +147,6 @@ SafehouseInstanceManager.getOrAssignSafehouse = function(player)
 end
 
 SafehouseInstanceManager.sendPlayerToSafehouse = function(player)
-    --TODO don't send admin
     local playerSafehouseKey = SafehouseInstanceManager.getOrAssignSafehouse(player)
     local safehouse = SafehouseInstanceManager.getSafehouseInstanceByKey(playerSafehouseKey)
     TeleportManager.Teleport(player, safehouse.x, safehouse.y, safehouse.z)
@@ -155,7 +154,6 @@ SafehouseInstanceManager.sendPlayerToSafehouse = function(player)
 end
 
 SafehouseInstanceManager.sendPlayersToSafehouse = function()
-    --TODO don't send admin
     local playersArray = getOnlinePlayers()
     for i = 0, playersArray:size() - 1 do
         local player = playersArray:get(i)
