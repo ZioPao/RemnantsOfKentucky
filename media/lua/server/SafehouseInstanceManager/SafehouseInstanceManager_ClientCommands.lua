@@ -1,4 +1,6 @@
-if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then return end
+if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then
+    return
+end
 
 require "PZ_EFT_debugtools"
 require "TeleportManager"
@@ -12,7 +14,8 @@ local ClientCommands = {}
 ---@param args Table {teleport=true/false}
 ClientCommands.RequestSafehouseAllocation = function(playerObj, args)
     if args.teleport then
-        TeleportManager.Teleport(playerObj,302,302,0) --TODO: Teleport to empty area
+        TeleportManager.Teleport(playerObj, (PZ_EFT_CONFIG.SpawnCell.x * 300) + 150,
+            (PZ_EFT_CONFIG.SpawnCell.y * 300) + 150, 0)
     end
 
     local safehouseKey = SafehouseInstanceManager.getOrAssignSafehouse(playerObj)
@@ -33,7 +36,7 @@ end
 
 local OnClientCommand = function(module, command, playerObj, args)
     if module == MODULE and ClientCommands[command] then
-        --debugPrint("Client Command - " .. MODULE .. "." .. command)
+        -- debugPrint("Client Command - " .. MODULE .. "." .. command)
         ClientCommands[command](playerObj, args)
     end
 end
