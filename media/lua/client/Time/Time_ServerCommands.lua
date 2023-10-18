@@ -1,5 +1,10 @@
 local ServerCommands = {}
 
+ServerCommands.OpenTimePanel = function()
+    TimePanel.Open()
+end
+
+
 ServerCommands.ReceiveTimeUpdate = function(time)
     --print("Server Command - ReceiveTimeUpdate")
     --print(time[1])

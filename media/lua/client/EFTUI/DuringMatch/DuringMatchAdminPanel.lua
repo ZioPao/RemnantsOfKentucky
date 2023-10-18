@@ -110,18 +110,17 @@ function DuringMatchAdminPanel:update()
     -- Updates match info
     local matchInfo = "Match time: 00:00 <LINE> Alive players: 10"
 
+
     if self:getIsMatchEnded() then
-        matchInfo = matchInfo .. " <BR> <CENTRE> <RED> MATCH HAS ENDED!"
+        matchInfo = matchInfo .. " <BR> <CENTRE> <RED> THE MATCH HAS ENDED!"
+        self.btnStop:setEnable(false)
+    else
+        -- Handle confirmation panel to stop the match
+        self.btnStop:setEnable(self.confirmationPanel == nil or (self.confirmationPanel.isOpen ~= nil and self.confirmationPanel.isOpen == true))
     end
 
     self.panelInfo:setText(matchInfo)
     self.panelInfo.textDirty = true
-
-    if self.confirmationPanel and self.confirmationPanel.isOpen then
-        self.btnStop:setEnable(false)
-    else
-        self.btnStop:setEnable(true)
-    end
 
 end
 

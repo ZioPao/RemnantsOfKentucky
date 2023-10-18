@@ -35,7 +35,7 @@ local function FormatTime(time)
         addedColor = string.format(" <RGB:%.2f,%.2f,%.2f> ", 1, 1, 1)
     end
 
-    debugPrint(addedColor)
+    --debugPrint(addedColor)
 
     local finalString = string.format(" %s <CENTRE> %02d:%02d", addedColor, minutes, seconds)
 
@@ -48,6 +48,7 @@ function TimePanel:render()
     if timeNumber == nil then return end
 
     if timeNumber <= 0 then
+        print("Closing timer")
         self:close()
     end
     self.textPanel:setText(FormatTime(timeNumber))
@@ -89,6 +90,13 @@ end
 
 function TimePanel.Open()
     --debug_testCountdown()
+
+    if TimePanel.instance and TimePanel:getIsVisible() then
+        TimePanel.instance:close()
+    end
+
+
+    print("Opening up timer")
     local width = 300
     local height = 100
     local padding = 50

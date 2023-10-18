@@ -40,6 +40,10 @@ function MatchHandler:start()
     -- * Start timer and the event handling zombie spawning
     Countdown.Setup(300, function() print("End") end)
 
+
+    -- Reopens the panel on the clients
+    sendServerCommand("PZEFT-Time", "OpenTimePanel", {})
+
     -- self.timer = TimerHandler.Setup(30, 5, self.handleZombieSpawns)
 
     -- self.timer = TimerHandler:new()
