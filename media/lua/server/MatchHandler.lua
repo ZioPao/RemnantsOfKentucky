@@ -7,8 +7,8 @@ require "TeleportManager"
 
 local MatchHandler = {}
 
-local TimerHandler = require("TimeLogic/Timer")
-local CountdownHandler = require("TimeLogic/Countdown")
+local Countdown = require("Time/PZEFT_Countdown")
+local Timer = require("Time/PZEFT_Timer")
 
 function MatchHandler:new()
     local o = {}
@@ -37,9 +37,13 @@ function MatchHandler:start()
     PvpInstanceManager.teleportPlayersToInstance()
 
     -- * Start timer and the event handling zombie spawning
-    self.timer = TimerHandler:new()
-    self.timer:setFuncToRun(self.handleZombieSpawns, 5) -- will be run every 5 minnutes
-    self.timer:initialise()
+    Countdown.Setup(300, function() print("End") end)
+
+    -- self.timer = TimerHandler.Setup(30, 5, self.handleZombieSpawns)
+
+    -- self.timer = TimerHandler:new()
+    -- self.timer:setFuncToRun(self.handleZombieSpawns, 5) -- will be run every 5 minnutes
+    -- self.timer:initialise()
 end
 
 --- Kill players that are still in the pvp instance and didn't manage to escape in time

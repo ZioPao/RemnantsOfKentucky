@@ -2,16 +2,16 @@ require "PZ_EFT_config"
 --- DEBUG
 --- Gets player position and copies coordinates to clipboard
 
-local oldSendServerCommand = sendServerCommand
----Override for singleplayer testing
-function sendServerCommand(playerObj, module, command, args)
-    if (not isClient() and not isServer()) then --if SP
-        triggerEvent("OnServerCommand", module, command, args);
-    else --if MP
-        print("Server: oldSendServerCommand")
-        oldSendServerCommand(playerObj, module, command, args)
-    end
-end
+-- local oldSendServerCommand = sendServerCommand
+-- ---Override for singleplayer testing
+-- function sendServerCommand(playerObj, module, command, args)
+--     if (not isClient() and not isServer()) then --if SP
+--         triggerEvent("OnServerCommand", module, command, args);
+--     else --if MP
+--         print("Server: oldSendServerCommand")
+--         oldSendServerCommand(playerObj, module, command, args)
+--     end
+-- end
 
 function debugPrint(text)
     if PZ_EFT_CONFIG.Debug then

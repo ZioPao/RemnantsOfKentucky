@@ -16,9 +16,9 @@ ServerCommands.SetCurrentInstance = function(instanceData)
     md.currentInstance = instanceData
 end
 
-ServerCommands.SetClientStateIsInRaid = function(value)
-    ClientState.IsInRaid = value
-    if value == false then
+ServerCommands.SetClientStateIsInRaid = function(args)
+    ClientState.IsInRaid = args.value
+    if args.value == false then
         ClientState.IsInExtractionArea = false
     end
 end

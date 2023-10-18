@@ -191,7 +191,7 @@ PvpInstanceManager.teleportPlayersToInstance = function()
         local spawnPoint = PvpInstanceManager.popRandomSpawnPoint()
         if not spawnPoint then return end --no more spawnpoints available
         TeleportManager.Teleport(player, spawnPoint.x, spawnPoint.y, spawnPoint.z)
-        sendServerCommand(player, "PZEFT", "SetClientStateIsInRaid", true)
+        sendServerCommand(player, "PZEFT", "SetClientStateIsInRaid", {true})
     end
     
     PvpInstanceManager.sendCurrentInstance()
