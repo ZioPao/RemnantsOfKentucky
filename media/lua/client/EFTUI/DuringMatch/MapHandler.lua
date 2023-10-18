@@ -21,13 +21,13 @@ function EFTMapHandler:write()
     --Loop through extraction points and add the note on the map
     for i=1, #extractionPoints do
 		local singleExtractionPoint = extractionPoints[i]
-        local x = instance.x + singleExtractionPoint.x
-        local y = instance.y + singleExtractionPoint.y
+        local x = instance.x + singleExtractionPoint.x1     -- we have x1, x2, y1, y2... figure out how to deal with it
+        local y = instance.y + singleExtractionPoint.y1
 
         local iconSymbol = self.symbolsAPI:addTexture("PZEFT-Exit", x, y)
 		iconSymbol:setRGBA(0, 0, 0, 1.0)
 		iconSymbol:setAnchor(0.0, 0.0)
-		iconSymbol:setScale(ISMap.SCALE)
+		iconSymbol:setScale(ISMap.SCALE/2)
     end
 
 end
@@ -46,15 +46,31 @@ end
 
 --!!! JUST A PROOF OF CONCEPT HERE!
 
-local og_ISWorldMapInstantiate = ISWorldMap.instantiate
-function ISWorldMap:instantiate()
-    print("Instantiating ISWorldMap")
-    og_ISWorldMapInstantiate(self)
+-- local og_ISWorldMapInstantiate = ISWorldMap.instantiate
+-- function ISWorldMap:instantiate()
+--     --print("Instantiating ISWorldMap")
+--     og_ISWorldMapInstantiate(self)
 
-    -- TODO Should be triggered when a match is starting?
-    self.eftMapHandler = EFTMapHandler:new(self.mapAPI:getSymbolsAPI())
-    self.eftMapHandler:clear()
-    self.eftMapHandler:write()
+--     -- TODO Should be triggered when a match is starting?
+--     self.eftMapHandler = EFTMapHandler:new(self.mapAPI:getSymbolsAPI())
+--     self.eftMapHandler:clear()
+--     self.eftMapHandler:write()
+-- end
+
+
+ISWorldMap.WriteEFTExits = function(playerNum)
+    ISWorldMap.ShowWorldMap(playerNum)
+
+    -- Delay to be sure that the map has been initialized
+    local function TryToAddSymbols()
+        if ISWorldMap.instance == nil then return end
+        local eftMapHandler = EFTMapHandler:new(ISWorldMap.instance.symbolsAPI)
+        eftMapHandler:clear()
+        eftMapHandler:write()
+        ISWorldMap.HideWorldMap(playerNum)      -- FIXME this is not working
+        Events.OnTickEvenPaused.Remove(TryToAddSymbols)
+    end
+
+    Events.OnTickEvenPaused.Add(TryToAddSymbols)
+
 end
--- getWorldMarkers():addGridSquareMarker("circle_center", "circle_only_highlight", sq, r, g, b, true, 1)
--- getWorldMarkers():addPlayerHomingPoint(player, sq:getX(), sq:getY(), data.worldMarkerData.r, data.worldMarkerData.g, data.worldMarkerData.b, 5)

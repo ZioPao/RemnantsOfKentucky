@@ -1,5 +1,12 @@
 local MODULE = "PZEFT-UI"
 
+local TIME_PANEL_DESCRIPTIONS = {
+    "The match is starting",        -- 1
+    "The match has ended"           -- 2
+}
+
+
+
 
 local ServerCommands = {}
 
@@ -21,6 +28,11 @@ ServerCommands.SwitchMatchAdminUI = function(args)
 
 end
 
+ServerCommands.SetTimePanelDescription = function (args)
+    local index = args.index
+    -- TODO Fetch from a locally saved array of strings
+    TimePanel.instance:setDescription(TIME_PANEL_DESCRIPTIONS[index])
+end
 
 local OnServerCommand = function(module, command, args)
     if module == MODULE and ServerCommands[command] then

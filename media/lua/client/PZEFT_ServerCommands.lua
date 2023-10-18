@@ -18,12 +18,17 @@ end
 
 ServerCommands.SetClientStateIsInRaid = function(args)
 
-    print("Received new status for isInRaid = " .. tostring(args.value))
+    --print("Received new status for isInRaid = " .. tostring(args.value))
 
     ClientState.IsInRaid = args.value
     if args.value == false then
         ClientState.IsInExtractionArea = false
     end
+
+    -- Writes forcefully stuff in the map. Unclean as fuck
+    ISWorldMap.WriteEFTExits(getPlayer():getPlayerNum())
+    --ISWorldMap.ShowWorldMap(getPlayer():getPlayerNum())
+    
 end
 
 ServerCommands.CommitDieIfInRaid = function()

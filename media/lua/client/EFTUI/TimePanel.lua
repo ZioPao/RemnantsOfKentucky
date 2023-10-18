@@ -68,14 +68,14 @@ function TimePanel:initialise()
 
     -- Additional text on top of the time
 
-    self.textLabel = ISLabel:new( 0, 25, 10, "", 1, 1, 1, 1, UIFont.Large, true)
+    self.textLabel = ISLabel:new( 5, 10, 10, "", 1, 1, 1, 1, UIFont.Large, true)
     self.textLabel:initialise()
     self.textLabel:instantiate()
     self.timePanel:addChild(self.textLabel)
 
 
 end
-
+---Show a description on tye upper part of the time panel
 function TimePanel:setDescription(description)
     self.textLabel:setName(description)
 end

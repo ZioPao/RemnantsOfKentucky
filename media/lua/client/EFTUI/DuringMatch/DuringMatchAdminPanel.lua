@@ -91,8 +91,6 @@ function DuringMatchAdminPanel:onClick(btn)
 end
 
 
-
-
 function DuringMatchAdminPanel:update()
     BaseAdminPanel.update(self)
 

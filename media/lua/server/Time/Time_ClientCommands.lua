@@ -35,6 +35,7 @@ ClientCommands.StartMatchEndCountdown = function(playerObj, args)
     end
 
     Countdown.Setup(args.stopTime, StopMatch)
+    sendServerCommand('PZEFT-UI', 'SetTimePanelDescription', {index = 2})       -- 2 = The match has ended
 
 end
 

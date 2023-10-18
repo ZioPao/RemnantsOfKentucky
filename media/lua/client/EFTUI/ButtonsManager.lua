@@ -18,8 +18,8 @@ BUTTONS_DATA_TEXTURES = {
     },
 
     AdminPanelButton = {
-        ON = getTexture("media/textures/Leaderboard_on.png"),
-        OFF = getTexture("media/textures/Leaderboard_off.png")
+        ON = getTexture("media/textures/AdminPanel_on.png"),
+        OFF = getTexture("media/textures/AdminPanel_off.png")
     }
 }
 
@@ -30,8 +30,15 @@ ButtonManager = {}
 ---@param buttonModule string
 ---@param onClick function
 function ButtonManager.AddNewButton(buttonModule, onClick)
+
+    local additionalY = 10
+    if ButtonManager.isFirst then
+        additionalY = 50
+        ButtonManager.isFirst = false
+    end
+
     local xMax = ISEquippedItem.instance.x - 5
-    local yMax = ISEquippedItem.instance:getBottom() + 50
+    local yMax = ISEquippedItem.instance:getBottom() + additionalY
 
     ---@type Texture
     local texture = BUTTONS_DATA_TEXTURES[buttonModule].OFF
@@ -43,7 +50,7 @@ function ButtonManager.AddNewButton(buttonModule, onClick)
     ButtonManager[buttonModule].borderColor = { r = 1, g = 1, b = 1, a = 0.1 }
 
     ISEquippedItem.instance:addChild(ButtonManager[buttonModule])
-    ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() + ButtonManager[buttonModule]:getHeight() + 50)       -- TODO This is wrong, +50 is too much
+    ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() + ButtonManager[buttonModule]:getHeight() + additionalY)       -- TODO This is wrong, +50 is too much
 end
 
 
@@ -59,7 +66,7 @@ end
 
 function ButtonManager.CreateButtons()
     --print("Create buttons")
-
+    ButtonManager.isFirst = true
     -- This should be active ONLY when players are in their safehouses
     if ClientSafehouseInstanceHandler.isInSafehouse then
         ButtonManager.AddNewButton("LeaderboardButton", function() LeadearboardPanel.Open(100,100) end)
