@@ -1,31 +1,22 @@
 -- TODO Make it local after tests
-BeforeMatchAdminPanel = ISCollapsableWindow:derive("BeforeMatchAdminPanel")
+
+local BaseAdminPanel = require("EFTUI/BaseAdminPanel")
+
+BeforeMatchAdminPanel = BaseAdminPanel:derive("BeforeMatchAdminPanel")
 BeforeMatchAdminPanel.instance = nil
 
 function BeforeMatchAdminPanel:new(x, y, width, height)
-    local o = ISCollapsableWindow:new(x, y, width, height)
+    local o = BaseAdminPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
 
-    o.resizable = false
-
-    o.width = width
-    o.height = height
-
-    o.variableColor = { r = 0.9, g = 0.55, b = 0.1, a = 1 }
-    o.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 1 }
-    o.backgroundColor = { r = 0, g = 0, b = 0, a = 1.0 }
-    o.buttonBorderColor = { r = 0.7, g = 0.7, b = 0.7, a = 0.5 }
-    o.moveWithMouse = true
-
     o.isStartingMatch = false
-
     BeforeMatchAdminPanel.instance = o
     return o
 end
 
 function BeforeMatchAdminPanel:createChildren()
-    ISCollapsableWindow.createChildren(self)
+    BaseAdminPanel.createChildren(self)
 
     self.panelInfo = ISRichTextPanel:new(0, 20, self:getWidth(), self:getHeight() / 4)
     self.panelInfo.autosetheight = false
@@ -112,7 +103,7 @@ function BeforeMatchAdminPanel:onClick(btn)
 end
 
 function BeforeMatchAdminPanel:update()
-    ISCollapsableWindow.update(self)
+    BaseAdminPanel.update(self)
     -- When starting the match, we'll disable the start button and default close button and enable the stop one
     self.closeButton:setEnable(not self.isStartingMatch)
 
@@ -135,7 +126,7 @@ function BeforeMatchAdminPanel:update()
 end
 
 function BeforeMatchAdminPanel:render()
-    ISCollapsableWindow.render(self)
+    BaseAdminPanel.render(self)
     if self.openedPanel then
         self.openedPanel:setX(self:getRight())
         self.openedPanel:setY(self:getBottom() - self:getHeight())
@@ -153,41 +144,14 @@ end
 
 
 --*****************************************--
-
+---@return
 function BeforeMatchAdminPanel.OnOpenPanel()
-
-    -- TODO This should be in a common class that gets inherited by this
-    if BeforeMatchAdminPanel.instance and BeforeMatchAdminPanel.instance:getIsVisible() then
-        BeforeMatchAdminPanel.instance:close()
-        ButtonManager["AdminPanelButton"]:setImage(BUTTONS_DATA_TEXTURES["AdminPanelButton"].OFF)
-        return
-    end
-
-
-
-
-    -- TODO Make it scale based on resolution
-    local width = 400
-    local height = 500
-
-    local x = getCore():getScreenWidth() / 2 - width
-    local y = getCore():getScreenHeight() / 2 - height
-
-    local pnl = BeforeMatchAdminPanel:new(x, y, width, height)
-    pnl:initialise()
-    pnl:instantiate()
-    pnl:addToUIManager()
-    pnl:bringToTop()
-    return pnl
+    return BaseAdminPanel.OnOpenPanel(BeforeMatchAdminPanel)
 end
 
 ---Check if there's a panel already open, and closes it
----@return boolean wasOpen 
+---@return boolean
 function BeforeMatchAdminPanel.OnClosePanel()
-    local wasOpen = false
-    if BeforeMatchAdminPanel.instance then
-        BeforeMatchAdminPanel.instance:close()
-        wasOpen = true
-    end
-    return wasOpen
+    return BaseAdminPanel.OnClosePanel(BeforeMatchAdminPanel)
 end
+

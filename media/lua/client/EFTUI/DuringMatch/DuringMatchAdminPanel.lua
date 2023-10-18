@@ -1,25 +1,14 @@
--- TODO Make it local after tests
-DuringMatchAdminPanel = ISCollapsableWindow:derive("DuringMatchAdminPanel")
+local BaseAdminPanel = require("EFTUI/BaseAdminPanel")
+
+DuringMatchAdminPanel = BaseAdminPanel:derive("DuringMatchAdminPanel")
 DuringMatchAdminPanel.instance = nil
 
 function DuringMatchAdminPanel:new(x, y, width, height)
-    local o = ISCollapsableWindow:new(x, y, width, height)
+    local o = BaseAdminPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
 
-    o.resizable = false
-
-    o.width = width
-    o.height = height
-
-    o.variableColor = { r = 0.9, g = 0.55, b = 0.1, a = 1 }
-    o.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 1 }
-    o.backgroundColor = { r = 0, g = 0, b = 0, a = 1.0 }
-    o.buttonBorderColor = { r = 0.7, g = 0.7, b = 0.7, a = 0.5 }
-    o.moveWithMouse = true
-
     o.isMatchEnded = false
-
     DuringMatchAdminPanel.instance = o
     return o
 end
@@ -44,7 +33,7 @@ end
 
 
 function DuringMatchAdminPanel:createChildren()
-    ISCollapsableWindow.createChildren(self)
+    BaseAdminPanel.createChildren(self)
 
     self.panelInfo = ISRichTextPanel:new(0, 20, self:getWidth(), self:getHeight() / 1.5)
     self.panelInfo.autosetheight = false
@@ -105,7 +94,7 @@ end
 
 
 function DuringMatchAdminPanel:update()
-    ISCollapsableWindow.update(self)
+    BaseAdminPanel.update(self)
 
     -- Updates match info
     local matchInfo
@@ -129,44 +118,17 @@ function DuringMatchAdminPanel:close()
         self.confirmationPanel:close()
     end
 
-    ISCollapsableWindow.close(self)
+    BaseAdminPanel.close(self)
 end
 
 --*****************************************
 
 function DuringMatchAdminPanel.OnOpenPanel()
-
-    -- TODO This should be in a common class that gets inherited by this
-
-    if DuringMatchAdminPanel.instance and DuringMatchAdminPanel.instance:getIsVisible() then
-        DuringMatchAdminPanel.instance:close()
-        ButtonManager["AdminPanelButton"]:setImage(BUTTONS_DATA_TEXTURES["AdminPanelButton"].OFF)
-        return
-    end
-
-    
-    -- TODO Make it scale based on resolution
-    local width = 400
-    local height = 300
-
-    local x = getCore():getScreenWidth() / 2 - width
-    local y = getCore():getScreenHeight() / 2 - height
-
-    local pnl = DuringMatchAdminPanel:new(x, y, width, height)
-    pnl:initialise()
-    pnl:instantiate()
-    pnl:addToUIManager()
-    pnl:bringToTop()
-    return pnl
+    return BaseAdminPanel.OnOpenPanel(DuringMatchAdminPanel)
 end
 
 ---Check if there's a panel already open, and closes it
----@return boolean wasOpen 
+---@return boolean 
 function DuringMatchAdminPanel.OnClosePanel()
-    local wasOpen = false
-    if DuringMatchAdminPanel.instance then
-        DuringMatchAdminPanel.instance:close()
-        wasOpen = true
-    end
-    return wasOpen
+    return BaseAdminPanel.OnClosePanel(DuringMatchAdminPanel)
 end
