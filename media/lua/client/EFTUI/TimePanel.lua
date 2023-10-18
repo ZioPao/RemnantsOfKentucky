@@ -68,7 +68,7 @@ function TimePanel:initialise()
 
     -- Additional text on top of the time
 
-    self.textLabel = ISLabel:new( 0, 10, 10, "", 1, 1, 1, 1, UIFont.Large, false)
+    self.textLabel = ISLabel:new( 0, 25, 10, "", 1, 1, 1, 1, UIFont.Large, true)
     self.textLabel:initialise()
     self.textLabel:instantiate()
     self.timePanel:addChild(self.textLabel)
@@ -80,10 +80,8 @@ function TimePanel:setDescription(description)
     self.textLabel:setName(description)
 end
 -------------------------
--- Mostly debug stuff
 
 function TimePanel.Open(description)
-    --debug_testCountdown()
 
     if TimePanel.instance then --and TimePanel.instance:getIsVisible() then
         TimePanel.instance:close()
@@ -106,5 +104,6 @@ function TimePanel.Open(description)
 end
 
 function TimePanel.Close()
+    -- FIXME sometimes it breaks.
     TimePanel.instance:close()
 end
