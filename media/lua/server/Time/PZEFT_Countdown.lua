@@ -39,6 +39,11 @@ function EFT_Countdown.Setup(stopTime, func)
 	EFT_Countdown.stopTime = os_time() + stopTime
 
 	Events.OnTickEvenPaused.Add(EFT_Countdown.Update)
+end
+
+
+function EFT_Countdown.Stop()
+	Events.OnTickEvenPaused.Remove(EFT_Countdown.Update)
 
 end
 

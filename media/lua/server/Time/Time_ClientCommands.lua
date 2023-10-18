@@ -21,6 +21,10 @@ ClientCommands.StartMatchCountdown = function(playerObj, args)
     Countdown.Setup(args.stopTime, StartMatch)
 end
 
+ClientCommands.StopMatchCountdown = function (_, _)
+    Countdown.Stop()
+end
+
 ClientCommands.StartMatchEndCountdown = function(playerObj, args)
 
     local function StopMatch()

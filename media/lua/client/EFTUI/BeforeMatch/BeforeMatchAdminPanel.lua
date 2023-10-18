@@ -94,11 +94,8 @@ function BeforeMatchAdminPanel:onClick(btn)
         self.openedPanel = ManagePlayersPanel.Open(self:getRight(), self:getBottom() - self:getHeight())
     elseif btn.internal == 'STOP' then
         self.isStartingMatch = false
+        sendClientCommand("PZEFT-Time", "StopMatchCountdown", {})
         TimePanel.Close()
-
-        -- TODO This is not working
-
-        -- TODO Stop countdown
     end
 end
 
