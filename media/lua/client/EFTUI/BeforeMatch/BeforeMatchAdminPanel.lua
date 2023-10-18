@@ -127,15 +127,15 @@ function BeforeMatchAdminPanel:update()
 
     self.panelInfo:setText(instancesAvailableStr)
     self.panelInfo.textDirty = true
+end
 
-
-    -- TODO Maybe use a ontick since this isn't updated every tick and we'd want it to be fluid
-    -- FIX this should be on a Render, not update
-    -- Updates right panel position
+function BeforeMatchAdminPanel:render()
+    ISCollapsableWindow.render(self)
     if self.openedPanel then
         self.openedPanel:setX(self:getRight())
         self.openedPanel:setY(self:getBottom() - self:getHeight())
     end
+
 end
 
 function BeforeMatchAdminPanel:close()
