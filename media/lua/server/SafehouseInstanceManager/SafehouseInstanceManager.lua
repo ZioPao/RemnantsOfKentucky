@@ -150,7 +150,7 @@ SafehouseInstanceManager.sendPlayerToSafehouse = function(player)
     local playerSafehouseKey = SafehouseInstanceManager.getOrAssignSafehouse(player)
     local safehouse = SafehouseInstanceManager.getSafehouseInstanceByKey(playerSafehouseKey)
     TeleportManager.Teleport(player, safehouse.x, safehouse.y, safehouse.z)
-    sendServerCommand(player, "PZEFT", "SetClientStateIsInRaid", false)
+    sendServerCommand(player, "PZEFT", "SetClientStateIsInRaid", {false})
 end
 
 SafehouseInstanceManager.sendPlayersToSafehouse = function()
