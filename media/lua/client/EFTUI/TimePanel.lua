@@ -91,7 +91,7 @@ end
 function TimePanel.Open()
     --debug_testCountdown()
 
-    if TimePanel.instance and TimePanel:getIsVisible() then
+    if TimePanel.instance and TimePanel.instance:getIsVisible() then
         TimePanel.instance:close()
     end
 

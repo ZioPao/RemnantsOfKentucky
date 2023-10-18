@@ -38,11 +38,14 @@ function MatchHandler:start()
     PvpInstanceManager.teleportPlayersToInstance()
 
     -- * Start timer and the event handling zombie spawning
-    Countdown.Setup(300, function() print("End") end)
+    Countdown.Setup(300, function()
+        print("Ending the round!")
+        self:stopMatch()
+    end)
 
 
     -- Reopens the panel on the clients
-    sendServerCommand("PZEFT-Time", "OpenTimePanel", {})
+    --sendServerCommand("PZEFT-Time", "OpenTimePanel", {})
 
     -- self.timer = TimerHandler.Setup(30, 5, self.handleZombieSpawns)
 
