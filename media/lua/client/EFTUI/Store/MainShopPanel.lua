@@ -194,3 +194,27 @@ function MainShopPanel:createChildren()
     self.panel:activateView("Essential Items")
 
 end
+
+
+
+
+------------------------------------------------
+-- Search for PC while in safehouse
+
+
+local function OnFillContextMenu(player, context, worldObjects, test)
+    if test then return true end
+    if not ClientSafehouseInstanceHandler.isInSafehouse then return true end
+    local clickedObject = worldObjects[1]
+    local moveableObject = ISMoveableSpriteProps.fromObject(clickedObject)
+
+    local pcTileName = "Desktop Computer"
+
+    if instanceof(clickedObject, "IsoObject") and moveableObject.name == pcTileName then
+        context:addOption("Open Shop", worldObjects, MainShopPanel.Open, player)
+    end
+
+end
+
+-- For MP, we can access the menu ONLY from the admin panel
+Events.OnFillWorldObjectContextMenu.Add(OnFillContextMenu)
