@@ -30,7 +30,6 @@ function TimePanel:render()
     self.timePanel:setText(EFTGenericUI.FormatTime(timeNumber))
     self.timePanel.textDirty = true
 
-
     -- self.textLabel:setText("Test")
     -- self.textLabel.textDirty = true
 
@@ -69,7 +68,7 @@ function TimePanel:initialise()
 
     -- Additional text on top of the time
 
-    self.textLabel = ISLabel:new( 10, 10, 10, "Text", 1, 1, 1, 1, UIFont.Large, false)
+    self.textLabel = ISLabel:new( 0, 10, 10, "", 1, 1, 1, 1, UIFont.Large, false)
     self.textLabel:initialise()
     self.textLabel:instantiate()
     self.timePanel:addChild(self.textLabel)
@@ -77,16 +76,18 @@ function TimePanel:initialise()
 
 end
 
+function TimePanel:setDescription(description)
+    self.textLabel:setName(description)
+end
 -------------------------
 -- Mostly debug stuff
 
-function TimePanel.Open()
+function TimePanel.Open(description)
     --debug_testCountdown()
 
-    if TimePanel.instance and TimePanel.instance:getIsVisible() then
+    if TimePanel.instance then --and TimePanel.instance:getIsVisible() then
         TimePanel.instance:close()
     end
-
 
     print("Opening up timer")
     local width = 300
@@ -99,6 +100,8 @@ function TimePanel.Open()
     panel:initialise()
     panel:addToUIManager()
     panel:bringToTop()
+    panel:setDescription(description)
+
     return panel
 end
 

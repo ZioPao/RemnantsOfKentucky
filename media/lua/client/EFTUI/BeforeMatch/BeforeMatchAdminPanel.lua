@@ -97,13 +97,16 @@ function BeforeMatchAdminPanel:onClick(btn)
         self.isStartingMatch = true
         -- Start timer. Show it on screen
         sendClientCommand("PZEFT-Time", "StartMatchCountdown", {stopTime = 5})      -- TODO Change back to 30
-        TimePanel.Open()
+        TimePanel.Open("Starting match in...")
     elseif btn.internal == 'MATCH_OPTIONS' then
     elseif btn.internal == 'MANAGE_PLAYERS' then
         self.openedPanel = ManagePlayersPanel.Open(self:getRight(), self:getBottom() - self:getHeight())
     elseif btn.internal == 'STOP' then
         self.isStartingMatch = false
         TimePanel.Close()
+
+        -- TODO This is not working
+
         -- TODO Stop countdown
     end
 end
@@ -112,7 +115,7 @@ function BeforeMatchAdminPanel:update()
     ISCollapsableWindow.update(self)
     -- When starting the match, we'll disable the start button and default close button and enable the stop one
     self.closeButton:setEnable(not self.isStartingMatch)
-    
+
     self.btnStartMatch:setEnable(not self.isStartingMatch)
     self.btnMatchOptions:setEnable(not self.isStartingMatch)
     self.btnManagePlayers:setEnable(not self.isStartingMatch)
