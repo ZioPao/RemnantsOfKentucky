@@ -17,6 +17,9 @@ ServerCommands.SetCurrentInstance = function(instanceData)
 end
 
 ServerCommands.SetClientStateIsInRaid = function(args)
+
+    print("Received new status for isInRaid = " .. tostring(args.value))
+
     ClientState.IsInRaid = args.value
     if args.value == false then
         ClientState.IsInExtractionArea = false

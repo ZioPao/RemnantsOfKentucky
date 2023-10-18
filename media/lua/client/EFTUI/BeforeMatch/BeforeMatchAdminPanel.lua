@@ -96,7 +96,7 @@ function BeforeMatchAdminPanel:onClick(btn)
     if btn.internal == 'START_MATCH' then
         self.isStartingMatch = true
         -- Start timer. Show it on screen
-        sendClientCommand("PZEFT-Time", "StartMatchCountdown", {stopTime = 30})
+        sendClientCommand("PZEFT-Time", "StartMatchCountdown", {stopTime = 5})      -- TODO Change back to 30
         TimePanel.Open()
     elseif btn.internal == 'MATCH_OPTIONS' then
     elseif btn.internal == 'MANAGE_PLAYERS' then

@@ -11,8 +11,9 @@ end
 --- This check is on the client side. Maybe somehow move to the server but that might be costly.
 ClientSafehouseInstanceHandler.isInSafehouse = function()
     --if isDebugEnabled() then return end
-
+    print("Running isInSafehouse")
     if not ClientState.IsInRaid then
+        print("Player is not in a raid, running check for safehouse")
         local md = PZEFT_UTILS.GetPlayerModData()
 
         if not md.safehouse then
@@ -26,7 +27,7 @@ ClientSafehouseInstanceHandler.isInSafehouse = function()
         end
 
         if sq:getZ() ~= 0 then
-            return false;
+            return false
         end
 
         local dimensions = PZ_EFT_CONFIG.SafehouseInstanceSettings.dimensions
@@ -45,13 +46,14 @@ ClientSafehouseInstanceHandler.getSafehouse = function()
         return nil
     end
 
-    return md.safehouse;
+    return md.safehouse
 end
 
 --- On player initialise
 --- Request safehouse allocation of player from server
 ---@param player IsoPlayer
 ClientSafehouseInstanceHandler.onPlayerInit = function(player)
+    print("Running onplayerinit")
     if player and player == getPlayer() then
         local md = PZEFT_UTILS.GetPlayerModData()
         if not md.safehouse then
@@ -59,9 +61,12 @@ ClientSafehouseInstanceHandler.onPlayerInit = function(player)
             sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {
                 teleport = true
             })
-            Events.OnPlayerUpdate.Remove(ClientSafehouseInstanceHandler.onPlayerInit)
         end
     end
+
+    -- TODO This probably needs to be moved somewhere else
+    Events.OnPlayerUpdate.Remove(ClientSafehouseInstanceHandler.onPlayerInit)
+
 end
 
 Events.OnPlayerUpdate.Add(ClientSafehouseInstanceHandler.onPlayerInit)

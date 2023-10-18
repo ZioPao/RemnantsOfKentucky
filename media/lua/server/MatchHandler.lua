@@ -34,6 +34,7 @@ end
 
 ---Setup teleporting players to their spawn points
 function MatchHandler:start()
+    print("Starting match!")
     PvpInstanceManager.teleportPlayersToInstance()
 
     -- * Start timer and the event handling zombie spawning

@@ -11,7 +11,7 @@ local ClientCommands = {}
 
 --- Sends command to client to set the player's safehouse
 ---@param playerObj IsoPlayer
----@param args Table {teleport=true/false}
+---@param args table {teleport=true/false}
 ClientCommands.RequestSafehouseAllocation = function(playerObj, args)
     if args.teleport then
         TeleportManager.Teleport(playerObj, (PZ_EFT_CONFIG.SpawnCell.x * 300) + 150,
@@ -26,6 +26,7 @@ ClientCommands.RequestSafehouseAllocation = function(playerObj, args)
     -- TODO Clean Inventory Box here to be sure that it doesn't contain old items.
 
     if args.teleport then
+        print("Teleporting to instance from request safehouse allocation")
         TeleportManager.Teleport(playerObj, safehouseInstance.x, safehouseInstance.y, safehouseInstance.z)
     end
 
