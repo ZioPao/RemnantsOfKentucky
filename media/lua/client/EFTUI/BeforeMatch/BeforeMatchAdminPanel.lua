@@ -110,7 +110,9 @@ end
 
 function BeforeMatchAdminPanel:update()
     ISCollapsableWindow.update(self)
-    -- When starting the match, we'll disable the start button and enable the stop one
+    -- When starting the match, we'll disable the start button and default close button and enable the stop one
+    self.closeButton:setEnable(not self.isStartingMatch)
+    
     self.btnStartMatch:setEnable(not self.isStartingMatch)
     self.btnMatchOptions:setEnable(not self.isStartingMatch)
     self.btnManagePlayers:setEnable(not self.isStartingMatch)
