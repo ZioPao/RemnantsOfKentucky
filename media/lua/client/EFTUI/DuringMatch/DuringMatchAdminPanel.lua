@@ -136,6 +136,16 @@ end
 --*****************************************
 
 function DuringMatchAdminPanel.OnOpenPanel()
+
+    -- TODO This should be in a common class that gets inherited by this
+
+    if DuringMatchAdminPanel.instance and DuringMatchAdminPanel.instance:getIsVisible() then
+        DuringMatchAdminPanel.instance:close()
+        ButtonManager["AdminPanelButton"]:setImage(BUTTONS_DATA_TEXTURES["AdminPanelButton"].OFF)
+        return
+    end
+
+    
     -- TODO Make it scale based on resolution
     local width = 400
     local height = 300

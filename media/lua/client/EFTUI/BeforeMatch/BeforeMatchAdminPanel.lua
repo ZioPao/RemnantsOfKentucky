@@ -150,6 +150,17 @@ end
 --*****************************************--
 
 function BeforeMatchAdminPanel.OnOpenPanel()
+
+    -- TODO This should be in a common class that gets inherited by this
+    if BeforeMatchAdminPanel.instance and BeforeMatchAdminPanel.instance:getIsVisible() then
+        BeforeMatchAdminPanel.instance:close()
+        ButtonManager["AdminPanelButton"]:setImage(BUTTONS_DATA_TEXTURES["AdminPanelButton"].OFF)
+        return
+    end
+
+
+
+
     -- TODO Make it scale based on resolution
     local width = 400
     local height = 500

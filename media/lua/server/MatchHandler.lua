@@ -17,7 +17,7 @@ function MatchHandler:new()
 
     o.pvpInstance = PvpInstanceManager.getNextInstance()
 
-    MatchHandler.currenthandler = o
+    MatchHandler.instance = o
 
     return o
 end
@@ -25,7 +25,7 @@ end
 function MatchHandler:initialise()
     if self.instance == nil then
         debugPrint("PZ_EFT: No more instances found!")
-        MatchHandler.currenthandler = nil
+        MatchHandler.instance = nil
         return
     end
 
@@ -72,7 +72,7 @@ end
 -- *********************-
 
 function MatchHandler.GetHandler()
-    return MatchHandler.currenthandler
+    return MatchHandler.instance
 end
 
 return MatchHandler

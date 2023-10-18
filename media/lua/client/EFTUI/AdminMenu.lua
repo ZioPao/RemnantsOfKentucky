@@ -1,4 +1,4 @@
--- Base for admin panels
+-- -- Base for admin panels
 
 
-EFT_AdminPanel = ISCollapsableWindow:derive("EFT_AdminPanel")
+-- EFT_AdminPanel = ISCollapsableWindow:derive("EFT_AdminPanel")
