@@ -19,30 +19,6 @@ function TimePanel:new(x, y, width, height, isStartingMatch)
     return o
 end
 
----Returns a string with the formatted time in minutes:seconds
----@param time number?
-local function FormatTime(time)
-    local minutes = math.floor((time % 3600) / 60)
-    local seconds = math.floor(time % 60)
-
-    local addedColor = ""
-    if minutes == 0 and seconds < 30 then
-        local r = 1 / (seconds / 2)
-        local g = 1 - r
-        local b = 1 - r
-        addedColor = string.format(" <RGB:%.2f,%.2f,%.2f> ", 1, g, b)
-    else
-        addedColor = string.format(" <RGB:%.2f,%.2f,%.2f> ", 1, 1, 1)
-    end
-
-    --debugPrint(addedColor)
-
-    local finalString = string.format(" %s <CENTRE> %02d:%02d", addedColor, minutes, seconds)
-
-    -- TODO Check the current time, depending on this change color of the time on the panel.
-    return finalString
-end
-
 function TimePanel:render()
     local timeNumber = tonumber(ClientState.currentTime)
     if timeNumber == nil then return end
@@ -51,8 +27,14 @@ function TimePanel:render()
         print("Closing timer")
         self:close()
     end
-    self.textPanel:setText(FormatTime(timeNumber))
-    self.textPanel.textDirty = true
+    self.timePanel:setText(EFTGenericUI.FormatTime(timeNumber))
+    self.timePanel.textDirty = true
+
+
+    -- self.textLabel:setText("Test")
+    -- self.textLabel.textDirty = true
+
+
     if self.isStartingMatch then return end
 
     -- todo In game timer will fade out after some seconds
@@ -64,25 +46,35 @@ end
 function TimePanel:initialise()
     ISPanel.initialise(self)
 
-    self.textPanel = ISRichTextPanel:new(0, 0, self.width, self.height)
-    self.textPanel:initialise()
-    self:addChild(self.textPanel)
+    self.timePanel = ISRichTextPanel:new(0, 0, self.width, self.height)
+    self.timePanel:initialise()
+    self:addChild(self.timePanel)
 
-    self.textPanel.defaultFont = UIFont.Massive
-    self.textPanel.anchorTop = false
-    self.textPanel.anchorLeft = false
-    self.textPanel.anchorBottom = false
-    self.textPanel.anchorRight = false
+    self.timePanel.defaultFont = UIFont.Massive
+    self.timePanel.anchorTop = false
+    self.timePanel.anchorLeft = false
+    self.timePanel.anchorBottom = false
+    self.timePanel.anchorRight = false
 
-    self.textPanel.marginLeft = 0
-    self.textPanel.marginTop = self.height / 4
+    self.timePanel.marginLeft = 0
+    self.timePanel.marginTop = self.height / 4
 
-    self.textPanel.marginRight = 0
-    self.textPanel.marginBottom = 0
-    self.textPanel.autosetheight = false
-    self.textPanel.background = false
+    self.timePanel.marginRight = 0
+    self.timePanel.marginBottom = 0
+    self.timePanel.autosetheight = false
+    self.timePanel.background = false
 
-    self.textPanel:paginate()
+    self.timePanel:paginate()
+
+
+    -- Additional text on top of the time
+
+    self.textLabel = ISLabel:new( 10, 10, 10, "Text", 1, 1, 1, 1, UIFont.Large, false)
+    self.textLabel:initialise()
+    self.textLabel:instantiate()
+    self.timePanel:addChild(self.textLabel)
+
+
 end
 
 -------------------------

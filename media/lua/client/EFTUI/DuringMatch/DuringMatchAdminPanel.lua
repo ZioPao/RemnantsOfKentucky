@@ -108,15 +108,15 @@ function DuringMatchAdminPanel:update()
     ISCollapsableWindow.update(self)
 
     -- Updates match info
-    local matchInfo = "Match time: 00:00 <LINE> Alive players: 10"
-
+    local matchInfo
 
     if self:getIsMatchEnded() then
-        matchInfo = matchInfo .. " <BR> <CENTRE> <RED> THE MATCH HAS ENDED!"
+        matchInfo =" <CENTRE> <RED> THE MATCH HAS ENDED!"
         self.btnStop:setEnable(false)
     else
         -- Handle confirmation panel to stop the match
         self.btnStop:setEnable(self.confirmationPanel == nil or (self.confirmationPanel.isOpen ~= nil and self.confirmationPanel.isOpen == true))
+        matchInfo = "Match time: " .. EFTGenericUI.FormatTime(tonumber(ClientState.currentTime)) .. " <LINE> Alive Players: 10"
     end
 
     self.panelInfo:setText(matchInfo)
