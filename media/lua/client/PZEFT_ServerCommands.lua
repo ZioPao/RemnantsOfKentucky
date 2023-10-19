@@ -16,17 +16,18 @@ ServerCommands.SetCurrentInstance = function(instanceData)
     md.currentInstance = instanceData
 end
 
-ServerCommands.SetClientStateIsInRaid = function(args)
 
-    --print("Received new status for isInRaid = " .. tostring(args.value))
+ServerCommands.SetClientStateIsInRaid = function(args)
 
     ClientState.IsInRaid = args.value
     if args.value == false then
         ClientState.IsInExtractionArea = false
     end
 
+    triggerEvent("PZEFT_UpdateClientStatus", ClientState.IsInRaid)
+
     -- Writes forcefully stuff in the map. Unclean as fuck
-    ISWorldMap.WriteEFTExits(getPlayer():getPlayerNum())
+    --TODO ISWorldMap.WriteEFTExits(getPlayer():getPlayerNum())
     --ISWorldMap.ShowWorldMap(getPlayer():getPlayerNum())
     
 end
@@ -34,7 +35,7 @@ end
 ServerCommands.CommitDieIfInRaid = function()
     if ClientState.IsInRaid then
         ClientState.IsInExtractionArea = false
-        getPlayer():getBodyDamage():setHealth(0);
+        getPlayer():getBodyDamage():setHealth(0)
     end
 end
 

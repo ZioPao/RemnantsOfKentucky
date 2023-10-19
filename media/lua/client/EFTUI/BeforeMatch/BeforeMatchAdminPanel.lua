@@ -1,4 +1,5 @@
 local BaseAdminPanel = require("EFTUI/BaseAdminPanel")
+local ManagePlayersPanel = require("EFTUI/BeforeMatch/ManagePlayersPanel")
 local BeforeMatchAdminPanel = BaseAdminPanel:derive("BeforeMatchAdminPanel")
 BeforeMatchAdminPanel.instance = nil
 
@@ -89,12 +90,12 @@ function BeforeMatchAdminPanel:onClick(btn)
     if btn.internal == 'START_MATCH' then
         self.isStartingMatch = true
         -- Start timer. Show it on screen
-        sendClientCommand("PZEFT-Time", "StartMatchCountdown", {stopTime = PZ_EFT_CONFIG.MatchSettings.startMatchTime})      -- TODO Change back to 30
+        sendClientCommand("PZEFT-Time", "StartMatchCountdown", {stopTime = PZ_EFT_CONFIG.MatchSettings.startMatchTime})
         TimePanel.Open("Starting match in...")
     elseif btn.internal == 'MATCH_OPTIONS' then
         -- TODO Implement match options
     elseif btn.internal == 'MANAGE_PLAYERS' then
-        if self.opened and self.openedPanel:getIsVisible() then
+        if self.openedPanel and self.openedPanel:getIsVisible() then
             self.openedPanel:close()
         else
             self.openedPanel = ManagePlayersPanel.Open(self:getRight(), self:getBottom() - self:getHeight())

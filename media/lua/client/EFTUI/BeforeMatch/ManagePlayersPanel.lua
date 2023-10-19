@@ -11,7 +11,7 @@ end
 -------------------------------
 
 -- TODO Make it local
-ManagePlayersPanel = ISCollapsableWindow:derive("ManagePlayersPanel")
+local ManagePlayersPanel = ISCollapsableWindow:derive("ManagePlayersPanel")
 
 function ManagePlayersPanel.Open(x, y)
     if ManagePlayersPanel.instance then
@@ -278,3 +278,5 @@ function ManagePlayersScrollingTable:drawDatas(y, item, alt)
     self:drawText(item.text, xOffset, y + 4, 1, 1, 1, a, self.font)
     return y + self.itemheight
 end
+
+return ManagePlayersPanel

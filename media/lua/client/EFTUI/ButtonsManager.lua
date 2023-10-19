@@ -1,7 +1,6 @@
 require "ClientState"
 local BeforeMatchAdminPanel = require("EFTUI/BeforeMatch/BeforeMatchAdminPanel")
 local DuringMatchAdminPanel = require("EFTUI/DuringMatch/DuringMatchAdminPanel")
-
 -- Override ISSafetyUI to have a instance of that so we can reference it later
 local og_ISSafetyUI = ISSafetyUI.new
 
@@ -34,11 +33,11 @@ ButtonManager = {}
 ---@param onClick function
 function ButtonManager.AddNewButton(buttonModule, onClick)
 
-    local additionalY = 10
-    if ButtonManager.isFirst then
-        additionalY = 50
-        ButtonManager.isFirst = false
-    end
+    local additionalY = 50
+    -- if ButtonManager.isFirst then
+    --     additionalY = 50
+    --     ButtonManager.isFirst = false
+    -- end
 
     local xMax = ISEquippedItem.instance.x - 5
     local yMax = ISEquippedItem.instance:getBottom() + additionalY
@@ -53,9 +52,17 @@ function ButtonManager.AddNewButton(buttonModule, onClick)
     ButtonManager[buttonModule].borderColor = { r = 1, g = 1, b = 1, a = 0.1 }
 
     ISEquippedItem.instance:addChild(ButtonManager[buttonModule])
-    ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() + ButtonManager[buttonModule]:getHeight() + additionalY)       -- TODO This is wrong, +50 is too much
+    ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() + ButtonManager[buttonModule]:getHeight() + additionalY)
 end
 
+function ButtonManager.RemoveButton(buttonModule)
+    if ButtonManager[buttonModule] then
+        ISEquippedItem.instance:removeChild(ButtonManager[buttonModule])
+        ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() - ButtonManager[buttonModule]:getHeight() - 50)
+        ButtonManager[buttonModule] = nil
+    end
+
+end
 
 local function OpenAdminMenu()
     if not ClientState.IsInRaid then
@@ -67,20 +74,20 @@ end
 
 
 
-function ButtonManager.CreateButtons()
-    --print("Create buttons")
-    ButtonManager.isFirst = true
+function ButtonManager.CreateButtons(isInRaid)
+    print("Create buttons")
     -- This should be active ONLY when players are in their safehouses
-    if ClientSafehouseInstanceHandler.isInSafehouse then
+    -- FIXME Bit buggy
+
+    ButtonManager.RemoveButton("LeaderboardButton")
+    ButtonManager.RemoveButton("AdminPanelButton")
+    if type(isInRaid) ~= "boolean" or not isInRaid then
         ButtonManager.AddNewButton("LeaderboardButton", function() LeadearboardPanel.Open(100,100) end)
     end
 
     ButtonManager.AddNewButton("AdminPanelButton", function() OpenAdminMenu() end)
-
 end
-
--- TODO add more precise events
-
+Events.PZEFT_UpdateClientStatus.Add(ButtonManager.CreateButtons)
 Events.OnCreatePlayer.Add(ButtonManager.CreateButtons)
 
 ----------------------------------------------------------

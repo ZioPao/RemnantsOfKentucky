@@ -3,6 +3,7 @@ local KEY_PVP_INSTANCES = "PZ-EFT-PVP-INSTANCES"
 local KEY_PVP_CURRENTINSTANCE = "PZ-EFT-PVP-CURRENTINSTANCE"
 
 LuaEventManager.AddEvent("PZEFT_ClientModDataReady")
+LuaEventManager.AddEvent("PZEFT_UpdateClientStatus")
 
 ClientData = ClientData or {}
 
