@@ -73,6 +73,10 @@ ServerData.PVPInstances.GetPvpUsedInstances = function()
     return ModData.getOrCreate(KEY_PVP_USEDINSTANCES)
 end
 
+-- ServerData.PVPInstances.GetAmountPvpUsedInstances = function()
+--     return #ModData.getOrCreate(KEY_PVP_USEDINSTANCES)
+-- end
+
 --- Set table of PVP used instances data
 ---@param data table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
 ServerData.PVPInstances.SetPvpUsedInstances = function(data)
@@ -80,7 +84,7 @@ ServerData.PVPInstances.SetPvpUsedInstances = function(data)
 end
 
 --- Get PVP current instance data
----@return {id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
+---@return table {id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
 ServerData.PVPInstances.GetPvpCurrentInstance = function()
     return ModData.getOrCreate(KEY_PVP_CURRENTINSTANCE)
 end
@@ -104,7 +108,7 @@ ServerData.SafehouseInstances.GetSafehouseInstances = function()
 end
 
 --- Set table of safehouse instances
----@param data Table Of ["worldx-worldy-worldz"]={x=worldx, y=worldy, z=worldz}
+---@param data table Of ["worldx-worldy-worldz"]={x=worldx, y=worldy, z=worldz}
 ServerData.SafehouseInstances.SetSafehouseInstances = function(data)
     ModData.add(KEY_SAFEHOUSE_INSTANCES, data)
 end

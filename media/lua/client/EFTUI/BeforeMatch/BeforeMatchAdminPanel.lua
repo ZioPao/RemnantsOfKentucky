@@ -123,7 +123,12 @@ function BeforeMatchAdminPanel:update()
     -- Handles Panel Info stuff
 
     -- TODO Updating it in real time could be costly
-    local instancesAvailableStr = getText("IGUI_AdminPanelBeforeMatch_InstancesAvailable", -1) ..
+
+    -- 100 instances by default
+    -- 99 safehouses by default
+
+
+    local instancesAvailableStr = getText("IGUI_AdminPanelBeforeMatch_InstancesAvailable", ClientState.availableInstances) ..
     "\n" .. getText("IGUI_AdminPanelBeforeMatch_SafehousesAssigned", -1)
 
     self.panelInfo:setText(instancesAvailableStr)
@@ -153,6 +158,8 @@ end
 function BeforeMatchAdminPanel.OnOpenPanel()
     -- TODO Request available instances
     -- TODO Request available safehouses
+
+
     return BaseAdminPanel.OnOpenPanel(BeforeMatchAdminPanel)
 end
 

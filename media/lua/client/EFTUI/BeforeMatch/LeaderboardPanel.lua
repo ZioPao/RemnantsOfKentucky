@@ -117,6 +117,8 @@ end
 LeadearboardPanel = ISCollapsableWindow:derive("LeadearboardPanel")
 
 function LeadearboardPanel.Open(x, y)
+
+    -- TODO Find a better way to handle icons
     if LeadearboardPanel.instance and LeadearboardPanel.instance:getIsVisible() then
         LeadearboardPanel.instance:close()
         ButtonManager["LeaderboardButton"]:setImage(BUTTONS_DATA_TEXTURES["LeaderboardButton"].OFF)

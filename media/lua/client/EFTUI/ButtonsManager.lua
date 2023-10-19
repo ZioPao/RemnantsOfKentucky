@@ -85,6 +85,7 @@ function ButtonManager.CreateButtons(isInRaid)
         ButtonManager.AddNewButton("LeaderboardButton", function() LeadearboardPanel.Open(100,100) end)
     end
 
+    -- TODO Check if admin
     ButtonManager.AddNewButton("AdminPanelButton", function() OpenAdminMenu() end)
 end
 Events.PZEFT_UpdateClientStatus.Add(ButtonManager.CreateButtons)

@@ -48,8 +48,9 @@ function BaseAdminPanel.OnOpenPanel(type)
     pnl:instantiate()
     pnl:addToUIManager()
     pnl:bringToTop()
-    return pnl
 
+    ButtonManager["AdminPanelButton"]:setImage(BUTTONS_DATA_TEXTURES["AdminPanelButton"].ON)
+    return pnl
 
 end
 

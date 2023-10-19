@@ -37,7 +37,7 @@ ClientData.PVPInstances.GetCurrentInstance = function()
     return ModData.getOrCreate(KEY_PVP_CURRENTINSTANCE)
 end
 
-ClientData.Shop =ClientData.Shop or {}
+ClientData.Shop = ClientData.Shop or {}
 
 ClientData.Shop.GetShopItems = function()
     return ModData.getOrCreate(KEY_SHOP_ITEMS)

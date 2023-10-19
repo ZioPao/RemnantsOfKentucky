@@ -13,7 +13,6 @@ local function EveryOneMinute_InRaid_Events()
         isRefreshSafehouseAllocationUpdateActive = false
         Events.EveryOneMinute.Remove(ClientSafehouseInstanceHandler.refreshSafehouseAllocation)
     end
-    
 end
 
 local function EveryOneMinute_Not_InRaid_Events()
@@ -37,3 +36,13 @@ local function updateClientState()
 end
 
 Events.EveryOneMinute.Add(updateClientState)
+
+
+
+
+--- Sets ClientState.availableInstances
+local function UpdateUsedInstancesAmount()
+    sendClientCommand("PZEFT-PvpInstances", "GetAmountAvailableInstances", {})
+end
+
+Events.EveryHours.Add(UpdateUsedInstancesAmount)

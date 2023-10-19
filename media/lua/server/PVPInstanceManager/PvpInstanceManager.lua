@@ -202,6 +202,20 @@ PvpInstanceManager.teleportPlayersToInstance = function()
     PvpInstanceManager.sendCurrentInstance()
 end
 
+
+----
+
+PvpInstanceManager.getAmountUsedInstances = function()
+    local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances
+
+    if usedInstances ~= nil then
+        return #usedInstances
+    else
+        return 0
+    end
+end
+
+
 local function OnLoad()
     PvpInstanceManager.loadPvpInstances()
 end

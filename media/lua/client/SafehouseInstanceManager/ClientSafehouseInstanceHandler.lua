@@ -11,9 +11,9 @@ end
 --- This check is on the client side. Maybe somehow move to the server but that might be costly.
 ClientSafehouseInstanceHandler.isInSafehouse = function()
     --if isDebugEnabled() then return end
-    print("Running isInSafehouse")
+    --print("Running isInSafehouse")
     if not ClientState.IsInRaid then
-        print("Player is not in a raid, running check for safehouse")
+        --print("Player is not in a raid, running check for safehouse")
         local md = PZEFT_UTILS.GetPlayerModData()
 
         if not md.safehouse then

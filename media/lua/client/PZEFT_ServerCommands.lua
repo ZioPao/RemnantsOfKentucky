@@ -16,6 +16,10 @@ ServerCommands.SetCurrentInstance = function(instanceData)
     md.currentInstance = instanceData
 end
 
+--- Sets the amount of available instances to the client state
+ServerCommands.ReceiveAmountAvailableInstances = function(args)
+    ClientState.availableInstances = args.amount
+end
 
 ServerCommands.SetClientStateIsInRaid = function(args)
 
