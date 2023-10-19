@@ -116,8 +116,11 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
 }
 
 PZ_EFT_CONFIG.MatchSettings = {
-    time = 30,      -- TODO Maybe it's better if we set it in seconds here instead of minutes
-    overTime = 5
+    -- Time related stuff, in seconds
+    roundTime = 60,        -- TODO Set it to 1800 = 30 minutes
+    startMatchTime = 5,
+    endMatchTime = 5,
+
 }
 
 --- Spawn points - world coordinates if PVP instance starts at cell 0,0

@@ -56,25 +56,25 @@ end
 ServerData.PVPInstances = ServerData.PVPInstances or {}
 
 --- Get table of PVP instances data
----@return Table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
+---@return table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
 ServerData.PVPInstances.GetPvpInstances = function()
     return ModData.getOrCreate(KEY_PVP_INSTANCES)
 end
 
 --- Set table of PVP instances data
----@param data Table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
+---@param data table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
 ServerData.PVPInstances.SetPvpInstances = function(data)
     ModData.add(KEY_PVP_INSTANCES, data)
 end
 
 --- Get table of PVP used instances data
----@return Table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
+---@return table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
 ServerData.PVPInstances.GetPvpUsedInstances = function()
     return ModData.getOrCreate(KEY_PVP_USEDINSTANCES)
 end
 
 --- Set table of PVP used instances data
----@param data Table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
+---@param data table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
 ServerData.PVPInstances.SetPvpUsedInstances = function(data)
     ModData.add(KEY_PVP_USEDINSTANCES, data)
 end
@@ -98,7 +98,7 @@ end
 ServerData.SafehouseInstances = ServerData.SafehouseInstances or {}
 
 --- Get table of safehouse instances
----@return Table Of ["worldx-worldy-worldz"]={x=worldx, y=worldy, z=worldz}
+---@return table Of ["worldx-worldy-worldz"]={x=worldx, y=worldy, z=worldz}
 ServerData.SafehouseInstances.GetSafehouseInstances = function()
     return ModData.getOrCreate(KEY_SAFEHOUSE_INSTANCES)
 end
@@ -110,13 +110,13 @@ ServerData.SafehouseInstances.SetSafehouseInstances = function(data)
 end
 
 --- Get table fo assigned instances
----@return Table Of ["worldx-worldy-worldz"]=username
+---@return table Of ["worldx-worldy-worldz"]=username
 ServerData.SafehouseInstances.GetSafehouseAssignedInstances = function()
     return ModData.getOrCreate(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
 end
 
 --- Set table of assigned instances
----@param data Table Of ["worldx-worldy-worldz"]=username
+---@param data table Of ["worldx-worldy-worldz"]=username
 ServerData.SafehouseInstances.SetSafehouseAssignedInstances = function(data)
     ModData.add(KEY_SAFEHOUSE_ASSIGNEDINSTANCES, data)
 end
@@ -124,13 +124,13 @@ end
 ServerData.Bank = ServerData.Bank or {}
 
 --- Get table of bank accounts
----@return Table Of ["usernames"]=balance
+---@return table Of ["usernames"]=balance
 ServerData.Bank.GetBankAccounts = function()
     return ModData.getOrCreate(KEY_BANK_ACCOUNTS)
 end
 
 --- Set table of bank accounts
----@param data Table Of ["usernames"]=balance
+---@param data table Of ["usernames"]=balance
 ServerData.Bank.SetBankAccounts = function(data)
     ModData.add(KEY_BANK_ACCOUNTS, data)
 end
@@ -138,13 +138,13 @@ end
 ServerData.Shop = ServerData.Shop or {}
 
 --- Get table of shop items
----@return Table Of ["fulltype"] = {basePrice = basePrice, multiplier = initialMultiplier or 1 }
+---@return table Of ["fulltype"] = {basePrice = basePrice, multiplier = initialMultiplier or 1 }
 ServerData.Shop.GetShopItems = function()
     return ModData.getOrCreate(KEY_SHOP_ITEMS)
 end
 
 --- Set table of shop items
----@param data Table Of ["fulltype"] = {basePrice = basePrice, multiplier = initialMultiplier or 1 }
+---@param data table Of ["fulltype"] = {basePrice = basePrice, multiplier = initialMultiplier or 1 }
 ServerData.Shop.SetShopItems = function(data)
     ModData.add(KEY_SHOP_ITEMS, data)
 end

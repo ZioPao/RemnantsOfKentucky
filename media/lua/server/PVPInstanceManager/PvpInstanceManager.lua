@@ -24,8 +24,10 @@ PvpInstanceManager.reset = function(clearInstances)
 end
 
 --- Refreshes the extractions. Used for when you change some values regarding spawnpoints and extractions.
----@param local any
 PvpInstanceManager.refreshPvpInstancesExtractions = function()
+
+    -- TODO KIM: Is this working?
+
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
     for key, value in pairs(pvpInstances) do
         local permanentExtractions = PvpInstanceManager.getPermanentExtractionPoints(iX, iY)
@@ -76,7 +78,7 @@ PvpInstanceManager.loadPvpInstances = function()
 end
 
 --- Marks old instance as used and Gets new instance
----@return {id, x, y, spawnPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}, extractionPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}}
+---@return table {id, x, y, spawnPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}, extractionPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}}
 PvpInstanceManager.getNextInstance = function()
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
     local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
@@ -103,7 +105,7 @@ PvpInstanceManager.getNextInstance = function()
 end
 
 --- Get the current active instance
----@return {id, x, y, spawnPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}, extractionPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}}
+---@return table {id, x, y, spawnPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}, extractionPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}}
 PvpInstanceManager.getCurrentInstance = function()
     local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
@@ -122,7 +124,7 @@ PvpInstanceManager.sendClearCurrentInstance = function()
 end
 
 ---Consumes a spawnpoint.
----@return {x=5, y=5, z=0}
+---@return table spawnPoint {x=5, y=5, z=0}
 PvpInstanceManager.popRandomSpawnPoint = function()
     local currentInstance = PvpInstanceManager.getCurrentInstance()
     local size = #currentInstance.spawnPoints

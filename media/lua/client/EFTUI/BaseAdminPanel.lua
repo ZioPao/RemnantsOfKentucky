@@ -3,7 +3,6 @@
 -- This should be the common start for the Admin panels.
 local BaseAdminPanel = ISCollapsableWindow:derive("BaseAdminPanel")
 
-
 function BaseAdminPanel:new(x, y, width, height)
     local o = ISCollapsableWindow:new(x, y, width, height)
     setmetatable(o, self)
@@ -22,12 +21,15 @@ function BaseAdminPanel:new(x, y, width, height)
 
     o.isMatchEnded = nil
 
-    DuringMatchAdminPanel.instance = o
+    --DuringMatchAdminPanel.instance = o
     return o
 end
 
 
 ---------
+---comment
+---@param type any
+---@return ISCollapsableWindow?
 function BaseAdminPanel.OnOpenPanel(type)
     if type.instance and type.instance:getIsVisible() then
         type.instance:close()

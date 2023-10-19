@@ -1,4 +1,7 @@
 require "ClientState"
+local BeforeMatchAdminPanel = require("EFTUI/BeforeMatch/BeforeMatchAdminPanel")
+local DuringMatchAdminPanel = require("EFTUI/DuringMatch/DuringMatchAdminPanel")
+
 -- Override ISSafetyUI to have a instance of that so we can reference it later
 local og_ISSafetyUI = ISSafetyUI.new
 

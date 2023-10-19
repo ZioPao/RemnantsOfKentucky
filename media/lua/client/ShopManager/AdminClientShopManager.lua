@@ -13,7 +13,7 @@ end
 
 --- Adjust an item's price multiplier
 ---@param fullType String
----@param newMultiplier decimal
+---@param newMultiplier number decimal
 ---@return boolean
 AdminClientShopManager.adjustItem = function(fullType, newMultiplier, sellMultiplier)
     local shopItems = ClientData.Shop.GetShopItems()

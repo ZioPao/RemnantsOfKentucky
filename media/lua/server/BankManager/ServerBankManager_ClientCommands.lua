@@ -8,7 +8,7 @@ local ClientCommands = {}
 
 --- Sends command to client to set the player's safehouse
 ---@param playerObj IsoPlayer
----@param args Table {isInitialise=true/false} 
+---@param args table {isInitialise=true/false} 
 ClientCommands.RequestBankAccount = function(playerObj, args)
     args = args or {}
     local account = ServerBankManager.getOrCreateAccount(playerObj:getUsername())

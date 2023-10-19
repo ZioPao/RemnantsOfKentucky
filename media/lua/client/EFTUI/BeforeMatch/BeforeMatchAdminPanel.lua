@@ -1,10 +1,13 @@
--- TODO Make it local after tests
-
 local BaseAdminPanel = require("EFTUI/BaseAdminPanel")
-
-BeforeMatchAdminPanel = BaseAdminPanel:derive("BeforeMatchAdminPanel")
+local BeforeMatchAdminPanel = BaseAdminPanel:derive("BeforeMatchAdminPanel")
 BeforeMatchAdminPanel.instance = nil
 
+---
+---@param x any
+---@param y any
+---@param width any
+---@param height any
+---@return ISCollapsableWindow
 function BeforeMatchAdminPanel:new(x, y, width, height)
     local o = BaseAdminPanel:new(x, y, width, height)
     setmetatable(o, self)
@@ -75,7 +78,6 @@ function BeforeMatchAdminPanel:createChildren()
     self:addChild(self.btnManagePlayers)
 
 
-
     self.btnStop = ISButton:new(xPadding, self:getHeight() - btnHeight - 10, btnWidth, btnHeight,
         getText("IGUI_AdminPanelBeforeMatch_Stop"), self, self.onClick)
     self.btnStop.internal = "STOP"
@@ -87,11 +89,16 @@ function BeforeMatchAdminPanel:onClick(btn)
     if btn.internal == 'START_MATCH' then
         self.isStartingMatch = true
         -- Start timer. Show it on screen
-        sendClientCommand("PZEFT-Time", "StartMatchCountdown", {stopTime = 5})      -- TODO Change back to 30
+        sendClientCommand("PZEFT-Time", "StartMatchCountdown", {stopTime = PZ_EFT_CONFIG.MatchSettings.startMatchTime})      -- TODO Change back to 30
         TimePanel.Open("Starting match in...")
     elseif btn.internal == 'MATCH_OPTIONS' then
+        -- TODO Implement match options
     elseif btn.internal == 'MANAGE_PLAYERS' then
-        self.openedPanel = ManagePlayersPanel.Open(self:getRight(), self:getBottom() - self:getHeight())
+        if self.opened and self.openedPanel:getIsVisible() then
+            self.openedPanel:close()
+        else
+            self.openedPanel = ManagePlayersPanel.Open(self:getRight(), self:getBottom() - self:getHeight())
+        end
     elseif btn.internal == 'STOP' then
         self.isStartingMatch = false
         sendClientCommand("PZEFT-Time", "StopMatchCountdown", {})
@@ -112,11 +119,11 @@ function BeforeMatchAdminPanel:update()
     self.btnStop:setVisible(self.isStartingMatch)
     self.btnStop:setEnable(self.isStartingMatch)
 
-
-
     -- Handles Panel Info stuff
-    local instancesAvailableStr = getText("IGUI_AdminPanelBeforeMatch_InstancesAvailable", 100) ..
-    "\n" .. getText("IGUI_AdminPanelBeforeMatch_SafehousesAssigned", 55)
+
+    -- TODO Updating it in real time could be costly
+    local instancesAvailableStr = getText("IGUI_AdminPanelBeforeMatch_InstancesAvailable", -1) ..
+    "\n" .. getText("IGUI_AdminPanelBeforeMatch_SafehousesAssigned", -1)
 
     self.panelInfo:setText(instancesAvailableStr)
     self.panelInfo.textDirty = true
@@ -141,8 +148,10 @@ end
 
 
 --*****************************************--
----@return
+---@return ISCollapsableWindow?
 function BeforeMatchAdminPanel.OnOpenPanel()
+    -- TODO Request available instances
+    -- TODO Request available safehouses
     return BaseAdminPanel.OnOpenPanel(BeforeMatchAdminPanel)
 end
 
@@ -152,3 +161,5 @@ function BeforeMatchAdminPanel.OnClosePanel()
     return BaseAdminPanel.OnClosePanel(BeforeMatchAdminPanel)
 end
 
+
+return BeforeMatchAdminPanel

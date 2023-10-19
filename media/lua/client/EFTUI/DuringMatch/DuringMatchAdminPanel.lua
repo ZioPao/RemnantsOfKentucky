@@ -1,6 +1,6 @@
 local BaseAdminPanel = require("EFTUI/BaseAdminPanel")
 
-DuringMatchAdminPanel = BaseAdminPanel:derive("DuringMatchAdminPanel")
+local DuringMatchAdminPanel = BaseAdminPanel:derive("DuringMatchAdminPanel")
 DuringMatchAdminPanel.instance = nil
 
 function DuringMatchAdminPanel:new(x, y, width, height)
@@ -75,9 +75,9 @@ end
 
 function DuringMatchAdminPanel:onConfirmStop()
     -- TODO The teleporting stuff should be run on the server, not here
-    print("Confirm! Teleporting back everyone")
+    --print("Confirm! Teleporting back everyone")
     self:setIsMatchEnded(true)
-    sendClientCommand("PZEFT-Time", "StartMatchEndCountdown", {stopTime = 10})
+    sendClientCommand("PZEFT-Time", "StartMatchEndCountdown", {stopTime = PZ_EFT_CONFIG.MatchSettings.endMatchTime})
 
 end
 
@@ -130,3 +130,5 @@ end
 function DuringMatchAdminPanel.OnClosePanel()
     return BaseAdminPanel.OnClosePanel(DuringMatchAdminPanel)
 end
+
+return DuringMatchAdminPanel

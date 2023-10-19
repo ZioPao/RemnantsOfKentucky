@@ -1,7 +1,5 @@
 -- TODO When in a match, the player should be able to check out the map to see where extraction points are located
 -- TODO We need SymbolsAPI, a way to automatically write at the extraction points location, a way to clear everything at match startup, etc.
-
-
 -- TODO Make it local
 EFTMapHandler = {}
 

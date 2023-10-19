@@ -38,7 +38,7 @@ function MatchHandler:start()
     PvpInstanceManager.teleportPlayersToInstance()
 
     -- * Start timer and the event handling zombie spawning
-    Countdown.Setup(300, function()
+    Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.roundTime, function()
         print("Ending the round!")
         self:stopMatch()
     end)
