@@ -206,9 +206,9 @@ end
 ----
 
 PvpInstanceManager.getAmountUsedInstances = function()
-    local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances
-
+    local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
     if usedInstances ~= nil then
+        print(#usedInstances)    -- TODO Kim: this is returning only 0 for some reasons... Am I missing something?
         return #usedInstances
     else
         return 0
