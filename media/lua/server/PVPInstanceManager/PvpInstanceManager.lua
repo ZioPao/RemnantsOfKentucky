@@ -124,7 +124,7 @@ PvpInstanceManager.sendClearCurrentInstance = function()
 end
 
 ---Consumes a spawnpoint.
----@return table spawnPoint {x=5, y=5, z=0}
+---@return table? spawnPoint {x=5, y=5, z=0}
 PvpInstanceManager.popRandomSpawnPoint = function()
     local currentInstance = PvpInstanceManager.getCurrentInstance()
     local size = #currentInstance.spawnPoints
@@ -147,7 +147,7 @@ end
 ---@param cellX number
 ---@param cellY number
 ---@param count number
----@return {x1=5, y1=5, z1=0, x2=5, y2=5, z2=0, time=0}
+---@return table {x1=5, y1=5, z1=0, x2=5, y2=5, z2=0, time=0}
 PvpInstanceManager.getRandomExtractionPoints = function(cellX, cellY, count)
     if not count then
         return {}
@@ -177,7 +177,7 @@ end
 --- Gets a permanent set of extraction points for given an instance
 ---@param cellX number
 ---@param cellY number
----@return {x1=5, y1=5, z1=0, x2=5, y2=5, z2=0, time=0}
+---@return table {x1=5, y1=5, z1=0, x2=5, y2=5, z2=0, time=0}
 PvpInstanceManager.getPermanentExtractionPoints = function(cellX, cellY)
     local points = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.PermanentExtractionPoints, cellX, cellY, {"name", "time"})
 

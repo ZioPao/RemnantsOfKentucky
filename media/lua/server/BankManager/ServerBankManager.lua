@@ -19,7 +19,7 @@ end
 --- Add or decreases an amount to a bank account if possible
 ---@param username string
 ---@param amount integer
----@return {success=true/false, amount=updatedAmount}
+---@return table {success=true/false, amount=updatedAmount}
 ServerBankManager.processTransaction = function(username, amount)
     local accounts = ServerData.Bank.GetBankAccounts()
 

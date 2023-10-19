@@ -90,7 +90,7 @@ ServerData.PVPInstances.GetPvpCurrentInstance = function()
 end
 
 --- Set PVP current instance data
----@param data {id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
+---@param data table {id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
 ServerData.PVPInstances.SetPvpCurrentInstance = function(data, doTransmit)
     ModData.add(KEY_PVP_CURRENTINSTANCE, data)
 

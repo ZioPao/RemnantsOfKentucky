@@ -17,16 +17,16 @@ end
 
 --- Process a transaction and do a callback if successful or failed.
 --- Also calls the RequestBankAccount->UpdateBankAccount command
----@param args {amount=x, onSuccess = {callbackModule="abc", callbackCommand="abc", callbackArgs={args...}}, onFail = {callbackModule="abc", callbackCommand="abc", callbackArgs={args...}}}
+---@param args table {amount=x, onSuccess = {callbackModule="abc", callbackCommand="abc", callbackArgs={args...}}, onFail = {callbackModule="abc", callbackCommand="abc", callbackArgs={args...}}}
 ClientCommands.ProcessTransaction = function(playerObj, args)
     --amount, callbackCommand, callbackArgs, inventoryCheck
 
-    if inventoryCheck then
+    --if inventoryCheck then
         --args.item
         --args.quantity
         --args.totalPrice
         
-    end
+    --end
 
     local result = ServerBankManager.processTransaction(playerObj:getUsername(), args.amount)
 

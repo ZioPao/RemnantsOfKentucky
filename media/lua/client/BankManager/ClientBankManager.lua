@@ -26,7 +26,6 @@ end
 ---@param failCallbackModule string
 ---@param failCallbackCommand string
 ---@param failCallbackArgs table
----@param inventoryCheck table
 ClientBankManager.TryProcessTransaction = function(amount, successCallbackModule, successCallbackCommand,
     successCallbackArgs, failCallbackModule, failCallbackCommand, failCallbackArgs)
     sendClientCommand('PZEFT-BankAccount', "ProcessTransaction", {

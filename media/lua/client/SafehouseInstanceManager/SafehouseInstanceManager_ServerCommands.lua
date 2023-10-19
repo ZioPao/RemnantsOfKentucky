@@ -6,7 +6,7 @@ local ServerCommands = {}
 
 --- When client recieves SetSafehouse Server Command
 --- Update mod data of player with recieved safehouse data
----@param safehouseInstance {x=0, y=0,z=0} Safehouse Instance
+---@param safehouseInstance table {x=0, y=0,z=0} Safehouse Instance
 ServerCommands.SetSafehouse = function(safehouseInstance)
     local md = PZEFT_UTILS.GetPlayerModData()
     md.safehouse = safehouseInstance

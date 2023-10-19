@@ -1,11 +1,11 @@
 PZEFT_UTILS = PZEFT_UTILS or {}
 
 --- Maps world coordinates starting at cell 0,0 to different cell coordinates
----@param coordinateList {x=0,y=0,z=0}
+---@param coordinateList table {x=0,y=0,z=0}
 ---@param cellX number
 ---@param cellY number
----@param otherArgs list of names of arguments to copy from coordinateList, Example: {"time"}
----@return {{x=0,y=0,z=0}, {x=0,y=0,z=0}}
+---@param otherArgs table list of names of arguments to copy from coordinateList, Example: {"time"}
+---@return table {{x=0,y=0,z=0}, {x=0,y=0,z=0}}
 PZEFT_UTILS.MapWorldCoordinatesToCell = function(coordinateList, cellX, cellY, otherArgs)
     local mappedCoordinates = {}
 
@@ -100,7 +100,7 @@ PZEFT_UTILS.PrintTable = function(table, indent)
 end
 
 --- Add items to a container
----@param items Table Of {"Base.ItemName" = quantity}
+---@param items table Of {"Base.ItemName" = quantity}
 ---@param container IsoContainer
 PZEFT_UTILS.AddItems = function(items, container)
     for itemName, quantity in pairs(items) do
@@ -141,8 +141,8 @@ PZEFT_UTILS.GetCellOfPlayer = function(player)
 end
 
 --- Copy orig into result
----@param orig Table
----@param result Table
+---@param orig table
+---@param result table
 PZEFT_UTILS.CopyTable = function(orig, result)
     local copy
     if type(orig) == "table" then
