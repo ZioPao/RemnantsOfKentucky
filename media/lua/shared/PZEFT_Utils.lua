@@ -5,7 +5,7 @@ PZEFT_UTILS = PZEFT_UTILS or {}
 ---@param cellX number
 ---@param cellY number
 ---@param otherArgs table list of names of arguments to copy from coordinateList, Example: {"time"}
----@return table {{x=0,y=0,z=0}, {x=0,y=0,z=0}}
+---@return table? {{x=0,y=0,z=0}, {x=0,y=0,z=0}}
 PZEFT_UTILS.MapWorldCoordinatesToCell = function(coordinateList, cellX, cellY, otherArgs)
     local mappedCoordinates = {}
 
