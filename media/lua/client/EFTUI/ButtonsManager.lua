@@ -27,20 +27,15 @@ BUTTONS_DATA_TEXTURES = {
 
 
 ButtonManager = {}
+ButtonManager.firstInit = true
+ButtonManager.additionalY = 10
 
 ---Based on Community Debug Tools
 ---@param buttonModule string
 ---@param onClick function
 function ButtonManager.AddNewButton(buttonModule, onClick)
-
-    local additionalY = 50
-    -- if ButtonManager.isFirst then
-    --     additionalY = 50
-    --     ButtonManager.isFirst = false
-    -- end
-
     local xMax = ISEquippedItem.instance.x - 5
-    local yMax = ISEquippedItem.instance:getBottom() + additionalY
+    local yMax = ISEquippedItem.instance:getBottom() + ButtonManager.additionalY
 
     ---@type Texture
     local texture = BUTTONS_DATA_TEXTURES[buttonModule].OFF
@@ -52,13 +47,13 @@ function ButtonManager.AddNewButton(buttonModule, onClick)
     ButtonManager[buttonModule].borderColor = { r = 1, g = 1, b = 1, a = 0.1 }
 
     ISEquippedItem.instance:addChild(ButtonManager[buttonModule])
-    ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() + ButtonManager[buttonModule]:getHeight() + additionalY)
+    ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() + ButtonManager[buttonModule]:getHeight() + ButtonManager.additionalY)
 end
 
 function ButtonManager.RemoveButton(buttonModule)
     if ButtonManager[buttonModule] then
         ISEquippedItem.instance:removeChild(ButtonManager[buttonModule])
-        ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() - ButtonManager[buttonModule]:getHeight() - 50)
+        ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() - ButtonManager[buttonModule]:getHeight() - ButtonManager.additionalY)
         ButtonManager[buttonModule] = nil
     end
 
@@ -73,20 +68,27 @@ local function OpenAdminMenu()
 end
 
 
-
+---Creates the buttons. Triggered from an event that starts when player gets teleported in or outside a safehouse
+---@param isInRaid boolean
 function ButtonManager.CreateButtons(isInRaid)
-    print("Create buttons")
-    -- This should be active ONLY when players are in their safehouses
-    -- FIXME Bit buggy
+    if ButtonManager.firstInit then
+        ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() + 50)
+        ButtonManager.firstInit = false
+    end
 
+    -- Cleans up the buttons before resetting them
     ButtonManager.RemoveButton("LeaderboardButton")
     ButtonManager.RemoveButton("AdminPanelButton")
+
+    if isAdmin() then
+        ButtonManager.AddNewButton("AdminPanelButton", function() OpenAdminMenu() end)
+    end
+
     if type(isInRaid) ~= "boolean" or not isInRaid then
         ButtonManager.AddNewButton("LeaderboardButton", function() LeadearboardPanel.Open(100,100) end)
     end
 
-    -- TODO Check if admin
-    ButtonManager.AddNewButton("AdminPanelButton", function() OpenAdminMenu() end)
+
 end
 Events.PZEFT_UpdateClientStatus.Add(ButtonManager.CreateButtons)
 Events.OnCreatePlayer.Add(ButtonManager.CreateButtons)
