@@ -33,7 +33,7 @@ end
 function BaseAdminPanel.OnOpenPanel(type)
     if type.instance and type.instance:getIsVisible() then
         type.instance:close()
-        ButtonManager["AdminPanelButton"]:setImage(BUTTONS_DATA_TEXTURES["AdminPanelButton"].OFF)
+        ButtonManager["AdminPanel"]:setImage(BUTTONS_DATA_TEXTURES["AdminPanel"].OFF)
         return
     end
     -- TODO Make it scale based on resolution
@@ -49,7 +49,7 @@ function BaseAdminPanel.OnOpenPanel(type)
     pnl:addToUIManager()
     pnl:bringToTop()
 
-    ButtonManager["AdminPanelButton"]:setImage(BUTTONS_DATA_TEXTURES["AdminPanelButton"].ON)
+    ButtonManager["AdminPanel"]:setImage(BUTTONS_DATA_TEXTURES["AdminPanel"].ON)
     return pnl
 
 end

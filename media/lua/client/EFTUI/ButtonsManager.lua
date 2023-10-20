@@ -13,17 +13,18 @@ end
 
 -----------------------------
 
-BUTTONS_DATA_TEXTURES = {
-    LeaderboardButton = {
-        ON = getTexture("media/textures/Leaderboard_on.png"),       -- TODO These icons are obviously temporary.
-        OFF = getTexture("media/textures/Leaderboard_off.png")
-    },
-
-    AdminPanelButton = {
-        ON = getTexture("media/textures/AdminPanel_on.png"),
-        OFF = getTexture("media/textures/AdminPanel_off.png")
-    }
+local BUTTONS = {
+    "Leaderboard", "AdminPanel"
 }
+
+
+BUTTONS_DATA_TEXTURES = {}
+for i=1, #BUTTONS do
+    local btn = BUTTONS[i]
+    BUTTONS_DATA_TEXTURES[btn] = {}
+    BUTTONS_DATA_TEXTURES[btn].ON = getTexture("media/textures/" .. btn .. "_on.png")
+    BUTTONS_DATA_TEXTURES[btn].OFF = getTexture("media/textures/" .. btn .. "_off.png")
+end
 
 
 ButtonManager = {}
@@ -77,15 +78,15 @@ function ButtonManager.CreateButtons(isInRaid)
     end
 
     -- Cleans up the buttons before resetting them
-    ButtonManager.RemoveButton("LeaderboardButton")
-    ButtonManager.RemoveButton("AdminPanelButton")
+    ButtonManager.RemoveButton("Leaderboard")
+    ButtonManager.RemoveButton("AdminPanel")
 
     if isAdmin() then
-        ButtonManager.AddNewButton("AdminPanelButton", function() OpenAdminMenu() end)
+        ButtonManager.AddNewButton("AdminPanel", function() OpenAdminMenu() end)
     end
 
     if type(isInRaid) ~= "boolean" or not isInRaid then
-        ButtonManager.AddNewButton("LeaderboardButton", function() LeadearboardPanel.Open(100,100) end)
+        ButtonManager.AddNewButton("Leaderboard", function() LeadearboardPanel.Open(100,100) end)
     end
 
 

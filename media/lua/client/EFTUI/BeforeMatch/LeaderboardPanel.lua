@@ -121,7 +121,7 @@ function LeadearboardPanel.Open(x, y)
     -- TODO Find a better way to handle icons
     if LeadearboardPanel.instance and LeadearboardPanel.instance:getIsVisible() then
         LeadearboardPanel.instance:close()
-        ButtonManager["LeaderboardButton"]:setImage(BUTTONS_DATA_TEXTURES["LeaderboardButton"].OFF)
+        ButtonManager["Leaderboard"]:setImage(BUTTONS_DATA_TEXTURES["Leaderboard"].OFF)
         return
     end
 
@@ -133,7 +133,7 @@ function LeadearboardPanel.Open(x, y)
     modal:initialise()
     modal:addToUIManager()
     modal.instance:setKeyboardFocus()
-    ButtonManager["LeaderboardButton"]:setImage(BUTTONS_DATA_TEXTURES["LeaderboardButton"].ON)
+    ButtonManager["Leaderboard"]:setImage(BUTTONS_DATA_TEXTURES["Leaderboard"].ON)
 
     return modal
 end
