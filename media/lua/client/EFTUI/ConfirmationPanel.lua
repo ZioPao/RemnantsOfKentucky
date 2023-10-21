@@ -15,7 +15,6 @@ function ConfirmationPanel:new(x, y, width, height, alertText, parentPanel, onCo
 
     o:initialise()
     o.alertText = alertText
-    o.isOpen = true
     o.onConfirmFunc = onConfirmFunc
     o.parentPanel = parentPanel
     ConfirmationPanel.instance = o
@@ -77,15 +76,10 @@ function ConfirmationPanel:onClick(btn)
     end
 end
 
-function ConfirmationPanel:close()
-    print("Closing confirmation panel")
-
-    -- TODO Refactor this
-    if self.isOpen then
-        self.isOpen = false
-    end
-    ISPanel.close(self)
-end
+-- function ConfirmationPanel:close()
+--     print("Closing confirmation panel")
+--     ISPanel.close(self)
+-- end
 
 -------------------------
 -- Mostly debug stuff

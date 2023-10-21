@@ -27,13 +27,13 @@ ClientCommands.ProcessTransaction = function(playerObj, args)
         --args.totalPrice
         
     --end
-    print("ProcessTransaction")
+    -- print("ProcessTransaction")
 
-    print("OnSuccess Callback module: " .. tostring(args.onSuccess.callbackModule))
-    print("OnSuccess Callback command: " .. tostring(args.onSuccess.callbackCommand))
+    -- print("OnSuccess Callback module: " .. tostring(args.onSuccess.callbackModule))
+    -- print("OnSuccess Callback command: " .. tostring(args.onSuccess.callbackCommand))
 
-    print("OnFail Callback module: " .. tostring(args.onFail.callbackModule))
-    print("OnFail Callback command: " .. tostring(args.onFail.callbackCommand))
+    -- print("OnFail Callback module: " .. tostring(args.onFail.callbackModule))
+    -- print("OnFail Callback command: " .. tostring(args.onFail.callbackCommand))
 
     local result = ServerBankManager.processTransaction(playerObj:getUsername(), args.amount)
     --print("Result from processTransaction " .. tostring(result))

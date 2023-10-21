@@ -4,10 +4,6 @@
     balance on that player account.
 ]]
 
-
-
--- TODO use GetBankAccounts from the server
-
 local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
 local FONT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium)
 local FONT_HGT_LARGE = getTextManager():getFontHeight(UIFont.Large)

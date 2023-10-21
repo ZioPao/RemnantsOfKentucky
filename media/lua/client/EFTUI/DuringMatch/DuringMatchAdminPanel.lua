@@ -102,7 +102,8 @@ function DuringMatchAdminPanel:update()
         self.btnStop:setEnable(false)
     else
         -- Handle confirmation panel to stop the match
-        self.btnStop:setEnable(self.confirmationPanel == nil or (self.confirmationPanel.isOpen ~= nil and self.confirmationPanel.isOpen == true))
+        local check = self.confirmationPanel == nil or (self.confirmationPanel:isVisible())
+        self.btnStop:setEnable(check)
         matchInfo = "Match time: " .. EFTGenericUI.FormatTime(tonumber(ClientState.currentTime)) .. " <LINE> Alive Players: 10"
     end
 
