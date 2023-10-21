@@ -30,10 +30,8 @@ ServerCommands.SetClientStateIsInRaid = function(args)
 
     triggerEvent("PZEFT_UpdateClientStatus", ClientState.IsInRaid)
 
-    -- Writes forcefully stuff in the map. Unclean as fuck
-    --TODO ISWorldMap.WriteEFTExits(getPlayer():getPlayerNum())
-    --ISWorldMap.ShowWorldMap(getPlayer():getPlayerNum())
-    
+    -- If we're in a raid, we need to reset the correct symbols. If we're not, we're gonna just clean them off the map
+    ISWorldMap.HandleEFTExits(getPlayer():getPlayerNum(), not args.value)
 end
 
 ServerCommands.CommitDieIfInRaid = function()

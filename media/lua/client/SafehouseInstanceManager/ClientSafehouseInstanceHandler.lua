@@ -55,6 +55,10 @@ ClientSafehouseInstanceHandler.GetCrates = function()
     local cratesTable = {}
 
     local safehouse = ClientSafehouseInstanceHandler.getSafehouse()
+    if safehouse == nil then
+        print("ERROR: can't find safehouse!")
+        return
+    end
     for _, group in pairs(PZ_EFT_CONFIG.SafehouseInstanceSettings.safehouseStorage) do
         local sq = getCell():getGridSquare(safehouse.x + group.x, safehouse.y + group.y, 0)
         if sq == nil then

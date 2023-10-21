@@ -25,7 +25,7 @@ function EFTMapHandler:write()
         local iconSymbol = self.symbolsAPI:addTexture("PZEFT-Exit", x, y)
         iconSymbol:setRGBA(0, 0, 0, 1.0)
         iconSymbol:setAnchor(0.0, 0.0)
-        iconSymbol:setScale(ISMap.SCALE / 2)
+        iconSymbol:setScale(ISMap.SCALE / 4)
     end
 end
 
@@ -40,32 +40,34 @@ function EFTMapHandler:deactivate()
     end
 end
 
---!!! JUST A PROOF OF CONCEPT HERE!
+-------------------
 
--- local og_ISWorldMapInstantiate = ISWorldMap.instantiate
--- function ISWorldMap:instantiate()
---     --print("Instantiating ISWorldMap")
---     og_ISWorldMapInstantiate(self)
-
---     -- TODO Should be triggered when a match is starting?
---     self.eftMapHandler = EFTMapHandler:new(self.mapAPI:getSymbolsAPI())
---     self.eftMapHandler:clear()
---     self.eftMapHandler:write()
--- end
-
-
-ISWorldMap.WriteEFTExits = function(playerNum)
+--- Handles writing symbols on the map to show the extraction points
+---@param playerNum number
+---@param cleanOnly boolean Wheter or not to add the symbols after cleaning
+ISWorldMap.HandleEFTExits = function(playerNum, cleanOnly)
     ISWorldMap.ShowWorldMap(playerNum)
 
-    -- Delay to be sure that the map has been initialized
-    local function TryToAddSymbols()
-        if ISWorldMap.instance == nil then return end
-        local eftMapHandler = EFTMapHandler:new(ISWorldMap.instance.symbolsAPI)
+    local function TryHandleMapSymbols()
+        print("Trying to set the symbols and closing the map")
+        if ISWorldMap_instance == nil then return end
+        print("Found ISWorldMap_instance")
+        if ISWorldMap_instance.mapAPI == nil then return end
+        print("Found ISWorldMap_instance map API")
+
+        local symbolsApi = ISWorldMap_instance.mapAPI:getSymbolsAPI()
+        local eftMapHandler = EFTMapHandler:new(symbolsApi)
         eftMapHandler:clear()
-        eftMapHandler:write()
-        ISWorldMap.HideWorldMap(playerNum) -- FIXME this is not working
-        Events.OnTickEvenPaused.Remove(TryToAddSymbols)
+
+        if cleanOnly~= nil and cleanOnly == false then
+            eftMapHandler:write()
+        end
+        ISWorldMap.HideWorldMap(playerNum)
+
+        Events.OnTickEvenPaused.Remove(TryHandleMapSymbols)
     end
 
-    Events.OnTickEvenPaused.Add(TryToAddSymbols)
+
+    Events.OnTickEvenPaused.Add(TryHandleMapSymbols)
+
 end
