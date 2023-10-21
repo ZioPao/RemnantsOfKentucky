@@ -27,7 +27,7 @@ local function doTags(shopItems, id, item)
         shopItems.tags["LOWVALUE"] = shopItems.tags["LOWVALUE"] or {}
         shopItems.tags["LOWVALUE"][id] = true
     end
-    return shopItems;
+    return shopItems
 end
 
 ServerShopManager.loadShopPrices = function()
@@ -43,9 +43,11 @@ ServerShopManager.loadShopPrices = function()
                 fullType = v.fullType,
                 tags = v.tags,
                 basePrice = v.basePrice,
-                multiplier = v.initialMultiplier,
+                multiplier = v.initialMultiplier,           -- TODO Multiplier wasn't implemented elsewhere
                 sellMultiplier = v.sellMultiplier
             }
+
+            PZEFT_UTILS.PrintTable(shopItems.items[i])
         end
     end
 

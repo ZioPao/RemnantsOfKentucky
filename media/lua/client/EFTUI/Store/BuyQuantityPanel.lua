@@ -74,14 +74,22 @@ function BuyQuantityPanel:setSelectedItem(item)
 end
 
 function BuyQuantityPanel:getCostForSelectedItem()
-    local itemCost = self.selectedItem["cost"]
+    local itemCost = self.selectedItem["basePrice"]
     local finalCost = tonumber(self.entryAmount:getInternalText()) * itemCost
     return finalCost
 end
 
 function BuyQuantityPanel:onConfirmBuy()
-    -- TODO Add Transaction function here
     print("Confirm buy")
+    local itemTable = {
+        fullType = self.selectedItem["fullType"],
+        basePrice = self.selectedItem["basePrice"],
+        multiplier = 1      -- FIXME This should be with the selectedItem, but it's not there for some reason
+        }
+
+    local quantity = tonumber(self.entryAmount:getInternalText())
+    ClientShopManager.TryBuy(itemTable, quantity)
+
 end
 
 function BuyQuantityPanel:onStartBuy()
@@ -94,7 +102,8 @@ function BuyQuantityPanel:onStartBuy()
 
     local text = " <CENTRE> Are you sure you want to buy " ..
         tostring(self.entryAmount:getInternalText()) ..
-        " of " .. self.selectedItem["item"]:getName() .. " for " .. tostring(self:getCostForSelectedItem()) .. "$ ?"
+        " of " ..
+        self.selectedItem["actualItem"]:getName() .. " for " .. tostring(self:getCostForSelectedItem()) .. "$ ?"
 
     self.confirmationPanel = ConfirmationPanel.Open(text, self.mainPanel:getX(),
         self.mainPanel:getY() + self.mainPanel:getHeight() + 20, self, self.onConfirmBuy)
@@ -110,7 +119,6 @@ function BuyQuantityPanel:render()
     ISPanel.render(self)
 
     if self.selectedItem ~= nil then
-
         -- Handle icons
         local actualItem = self.selectedItem["actualItem"]
         local icon = actualItem:getIcon()

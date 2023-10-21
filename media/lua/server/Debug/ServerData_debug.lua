@@ -53,6 +53,10 @@ ClientCommands.sendPlayersToSafehouse = function()
     SafehouseInstanceManager.sendPlayersToSafehouse()
 end
 
+ClientCommands.loadShopPrices = function()
+    ServerShopManager.loadShopPrices()
+end
+
 local OnClientCommand = function(module, command, playerObj, args)
     if module == MODULE and ClientCommands[command] then
         debugPrint("Client Command - " .. MODULE .. "." .. command)

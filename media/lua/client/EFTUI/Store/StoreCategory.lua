@@ -37,6 +37,7 @@ function StoreCategory:initialiseList(itemsTable)
                 print(key .. " - " .. tostring(value))
             end
 
+            -- todo we need to resend it back to the server, so we can't store it here.
             data.actualItem = getScriptManager():getItem(tableName)
 
             self.items:addItem(tableName, data)

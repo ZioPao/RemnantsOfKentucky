@@ -40,14 +40,14 @@ AdminClientShopManager.refreshDailyItems = function()
     if not shopItems.items then 
         print("ERROR: AdminClientShopManager.refreshDailyItems - No shop items found!")
         return
-    end 
+    end
 
     --TODO: Get daily inventory count?
     --TODO: Sandbox options
     --TODO: Fix pick random pairs
     local split = 0.5
     local count = 10
-    
+
     local highValueItemsCount = math.floor(count * split)
     local lowValueItemsCount = count - highValueItemsCount
 
@@ -74,3 +74,7 @@ AdminClientShopManager.refreshDailyItems = function()
 
     sendClientCommand('PZEFT-Shop', 'transmitShopItems', shopItems)
 end
+
+
+-- TODO This is just a workaround for the proof of concept build
+Events.OnCreatePlayer.Add(AdminClientShopManager.refreshDailyItems)

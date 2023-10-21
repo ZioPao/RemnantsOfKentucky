@@ -136,6 +136,8 @@ function MainShopPanel:createChildren()
     self.balancePanel.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 1 }
     self.balancePanel:initialise()
     self:addChild(self.balancePanel)
+
+    ClientBankManager.requestBankAccountFromServer()        -- TODO We should add a wait condition until the bank account is available
     self.accountBalance = ClientBankManager.getPlayerBankAccountBalance()
     local balanceText = "<SIZE:large>Current Balance: "
     if self.accountBalance then
@@ -164,7 +166,7 @@ function MainShopPanel:createChildren()
     self.essentialItemsCat:setAnchorRight(true)
     self.essentialItemsCat:setAnchorBottom(true)
     self.panel:addView("Essential Items", self.essentialItemsCat, self.width / 3 - 2, addedHeight)
-    self.essentialItemsCat:initialiseList( ClientShopManager.GetEssentialItems())
+    self.essentialItemsCat:initialiseList(ClientShopManager.GetEssentialItems())
     self.essentialItemsCat.parent = self
     self.essentialItemsCat.category = 1
     table.insert(self.categories, self.essentialItemsCat)

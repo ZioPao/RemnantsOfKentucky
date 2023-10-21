@@ -36,6 +36,10 @@ function ServerData_client_debug.print_shopitems()
     sendClientCommand("SERVER_DEBUG", "print_shopitems", {})
 end
 
+function ServerData_client_debug.loadShopPrices()
+    sendClientCommand("SERVER_DEBUG", "loadShopPrices", {})
+end
+
 -- Match Handling --
 
 function ServerData_client_debug.getNextInstance()

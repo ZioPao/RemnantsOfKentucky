@@ -5,7 +5,7 @@ ClientShopManager = ClientShopManager or {}
 
 --- Try buy an item for quantity
 ---@param item table
----@param quantity number
+---@param quantity number?
 ClientShopManager.TryBuy = function(item, quantity)
     local totalPrice = item.basePrice * item.multiplier * quantity
 
@@ -16,7 +16,7 @@ ClientShopManager.TryBuy = function(item, quantity)
 
     local data = {
         item = item,
-        quantity = quantity,
+        quantity = quantity or 1,
         totalPrice = totalPrice
     }
 
