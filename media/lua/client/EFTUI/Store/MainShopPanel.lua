@@ -19,6 +19,7 @@
 -- TODO Add filtering
 -- TODO add visible player balance
 require "ISUI/ISCollapsableWindow"
+    -- TODO Add sellMultiplier
 
 local CustomTabPanel = require("EFTUI/Store/CustomTabPanel")
 local StoreCategory = require("EFTUI/Store/StoreCategory")
@@ -107,9 +108,6 @@ function MainShopPanel:initialise()
         return essentialItems
     end
 
-
-    self.essentialitems = FetchEssentialItems() -- TODO Use ClientShopManager.GetEssentialItems()
-    self.dailyItems = {}                        -- TODO Use ClientShopManager.GetDailyItems()
 end
 
 function MainShopPanel:createChildren()
@@ -163,10 +161,10 @@ function MainShopPanel:createChildren()
     --* ESSENTIAL ITEMS *--
     self.essentialItemsCat = StoreCategory:new(0, 0, self.width, catHeight, self)
     self.essentialItemsCat:initialise()
-    self.essentialItemsCat:addItems(ClientShopManager.GetEssentialItems())
     self.essentialItemsCat:setAnchorRight(true)
     self.essentialItemsCat:setAnchorBottom(true)
     self.panel:addView("Essential Items", self.essentialItemsCat, self.width / 3 - 2, addedHeight)
+    self.essentialItemsCat:initialiseList( ClientShopManager.GetEssentialItems())
     self.essentialItemsCat.parent = self
     self.essentialItemsCat.category = 1
     table.insert(self.categories, self.essentialItemsCat)
@@ -174,10 +172,10 @@ function MainShopPanel:createChildren()
     --* DAILY ITEMS *--
     self.dailyItemsCat = StoreCategory:new(0, 0, self.width, catHeight, self)
     self.dailyItemsCat:initialise()
-    self.dailyItemsCat:addItems(self.dailyItems)
     self.dailyItemsCat:setAnchorRight(true)
     self.dailyItemsCat:setAnchorBottom(true)
     self.panel:addView("Daily Items", self.dailyItemsCat, self.width / 3 - 2, addedHeight)
+    self.dailyItemsCat:initialiseList(ClientShopManager.GetDailyItems())
     self.dailyItemsCat.parent = self
     self.dailyItemsCat.category = 2
     table.insert(self.categories, self.dailyItemsCat)
@@ -203,6 +201,7 @@ end
 ------------------------------------------------
 -- Search for PC while in safehouse
 
+-- TODO This should be elsewhere
 
 local function OnFillContextMenu(player, context, worldObjects, test)
     if test then return true end

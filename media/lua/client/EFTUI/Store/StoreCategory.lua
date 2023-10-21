@@ -15,10 +15,44 @@ function StoreCategory:new(x, y, width, height, shopPanel)
     return o
 end
 
----Initialise a category, giving an items table
----@param itemsTable table
-function StoreCategory:addItems(itemsTable)
-    self.itemsTable = itemsTable
+-- ---Initialise a category, giving an items table
+-- ---@param itemsTable table
+-- function StoreCategory:addItems(itemsTable)
+--     self.itemsTable = itemsTable
+-- end
+
+-- Can't override initialise for some reason
+function StoreCategory:initalise()
+    ISPanelJoypad.initialise(self)
+end
+
+function StoreCategory:initialiseList(itemsTable)
+
+    if itemsTable then
+        --PZEFT_UTILS.PrintTable(itemsTable)
+
+        for tableName, data in pairs(itemsTable) do
+            print(tableName)
+            for key, value in pairs(data) do
+                print(key .. " - " .. tostring(value))
+            end
+            self.items:addItem(tableName, data)
+
+        end
+        -- print(itemsTable["Base.Apple"].fullType)
+        --print("Init for " .. #itemsTable.. " items")
+        -- for name, data in ipairs(itemsTable) do
+        --     print(name)
+        --     --self.items:addItem(name, data)
+        -- end
+        -- Select first item in the list automatically
+        if #itemsTable > 1 then
+            self.items.selected = 1
+            local selectedItem = self.items.items[self.items.selected].item
+            self.buyPanel:setSelectedItem(selectedItem)
+        end
+    end
+
 end
 
 function StoreCategory:createChildren()
@@ -46,24 +80,10 @@ function StoreCategory:createChildren()
     local buyPanelX = self.width - buyPanelWidth - 10
     local buyPanelY = entryHgt
 
-
-
     self.buyPanel = BuyQuantityPanel:new(buyPanelX, buyPanelY, buyPanelWidth, buyPanelHeight, self.shopPanel)
     self.buyPanel:initialise()
     self:addChild(self.buyPanel)
-    
-    if self.itemsTable then
-        for i = 1, #self.itemsTable do
-            self.items:addItem(i, self.itemsTable[i])
-        end
 
-        -- Select first item in the list automatically
-        if #self.itemsTable > 1 then
-            self.items.selected = 1
-            local selectedItem = self.items.items[self.items.selected].item
-            self.buyPanel:setSelectedItem(selectedItem)
-        end
-    end
 
 end
 
@@ -94,11 +114,11 @@ function StoreCategory:doDrawItem(y, item, alt)
     end
 
     -- Items are stored in a table that works as a container, let's unpack them here to make it more readable
-    local inventoryItem = item.item.item
-    local itemCost = item.item.cost
+    local inventoryItem = item.item.fullType    -- TODO Change name
+    local itemCost = item.item.basePrice
 
     --* ITEM NAME *--
-    self:drawText(inventoryItem:getName(), 6, y + 2, 1, 1, 1, a, UIFont.Medium)
+    self:drawText(inventoryItem, 6, y + 2, 1, 1, 1, a, UIFont.Medium)
 
     --* ITEM COST *--
     self:drawText(itemCost .. " $", self:getWidth() - 100, y + 2, 1, 1, 1, a, UIFont.Medium)

@@ -99,6 +99,16 @@ PZEFT_UTILS.PrintTable = function(table, indent)
     end
 end
 
+PZEFT_UTILS.PrintArray = function(array, indent)
+    if not PZ_EFT_CONFIG.Debug then return end
+    indent = indent or ""
+
+    for i=0, array:size() do
+        print(i)
+        print(array:get(i))
+    end
+end
+
 --- Add items to a container
 ---@param items table Of {"Base.ItemName" = quantity}
 ---@param container ItemContainer
