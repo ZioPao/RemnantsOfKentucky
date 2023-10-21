@@ -120,19 +120,7 @@ function MainShopPanel:createChildren()
     self.balancePanel:initialise()
     self:addChild(self.balancePanel)
 
-    self.accountBalance = ClientBankManager.getPlayerBankAccountBalance()
     local balanceText = "<SIZE:large>Current Balance: "
-    if self.accountBalance then
-
-        -- TODO Just for test, delete this
-        if isClient() then
-            balanceText = balanceText .. self.accountBalance
-        else
-            balanceText = balanceText .. "TEST AMOUNT$"
-        end
-    else
-        balanceText = "ERROR! NO BALANCE"
-    end
     self.balancePanel:setText(balanceText)
     self.balancePanel:paginate()
     -------------------------
@@ -179,6 +167,22 @@ function MainShopPanel:createChildren()
 
 end
 
+function MainShopPanel:update()
+    ISCollapsableWindow.update(self)
+
+    self.accountBalance = ClientBankManager.getPlayerBankAccountBalance()
+
+end
+
+function MainShopPanel:render()
+    ISCollapsableWindow.render(self)
+    if self.accountBalance == nil then return end
+
+    local balanceText = "<SIZE:large>Current Balance: "
+    if isClient() then balanceText = balanceText .. self.accountBalance end
+    self.balancePanel:setText(balanceText)
+    self.balancePanel:paginate()
+end
 
 
 

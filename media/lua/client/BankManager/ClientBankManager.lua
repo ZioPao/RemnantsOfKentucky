@@ -10,10 +10,16 @@ ClientBankManager.requestBankAccountFromServer = function()
 end
 
 --- Returns account balance from player's mod data
----@return number
+---@return number?
 ClientBankManager.getPlayerBankAccountBalance = function()
     local md = PZEFT_UTILS.GetPlayerModData()
-    return md.bankAccount.balance
+
+    if md.bankAccount and md.bankAccount.balance then
+        return md.bankAccount.balance
+    else
+        return -1
+    end
+
 end
 
 --- Add or decreases an amount to a bank account
