@@ -126,7 +126,7 @@ function MainShopPanel:createChildren()
 
         -- TODO Just for test, delete this
         if isClient() then
-            balanceText = balanceText .. self.accountBalance.balance
+            balanceText = balanceText .. self.accountBalance
         else
             balanceText = balanceText .. "TEST AMOUNT$"
         end

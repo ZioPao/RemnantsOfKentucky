@@ -78,7 +78,7 @@ PvpInstanceManager.loadPvpInstances = function()
 end
 
 --- Marks old instance as used and Gets new instance
----@return table {id, x, y, spawnPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}, extractionPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}}
+---@return table? {id, x, y, spawnPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}, extractionPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}}
 PvpInstanceManager.getNextInstance = function()
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
     local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
@@ -90,7 +90,7 @@ PvpInstanceManager.getNextInstance = function()
             changedInstance = true
             usedInstances[key] = true
             currentInstance.id = key
-            break;
+            break
         end
     end
 
@@ -147,13 +147,19 @@ end
 ---@param cellX number
 ---@param cellY number
 ---@param count number
----@return table {x1=5, y1=5, z1=0, x2=5, y2=5, z2=0, time=0}
+---@return table? {x1=5, y1=5, z1=0, x2=5, y2=5, z2=0, time=0}
 PvpInstanceManager.getRandomExtractionPoints = function(cellX, cellY, count)
     if not count then
         return {}
     end
     
     local extractionPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.RandomExtractionPoints, cellX, cellY, {"name", "time"})
+
+    if extractionPoints == nil then
+        print("ERROR: no extraction points")
+        return nil
+    end
+
 
     local extractionPointCount = #extractionPoints
     if extractionPointCount <= count then
@@ -177,10 +183,9 @@ end
 --- Gets a permanent set of extraction points for given an instance
 ---@param cellX number
 ---@param cellY number
----@return table {x1=5, y1=5, z1=0, x2=5, y2=5, z2=0, time=0}
+---@return table? {x1=5, y1=5, z1=0, x2=5, y2=5, z2=0, time=0}
 PvpInstanceManager.getPermanentExtractionPoints = function(cellX, cellY)
     local points = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.PermanentExtractionPoints, cellX, cellY, {"name", "time"})
-
     return points
 end
 
