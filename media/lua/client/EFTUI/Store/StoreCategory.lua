@@ -14,11 +14,10 @@ function StoreCategory:new(x, y, width, height, shopPanel)
     StoreCategory.instance = o
     return o
 end
+
 ---Initialise a category, giving an items table
 ---@param itemsTable table
-function StoreCategory:initialise(itemsTable)
-    ISPanelJoypad.initialise(self)
-
+function StoreCategory:addItems(itemsTable)
     self.itemsTable = itemsTable
 end
 

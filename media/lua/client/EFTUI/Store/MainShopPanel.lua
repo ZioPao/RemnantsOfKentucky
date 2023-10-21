@@ -162,7 +162,8 @@ function MainShopPanel:createChildren()
 
     --* ESSENTIAL ITEMS *--
     self.essentialItemsCat = StoreCategory:new(0, 0, self.width, catHeight, self)
-    self.essentialItemsCat:initialise(self.essentialitems)
+    self.essentialItemsCat:initialise()
+    self.essentialItemsCat:addItems(ClientShopManager.GetEssentialItems())
     self.essentialItemsCat:setAnchorRight(true)
     self.essentialItemsCat:setAnchorBottom(true)
     self.panel:addView("Essential Items", self.essentialItemsCat, self.width / 3 - 2, addedHeight)
@@ -172,7 +173,8 @@ function MainShopPanel:createChildren()
 
     --* DAILY ITEMS *--
     self.dailyItemsCat = StoreCategory:new(0, 0, self.width, catHeight, self)
-    self.dailyItemsCat:initialise(self.dailyItems)
+    self.dailyItemsCat:initialise()
+    self.dailyItemsCat:addItems(self.dailyItems)
     self.dailyItemsCat:setAnchorRight(true)
     self.dailyItemsCat:setAnchorBottom(true)
     self.panel:addView("Daily Items", self.dailyItemsCat, self.width / 3 - 2, addedHeight)

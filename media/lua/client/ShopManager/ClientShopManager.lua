@@ -76,7 +76,7 @@ ClientShopManager.CanSell = function(items)
     return true
 end
 
-ClientShopManager.GetEssentialItems = function()
+ClientShopManager.GetDailyItems = function()
     local shopItems = ClientData.Shop.GetShopItems()
     if shopItems and shopItems.dailyInventory then
         return shopItems.dailyInventory
@@ -85,14 +85,16 @@ ClientShopManager.GetEssentialItems = function()
     return {}
 end
 
-ClientShopManager.GetDailyItems = function()
+ClientShopManager.GetEssentialItems = function()
     local shopItems = ClientData.Shop.GetShopItems()
     if shopItems and shopItems.tags and shopItems.tags['ESSENTIALS'] then
-        local dailyList = {}
+        local essentialsList = {}
         for itemType, _ in pairs(shopItems.tags['ESSENTIALS']) do
-        dailyList[itemType] = nil
-        dailyList[itemType] = shopItems.items[itemType]
+            essentialsList[itemType] = nil
+            essentialsList[itemType] = shopItems.items[itemType]
         end
+
+        return essentialsList
     else
         return {}
     end

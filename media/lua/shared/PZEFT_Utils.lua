@@ -101,10 +101,10 @@ end
 
 --- Add items to a container
 ---@param items table Of {"Base.ItemName" = quantity}
----@param container IsoContainer
+---@param container ItemContainer
 PZEFT_UTILS.AddItems = function(items, container)
     for itemName, quantity in pairs(items) do
-        container:AddItem(itemName, quantity)
+        container:AddItem(itemName, quantity)       -- Umbrella is wrong here
     end
 end
 
