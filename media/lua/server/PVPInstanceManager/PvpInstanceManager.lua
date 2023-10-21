@@ -211,10 +211,23 @@ end
 ----
 
 PvpInstanceManager.getAmountUsedInstances = function()
+    print("Get amount used instances")
     local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
     if usedInstances ~= nil then
-        --print(#usedInstances)    -- TODO Kim: this is returning only 0 for some reasons... Am I missing something?
-        return #usedInstances
+        --print("Used instances is not nil")
+        --0print(PZEFT_UTILS.PrintTable(usedInstances))
+
+        -- TODO For some fucking reason I can't use # even if it's a normal table.
+        local amount = 0
+        for key, _ in pairs(usedInstances) do
+            if key and key ~= "" then
+                amount = amount + 1
+            end
+        end
+
+        if amount > 0 then amount = amount / 3 end
+        return amount
+
     else
         return 0
     end
