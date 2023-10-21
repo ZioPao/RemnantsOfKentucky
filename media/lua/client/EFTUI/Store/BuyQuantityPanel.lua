@@ -19,7 +19,6 @@ function BuyQuantityPanel:new(x, y, width, height, mainPanel)
     o:initialise()
     o.mainPanel = mainPanel
     o.backgroundColor = { r = 0, g = 0, b = 0, a = 0.7 }
-    o.fullItemsList = getAllItems()
 
     BuyQuantityPanel.instance = o
     return o
@@ -113,7 +112,7 @@ function BuyQuantityPanel:render()
     if self.selectedItem ~= nil then
 
         -- Handle icons
-        local actualItem = getScriptManager():getItem(self.selectedItem["fullType"])
+        local actualItem = self.selectedItem["actualItem"]
         local icon = actualItem:getIcon()
         if actualItem:getIconsForTexture() and not actualItem:getIconsForTexture():isEmpty() then
             icon = actualItem:getIconsForTexture():get(0)
@@ -124,7 +123,6 @@ function BuyQuantityPanel:render()
                 self:drawTextureScaledAspect2(texture, self.textPanel.x + 20, self.textPanel.y + 20, 50, 50, 1, 1, 1, 1)
             end
         end
-
 
         local itemCost = self.selectedItem["basePrice"]
         local entryAmountText = self.entryAmount:getInternalText()

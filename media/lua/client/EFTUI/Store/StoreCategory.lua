@@ -36,6 +36,9 @@ function StoreCategory:initialiseList(itemsTable)
             for key, value in pairs(data) do
                 print(key .. " - " .. tostring(value))
             end
+
+            data.actualItem = getScriptManager():getItem(tableName)
+
             self.items:addItem(tableName, data)
 
         end
@@ -115,7 +118,7 @@ function StoreCategory:doDrawItem(y, item, alt)
 
     -- Items are stored in a table that works as a container, let's unpack them here to make it more readable
 
-    local itemDisplayName = getScriptManager():getItem(item.item.fullType):getDisplayName()      -- TODO We should pass this actual item directly to the buy panel instead of handling it there
+    local itemDisplayName = item.item.actualItem:getDisplayName() --getScriptManager():getItem(item.item.fullType):getDisplayName()      -- TODO We should pass this actual item directly to the buy panel instead of handling it there
     local itemCost = item.item.basePrice
 
     --* ITEM NAME *--
