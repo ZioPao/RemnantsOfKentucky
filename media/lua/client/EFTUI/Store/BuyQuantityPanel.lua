@@ -111,6 +111,21 @@ function BuyQuantityPanel:render()
     ISPanel.render(self)
 
     if self.selectedItem ~= nil then
+
+        -- Handle icons
+        local actualItem = getScriptManager():getItem(self.selectedItem["fullType"])
+        local icon = actualItem:getIcon()
+        if actualItem:getIconsForTexture() and not actualItem:getIconsForTexture():isEmpty() then
+            icon = actualItem:getIconsForTexture():get(0)
+        end
+        if icon then
+            local texture = getTexture("Item_" .. icon)
+            if texture then
+                self:drawTextureScaledAspect2(texture, self.textPanel.x + 20, self.textPanel.y + 20, 50, 50, 1, 1, 1, 1)
+            end
+        end
+
+
         local itemCost = self.selectedItem["basePrice"]
         local entryAmountText = self.entryAmount:getInternalText()
         if entryAmountText == nil or entryAmountText == "" or entryAmountText == "0" then
@@ -119,7 +134,7 @@ function BuyQuantityPanel:render()
 
         local finalCost = tonumber(self.entryAmount:getInternalText()) * itemCost
 
-        local itemNameStr = " <CENTRE> " .. self.selectedItem["fullType"]
+        local itemNameStr = " <CENTRE> " .. actualItem:getDisplayName()
         local itemFinalCostStr = " <CENTRE> " ..
             itemCost .. "$ x " .. tostring(self.entryAmount:getInternalText()) .. "$ = " .. tostring(finalCost) .. "$"
 
@@ -129,19 +144,6 @@ function BuyQuantityPanel:render()
         -- Updates the text in the panel
         self.textPanel:setText(finalStr)
         self.textPanel:paginate()
-
-
-        -- TODO Get icon from only the name
-        -- local icon = actualItem:getIcon()
-        -- if actualItem:getIconsForTexture() and not actualItem:getIconsForTexture():isEmpty() then
-        --     icon = actualItem:getIconsForTexture():get(0)
-        -- end
-        if icon then
-            local texture = getTexture("Item_" .. icon)
-            if texture then
-                self:drawTextureScaledAspect2(texture, self.textPanel.x + 20, self.textPanel.y + 20, 50, 50, 1, 1, 1, 1)
-            end
-        end
     end
 end
 

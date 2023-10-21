@@ -114,11 +114,12 @@ function StoreCategory:doDrawItem(y, item, alt)
     end
 
     -- Items are stored in a table that works as a container, let's unpack them here to make it more readable
-    local inventoryItem = item.item.fullType    -- TODO Change name
+
+    local itemDisplayName = getScriptManager():getItem(item.item.fullType):getDisplayName()      -- TODO We should pass this actual item directly to the buy panel instead of handling it there
     local itemCost = item.item.basePrice
 
     --* ITEM NAME *--
-    self:drawText(inventoryItem, 6, y + 2, 1, 1, 1, a, UIFont.Medium)
+    self:drawText(itemDisplayName, 6, y + 2, 1, 1, 1, a, UIFont.Medium)
 
     --* ITEM COST *--
     self:drawText(itemCost .. " $", self:getWidth() - 100, y + 2, 1, 1, 1, a, UIFont.Medium)
