@@ -25,7 +25,6 @@ function BaseAdminPanel:new(x, y, width, height)
     return o
 end
 
-
 ---------
 ---comment
 ---@param type any
@@ -51,7 +50,6 @@ function BaseAdminPanel.OnOpenPanel(type)
 
     ButtonManager["AdminPanel"]:setImage(BUTTONS_DATA_TEXTURES["AdminPanel"].ON)
     return pnl
-
 end
 
 ---Closes a panel

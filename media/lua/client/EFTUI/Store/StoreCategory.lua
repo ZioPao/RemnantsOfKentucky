@@ -27,7 +27,6 @@ function StoreCategory:initalise()
 end
 
 function StoreCategory:initialiseList(itemsTable)
-
     if itemsTable then
         --PZEFT_UTILS.PrintTable(itemsTable)
 
@@ -53,7 +52,6 @@ function StoreCategory:initialiseList(itemsTable)
             self.buyPanel:setSelectedItem(selectedItem)
         end
     end
-
 end
 
 function StoreCategory:createChildren()
@@ -84,8 +82,6 @@ function StoreCategory:createChildren()
     self.buyPanel = BuyQuantityPanel:new(buyPanelX, buyPanelY, buyPanelWidth, buyPanelHeight, self.shopPanel)
     self.buyPanel:initialise()
     self:addChild(self.buyPanel)
-
-
 end
 
 ----------------------------------
@@ -159,6 +155,5 @@ function StoreCategory:close()
     self.buyPanel:close()
     ISPanelJoypad.close(self)
 end
-
 
 return StoreCategory

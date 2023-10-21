@@ -64,7 +64,6 @@ function LeaderboardScrollingTable:initList(module)
         if self.viewer.filterEntry:getInternalText() ~= "" and string.trim(self.viewer.filterEntry:getInternalText()) == nil or string.contains(string.lower(username), string.lower(string.trim(self.viewer.filterEntry:getInternalText()))) then
             self.datas:addItem(username, balance)
         end
-
     end
 end
 
@@ -81,8 +80,6 @@ function LeaderboardScrollingTable:drawDatas(y, item, alt)
     if self.selected == item.index then
         self:drawRect(0, (y), self:getWidth(), self.itemheight, 0.3, 0.7, 0.35, 0.15)
     end
-
-    -- TODO Customize colors
     if alt then
         self:drawRect(0, (y), self:getWidth(), self.itemheight, 0.3, 0.6, 0.5, 0.5)
     end
@@ -113,7 +110,6 @@ end
 LeadearboardPanel = ISCollapsableWindow:derive("LeadearboardPanel")
 
 function LeadearboardPanel.Open(x, y)
-
     -- TODO Find a better way to handle icons
     if LeadearboardPanel.instance and LeadearboardPanel.instance:getIsVisible() then
         LeadearboardPanel.instance:close()
@@ -148,19 +144,13 @@ function LeadearboardPanel:new(x, y, width, height)
     return o
 end
 
-
-
-
 --- SETTERS
 function LeadearboardPanel.SetBankAccounts(accounts)
     if LeadearboardPanel.instance then
         print("Setting bank accounts to LeaderboardPanel")
         LeadearboardPanel.bankAccounts = accounts
     end
-
 end
-
-
 
 function LeadearboardPanel:initialise()
     ISCollapsableWindow.initialise(self)
@@ -233,7 +223,7 @@ function LeadearboardPanel:fillList()
     --     end
     -- end
 
-    
+
 
     -- TODO Request stuff from server, wait 1-2 seconds, show them
     sendClientCommand('PZEFT-BankAccount', 'TransmitBankAccounts', {})

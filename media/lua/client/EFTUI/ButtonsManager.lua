@@ -19,7 +19,7 @@ local BUTTONS = {
 
 
 BUTTONS_DATA_TEXTURES = {}
-for i=1, #BUTTONS do
+for i = 1, #BUTTONS do
     local btn = BUTTONS[i]
     BUTTONS_DATA_TEXTURES[btn] = {}
     BUTTONS_DATA_TEXTURES[btn].ON = getTexture("media/textures/" .. btn .. "_on.png")
@@ -48,16 +48,17 @@ function ButtonManager.AddNewButton(buttonModule, onClick)
     ButtonManager[buttonModule].borderColor = { r = 1, g = 1, b = 1, a = 0.1 }
 
     ISEquippedItem.instance:addChild(ButtonManager[buttonModule])
-    ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() + ButtonManager[buttonModule]:getHeight() + ButtonManager.additionalY)
+    ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() + ButtonManager[buttonModule]:getHeight() +
+    ButtonManager.additionalY)
 end
 
 function ButtonManager.RemoveButton(buttonModule)
     if ButtonManager[buttonModule] then
         ISEquippedItem.instance:removeChild(ButtonManager[buttonModule])
-        ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() - ButtonManager[buttonModule]:getHeight() - ButtonManager.additionalY)
+        ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() - ButtonManager[buttonModule]:getHeight() -
+        ButtonManager.additionalY)
         ButtonManager[buttonModule] = nil
     end
-
 end
 
 local function OpenAdminMenu()
@@ -86,11 +87,10 @@ function ButtonManager.CreateButtons(isInRaid)
     end
 
     if type(isInRaid) ~= "boolean" or not isInRaid then
-        ButtonManager.AddNewButton("Leaderboard", function() LeadearboardPanel.Open(100,100) end)
+        ButtonManager.AddNewButton("Leaderboard", function() LeadearboardPanel.Open(100, 100) end)
     end
-
-
 end
+
 Events.PZEFT_UpdateClientStatus.Add(ButtonManager.CreateButtons)
 Events.OnCreatePlayer.Add(ButtonManager.CreateButtons)
 

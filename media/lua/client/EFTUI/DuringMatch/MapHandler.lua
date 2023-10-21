@@ -4,12 +4,12 @@
 EFTMapHandler = {}
 
 function EFTMapHandler:new(symbolsAPI)
-	local o = {}
+    local o = {}
     setmetatable(o, self)
     self.__index = self
 
     o.symbolsAPI = symbolsAPI
-	return o
+    return o
 end
 
 function EFTMapHandler:write()
@@ -17,17 +17,16 @@ function EFTMapHandler:write()
     local extractionPoints = instance.extractionPoints
 
     --Loop through extraction points and add the note on the map
-    for i=1, #extractionPoints do
-		local singleExtractionPoint = extractionPoints[i]
-        local x = instance.x + singleExtractionPoint.x1     -- we have x1, x2, y1, y2... figure out how to deal with it
+    for i = 1, #extractionPoints do
+        local singleExtractionPoint = extractionPoints[i]
+        local x = instance.x + singleExtractionPoint.x1 -- we have x1, x2, y1, y2... figure out how to deal with it
         local y = instance.y + singleExtractionPoint.y1
 
         local iconSymbol = self.symbolsAPI:addTexture("PZEFT-Exit", x, y)
-		iconSymbol:setRGBA(0, 0, 0, 1.0)
-		iconSymbol:setAnchor(0.0, 0.0)
-		iconSymbol:setScale(ISMap.SCALE/2)
+        iconSymbol:setRGBA(0, 0, 0, 1.0)
+        iconSymbol:setAnchor(0.0, 0.0)
+        iconSymbol:setScale(ISMap.SCALE / 2)
     end
-
 end
 
 function EFTMapHandler:clear()
@@ -35,12 +34,11 @@ function EFTMapHandler:clear()
 end
 
 function EFTMapHandler:deactivate()
-	if self.modal then
-		self.modal.no:forceClick()
-		self.modal = nil
-	end
+    if self.modal then
+        self.modal.no:forceClick()
+        self.modal = nil
+    end
 end
-
 
 --!!! JUST A PROOF OF CONCEPT HERE!
 
@@ -65,10 +63,9 @@ ISWorldMap.WriteEFTExits = function(playerNum)
         local eftMapHandler = EFTMapHandler:new(ISWorldMap.instance.symbolsAPI)
         eftMapHandler:clear()
         eftMapHandler:write()
-        ISWorldMap.HideWorldMap(playerNum)      -- FIXME this is not working
+        ISWorldMap.HideWorldMap(playerNum) -- FIXME this is not working
         Events.OnTickEvenPaused.Remove(TryToAddSymbols)
     end
 
     Events.OnTickEvenPaused.Add(TryToAddSymbols)
-
 end

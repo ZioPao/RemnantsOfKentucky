@@ -84,12 +84,11 @@ function BuyQuantityPanel:onConfirmBuy()
     local itemTable = {
         fullType = self.selectedItem["fullType"],
         basePrice = self.selectedItem["basePrice"],
-        multiplier = 1      -- FIXME This should be with the selectedItem, but it's not there for some reason
-        }
+        multiplier = 1 -- FIXME This should be with the selectedItem, but it's not there for some reason
+    }
 
     local quantity = tonumber(self.entryAmount:getInternalText())
     ClientShopManager.TryBuy(itemTable, quantity)
-
 end
 
 function BuyQuantityPanel:onStartBuy()

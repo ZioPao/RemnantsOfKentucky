@@ -13,7 +13,6 @@ function DuringMatchAdminPanel:new(x, y, width, height)
     return o
 end
 
-
 -------------------------------------
 function DuringMatchAdminPanel:getIsMatchEnded()
     return self.isMatchEnded
@@ -24,9 +23,6 @@ end
 function DuringMatchAdminPanel:setIsMatchEnded(isMatchEnded)
     self.isMatchEnded = isMatchEnded
 end
-
-
-
 
 ---------------------------------------
 
@@ -77,19 +73,19 @@ function DuringMatchAdminPanel:onConfirmStop()
     -- TODO The teleporting stuff should be run on the server, not here
     --print("Confirm! Teleporting back everyone")
     self:setIsMatchEnded(true)
-    sendClientCommand("PZEFT-Time", "StartMatchEndCountdown", {stopTime = PZ_EFT_CONFIG.MatchSettings.endMatchTime})
-
+    sendClientCommand("PZEFT-Time", "StartMatchEndCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.endMatchTime })
 end
 
 function DuringMatchAdminPanel:onClick(btn)
     if btn.internal == 'STOP' then
-        local text = " <CENTRE> Are you sure you want to stop the match? Every player will be teleported back to their safehouse."
+        local text =
+        " <CENTRE> Are you sure you want to stop the match? Every player will be teleported back to their safehouse."
 
         -- TODO The teleporting stuff should be run on the server, not here
-        self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, self, self.onConfirmStop)
+        self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, self,
+            self.onConfirmStop)
     end
 end
-
 
 function DuringMatchAdminPanel:update()
     BaseAdminPanel.update(self)
@@ -98,18 +94,18 @@ function DuringMatchAdminPanel:update()
     local matchInfo
 
     if self:getIsMatchEnded() then
-        matchInfo =" <CENTRE> <RED> THE MATCH HAS ENDED!"
+        matchInfo = " <CENTRE> <RED> THE MATCH HAS ENDED!"
         self.btnStop:setEnable(false)
     else
         -- Handle confirmation panel to stop the match
         local check = self.confirmationPanel == nil or (self.confirmationPanel:isVisible())
         self.btnStop:setEnable(check)
-        matchInfo = "Match time: " .. EFTGenericUI.FormatTime(tonumber(ClientState.currentTime)) .. " <LINE> Alive Players: 10"
+        matchInfo = "Match time: " ..
+        EFTGenericUI.FormatTime(tonumber(ClientState.currentTime)) .. " <LINE> Alive Players: 10"
     end
 
     self.panelInfo:setText(matchInfo)
     self.panelInfo.textDirty = true
-
 end
 
 function DuringMatchAdminPanel:close()
@@ -127,7 +123,7 @@ function DuringMatchAdminPanel.OnOpenPanel()
 end
 
 ---Check if there's a panel already open, and closes it
----@return boolean 
+---@return boolean
 function DuringMatchAdminPanel.OnClosePanel()
     return BaseAdminPanel.OnClosePanel(DuringMatchAdminPanel)
 end

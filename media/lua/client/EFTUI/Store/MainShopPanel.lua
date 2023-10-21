@@ -19,7 +19,7 @@
 -- TODO Add filtering
 -- TODO add visible player balance
 require "ISUI/ISCollapsableWindow"
-    -- TODO Add sellMultiplier
+-- TODO Add sellMultiplier
 
 local CustomTabPanel = require("EFTUI/Store/CustomTabPanel")
 local StoreCategory = require("EFTUI/Store/StoreCategory")
@@ -69,6 +69,7 @@ function MainShopPanel:new(x, y, width, height, character)
     o:setWantKeyEvents(true)
     return o
 end
+
 ---Closes all the related tabs too
 function MainShopPanel:close()
     self.panel:close()
@@ -164,14 +165,12 @@ function MainShopPanel:createChildren()
 
     -- Set default stuff
     self.panel:activateView("Essential Items")
-
 end
 
 function MainShopPanel:update()
     ISCollapsableWindow.update(self)
 
     self.accountBalance = ClientBankManager.getPlayerBankAccountBalance()
-
 end
 
 function MainShopPanel:render()
@@ -183,8 +182,6 @@ function MainShopPanel:render()
     self.balancePanel:setText(balanceText)
     self.balancePanel:paginate()
 end
-
-
 
 ------------------------------------------------
 -- Search for PC while in safehouse
@@ -202,7 +199,6 @@ local function OnFillContextMenu(player, context, worldObjects, test)
     if instanceof(clickedObject, "IsoObject") and moveableObject.name == pcTileName then
         context:addOption("Open Shop", worldObjects, MainShopPanel.Open, player)
     end
-
 end
 
 -- For MP, we can access the menu ONLY from the admin panel

@@ -90,7 +90,7 @@ function BeforeMatchAdminPanel:onClick(btn)
     if btn.internal == 'START_MATCH' then
         self.isStartingMatch = true
         -- Start timer. Show it on screen
-        sendClientCommand("PZEFT-Time", "StartMatchCountdown", {stopTime = PZ_EFT_CONFIG.MatchSettings.startMatchTime})
+        sendClientCommand("PZEFT-Time", "StartMatchCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.startMatchTime })
         TimePanel.Open("Starting match in...")
     elseif btn.internal == 'MATCH_OPTIONS' then
         -- TODO Implement match options
@@ -128,8 +128,9 @@ function BeforeMatchAdminPanel:update()
     -- 99 safehouses by default
 
 
-    local instancesAvailableStr = getText("IGUI_AdminPanelBeforeMatch_InstancesAvailable", ClientState.availableInstances) ..
-    "\n" .. getText("IGUI_AdminPanelBeforeMatch_SafehousesAssigned", -1)
+    local instancesAvailableStr = getText("IGUI_AdminPanelBeforeMatch_InstancesAvailable", ClientState
+        .availableInstances) ..
+        "\n" .. getText("IGUI_AdminPanelBeforeMatch_SafehousesAssigned", -1)
 
     self.panelInfo:setText(instancesAvailableStr)
     self.panelInfo.textDirty = true
@@ -141,7 +142,6 @@ function BeforeMatchAdminPanel:render()
         self.openedPanel:setX(self:getRight())
         self.openedPanel:setY(self:getBottom() - self:getHeight())
     end
-
 end
 
 function BeforeMatchAdminPanel:close()
@@ -151,7 +151,6 @@ function BeforeMatchAdminPanel:close()
 
     ISCollapsableWindow.close(self)
 end
-
 
 --*****************************************--
 ---@return ISCollapsableWindow?
@@ -168,6 +167,5 @@ end
 function BeforeMatchAdminPanel.OnClosePanel()
     return BaseAdminPanel.OnClosePanel(BeforeMatchAdminPanel)
 end
-
 
 return BeforeMatchAdminPanel
