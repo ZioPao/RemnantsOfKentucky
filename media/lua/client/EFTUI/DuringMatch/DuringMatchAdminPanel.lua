@@ -31,33 +31,36 @@ end
 function DuringMatchAdminPanel:createChildren()
     BaseAdminPanel.createChildren(self)
 
-    self.panelInfo = ISRichTextPanel:new(0, 20, self:getWidth(), self:getHeight() / 1.5)
-    self.panelInfo.autosetheight = false
+    self.panelInfo = ISPanel:new(0, 20, self:getWidth(), self:getHeight() / 1.5)
+
+    --self.panelInfo = ISRichTextPanel:new(0, 20, self:getWidth(), self:getHeight() / 1.5)
+    --self.panelInfo.autosetheight = false
     self.panelInfo.background = true
     self.panelInfo.backgroundColor = { r = 0, g = 0, b = 0, a = 0.5 }
     self.panelInfo.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 1 }
     self.panelInfo.marginTop = self.panelInfo:getHeight() / 2
     self.panelInfo:initialise()
-    self.panelInfo:paginate()
+    --self.panelInfo:paginate()
     self:addChild(self.panelInfo)
 
-    -- TODO Maybe a bit of separation between the infos would be nice.
 
-    -- self.labelInstancesAvailable = ISRichTextPanel:new(0, 0, self.panelInfo:getWidth(), 25)
-    -- self.labelInstancesAvailable:initialise()
-    -- self.labelInstancesAvailable:instantiate()
-    -- self.panelInfo:addChild(self.labelInstancesAvailable)
 
-    -- self.labelSafehousesAssigned = ISLabel:new(10, self.labelInstancesAvailable:getBottom() + 10, 25, "", 1, 1, 1, 1, UIFont.Small, true)
-    -- self.labelSafehousesAssigned:initialise()
-    -- self.labelSafehousesAssigned:instantiate()
-    -- self.panelInfo:addChild(self.labelSafehousesAssigned)
+    self.labelFirst = ISRichTextPanel:new(0,0, self.panelInfo:getWidth(), 25)
+    self.labelFirst:initialise()
+    self.labelFirst:instantiate()
+    self.labelFirst:paginate()
+    self.panelInfo:addChild(self.labelFirst)
+
+    self.labelSecond = ISRichTextPanel:new(0,30, self.panelInfo:getWidth(), 25)
+    self.labelSecond:initialise()
+    self.labelSecond:instantiate()
+    self.labelSecond:paginate()
+    self.panelInfo:addChild(self.labelSecond)
 
     -----------------------
 
     local xPadding = 20
     local yPadding = 20
-    local yOffset = self.panelInfo:getBottom() + yPadding
 
     local btnWidth = self:getWidth() - xPadding * 2
     local btnHeight = 25
@@ -87,25 +90,41 @@ function DuringMatchAdminPanel:onClick(btn)
     end
 end
 
+-- function DuringMatchAdminPanel:render()
+--     BaseAdminPanel.render(self)
+
+
+-- end
+
+
+
 function DuringMatchAdminPanel:update()
     BaseAdminPanel.update(self)
 
-    -- Updates match info
-    local matchInfo
+
+    local firstLabelText = ""       -- Time or announcements
+    local secondLabelText = ""
 
     if self:getIsMatchEnded() then
-        matchInfo = " <CENTRE> <RED> THE MATCH HAS ENDED!"
+        firstLabelText = " <CENTRE> <RED> The match has ended."
         self.btnStop:setEnable(false)
     else
         -- Handle confirmation panel to stop the match
         local check = self.confirmationPanel == nil or (self.confirmationPanel:isVisible())
         self.btnStop:setEnable(check)
-        matchInfo = "Match time: " ..
-        EFTGenericUI.FormatTime(tonumber(ClientState.currentTime)) .. " <LINE> Alive Players: 10"
+
+        firstLabelText = "Match time: " .. EFTGenericUI.FormatTime(tonumber(ClientState.currentTime))
+        secondLabelText = "Alive Players: <CENTRE> " .. tostring(-1)
+        
+
+        --matchInfo = "Match time: " .. EFTGenericUI.FormatTime(tonumber(ClientState.currentTime)) .. " <LINE> Alive Players: 10"
     end
 
-    self.panelInfo:setText(matchInfo)
-    self.panelInfo.textDirty = true
+    self.labelFirst:setText(firstLabelText)
+    self.labelFirst.textDirty = true
+
+    self.labelSecond:setText(secondLabelText)
+    self.labelSecond.textDirty = true
 end
 
 function DuringMatchAdminPanel:close()

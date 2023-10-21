@@ -11,7 +11,7 @@ local ClientCommands = {}
 
 ClientCommands.GetAmountAvailableInstances = function(_, _)
     local amount = 100 - PvpInstanceManager.getAmountUsedInstances()
-    print("Amount of available instances: " .. amount)
+    --print("Amount of available instances: " .. amount)
     sendServerCommand("PZEFT", "ReceiveAmountAvailableInstances", {amount = amount})
 end
 

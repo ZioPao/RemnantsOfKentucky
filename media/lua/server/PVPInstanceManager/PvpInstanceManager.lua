@@ -211,7 +211,7 @@ end
 ----
 
 PvpInstanceManager.getAmountUsedInstances = function()
-    print("Get amount used instances")
+    --print("Get amount used instances")
     local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
     if usedInstances ~= nil then
         --print("Used instances is not nil")
