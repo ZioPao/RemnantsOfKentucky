@@ -80,4 +80,3 @@ end
 
 -- TODO This is just a workaround for the proof of concept build
 Events.OnCreatePlayer.Add(AdminClientShopManager.refreshDailyItems)
-Events.OnCreatePlayer.Add(ClientBankManager.requestBankAccountFromServer)

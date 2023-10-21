@@ -7,6 +7,7 @@ local MODULE = 'PZEFT-Shop'
 local ServerCommands = {}
 
 ServerCommands.BuyItem = function(args)
+    print("BuyItem")
     if args and args.item and args.quantity then
     local safehouse = ClientSafehouseInstanceHandler.getSafehouse()
     local storageRelativePos = PZ_EFT_CONFIG.SafehouseInstanceSettings.storageRelativePosition;

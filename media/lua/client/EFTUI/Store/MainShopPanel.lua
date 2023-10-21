@@ -82,15 +82,15 @@ end
 
 function MainShopPanel:initialise()
     ISCollapsableWindow.initialise(self)
+    ClientBankManager.requestBankAccountFromServer()
 
     self.accountBalance = ClientBankManager.getPlayerBankAccountBalance()
     -- Fetch bank account
-    if self.accountBalance == nil then
-        print("No bank account, setting it up now. Close and reopen the menu for now")
-        ClientBankManager.requestBankAccountFromServer()
-    else
-        print("Bank account found")
-    end
+    -- if self.accountBalance == nil then
+    --     print("No bank account, setting it up now. Close and reopen the menu for now")
+    -- else
+    --     print("Bank account found")
+    -- end
 end
 
 function MainShopPanel:createChildren()
