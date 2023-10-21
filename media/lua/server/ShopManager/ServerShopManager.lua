@@ -43,11 +43,11 @@ ServerShopManager.loadShopPrices = function()
                 fullType = v.fullType,
                 tags = v.tags,
                 basePrice = v.basePrice,
-                multiplier = v.initialMultiplier,           -- TODO Multiplier wasn't implemented elsewhere
+                multiplier = v.initialMultiplier,       -- TODO this doesn't work for some reason
                 sellMultiplier = v.sellMultiplier
             }
 
-            PZEFT_UTILS.PrintTable(shopItems.items[i])
+            --PZEFT_UTILS.PrintTable(shopItems.items[i])
         end
     end
 

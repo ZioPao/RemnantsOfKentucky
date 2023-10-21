@@ -53,3 +53,10 @@ end
 function ServerData_client_debug.sendPlayersToSafehouse()
     sendClientCommand("SERVER_DEBUG", "sendPlayersToSafehouse", {})
 end
+
+
+-- Bank handling --
+
+function ServerData_client_debug.setBankAccount(name, balance)
+    sendClientCommand("SERVER_DEBUG", "setBankAccount", {name = name, balance = balance} )
+end

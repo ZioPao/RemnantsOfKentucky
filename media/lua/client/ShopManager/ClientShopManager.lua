@@ -56,8 +56,10 @@ end
 
 ClientShopManager.CanBuy = function(totalPrice)
     local md = PZEFT_UTILS.GetPlayerModData()
-    if md.accountBalance then
-        return md.accountBalance >= totalPrice
+    if md.bankAccount and type(md.bankAccount.balance) == 'number' then
+        return md.bankAccount.balance >= totalPrice
+    else
+        print("ERROR: Account balance hasn't been initialized or something else is wrong")
     end
 
     return false

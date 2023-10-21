@@ -9,7 +9,10 @@ ServerBankManager.getOrCreateAccount = function(username)
     local account = accounts[username]
     if not account then
         print("ServerBankManager.addAmountToAccount: Account " .. username .. " doesn't exist! Creating one.")
-        accounts[username] = {balance = 0}
+
+        -- TODO KIM: This means that we need to access md.accountBalance.balance on a client, not md.accountBalance. Is this intended?
+
+        accounts[username] = {balance = 10000}      -- TODO Just for debug, change it back to 0
         account = accounts[username]
     end
 

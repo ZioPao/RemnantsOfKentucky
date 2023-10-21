@@ -86,28 +86,11 @@ function MainShopPanel:initialise()
     self.accountBalance = ClientBankManager.getPlayerBankAccountBalance()
     -- Fetch bank account
     if self.accountBalance == nil then
+        print("No bank account, setting it up now. Close and reopen the menu for now")
         ClientBankManager.requestBankAccountFromServer()
+    else
+        print("Bank account found")
     end
-
-
-
-    ---Returns a table containing the essential items
-    ---@return table
-    local function FetchEssentialItems()
-        -- TODO USE: return ClientShopManager.GetEssentialItems()
-        -- TODO Only for test
-        local items = getAllItems()
-        local essentialItems = {}
-
-        for i = 0, 25 do
-            local itemContainer = { item = items:get(i), cost = ZombRand(1000) }
-            essentialItems[i] = itemContainer
-            --tab.items:addItem(i, items:get(i))
-        end
-
-        return essentialItems
-    end
-
 end
 
 function MainShopPanel:createChildren()
@@ -137,7 +120,6 @@ function MainShopPanel:createChildren()
     self.balancePanel:initialise()
     self:addChild(self.balancePanel)
 
-    ClientBankManager.requestBankAccountFromServer()        -- TODO We should add a wait condition until the bank account is available
     self.accountBalance = ClientBankManager.getPlayerBankAccountBalance()
     local balanceText = "<SIZE:large>Current Balance: "
     if self.accountBalance then

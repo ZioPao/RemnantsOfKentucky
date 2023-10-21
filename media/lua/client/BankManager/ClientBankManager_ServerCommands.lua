@@ -9,7 +9,7 @@ ServerCommands.UpdateBankAccount = function(args)
     if not args then print('ERROR: ServerCommands.UpdateBankAccount - Tried to update bank account without ARGS') return end
 
     local md = PZEFT_UTILS.GetPlayerModData()
-    md.accountBalance = args.account
+    md.bankAccount = args.account
 end
 
 

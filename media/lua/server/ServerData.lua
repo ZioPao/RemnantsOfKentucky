@@ -73,10 +73,6 @@ ServerData.PVPInstances.GetPvpUsedInstances = function()
     return ModData.getOrCreate(KEY_PVP_USEDINSTANCES)
 end
 
--- ServerData.PVPInstances.GetAmountPvpUsedInstances = function()
---     return #ModData.getOrCreate(KEY_PVP_USEDINSTANCES)
--- end
-
 --- Set table of PVP used instances data
 ---@param data table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
 ServerData.PVPInstances.SetPvpUsedInstances = function(data)

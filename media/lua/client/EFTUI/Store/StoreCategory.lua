@@ -32,16 +32,13 @@ function StoreCategory:initialiseList(itemsTable)
         --PZEFT_UTILS.PrintTable(itemsTable)
 
         for tableName, data in pairs(itemsTable) do
-            print(tableName)
-            for key, value in pairs(data) do
-                print(key .. " - " .. tostring(value))
-            end
-
+            -- print(tableName)
+            -- for key, value in pairs(data) do
+            --     print(key .. " - " .. tostring(value))
+            -- end
             -- todo we need to resend it back to the server, so we can't store it here.
             data.actualItem = getScriptManager():getItem(tableName)
-
             self.items:addItem(tableName, data)
-
         end
         -- print(itemsTable["Base.Apple"].fullType)
         --print("Init for " .. #itemsTable.. " items")

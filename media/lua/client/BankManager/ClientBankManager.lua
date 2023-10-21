@@ -4,16 +4,16 @@ ClientBankManager = ClientBankManager or {}
 --- Get account information by username
 ClientBankManager.requestBankAccountFromServer = function()
     local md = PZEFT_UTILS.GetPlayerModData()
-    md.accountBalance = nil
+    md.bankAccount = nil
 
     sendClientCommand('PZEFT-BankAccount', "RequestBankAccount", {})
 end
 
 --- Returns account balance from player's mod data
----@return table {balance: amount}
+---@return number
 ClientBankManager.getPlayerBankAccountBalance = function()
     local md = PZEFT_UTILS.GetPlayerModData()
-    return md.accountBalance        -- TODO This could return the amount directly instead of this table.
+    return md.bankAccount.balance
 end
 
 --- Add or decreases an amount to a bank account
