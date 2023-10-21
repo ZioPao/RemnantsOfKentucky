@@ -8,21 +8,31 @@ local ServerCommands = {}
 
 ServerCommands.BuyItem = function(args)
     print("BuyItem")
+
     if args and args.item and args.quantity then
-    local safehouse = ClientSafehouseInstanceHandler.getSafehouse()
-    local storageRelativePos = PZ_EFT_CONFIG.SafehouseInstanceSettings.storageRelativePosition;
-    if safehouse then
-        local container = {x = safehouse.x + storageRelativePos.x, y = safehouse.y + storageRelativePos.y, z = safehouse.z + storageRelativePos.z}
-        local square = getCell():getGridSquare(container.x, container.y, container.z)
-        --TODO: Get container on square and get its ItemContainer
-        local inventory = nil
-        inventory:AddItems(args.item, args.quantity)
+        local cratesTable = ClientSafehouseInstanceHandler.GetCrates()
+        -- Find the first crate which has available space
+        -- TODO Do it
+        
+        local crate = cratesTable[1]
+        crate:AddItems(args.item.fullType, args.quantity)
     else
-        print("ERROR: ServerCommands.BuyItem - Invalid safehouse")
+        print("ERROR: ServerCommands.BuyItem - Invalid buyData (args)")
     end
-else
-    print("ERROR: ServerCommands.BuyItem - Invalid buyData (args)")
-end
+
+        -- local storageRelativePos = PZ_EFT_CONFIG.SafehouseInstanceSettings.storageRelativePosition;
+        -- if safehouse then
+        --     local container = {x = safehouse.x + storageRelativePos.x, y = safehouse.y + storageRelativePos.y, z = safehouse.z + storageRelativePos.z}
+        --     local square = getCell():getGridSquare(container.x, container.y, container.z)
+        --     --TODO: Get container on square and get its ItemContainer
+        --     local inventory = nil
+        --     inventory:AddItems(args.item, args.quantity)
+        -- else
+        --     print("ERROR: ServerCommands.BuyItem - Invalid safehouse")
+        -- end
+    -- else
+    --     print("ERROR: ServerCommands.BuyItem - Invalid buyData (args)")
+    -- end
 end
 
 ServerCommands.SellItems = function(args)

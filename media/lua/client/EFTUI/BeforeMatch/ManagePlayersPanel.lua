@@ -165,22 +165,7 @@ function ManagePlayersPanel:onClick(button)
     if button.internal == 'UNASSIGN' then
 
     elseif button.internal == 'CLEAN_STORAGE' then
-        for _, group in pairs(PZ_EFT_CONFIG.SafehouseInstanceSettings.safehouseStorage) do
-            local sq = getCell():getGridSquare(group.x, group.y, 0)
-            local objects = sq:getObjects()
-            local inventoryContainer
-            for i=1, objects:size() do
-                if instanceof(objects:get(i), "InventoryItem") then
-                    inventoryContainer = objects:get(i):getContainer()
-                    if inventoryContainer then
-                        inventoryContainer:clear()
-                    else
-                        error("Crate found, but no InventoryContainer")
-        
-                    end
-                end
-            end
-        end
+        ClientSafehouseInstanceHandler.wipeCrates()
     elseif button.internal == 'STARTER_KIT' then
         -- TODO Give Starter kit to selected player
     elseif button.internal == 'WIPE_EVERYTHING' then
