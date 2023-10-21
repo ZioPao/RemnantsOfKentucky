@@ -32,7 +32,7 @@ ClientSafehouseInstanceHandler.isInSafehouse = function()
 
         local dimensions = PZ_EFT_CONFIG.SafehouseInstanceSettings.dimensions
         if getPlayer():isOutside() or not PZEFT_UTILS.IsPointWithinDimensions(md.safehouse.x, md.safehouse.y, dimensions.n,
-            dimensions.s, dimensions.e, dimensions.w, sq:getX(), sq:getY()) then
+                dimensions.s, dimensions.e, dimensions.w, sq:getX(), sq:getY()) then
             sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {
                 teleport = true
             })
@@ -56,14 +56,13 @@ ClientSafehouseInstanceHandler.GetCrates = function()
 
     local safehouse = ClientSafehouseInstanceHandler.getSafehouse()
     for _, group in pairs(PZ_EFT_CONFIG.SafehouseInstanceSettings.safehouseStorage) do
-
         local sq = getCell():getGridSquare(safehouse.x + group.x, safehouse.y + group.y, 0)
         if sq == nil then
             print("ERROR: Square not found while searching for crates")
             break
         end
         local objects = sq:getObjects()
-        for i=0, objects:size() - 1 do
+        for i = 0, objects:size() - 1 do
             local obj = objects:get(i)
             local container = obj:getContainer()
             if container then table.insert(cratesTable, container) end
@@ -73,7 +72,6 @@ ClientSafehouseInstanceHandler.GetCrates = function()
     print("Found " .. #cratesTable .. " crates")
 
     return cratesTable
-
 end
 
 ClientSafehouseInstanceHandler.wipeCrates = function()
@@ -81,7 +79,7 @@ ClientSafehouseInstanceHandler.wipeCrates = function()
         local sq = getCell():getGridSquare(group.x, group.y, 0)
         local objects = sq:getObjects()
         local inventoryContainer
-        for i=1, objects:size() do
+        for i = 1, objects:size() do
             if instanceof(objects:get(i), "InventoryItem") then
                 inventoryContainer = objects:get(i):getContainer()
                 if inventoryContainer then
@@ -92,7 +90,6 @@ ClientSafehouseInstanceHandler.wipeCrates = function()
             end
         end
     end
-
 end
 
 
@@ -114,7 +111,6 @@ ClientSafehouseInstanceHandler.onPlayerInit = function(player)
 
     -- TODO This probably needs to be moved somewhere else
     Events.OnPlayerUpdate.Remove(ClientSafehouseInstanceHandler.onPlayerInit)
-
 end
 
 Events.OnPlayerUpdate.Add(ClientSafehouseInstanceHandler.onPlayerInit)
