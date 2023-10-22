@@ -1,7 +1,4 @@
--- TODO When in a match, the player should be able to check out the map to see where extraction points are located
--- TODO We need SymbolsAPI, a way to automatically write at the extraction points location, a way to clear everything at match startup, etc.
--- TODO Make it local
-EFTMapHandler = {}
+local EFTMapHandler = {}
 
 function EFTMapHandler:new(symbolsAPI)
     local o = {}
@@ -19,7 +16,7 @@ function EFTMapHandler:write()
     --Loop through extraction points and add the note on the map
     for i = 1, #extractionPoints do
         local singleExtractionPoint = extractionPoints[i]
-        local x = instance.x + singleExtractionPoint.x1 -- we have x1, x2, y1, y2... figure out how to deal with it
+        local x = instance.x + singleExtractionPoint.x1 - 5     -- TODO Just for test, in game they seem a bit misalligned, not sure why right now -- we have x1, x2, y1, y2... figure out how to deal with it
         local y = instance.y + singleExtractionPoint.y1
 
         local iconSymbol = self.symbolsAPI:addTexture("PZEFT-Exit", x, y)

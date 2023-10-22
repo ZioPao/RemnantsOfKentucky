@@ -1,5 +1,5 @@
 UI_EN = {
-    UI_Intro1 = "PZ EFT INTRO 1",
-    UI_Intro2 = "PZ EFT INTRO 2",
-    UI_Intro3 = "Welcome, Remnants of Kentucky",
+    UI_Intro1 = "THESE ARE THE END-TIMES",
+    UI_Intro2 = "YOU'LL HAVE TO FIGHT TO SURVIVE",
+    UI_Intro3 = "WELCOME, REMNANTS OF KENTUCKY",
 }

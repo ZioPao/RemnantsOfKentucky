@@ -45,13 +45,13 @@ function DuringMatchAdminPanel:createChildren()
 
 
 
-    self.labelFirst = ISRichTextPanel:new(0, 0, self.panelInfo:getWidth(), 25)
+    self.labelFirst = ISRichTextPanel:new(0, 30, self.panelInfo:getWidth(), 25)
     self.labelFirst:initialise()
     self.labelFirst:instantiate()
     self.labelFirst:paginate()
     self.panelInfo:addChild(self.labelFirst)
 
-    self.labelSecond = ISRichTextPanel:new(0, 30, self.panelInfo:getWidth(), 25)
+    self.labelSecond = ISRichTextPanel:new(0, 60, self.panelInfo:getWidth(), 25)
     self.labelSecond:initialise()
     self.labelSecond:instantiate()
     self.labelSecond:paginate()

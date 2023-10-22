@@ -225,6 +225,7 @@ PvpInstanceManager.getAmountUsedInstances = function()
             end
         end
 
+        -- TODO This is probably wrong, find a better way
         if amount > 0 then amount = amount / 3 end
         return amount
 
