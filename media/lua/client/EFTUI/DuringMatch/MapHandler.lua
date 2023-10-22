@@ -16,24 +16,15 @@ function EFTMapHandler:write()
     --Loop through extraction points and add the note on the map
     for i = 1, #extractionPoints do
         local singleExtractionPoint = extractionPoints[i]
-        local x = instance.x + singleExtractionPoint.x -- TODO This is probably wrong
-        local y = instance.y + singleExtractionPoint.y
 
-        -- local x2 = instance.x + singleExtractionPoint.x2 -- TODO This is probably wrong
-        -- local y2 = instance.y + singleExtractionPoint.y2
-        
-        -- PZEFT-Exit
+        local x = instance.x + (singleExtractionPoint.x1 + singleExtractionPoint.x2)/2
+        local y = instance.y + (singleExtractionPoint.y1 + singleExtractionPoint.y2)/2
         local iconSymbol = self.symbolsAPI:addTexture("PZEFT-Exit", x, y)
 
-        --local iconSymbol2 = self.symbolsAPI:addTexture("X", x2, y2)
-
-        iconSymbol:setRGBA(1, 0, 0, 1.0)
+        iconSymbol:setRGBA(0, 0, 0, 1.0)
         iconSymbol:setAnchor(0.0, 0.0)
-        iconSymbol:setScale(ISMap.SCALE)
+        iconSymbol:setScale(ISMap.SCALE/6)
 
-        -- iconSymbol2:setRGBA(0, 1, 0, 1.0)
-        -- iconSymbol2:setAnchor(0.0, 0.0)
-        -- iconSymbol2:setScale(ISMap.SCALE)
     end
 end
 
