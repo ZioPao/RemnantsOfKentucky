@@ -32,9 +32,9 @@ PvpInstanceManager.refreshPvpInstancesExtractions = function()
     local iX = pvpInstanceSettings.firstXCellPos
     local iY = pvpInstanceSettings.firstYCellPos
     for key, value in pairs(pvpInstances) do
-        local permanentExtractions = PvpInstanceManager.getPermanentExtractionPoints(iX, iY)
+        local permanentExtractions = PvpInstanceManager.getPermanentExtractionPoints(value.x, value.y)
         permanentExtractions = permanentExtractions or {}
-        local randomExtractions = PvpInstanceManager.getRandomExtractionPoints(iX, iY, pvpInstanceSettings.randomExtractionPointCount)
+        local randomExtractions = PvpInstanceManager.getRandomExtractionPoints(value.x, value.y, pvpInstanceSettings.randomExtractionPointCount)
         randomExtractions = randomExtractions or {}
 
         value.extractionPoints = PZEFT_UTILS.MergeIPairs(randomExtractions, permanentExtractions)
