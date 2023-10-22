@@ -20,20 +20,20 @@ local function ExtractionUpdateEvent()
         if extractionPoints then
             local playerSquare = pl:getSquare()
             local playerPosition = {x = playerSquare:getX(), y = playerSquare:getY(), z = playerSquare:getZ(),}
-            for _,area in ipairs(extractionPoints) do
+            for key ,area in ipairs(extractionPoints) do
                 if PZEFT_UTILS.IsInRectangle(playerPosition, area) then
-                    print("Player is in the rectangle")
+                    print("Player is in the rectangle - " .. tostring(key))
                     if not ClientState.IsInExtractionArea then
                         ClientState.IsInExtractionArea = true
-                        print("Triggering PZEFT_UpdateExtractionZoneState to true")
+                        --print("Triggering PZEFT_UpdateExtractionZoneState to true")
                         triggerEvent("PZEFT_UpdateExtractionZoneState", {state = true})
                         --return      -- if it's true, let's return here instead of cycling
                     end
                 else
-                    print("Player is NOT in the rectangle")
+                    --print("Player is NOT in the rectangle - " .. tostring(key))
                     if ClientState.IsInExtractionArea then
                         ClientState.IsInExtractionArea = false
-                        print("Triggering PZEFT_UpdateExtractionZoneState to false")
+                        --print("Triggering PZEFT_UpdateExtractionZoneState to false")
                         triggerEvent("PZEFT_UpdateExtractionZoneState", {state = false})
                     end
                 end
@@ -51,12 +51,11 @@ Events.EveryOneMinute.Add(ExtractionUpdateEvent)
 
 
 local function HandleExtraction(state)
-    if state == false then
-        print("Not in extraction point")
-    else
-        print("Player is in extraction point, start countdown?")
-
-    end
+    -- if state == false then
+    --     print("Not in extraction point")
+    -- else
+    --     print("Player is in extraction point, start countdown?")
+    -- end
 
 
 end

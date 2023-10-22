@@ -218,10 +218,12 @@ PZEFT_UTILS.IsInRectangle = function(pos, area)
     local inYRange = (pos.y >= area.y1 and pos.y <= area.y2) or (pos.y >= area.y2 and pos.y <= area.y1)
     local inZRange = (pos.z >= area.z1 and pos.z <= area.z2) or (pos.z >= area.z2 and pos.z <= area.z1)
 
-    print("Area: x1=".. area.x1 .. ", x2=" .. area.x2 .. ", y1=" .. area.y1 .. ", y2=" .. area.y2 .. ", z1=" .. area.z1 .. ", z2=" .. area.z2)
-    print("inXRange: " .. tostring(inXRange))
-    print("inYRange: " .. tostring(inYRange))
-    print("inZRange: " .. tostring(inZRange))
+    -- print("Player: x=" .. pos.x .. ", y=" .. pos.y)
+    -- print("Area: x1=".. area.x1 .. ", x2=" .. area.x2 .. ", y1=" .. area.y1 .. ", y2=" .. area.y2 .. ", z1=" .. area.z1 .. ", z2=" .. area.z2)
+    -- print("inXRange: " .. tostring(inXRange))
+    -- print("inYRange: " .. tostring(inYRange))
+    -- print("inZRange: " .. tostring(inZRange))
+    -- print("_____________________________________________")
 
 
     return inXRange and inYRange and inZRange
