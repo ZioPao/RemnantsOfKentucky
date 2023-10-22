@@ -65,7 +65,6 @@ PvpInstanceManager.loadPvpInstances = function()
                 spawnPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.Spawnpoints, iX, iY, {"name"}),
                 extractionPoints = PZEFT_UTILS.MergeIPairs(randomExtractions, permanentExtractions)
             }
-
             iX = iX + pvpInstanceSettings.xLength + 1
         until iX > pvpInstanceSettings.firstXCellPos + (pvpInstanceSettings.xLength * (pvpInstanceSettings.xRepeat - 1)) +
             ((pvpInstanceSettings.buffer * (pvpInstanceSettings.xRepeat - 1)))

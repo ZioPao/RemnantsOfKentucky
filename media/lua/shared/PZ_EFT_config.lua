@@ -94,9 +94,9 @@ PZ_EFT_CONFIG.SafehouseInstanceSettings = {
 
 PZ_EFT_CONFIG.PVPInstanceSettings = {
     -- x length of map in cells
-    xLength = 2,
+    xLength = 4,
     -- y length of map in cells
-    yLength = 3,
+    yLength = 2,
 
     -- equal space between instances in all directions
     buffer = 1,
