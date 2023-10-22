@@ -30,10 +30,6 @@ function TimePanel:render()
     self.timePanel:setText(EFTGenericUI.FormatTime(timeNumber))
     self.timePanel.textDirty = true
 
-    -- self.textLabel:setText("Test")
-    -- self.textLabel.textDirty = true
-
-
     if self.isStartingMatch then return end
 
     -- todo In game timer will fade out after some seconds

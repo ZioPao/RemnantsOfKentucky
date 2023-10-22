@@ -11,9 +11,6 @@ local function ExtractionUpdateEvent()
 
     --local currentInstanceData = ClientData.PVPInstances.GetCurrentInstance()
     if currentInstanceData and currentInstanceData.id then
-        -- local instanceId = currentInstanceData.id
-        -- local pvpInstances = ClientData.PVPInstances.GetPvpInstances()
-        -- local currentInstance = pvpInstances[instanceId]
         local extractionPoints = currentInstanceData.extractionPoints
         if extractionPoints then
             local playerSquare = pl:getSquare()
@@ -68,7 +65,7 @@ end
 
 
 local function HandleExtraction(args)
-    print("Running HandleExtraction")
+    --print("Running HandleExtraction")
     if args.state == true then
         if EFT_ExtractionHandler.addedOption == false then
             Events.OnFillWorldObjectContextMenu.Add(EFT_ExtractionHandler.AddExtractOption)
