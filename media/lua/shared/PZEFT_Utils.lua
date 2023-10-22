@@ -9,10 +9,13 @@ PZEFT_UTILS = PZEFT_UTILS or {}
 PZEFT_UTILS.MapWorldCoordinatesToCell = function(coordinateList, cellX, cellY, otherArgs)
     local mappedCoordinates = {}
 
+    print("CELLX: " .. tostring(cellX))
+    print("CELLY: " .. tostring(cellY))
+
     if not coordinateList then return nil end
 
     for index, point in ipairs(coordinateList) do
-        local wX = cellX * 300
+        local wX = cellX * 300 -- TODO Add multiplier per used instances
         local wY = cellY * 300
         local newEntry
         if point.x ~= nil then

@@ -73,7 +73,6 @@ function DuringMatchAdminPanel:createChildren()
 end
 
 function DuringMatchAdminPanel:onConfirmStop()
-    -- TODO The teleporting stuff should be run on the server, not here
     --print("Confirm! Teleporting back everyone")
     self:setIsMatchEnded(true)
     sendClientCommand("PZEFT-Time", "StartMatchEndCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.endMatchTime })
@@ -84,7 +83,6 @@ function DuringMatchAdminPanel:onClick(btn)
         local text =
         " <CENTRE> Are you sure you want to stop the match? Every player will be teleported back to their safehouse."
 
-        -- TODO The teleporting stuff should be run on the server, not here
         self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, self,
             self.onConfirmStop)
     end
@@ -103,7 +101,7 @@ function DuringMatchAdminPanel:update()
     else
         -- Handle confirmation panel to stop the match
         local check = self.confirmationPanel == nil or (self.confirmationPanel:isVisible())
-        self.btnStop:setEnable(check)
+        self.btnStop:setEnable(check)   -- FIXME if you press no on the confirmation panel this is always false
 
         firstLabelText = "Match time: " .. EFTGenericUI.FormatTime(tonumber(ClientState.currentTime))
         secondLabelText = "Alive Players: <CENTRE> " .. tostring(-1)

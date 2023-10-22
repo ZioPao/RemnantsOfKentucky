@@ -27,6 +27,8 @@ local function EveryOneMinute_Not_InRaid_Events()
     end
 
     -- TODO Move this away, just for test
+
+    Events.OnFillWorldObjectContextMenu.Remove(EFT_ExtractionHandler.AddExtractOption)
     sendClientCommand("PZEFT-PvpInstances", "GetAmountAvailableInstances", {})
 
 end
