@@ -2,7 +2,7 @@ local ClientCommands = {}
 
 local Countdown = require("Time/PZEFT_Countdown")
 local Timer = require("Time/PZEFT_Timer")
-local MatchHandler = require("MatchHandler")
+local MatchHandler = require("MatchHandler/MatchHandler")
 
 
 local function test()

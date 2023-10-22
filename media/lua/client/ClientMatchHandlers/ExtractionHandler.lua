@@ -15,8 +15,6 @@ local function ExtractionUpdateEvent()
         -- local pvpInstances = ClientData.PVPInstances.GetPvpInstances()
         -- local currentInstance = pvpInstances[instanceId]
         local extractionPoints = currentInstanceData.extractionPoints
-
-        -- FIXME Extraction points should have an area, but they're only x,y,z with duplicates x1,y2,z2
         if extractionPoints then
             local playerSquare = pl:getSquare()
             local playerPosition = {x = playerSquare:getX(), y = playerSquare:getY(), z = playerSquare:getZ(),}
@@ -50,14 +48,36 @@ Events.EveryOneMinute.Add(ExtractionUpdateEvent)
 -------------------------------------------------
 
 
-local function HandleExtraction(state)
-    -- if state == false then
-    --     print("Not in extraction point")
-    -- else
-    --     print("Player is in extraction point, start countdown?")
-    -- end
+EFT_ExtractionHandler = {}
+EFT_ExtractionHandler.addedOption = false
+
+function EFT_ExtractionHandler.DoExtraction()
+    print("Extracting player")
+
+    sendClientCommand("PZEFT-PvpInstances", "RequestExtraction", {})
+    -- TeleportManager.Teleport(player, spawnPoint.x, spawnPoint.y, spawnPoint.z)
+    -- sendServerCommand(player, "PZEFT", "SetClientStateIsInRaid", {value = true})
+    -- ClientSafehouseInstanceHandler.refreshSafehouseAllocation()
+end
+
+function EFT_ExtractionHandler.AddExtractOption(player, context, worldObjects, test)
+    if test then return true end
+    context:addOption("Extract", worldObjects, EFT_ExtractionHandler.DoExtraction, player)
+end
 
 
+
+local function HandleExtraction(args)
+    print("Running HandleExtraction")
+    if args.state == true then
+        if EFT_ExtractionHandler.addedOption == false then
+            Events.OnFillWorldObjectContextMenu.Add(EFT_ExtractionHandler.AddExtractOption)
+            EFT_ExtractionHandler.addedOption = true
+        end
+    else
+        Events.OnFillWorldObjectContextMenu.Remove(EFT_ExtractionHandler.AddExtractOption)
+        EFT_ExtractionHandler.addedOption = false
+    end
 end
 
 Events.PZEFT_UpdateExtractionZoneState.Add(HandleExtraction)
