@@ -5,7 +5,7 @@ PZEFT_UTILS = PZEFT_UTILS or {}
 ---@param cellX number
 ---@param cellY number
 ---@param otherArgs table list of names of arguments to copy from coordinateList, Example: {"time"}
----@return table? {{x=0,y=0,z=0}, {x=0,y=0,z=0}}
+---@return table? {{x1=5, y1=5, z1=0, x2=5, y2=5, z2=0, time=0}
 PZEFT_UTILS.MapWorldCoordinatesToCell = function(coordinateList, cellX, cellY, otherArgs)
     local mappedCoordinates = {}
 
@@ -26,8 +26,8 @@ PZEFT_UTILS.MapWorldCoordinatesToCell = function(coordinateList, cellX, cellY, o
                 x1 = wX + point.x1,
                 y1 = wY + point.y1,
                 z1 = point.z1,
-                x2 = wX + point.x1,
-                y2 = wY + point.y1,
+                x2 = wX + point.x2,
+                y2 = wY + point.y2,
                 z2 = point.z2
             }
         end
@@ -217,5 +217,12 @@ PZEFT_UTILS.IsInRectangle = function(pos, area)
     local inXRange = (pos.x >= area.x1 and pos.x <= area.x2) or (pos.x >= area.x2 and pos.x <= area.x1)
     local inYRange = (pos.y >= area.y1 and pos.y <= area.y2) or (pos.y >= area.y2 and pos.y <= area.y1)
     local inZRange = (pos.z >= area.z1 and pos.z <= area.z2) or (pos.z >= area.z2 and pos.z <= area.z1)
+
+    print("Area: x1=".. area.x1 .. ", x2=" .. area.x2 .. ", y1=" .. area.y1 .. ", y2=" .. area.y2 .. ", z1=" .. area.z1 .. ", z2=" .. area.z2)
+    print("inXRange: " .. tostring(inXRange))
+    print("inYRange: " .. tostring(inYRange))
+    print("inZRange: " .. tostring(inZRange))
+
+
     return inXRange and inYRange and inZRange
 end

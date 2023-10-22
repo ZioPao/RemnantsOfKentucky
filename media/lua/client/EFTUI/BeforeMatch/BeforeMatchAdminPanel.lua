@@ -155,9 +155,7 @@ end
 --*****************************************--
 ---@return ISCollapsableWindow?
 function BeforeMatchAdminPanel.OnOpenPanel()
-    -- TODO Request available instances
     -- TODO Request available safehouses
-
 
     return BaseAdminPanel.OnOpenPanel(BeforeMatchAdminPanel)
 end

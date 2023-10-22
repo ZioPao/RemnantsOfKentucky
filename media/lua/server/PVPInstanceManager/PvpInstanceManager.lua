@@ -29,6 +29,8 @@ PvpInstanceManager.refreshPvpInstancesExtractions = function()
     -- TODO KIM: Is this working?
 
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
+    local iX = pvpInstanceSettings.firstXCellPos
+    local iY = pvpInstanceSettings.firstYCellPos
     for key, value in pairs(pvpInstances) do
         local permanentExtractions = PvpInstanceManager.getPermanentExtractionPoints(iX, iY)
         permanentExtractions = permanentExtractions or {}

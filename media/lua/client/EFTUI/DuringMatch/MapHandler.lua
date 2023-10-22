@@ -16,7 +16,7 @@ function EFTMapHandler:write()
     --Loop through extraction points and add the note on the map
     for i = 1, #extractionPoints do
         local singleExtractionPoint = extractionPoints[i]
-        local x = instance.x + singleExtractionPoint.x1 - 5     -- TODO Just for test, in game they seem a bit misalligned, not sure why right now -- we have x1, x2, y1, y2... figure out how to deal with it
+        local x = instance.x + singleExtractionPoint.x1 -- TODO This is probably wrong
         local y = instance.y + singleExtractionPoint.y1
 
         local iconSymbol = self.symbolsAPI:addTexture("PZEFT-Exit", x, y)

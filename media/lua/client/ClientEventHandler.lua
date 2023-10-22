@@ -2,6 +2,7 @@ require "ClientState"
 
 local isInSafehouseUpdateActive = false
 local isRefreshSafehouseAllocationUpdateActive = false
+
 --TODO: Maybe handle other event subscriptions to remove unnecessary overhead
 
 local function EveryOneMinute_InRaid_Events()
