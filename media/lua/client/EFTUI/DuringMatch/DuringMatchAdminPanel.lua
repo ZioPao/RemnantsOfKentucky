@@ -45,13 +45,13 @@ function DuringMatchAdminPanel:createChildren()
 
 
 
-    self.labelFirst = ISRichTextPanel:new(0,0, self.panelInfo:getWidth(), 25)
+    self.labelFirst = ISRichTextPanel:new(0, 0, self.panelInfo:getWidth(), 25)
     self.labelFirst:initialise()
     self.labelFirst:instantiate()
     self.labelFirst:paginate()
     self.panelInfo:addChild(self.labelFirst)
 
-    self.labelSecond = ISRichTextPanel:new(0,30, self.panelInfo:getWidth(), 25)
+    self.labelSecond = ISRichTextPanel:new(0, 30, self.panelInfo:getWidth(), 25)
     self.labelSecond:initialise()
     self.labelSecond:instantiate()
     self.labelSecond:paginate()
@@ -90,23 +90,15 @@ function DuringMatchAdminPanel:onClick(btn)
     end
 end
 
--- function DuringMatchAdminPanel:render()
---     BaseAdminPanel.render(self)
-
-
--- end
-
-
-
 function DuringMatchAdminPanel:update()
     BaseAdminPanel.update(self)
 
 
-    local firstLabelText = ""       -- Time or announcements
+    local firstLabelText = "" -- Time or announcements
     local secondLabelText = ""
 
     if self:getIsMatchEnded() then
-        firstLabelText = " <CENTRE> <RED> The match has ended."
+        firstLabelText = "<SIZE:large> <CENTRE> <RED> The match has ended."
         self.btnStop:setEnable(false)
     else
         -- Handle confirmation panel to stop the match
@@ -115,7 +107,7 @@ function DuringMatchAdminPanel:update()
 
         firstLabelText = "Match time: " .. EFTGenericUI.FormatTime(tonumber(ClientState.currentTime))
         secondLabelText = "Alive Players: <CENTRE> " .. tostring(-1)
-        
+
 
         --matchInfo = "Match time: " .. EFTGenericUI.FormatTime(tonumber(ClientState.currentTime)) .. " <LINE> Alive Players: 10"
     end
