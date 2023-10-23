@@ -3,7 +3,7 @@ require "ClientData"
 
 ------------------
 
---local ExtractionPanel = require("EFTUI/DuringMatch/ExtractionPanel")
+local ExtractionPanel = require("EFTUI/DuringMatch/ExtractionPanel")
 
 ------------------
 
