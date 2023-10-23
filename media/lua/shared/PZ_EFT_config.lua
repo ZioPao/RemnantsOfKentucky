@@ -117,7 +117,7 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
 
 PZ_EFT_CONFIG.MatchSettings = {
     -- Time related stuff, in seconds
-    roundTime = 1800,
+    roundTime = 1200,       -- 20 minutes
     startMatchTime = 5,
     endMatchTime = 5,
 

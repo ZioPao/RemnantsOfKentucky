@@ -1,4 +1,4 @@
-ConfirmationPanel = ISPanel:derive("ConfirmationPanel")
+local ConfirmationPanel = ISPanel:derive("ConfirmationPanel")
 
 ---Starts a new confirmation panel
 ---@param x number
@@ -98,3 +98,5 @@ end
 function ConfirmationPanel.Close()
     ConfirmationPanel.instance:close()
 end
+
+return ConfirmationPanel

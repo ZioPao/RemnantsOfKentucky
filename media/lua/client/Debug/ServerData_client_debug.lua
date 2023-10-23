@@ -37,8 +37,13 @@ function ServerData_client_debug.print_shopitems()
 end
 
 function ServerData_client_debug.loadShopPrices()
+    -- !!! THIS IS TO LET THE SERVER GENERATE THE SHOP ITEMS AND TRANSMIT THEM !!!
     sendClientCommand("SERVER_DEBUG", "loadShopPrices", {})
 end
+
+-- function ServerData_client_debug.transmit_shop_prices()
+--     sendClientCommand("SERVER_DEBUG")
+-- end
 
 -- Match Handling --
 

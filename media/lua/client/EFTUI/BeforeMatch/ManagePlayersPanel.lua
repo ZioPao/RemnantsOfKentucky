@@ -10,6 +10,10 @@ end
 
 -------------------------------
 
+local ConfirmationPanel = require("EFTUI/ConfirmationPanel")
+
+-------------------------------
+
 -- TODO Make it local
 local ManagePlayersPanel = ISCollapsableWindow:derive("ManagePlayersPanel")
 

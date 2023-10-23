@@ -2,6 +2,16 @@
     A panel that will appear on the right of the scrolling list.
     Asks how how much stuff you want of that specific object, show the total cost, and has a button to exec the transaction
 ]]
+
+
+-------------------------
+
+local ConfirmationPanel = require("EFTUI/ConfirmationPanel")
+
+------------------------
+
+
+
 local BuyQuantityPanel = ISPanel:derive("BuyQuantityPanel")
 
 ---Starts a new quantity panel

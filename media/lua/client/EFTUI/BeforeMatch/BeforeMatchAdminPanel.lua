@@ -128,8 +128,7 @@ function BeforeMatchAdminPanel:update()
     -- 99 safehouses by default
 
 
-    local instancesAvailableStr = getText("IGUI_AdminPanelBeforeMatch_InstancesAvailable", ClientState
-        .availableInstances) ..
+    local instancesAvailableStr = getText("IGUI_AdminPanelBeforeMatch_InstancesAvailable", math.floor(ClientState.availableInstances)) ..
         "\n" .. getText("IGUI_AdminPanelBeforeMatch_SafehousesAssigned", -1)
 
     self.panelInfo:setText(instancesAvailableStr)

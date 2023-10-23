@@ -33,8 +33,11 @@ end
 
 --TODO Refresh daily items with % split between high value and low value
 --- Manually refreshes the daily items
---- TODO: Refresh automatically on the server
 AdminClientShopManager.refreshDailyItems = function()
+
+    -- TODO THIS IS JUST HERE AS A WORKAROUND! This stuff should run automatically on the server and not get triggered here
+    ServerData_client_debug.loadShopPrices()
+
     local shopItems = ClientData.Shop.GetShopItems()
     shopItems.dailyInventory = shopItems.dailyInventory or {}
     if not shopItems.items then 

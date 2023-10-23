@@ -1,6 +1,13 @@
 require "ClientData"
 
---TO PAO: Subscribe to this event to check for when player enters and exists extraction, for countdown.
+
+------------------
+
+--local ExtractionPanel = require("EFTUI/DuringMatch/ExtractionPanel")
+
+------------------
+
+
 LuaEventManager.AddEvent("PZEFT_UpdateExtractionZoneState")
 
 local function ExtractionUpdateEvent()
@@ -14,6 +21,7 @@ local function ExtractionUpdateEvent()
         local extractionPoints = currentInstanceData.extractionPoints
         if extractionPoints then
             local playerSquare = pl:getSquare()
+            if playerSquare == nil then return end
             local playerPosition = {x = playerSquare:getX(), y = playerSquare:getY(), z = playerSquare:getZ(),}
             for key ,area in ipairs(extractionPoints) do
                 if PZEFT_UTILS.IsInRectangle(playerPosition, area) then
@@ -21,7 +29,7 @@ local function ExtractionUpdateEvent()
                     if not ClientState.IsInExtractionArea then
                         ClientState.IsInExtractionArea = true
                         --print("Triggering PZEFT_UpdateExtractionZoneState to true")
-                        triggerEvent("PZEFT_UpdateExtractionZoneState", {state = true})
+                        triggerEvent("PZEFT_UpdateExtractionZoneState", key, true)
                         --return      -- if it's true, let's return here instead of cycling
                     end
                 else
@@ -29,7 +37,7 @@ local function ExtractionUpdateEvent()
                     if ClientState.IsInExtractionArea then
                         ClientState.IsInExtractionArea = false
                         --print("Triggering PZEFT_UpdateExtractionZoneState to false")
-                        triggerEvent("PZEFT_UpdateExtractionZoneState", {state = false})
+                        triggerEvent("PZEFT_UpdateExtractionZoneState", key, false)
                     end
                 end
             end
@@ -46,11 +54,9 @@ Events.EveryOneMinute.Add(ExtractionUpdateEvent)
 
 
 EFT_ExtractionHandler = {}
-EFT_ExtractionHandler.addedOption = false
 
 function EFT_ExtractionHandler.DoExtraction()
     print("Extracting player")
-
     sendClientCommand("PZEFT-PvpInstances", "RequestExtraction", {})
     -- TeleportManager.Teleport(player, spawnPoint.x, spawnPoint.y, spawnPoint.z)
     -- sendServerCommand(player, "PZEFT", "SetClientStateIsInRaid", {value = true})
@@ -64,16 +70,27 @@ end
 
 
 
-local function HandleExtraction(args)
-    --print("Running HandleExtraction")
-    if args.state == true then
-        if EFT_ExtractionHandler.addedOption == false then
-            Events.OnFillWorldObjectContextMenu.Add(EFT_ExtractionHandler.AddExtractOption)
-            EFT_ExtractionHandler.addedOption = true
+local function HandleExtraction(key, state)
+    if state then
+
+        if EFT_ExtractionHandler.area == nil then
+            EFT_ExtractionHandler.area = key
+        end
+
+        if ExtractionPanel.instance then
+            if not ExtractionPanel.instance:getIsVisible() then
+                ExtractionPanel.Open()
+            end
+        else
+            ExtractionPanel.Open()
         end
     else
-        Events.OnFillWorldObjectContextMenu.Remove(EFT_ExtractionHandler.AddExtractOption)
-        EFT_ExtractionHandler.addedOption = false
+        if EFT_ExtractionHandler.area ~= key then return else
+            EFT_ExtractionHandler.area = nil
+            if ExtractionPanel.instance and ExtractionPanel.instance:getIsVisible() then
+                ExtractionPanel.Close()
+            end
+        end
     end
 end
 

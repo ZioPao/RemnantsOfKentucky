@@ -1,4 +1,10 @@
+
+--------------------------------
+
 local BaseAdminPanel = require("EFTUI/BaseAdminPanel")
+local ConfirmationPanel = require("EFTUI/ConfirmationPanel")
+
+--------------------------------
 
 local DuringMatchAdminPanel = BaseAdminPanel:derive("DuringMatchAdminPanel")
 DuringMatchAdminPanel.instance = nil

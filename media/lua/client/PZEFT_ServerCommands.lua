@@ -18,7 +18,7 @@ end
 
 --- Sets the amount of available instances to the client state
 ServerCommands.ReceiveAmountAvailableInstances = function(args)
-    ClientState.availableInstances = args.amount
+    ClientState.availableInstances = args.amount + 1
 end
 
 ServerCommands.SetClientStateIsInRaid = function(args)
