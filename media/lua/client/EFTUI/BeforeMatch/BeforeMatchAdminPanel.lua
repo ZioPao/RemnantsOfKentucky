@@ -129,7 +129,7 @@ function BeforeMatchAdminPanel:update()
 
 
     local instancesAvailableStr = getText("IGUI_AdminPanelBeforeMatch_InstancesAvailable", math.floor(ClientState.availableInstances)) ..
-        "\n" .. getText("IGUI_AdminPanelBeforeMatch_SafehousesAssigned", -1)
+        "\n" .. getText("IGUI_AdminPanelBeforeMatch_SafehousesAssigned", 4)     -- TODO This is just a plceholder
 
     self.panelInfo:setText(instancesAvailableStr)
     self.panelInfo.textDirty = true

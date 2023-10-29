@@ -36,7 +36,7 @@ function BaseAdminPanel.OnOpenPanel(type)
         return
     end
     -- TODO Make it scale based on resolution
-    local width = 400
+    local width = 250
     local height = 300
 
     local x = getCore():getScreenWidth() / 2 - width
