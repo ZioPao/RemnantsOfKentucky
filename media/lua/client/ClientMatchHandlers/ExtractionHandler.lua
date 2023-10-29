@@ -57,18 +57,10 @@ EFT_ExtractionHandler = {}
 
 function EFT_ExtractionHandler.DoExtraction()
     print("Extracting player")
+
+    -- TODO Starts client countdown, get the time directly from the ExtractionPoint table
     sendClientCommand("PZEFT-PvpInstances", "RequestExtraction", {})
-    -- TeleportManager.Teleport(player, spawnPoint.x, spawnPoint.y, spawnPoint.z)
-    -- sendServerCommand(player, "PZEFT", "SetClientStateIsInRaid", {value = true})
-    -- ClientSafehouseInstanceHandler.refreshSafehouseAllocation()
 end
-
-function EFT_ExtractionHandler.AddExtractOption(player, context, worldObjects, test)
-    if test then return true end
-    context:addOption("Extract", worldObjects, EFT_ExtractionHandler.DoExtraction, player)
-end
-
-
 
 local function HandleExtraction(key, state)
     if state then
