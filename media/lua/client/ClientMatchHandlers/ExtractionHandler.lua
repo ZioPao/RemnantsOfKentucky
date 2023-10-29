@@ -50,9 +50,13 @@ function EFT_ExtractionHandler.HandleTimer()
         return
     end
 
+    local formattedTime = string.format("%d", EFT_ExtractionHandler.stopTime - cTime)
+    ExtractionPanel.instance:setExtractButtonTitle(formattedTime)
+
     if cTime >= EFT_ExtractionHandler.stopTime then
         print("Extract now!")
         sendClientCommand("PZEFT-PvpInstances", "RequestExtraction", {})
+        ExtractionPanel.Close()
         Events.OnTick.Remove(EFT_ExtractionHandler.HandleTimer)
     end
 end
@@ -66,10 +70,6 @@ end
 
 
 local function HandleExtraction(key)
-    --print("Running HandleExtraction")
-    --local currentInstanceData = getPlayer():getModData().currentInstance
-    --local extractionPoints = currentInstanceData.extractionPoints
-
     if EFT_ExtractionHandler.key and EFT_ExtractionHandler.key ~= key then return end
 
     if ClientState.ExtractionStatus[key] then

@@ -26,6 +26,7 @@ function ExtractionPanel:createChildren()
 
     self.btnExtract = ISButton:new(xPadding, yPadding, btnWidth, btnHeight, "EXTRACT", self, self.runExtractionMethod)
     self.btnExtract.internal = "EXTRACT"
+    self.btnExtract:setFont(UIFont.Large)
     self.btnExtract:initialise()
     self.btnExtract.borderColor = { r = 1, g = 0, b = 0, a = 0.8 }
     self.btnExtract:setEnable(true)
@@ -36,6 +37,10 @@ function ExtractionPanel:runExtractionMethod()
     self.btnExtract:setEnable(false)
     EFT_ExtractionHandler.DoExtraction()
     --self:close()
+end
+
+function ExtractionPanel:setExtractButtonTitle(title)
+    self.btnExtract:setTitle(title)
 end
 
 
@@ -60,10 +65,10 @@ function ExtractionPanel.Open()
     local width = 300
     local height = 100
     local padding = 50
-    local posX = (getCore():getScreenWidth() / 2) - (width / 2)
+    local posX = (getCore():getScreenWidth() / 2) - (width / 4)
     local posY = getCore():getScreenHeight() - height - padding
 
-    -- TODO Position should be somewhere in the bottom
+    -- TODO Position should be somewhere in the bottom, but not the center
 
     if ExtractionPanel.instance == nil then
         local panel = ExtractionPanel:new(posX, posY, width, height)

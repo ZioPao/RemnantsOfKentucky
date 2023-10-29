@@ -72,13 +72,14 @@ end
 
 ---Show a description on tye upper part of the time panel
 function TimePanel:setDescription(description)
+    -- TODO This doesn't work reliably
     self.textLabel:setName(description)
 end
 
 -------------------------
 
 function TimePanel.Open(description)
-    if TimePanel.instance then --and TimePanel.instance:getIsVisible() then
+    if TimePanel.instance then
         TimePanel.instance:close()
     end
 
