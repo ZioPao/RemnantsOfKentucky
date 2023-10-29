@@ -25,13 +25,8 @@ end
 
 --- Refreshes the extractions. Used for when you change some values regarding spawnpoints and extractions.
 PvpInstanceManager.refreshPvpInstancesExtractions = function()
-
-    -- TODO KIM: Is this working?
-
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
-    local iX = pvpInstanceSettings.firstXCellPos
-    local iY = pvpInstanceSettings.firstYCellPos
-    for key, value in pairs(pvpInstances) do
+    for _, value in pairs(pvpInstances) do
         local permanentExtractions = PvpInstanceManager.getPermanentExtractionPoints(value.x, value.y)
         permanentExtractions = permanentExtractions or {}
         local randomExtractions = PvpInstanceManager.getRandomExtractionPoints(value.x, value.y, pvpInstanceSettings.randomExtractionPointCount)

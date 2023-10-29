@@ -33,6 +33,7 @@ function ExtractionPanel:createChildren()
 end
 
 function ExtractionPanel:runExtractionMethod()
+    self.btnExtract:setEnable(false)
     EFT_ExtractionHandler.DoExtraction()
     self:close()
 end
@@ -45,14 +46,19 @@ function ExtractionPanel.Open()
     local posY = getCore():getScreenHeight() - height - padding
 
     -- TODO Position should be somewhere in the bottom
-    local panel = ExtractionPanel:new(posX, posY, width, height)
-    panel:initialise()
-    panel:addToUIManager()
-    panel:bringToTop()
+
+    if ExtractionPanel.instance == nil then
+        local panel = ExtractionPanel:new(posX, posY, width, height)
+        panel:initialise()
+        panel:addToUIManager()
+        panel:bringToTop()
+    end
+
 end
 
 function ExtractionPanel.Close()
     ExtractionPanel.instance:close()
+    ExtractionPanel.instance = nil
 end
 
 return ExtractionPanel
