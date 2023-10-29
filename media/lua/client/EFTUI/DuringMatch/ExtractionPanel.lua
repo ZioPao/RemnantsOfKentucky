@@ -35,7 +35,25 @@ end
 function ExtractionPanel:runExtractionMethod()
     self.btnExtract:setEnable(false)
     EFT_ExtractionHandler.DoExtraction()
-    self:close()
+    --self:close()
+end
+
+
+function ExtractionPanel.Toggle()
+    if ExtractionPanel.instance == nil then
+        local width = 300
+        local height = 100
+        local padding = 50
+        local posX = (getCore():getScreenWidth() / 2) - (width / 2)
+        local posY = getCore():getScreenHeight() - height - padding
+        local panel = ExtractionPanel:new(posX, posY, width, height)
+        panel:initialise()
+        panel:addToUIManager()
+        panel:bringToTop()
+    else
+        ExtractionPanel.instance:close()
+        ExtractionPanel.instance = nil
+    end
 end
 
 function ExtractionPanel.Open()
@@ -57,8 +75,10 @@ function ExtractionPanel.Open()
 end
 
 function ExtractionPanel.Close()
-    ExtractionPanel.instance:close()
-    ExtractionPanel.instance = nil
+    if ExtractionPanel.instance then
+        ExtractionPanel.instance:close()
+        ExtractionPanel.instance = nil
+    end
 end
 
 return ExtractionPanel
