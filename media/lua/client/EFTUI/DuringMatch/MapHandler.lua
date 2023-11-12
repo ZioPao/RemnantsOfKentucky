@@ -17,8 +17,8 @@ function EFTMapHandler:write()
     for i = 1, #extractionPoints do
         local singleExtractionPoint = extractionPoints[i]
 
-        local x = instance.x + (singleExtractionPoint.x1 + singleExtractionPoint.x2)/2
-        local y = instance.y + (singleExtractionPoint.y1 + singleExtractionPoint.y2)/2
+        local x = instance.x + (singleExtractionPoint.x1 + singleExtractionPoint.x2)/2 - 5
+        local y = instance.y + (singleExtractionPoint.y1 + singleExtractionPoint.y2)/2 - 5
         local iconSymbol = self.symbolsAPI:addTexture("PZEFT-Exit", x, y)
 
         iconSymbol:setRGBA(0, 0, 0, 1.0)

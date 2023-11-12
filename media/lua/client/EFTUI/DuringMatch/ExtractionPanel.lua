@@ -44,14 +44,22 @@ function ExtractionPanel:setExtractButtonTitle(title)
 end
 
 
+---comment
+---@return {x : number, y : number}
+function ExtractionPanel.GetPosition()
+    local x = TimePanel.instance:getAbsoluteX()
+    local y = TimePanel.instance:getAbsoluteY() - TimePanel.instance:getHeight() -  50
+
+    return {x=x, y=y}
+end
 function ExtractionPanel.Toggle()
     if ExtractionPanel.instance == nil then
         local width = 300
         local height = 100
-        local padding = 50
-        local posX = (getCore():getScreenWidth() / 2) - (width / 2)
-        local posY = getCore():getScreenHeight() - height - padding
-        local panel = ExtractionPanel:new(posX, posY, width, height)
+
+        -- Should be just up the timer
+        local pos = ExtractionPanel.GetPosition()
+        local panel = ExtractionPanel:new(pos.x, pos.y, width, height)
         panel:initialise()
         panel:addToUIManager()
         panel:bringToTop()
@@ -64,14 +72,9 @@ end
 function ExtractionPanel.Open()
     local width = 300
     local height = 100
-    local padding = 50
-    local posX = (getCore():getScreenWidth() / 2) - (width / 4)
-    local posY = getCore():getScreenHeight() - height - padding
-
-    -- TODO Position should be somewhere in the bottom, but not the center
-
+    local pos = ExtractionPanel.GetPosition()
     if ExtractionPanel.instance == nil then
-        local panel = ExtractionPanel:new(posX, posY, width, height)
+        local panel = ExtractionPanel:new(pos.x, pos.y, width, height)
         panel:initialise()
         panel:addToUIManager()
         panel:bringToTop()

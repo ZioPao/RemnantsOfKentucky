@@ -40,9 +40,9 @@ root = tree.getroot()
 
 new_childs = []
 
-for addedY in range(0, 10):
+for addedY in range(0, 5):
     new_y = addedY*3
-    for addedX in range(0, 15):
+    for addedX in range(0, 7):
         new_x = addedX*5
         for child in root.iter('cell'):
             print(child.attrib)
