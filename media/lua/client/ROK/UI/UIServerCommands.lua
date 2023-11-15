@@ -1,6 +1,6 @@
-local BeforeMatchAdminPanel = require("EFTUI/BeforeMatch/BeforeMatchAdminPanel")
-local DuringMatchAdminPanel = require("EFTUI/DuringMatch/DuringMatchAdminPanel")
-
+local BeforeMatchAdminPanel = require("ROK/UI/BeforeMatch/BeforeMatchAdminPanel")
+local DuringMatchAdminPanel = require("ROK/UI/DuringMatch/DuringMatchAdminPanel")
+---------------------
 
 local MODULE = "PZEFT-UI"
 

@@ -4,7 +4,7 @@ end
 
 require("ROK/DebugTools")
 require "ROK/TeleportManager"
-local Countdown = require("Time/PZEFT_Countdown")
+local Countdown = require("ROK/Time/Countdown")
 ---------------------------------------------------
 
 ---@class MatchHandler

@@ -2,7 +2,7 @@ if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHo
     return
 end
 require("ROK/DebugTools")
-local MatchHandler = require("MatchHandler/MatchHandler")
+local MatchHandler = require("ROK/MatchHandler/MatchHandler")
 -----------------------------
 
 local MODULE = 'PZEFT-PvpInstances'

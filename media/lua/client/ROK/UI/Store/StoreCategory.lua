@@ -1,6 +1,5 @@
-local BuyQuantityPanel = require("EFTUI/Store/BuyQuantityPanel")
+local BuyQuantityPanel = require("ROK/UI/Store/BuyQuantityPanel")
 local GenericUI = require("ROK/UI/GenericUI")
-
 -----------------------
 
 -- TODO this looks a bit strange compared to the sell menu, add a border!

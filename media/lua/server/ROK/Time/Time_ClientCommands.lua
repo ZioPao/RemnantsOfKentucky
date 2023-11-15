@@ -1,10 +1,11 @@
+local Countdown = require("ROK/Time/Countdown")
+local Timer = require("ROK/Time/Timer")
+local MatchHandler = require("ROK/MatchHandler/MatchHandler")
+-------------------
+
 local ClientCommands = {}
 
-local Countdown = require("Time/PZEFT_Countdown")
-local Timer = require("Time/PZEFT_Timer")
-local MatchHandler = require("MatchHandler/MatchHandler")
-
-
+-- TODO Remove this
 local function test()
     print("Done!")
 end
