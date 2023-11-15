@@ -1,11 +1,4 @@
-
-
-
--------------------------------
-
-
-
-
+---@class PZ_EFT_CONFIG
 PZ_EFT_CONFIG = PZ_EFT_CONFIG or {}
 
 PZ_EFT_CONFIG.Debug = true
@@ -131,7 +124,9 @@ PZ_EFT_CONFIG.MatchSettings = {
 
 }
 
---- Spawn points - world coordinates if PVP instance starts at cell 0,0
+------------------------------------------
+---* Spawn points *-- 
+-- World coordinates if PVP instance starts at cell 0,0
 
 PZ_EFT_CONFIG.Spawnpoints = {}
 
@@ -282,7 +277,10 @@ table.insert(PZ_EFT_CONFIG.Spawnpoints, {
     z = 0
 })
 
+------------------------------------------
+---* Permanent Extraction Points *-- 
 --- Extraction point that will always be available, assuming PVP instance North Eastern point is at cell 0,0
+
 --- Time taken to extract
 PZ_EFT_CONFIG.PermanentExtractionPoints = {}
 
@@ -320,7 +318,10 @@ table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
     time = 10,
 })
 
+------------------------------------------
+---* Random Extraction Points *-- 
 --- Extraction point that won't always be available (PZ_EFT_CONFIG.PVPInstanceSettings.randomExtractionPointCount), assuming PVP instance North Eastern point is at cell 0,0
+
 --- Time taken to extract
 PZ_EFT_CONFIG.RandomExtractionPoints = {}
 
