@@ -1,6 +1,6 @@
-require "PZ_EFT_debugtools"
+require("ROK/DebugTools")
 require "PZEFT_Utils"
-require "PZ_EFT_config"
+require("ROK/Config")
 
 local MODULE = 'PZEFT-Shop'
 

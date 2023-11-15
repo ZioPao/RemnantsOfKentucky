@@ -2,11 +2,12 @@ if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHo
     return
 end
 
-require "PZ_EFT_debugtools"
-require "PZ_EFT_config"
-
+require("ROK/DebugTools")
+require("ROK/Config")
 local safehouseSettings = PZ_EFT_CONFIG.SafehouseInstanceSettings
+----------------------
 
+---@class SafehouseInstanceManager
 SafehouseInstanceManager = SafehouseInstanceManager or {}
 
 -- DEBUGGING FUNCTIONS --

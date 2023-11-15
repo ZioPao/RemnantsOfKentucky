@@ -1,4 +1,4 @@
-require "PZ_EFT_config"
+require("ROK/Config")
 --- DEBUG
 --- Gets player position and copies coordinates to clipboard
 

@@ -1,17 +1,17 @@
 if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then
     return
 end
-
-require "PZ_EFT_debugtools"
-require "TeleportManager"
-
-local MODULE = 'PZEFT-PvpInstances'
+require("ROK/DebugTools")
+require "ROK/TeleportManager"
 local MatchHandler = require("MatchHandler/MatchHandler")
-
 -----------------------------
 
+local MODULE = 'PZEFT-PvpInstances'
 local ClientCommands = {}
 
+---A client has sent an extraction request
+---@param playerObj IsoPlayer player requesting extraction
+---@param _ any
 function ClientCommands.RequestExtraction(playerObj, _)
     local instance = MatchHandler.instance
     if instance == nil then return end

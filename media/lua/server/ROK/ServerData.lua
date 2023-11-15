@@ -1,6 +1,6 @@
 if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then return end
 
-require "PZ_EFT_debugtools"
+require("ROK/DebugTools")
 LuaEventManager.AddEvent("PZEFT_ServerModDataReady")
 
 local PZ_EFT = "PZ-EFT"
@@ -53,40 +53,42 @@ ServerData.ClearAllData = function(state)
     ServerData.GlobalModDataInit(state)
 end
 
+------------------------------------------------
+
 ServerData.PVPInstances = ServerData.PVPInstances or {}
 
 --- Get table of PVP instances data
----@return table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
+---@return pvpInstanceTable
 ServerData.PVPInstances.GetPvpInstances = function()
     return ModData.getOrCreate(KEY_PVP_INSTANCES)
 end
 
 --- Set table of PVP instances data
----@param data table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
+---@param data pvpInstanceTable
 ServerData.PVPInstances.SetPvpInstances = function(data)
     ModData.add(KEY_PVP_INSTANCES, data)
 end
 
 --- Get table of PVP used instances data
----@return table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
+---@return pvpInstanceTable
 ServerData.PVPInstances.GetPvpUsedInstances = function()
     return ModData.getOrCreate(KEY_PVP_USEDINSTANCES)
 end
 
 --- Set table of PVP used instances data
----@param data table Of ["cellX-cellY"]={id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
+---@param data pvpInstanceTable
 ServerData.PVPInstances.SetPvpUsedInstances = function(data)
     ModData.add(KEY_PVP_USEDINSTANCES, data)
 end
 
 --- Get PVP current instance data
----@return table {id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
+---@return pvpInstanceTable
 ServerData.PVPInstances.GetPvpCurrentInstance = function()
     return ModData.getOrCreate(KEY_PVP_CURRENTINSTANCE)
 end
 
 --- Set PVP current instance data
----@param data table {id="cellX-cellY", x=cellx, y=celly, spawnPoints={{...}, {...}}, extractionPoints={{...}}}
+---@param data pvpInstanceTable
 ServerData.PVPInstances.SetPvpCurrentInstance = function(data, doTransmit)
     ModData.add(KEY_PVP_CURRENTINSTANCE, data)
 
@@ -95,56 +97,70 @@ ServerData.PVPInstances.SetPvpCurrentInstance = function(data, doTransmit)
     end
 end
 
+------------------------------------------------
+---@alias worldStringCoords string worldx-worldy-worldz
+---@alias safehouseInstancesTable table<worldStringCoords, coords>
+
 ServerData.SafehouseInstances = ServerData.SafehouseInstances or {}
 
 --- Get table of safehouse instances
----@return table Of ["worldx-worldy-worldz"]={x=worldx, y=worldy, z=worldz}
+---@return safehouseInstancesTable
 ServerData.SafehouseInstances.GetSafehouseInstances = function()
     return ModData.getOrCreate(KEY_SAFEHOUSE_INSTANCES)
 end
 
 --- Set table of safehouse instances
----@param data table Of ["worldx-worldy-worldz"]={x=worldx, y=worldy, z=worldz}
+---@param data safehouseInstancesTable
 ServerData.SafehouseInstances.SetSafehouseInstances = function(data)
     ModData.add(KEY_SAFEHOUSE_INSTANCES, data)
 end
 
 --- Get table fo assigned instances
----@return table Of ["worldx-worldy-worldz"]=username
+---@return safehouseInstancesTable
 ServerData.SafehouseInstances.GetSafehouseAssignedInstances = function()
     return ModData.getOrCreate(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
 end
 
 --- Set table of assigned instances
----@param data table Of ["worldx-worldy-worldz"]=username
+---@param data safehouseInstancesTable
 ServerData.SafehouseInstances.SetSafehouseAssignedInstances = function(data)
     ModData.add(KEY_SAFEHOUSE_ASSIGNEDINSTANCES, data)
 end
 
+------------------------------------------------
+---@alias username string
+---@alias balance number
+---@alias bankAccountsTable table<username, balance>
+
 ServerData.Bank = ServerData.Bank or {}
 
 --- Get table of bank accounts
----@return table Of ["usernames"]=balance
+---@return bankAccountsTable
 ServerData.Bank.GetBankAccounts = function()
     return ModData.getOrCreate(KEY_BANK_ACCOUNTS)
 end
 
 --- Set table of bank accounts
----@param data table Of ["usernames"]=balance
+---@param data bankAccountsTable
 ServerData.Bank.SetBankAccounts = function(data)
     ModData.add(KEY_BANK_ACCOUNTS, data)
 end
 
+------------------------------------------------
+---@alias shopItem {basePrice : number, multiplier : number}        -- multiplier by default 1
+---@alias itemFullType string FullType of the item
+---@alias shopItemsTable table<itemFullType,shopItem>       -- Key will be full type of the item
+
 ServerData.Shop = ServerData.Shop or {}
 
 --- Get table of shop items
----@return table Of ["fulltype"] = {basePrice = basePrice, multiplier = initialMultiplier or 1 }
+---@return shopItemsTable
 ServerData.Shop.GetShopItems = function()
     return ModData.getOrCreate(KEY_SHOP_ITEMS)
 end
 
 --- Set table of shop items
----@param data table Of ["fulltype"] = {basePrice = basePrice, multiplier = initialMultiplier or 1 }
+---@param data shopItemsTable
 ServerData.Shop.SetShopItems = function(data)
     ModData.add(KEY_SHOP_ITEMS, data)
 end
@@ -153,6 +169,8 @@ end
 ServerData.Shop.TransmitShopItems = function()
     ModData.transmit(KEY_SHOP_ITEMS)
 end
+------------------------------------------------
+
 
 ServerData.debug = ServerData.debug or {}
 
@@ -190,6 +208,8 @@ ServerData.debug.print_shopitems = function()
     local data = ModData.getOrCreate(KEY_SHOP_ITEMS)
     PZEFT_UTILS.PrintTable(data)
 end
+
+------------------------------------------------
 
 local function OnServerModDataReady() sendServerCommand("PZEFT", "SeverModDataReady", {}) end
 

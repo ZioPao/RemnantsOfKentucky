@@ -1,4 +1,4 @@
-require "PZ_EFT_debugtools"
+require("ROK/DebugTools")
 local MODULE = 'PZEFT-Safehouse'
 
 -------------------------

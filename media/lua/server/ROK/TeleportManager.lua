@@ -2,6 +2,9 @@ if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHo
     return
 end
 
+-- TODO Make it local
+
+---@class TeleportManager
 TeleportManager = TeleportManager or {}
 
 --- Handle teleportation from the client side
@@ -13,3 +16,6 @@ TeleportManager.Teleport = function(player, x, y, z)
         z = z
     })
 end
+
+
+--return TeleportManager

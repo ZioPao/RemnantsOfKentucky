@@ -1,9 +1,10 @@
 if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then return end
 
----@alias pvpInstance {id : string, x : number, y : number, spawnPoints : table, extractionPoints : table}}
+---@alias idPvpInstance string "cellX-cellY"
+---@alias pvpInstanceTable {id : idPvpInstance, x : number, y : number, spawnPoints : table, extractionPoints : table}}
 
-require "PZ_EFT_debugtools"
-require "PZ_EFT_config"
+require("ROK/DebugTools")
+require("ROK/Config")
 local pvpInstanceSettings = PZ_EFT_CONFIG.PVPInstanceSettings
 
 -------------------------------------
@@ -77,7 +78,7 @@ PvpInstanceManager.loadPvpInstances = function()
 end
 
 --- Marks old instance as used and Gets new instance
----@return pvpInstance?
+---@return pvpInstanceTable?
 PvpInstanceManager.getNextInstance = function()
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
     local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
@@ -104,7 +105,7 @@ PvpInstanceManager.getNextInstance = function()
 end
 
 --- Get the current active instance
----@return pvpInstance?
+---@return pvpInstanceTable?
 PvpInstanceManager.getCurrentInstance = function()
     local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()

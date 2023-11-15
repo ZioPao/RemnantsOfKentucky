@@ -1,6 +1,6 @@
 if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then return end
 
-require "PZ_EFT_debugtools"
+require("ROK/DebugTools")
 local MODULE = 'PZEFT-BankAccount'
 
 -----------------------------------------

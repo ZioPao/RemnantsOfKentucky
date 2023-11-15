@@ -1,5 +1,6 @@
-require "ServerData"
-require "PvpInstanceManager/PvpInstanceManager"
+require "ROK/ServerData"
+require "ROK/PvpInstanceManager/PvpInstanceManager"
+-----------------
 
 local MODULE = 'SERVER_DEBUG'
 
@@ -57,6 +58,8 @@ ClientCommands.loadShopPrices = function()
     ServerShopManager.loadShopPrices()
 end
 
+---Set a bank account
+---@param args {name : string, balance : number}
 ClientCommands.setBankAccount = function(args)
     local name = args.name
     local balance = args.balance
@@ -68,6 +71,7 @@ ClientCommands.setBankAccount = function(args)
 
 end
 
+---------------
 local OnClientCommand = function(module, command, playerObj, args)
     if module == MODULE and ClientCommands[command] then
         debugPrint("Client Command - " .. MODULE .. "." .. command)

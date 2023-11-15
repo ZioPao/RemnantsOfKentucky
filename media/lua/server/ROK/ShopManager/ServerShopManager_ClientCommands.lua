@@ -1,12 +1,14 @@
 if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then return end
 
-require "PZ_EFT_debugtools"
+require("ROK/DebugTools")
+--------------------
 
 local MODULE = 'PZEFT-Shop'
-
 local ClientCommands = {}
 
 --- Recieve updated shop item list from admin client and transmit it back to all clients
+---@param player IsoPlayer
+---@param data any
 ClientCommands.transmitShopItems = function(player, data)
     ServerData.Shop.SetShopItems(data)
     ServerData.Shop.TransmitShopItems()

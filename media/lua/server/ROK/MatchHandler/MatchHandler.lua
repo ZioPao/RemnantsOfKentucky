@@ -2,11 +2,9 @@ if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHo
     return
 end
 
-require "PZ_EFT_debugtools"
-require "TeleportManager"
+require("ROK/DebugTools")
+require "ROK/TeleportManager"
 local Countdown = require("Time/PZEFT_Countdown")
-local Timer = require("Time/PZEFT_Timer")
-
 ---------------------------------------------------
 
 ---@class MatchHandler

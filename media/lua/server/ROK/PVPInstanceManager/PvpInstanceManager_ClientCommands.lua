@@ -2,11 +2,11 @@ if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHo
     return
 end
 
-require "PZ_EFT_debugtools"
-require "TeleportManager"
+require("ROK/DebugTools")
+require "ROK/TeleportManager"
 local MODULE = 'PZEFT-PvpInstances'
-
 -------------------------------
+
 local ClientCommands = {}
 
 ClientCommands.GetAmountAvailableInstances = function(_, _)
