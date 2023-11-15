@@ -1,5 +1,9 @@
 require "PZEFT_debugtools"
 
+
+-- TODO Move these commands in a more specific file
+
+
 local ServerCommands = {}
 
 local MODULE = 'PZEFT'

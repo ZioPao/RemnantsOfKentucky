@@ -1,3 +1,7 @@
+local MODULE = 'PZEFT-Time'
+
+----------------
+
 local ServerCommands = {}
 
 ServerCommands.OpenTimePanel = function()
@@ -24,7 +28,7 @@ end
 
 local OnServerCommand = function(module, command, args)
 
-    if module ~= 'PZEFT-Time' then return end
+    if module ~= MODULE then return end
 
     --debugPrint("On Server Command - PZEFT-Time")
     if ServerCommands[command] then

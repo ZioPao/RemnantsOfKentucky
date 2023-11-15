@@ -1,8 +1,9 @@
 --- Admin only functions
 if not (not isClient() and not isServer()) and not isAdmin() then return end
 
-require "ClientData"
+require "ROK/ClientData"
 
+---@class AdminClientShopManager
 AdminClientShopManager = AdminClientShopManager or {}
 
 --- Transmit prices to server, which then will be transmitted back to clients

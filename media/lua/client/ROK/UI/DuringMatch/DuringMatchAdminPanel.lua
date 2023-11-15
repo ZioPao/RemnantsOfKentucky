@@ -1,13 +1,10 @@
-
+local GenericUI = require("ROK/UI/GenericUI")
+local BaseAdminPanel = require("ROK/UI/BaseAdminPanel")
+local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
 --------------------------------
 
-local BaseAdminPanel = require("EFTUI/BaseAdminPanel")
-local ConfirmationPanel = require("EFTUI/ConfirmationPanel")
-
---------------------------------
-
+---@class DuringMatchAdminPanel : BaseAdminPanel
 local DuringMatchAdminPanel = BaseAdminPanel:derive("DuringMatchAdminPanel")
-DuringMatchAdminPanel.instance = nil
 
 function DuringMatchAdminPanel:new(x, y, width, height)
     local o = BaseAdminPanel:new(x, y, width, height)
@@ -109,11 +106,9 @@ function DuringMatchAdminPanel:update()
         local check = self.confirmationPanel == nil or (self.confirmationPanel:isVisible())
         self.btnStop:setEnable(check)   -- FIXME if you press no on the confirmation panel this is always false
 
-        firstLabelText = "Match time: " .. EFTGenericUI.FormatTime(tonumber(ClientState.currentTime))
+        firstLabelText = "Match time: " .. GenericUI.FormatTime(tonumber(ClientState.currentTime))
         secondLabelText = "Alive Players: <CENTRE> " .. tostring(-1)
 
-
-        --matchInfo = "Match time: " .. EFTGenericUI.FormatTime(tonumber(ClientState.currentTime)) .. " <LINE> Alive Players: 10"
     end
 
     self.labelFirst:setText(firstLabelText)

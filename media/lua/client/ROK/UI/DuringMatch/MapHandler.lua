@@ -1,6 +1,11 @@
-local EFTMapHandler = {}
+---@class MapHandler
+---@field symbolsAPI WorldMapSymbols
+local MapHandler = {}
 
-function EFTMapHandler:new(symbolsAPI)
+---comment
+---@param symbolsAPI WorldMapSymbols
+---@return table
+function MapHandler:new(symbolsAPI)
     local o = {}
     setmetatable(o, self)
     self.__index = self
@@ -9,7 +14,7 @@ function EFTMapHandler:new(symbolsAPI)
     return o
 end
 
-function EFTMapHandler:write()
+function MapHandler:write()
     local instance = getPlayer():getModData().currentInstance
     local extractionPoints = instance.extractionPoints
 
@@ -28,11 +33,11 @@ function EFTMapHandler:write()
     end
 end
 
-function EFTMapHandler:clear()
+function MapHandler:clear()
     self.symbolsAPI:clear()
 end
 
-function EFTMapHandler:deactivate()
+function MapHandler:deactivate()
     if self.modal then
         self.modal.no:forceClick()
         self.modal = nil
@@ -55,11 +60,11 @@ ISWorldMap.HandleEFTExits = function(playerNum, cleanOnly)
         print("Found ISWorldMap_instance map API")
 
         local symbolsApi = ISWorldMap_instance.mapAPI:getSymbolsAPI()
-        local eftMapHandler = EFTMapHandler:new(symbolsApi)
-        eftMapHandler:clear()
+        local mapHandler = MapHandler:new(symbolsApi)
+        mapHandler:clear()
 
         if cleanOnly~= nil and cleanOnly == false then
-            eftMapHandler:write()
+            mapHandler:write()
         end
         ISWorldMap.HideWorldMap(playerNum)
 

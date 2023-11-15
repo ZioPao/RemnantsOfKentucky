@@ -1,6 +1,7 @@
 -- -- Base for admin panels
 
 -- This should be the common start for the Admin panels.
+---@class BaseAdminPanel : ISCollapsableWindow
 local BaseAdminPanel = ISCollapsableWindow:derive("BaseAdminPanel")
 
 function BaseAdminPanel:new(x, y, width, height)
@@ -26,7 +27,7 @@ function BaseAdminPanel:new(x, y, width, height)
 end
 
 ---------
----comment
+---Opens a panel
 ---@param type any
 ---@return ISCollapsableWindow?
 function BaseAdminPanel.OnOpenPanel(type)

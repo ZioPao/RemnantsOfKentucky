@@ -3,6 +3,8 @@ local DuringMatchAdminPanel = require("EFTUI/DuringMatch/DuringMatchAdminPanel")
 
 
 local MODULE = "PZEFT-UI"
+
+-- TODO Move these to ContextMenu or something
 local TIME_PANEL_DESCRIPTIONS = {
     "The match is starting", -- 1
     "The match has ended"    -- 2

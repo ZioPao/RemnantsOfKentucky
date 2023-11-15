@@ -2,9 +2,19 @@
     Users should be able to drag n drop items in this panel to sell them.
     Opens confirmation panel when you select "Sell". Compatible with Tarkov UI
 ]]
+
+local GenericUI = require("ROK/UI/GenericUI")
+
+------------------------
+---@class SellPanel : ISPanelJoypad
 local SellPanel = ISPanelJoypad:derive("SellPanel")
 
-
+---comment
+---@param x number
+---@param y number
+---@param width number
+---@param height number
+---@return ISPanelJoypad
 function SellPanel:new(x, y, width, height)
     local o = ISPanelJoypad:new(x, y, width, height)
     setmetatable(o, self)
@@ -14,7 +24,7 @@ function SellPanel:new(x, y, width, height)
 end
 
 function SellPanel:createChildren()
-    local fontHgtSmall = EFTGenericUI.SMALL_FONT_HGT
+    local fontHgtSmall = GenericUI.SMALL_FONT_HGT
     local entryHgt = fontHgtSmall + 2 * 2
 
     local xMargin = 10
@@ -25,7 +35,7 @@ function SellPanel:createChildren()
     self.sellList:instantiate()
     self.sellList:setAnchorRight(false) -- resize in update()
     self.sellList:setAnchorBottom(true)
-    self.sellList.itemHeight = 2 + EFTGenericUI.MEDIUM_FONT_HGT + 32 + 4
+    self.sellList.itemHeight = 2 + GenericUI.MEDIUM_FONT_HGT + 32 + 4
     self.sellList.selected = 0
     self.sellList.doDrawItem = self.onDrawItem
     self.sellList.onMouseUp = self.onDragItem

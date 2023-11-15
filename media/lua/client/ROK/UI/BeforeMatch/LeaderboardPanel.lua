@@ -4,6 +4,7 @@
     balance on that player account.
 ]]
 
+-- TODO Use genericUI
 local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
 local FONT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium)
 local FONT_HGT_LARGE = getTextManager():getFontHeight(UIFont.Large)
@@ -11,6 +12,8 @@ local FONT_SCALE = FONT_HGT_MEDIUM / 14
 local HEADER_HGT = FONT_HGT_MEDIUM + 2 * 2
 local ENTRY_HGT = FONT_HGT_MEDIUM + 2 * 2
 
+-------------------------------------
+---@class LeaderboardScrollingTable : ISPanel
 local LeaderboardScrollingTable = ISPanel:derive("LeaderboardScrollingTable")
 
 function LeaderboardScrollingTable:new(x, y, width, height, viewer)

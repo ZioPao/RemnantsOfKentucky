@@ -5,13 +5,12 @@
 
 
 -------------------------
-
-local ConfirmationPanel = require("EFTUI/ConfirmationPanel")
-
+local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
 ------------------------
 
 
-
+---@class BuyQuantityPanel : ISPanel
+---@field mainPanel ISPanel
 local BuyQuantityPanel = ISPanel:derive("BuyQuantityPanel")
 
 ---Starts a new quantity panel

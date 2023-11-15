@@ -1,4 +1,4 @@
-require "ClientState"
+require "ROK/ClientState"
 
 local isInSafehouseUpdateActive = false
 local isRefreshSafehouseAllocationUpdateActive = false

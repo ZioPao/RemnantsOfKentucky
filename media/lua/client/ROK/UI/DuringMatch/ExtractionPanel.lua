@@ -1,3 +1,7 @@
+local ExtractionHandler = require("ROK/ClientMatchHandlers/ExtractionHandler")
+----------
+
+---@class ExtractionPanel : ISPanel
 local ExtractionPanel = ISPanel:derive("ExtractionPanel")
 
 ---Starts a new Extraction panel
@@ -35,10 +39,12 @@ end
 
 function ExtractionPanel:runExtractionMethod()
     self.btnExtract:setEnable(false)
-    EFT_ExtractionHandler.DoExtraction()
+    ExtractionHandler.DoExtraction()
     --self:close()
 end
 
+---Set the text that will appear in the button
+---@param title string
 function ExtractionPanel:setExtractButtonTitle(title)
     self.btnExtract:setTitle(title)
 end

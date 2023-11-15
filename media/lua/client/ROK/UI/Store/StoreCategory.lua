@@ -1,9 +1,11 @@
 local BuyQuantityPanel = require("EFTUI/Store/BuyQuantityPanel")
+local GenericUI = require("ROK/UI/GenericUI")
 
-----
+-----------------------
+
 -- TODO this looks a bit strange compared to the sell menu, add a border!
+---@class StoreCategory : ISPanelJoypad
 local StoreCategory = ISPanelJoypad:derive("StoreCategory")
-StoreCategory.instance = nil
 
 function StoreCategory:new(x, y, width, height, shopPanel)
     local o = ISPanelJoypad:new(x, y, width, height)
@@ -55,7 +57,7 @@ function StoreCategory:initialiseList(itemsTable)
 end
 
 function StoreCategory:createChildren()
-    local fontHgtSmall = EFTGenericUI.SMALL_FONT_HGT
+    local fontHgtSmall = GenericUI.SMALL_FONT_HGT
     local entryHgt = fontHgtSmall + 2 * 2
 
     self.items = ISScrollingListBox:new(10, entryHgt, self.width / 2, self.height - entryHgt)
@@ -63,7 +65,7 @@ function StoreCategory:createChildren()
     self.items:instantiate()
     self.items:setAnchorRight(false) -- resize in update()
     self.items:setAnchorBottom(true)
-    self.items.itemHeight = 2 + EFTGenericUI.MEDIUM_FONT_HGT + 32 + 4
+    self.items.itemHeight = 2 + GenericUI.MEDIUM_FONT_HGT + 32 + 4
     self.items.selected = 0
     self.items.doDrawItem = StoreCategory.doDrawItem
     self.items.onMouseDown = StoreCategory.onMouseDownItems
@@ -71,8 +73,8 @@ function StoreCategory:createChildren()
     self.items.drawBorder = true
     self:addChild(self.items)
 
-    self.items.SMALL_FONT_HGT = EFTGenericUI.SMALL_FONT_HGT
-    self.items.MEDIUM_FONT_HGT = EFTGenericUI.MEDIUM_FONT_HGT
+    self.items.SMALL_FONT_HGT = GenericUI.SMALL_FONT_HGT
+    self.items.MEDIUM_FONT_HGT = GenericUI.MEDIUM_FONT_HGT
 
     local buyPanelWidth = self.width / 2 - 20
     local buyPanelHeight = self.height - entryHgt

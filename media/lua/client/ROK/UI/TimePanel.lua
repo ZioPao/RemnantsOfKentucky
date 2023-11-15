@@ -1,10 +1,13 @@
 -- Used in conjuction with a BaseTimer\TimerHandler\CountdownHandler
-
 require "ISUI/ISPanel"
 require "ISUI/ISRichTextPanel"
 require "ISUI/ISButton"
-
+local GenericUI = require("ROK/UI/GenericUI")
+---------------------------
 -- TODO Make this local
+
+---@class TimePanel : ISPanel
+---@field isStartingMatch boolean
 TimePanel = ISPanel:derive("TimePanel")
 
 function TimePanel:new(x, y, width, height, isStartingMatch)
@@ -27,7 +30,7 @@ function TimePanel:render()
         print("Closing timer")
         self:close()
     end
-    self.timePanel:setText(EFTGenericUI.FormatTime(timeNumber))
+    self.timePanel:setText(GenericUI.FormatTime(timeNumber))
     self.timePanel.textDirty = true
 
     if self.isStartingMatch then return end

@@ -10,11 +10,11 @@ end
 
 -------------------------------
 
-local ConfirmationPanel = require("EFTUI/ConfirmationPanel")
+local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
 
 -------------------------------
 
--- TODO Make it local
+---@class ManagePlayersPanel : ISCollapsableWindow
 local ManagePlayersPanel = ISCollapsableWindow:derive("ManagePlayersPanel")
 
 function ManagePlayersPanel.Open(x, y)

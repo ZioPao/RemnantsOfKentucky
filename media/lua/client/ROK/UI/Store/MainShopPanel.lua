@@ -21,16 +21,20 @@
 require "ISUI/ISCollapsableWindow"
 -- TODO Add sellMultiplier
 
-local CustomTabPanel = require("EFTUI/Store/CustomTabPanel")
-local StoreCategory = require("EFTUI/Store/StoreCategory")
-local SellPanel = require("EFTUI/Store/SellPanel")
+local CustomTabPanel = require("ROK/UI/Store/CustomTabPanel")
+local StoreCategory = require("ROK/UI/Store/StoreCategory")
+local SellPanel = require("ROK/UI/Store/SellPanel")
+local GenericUI = require("ROK/UI/GenericUI")
+------------------------------
 
+---@class MainShopPanel : ISCollapsableWindow
 MainShopPanel = ISCollapsableWindow:derive("MainShopPanel")
-MainShopPanel.instance = nil
-MainShopPanel.largeFontHeight = getTextManager():getFontHeight(UIFont.Large)
-MainShopPanel.mediumFontHeight = getTextManager():getFontHeight(UIFont.Medium)
-MainShopPanel.smallFontHeight = getTextManager():getFontHeight(UIFont.Small)
-MainShopPanel.bottomInfoHeight = MainShopPanel.smallFontHeight * 4
+
+-- todo use generic UI not this
+--MainShopPanel.largeFontHeight = getTextManager():getFontHeight(UIFont.Large)
+--MainShopPanel.mediumFontHeight = getTextManager():getFontHeight(UIFont.Medium)
+--MainShopPanel.smallFontHeight = getTextManager():getFontHeight(UIFont.Small)
+MainShopPanel.bottomInfoHeight = GenericUI.SMALL_FONT_HGT * 4
 
 
 function MainShopPanel.Open()

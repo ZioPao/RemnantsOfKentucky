@@ -1,12 +1,14 @@
-EFTGenericUI = {}
+---@class GenericUI
+---@field SMALL_FONT_HGT number
+---@field MEDIUM_FONT_HGT number
+local GenericUI = {}
 
-
-EFTGenericUI.SMALL_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Small):getLineHeight()
-EFTGenericUI.MEDIUM_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Medium):getLineHeight()
+GenericUI.SMALL_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Small):getLineHeight()
+GenericUI.MEDIUM_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Medium):getLineHeight()
 
 ---Returns a string with the formatted time in minutes:seconds
 ---@param time number?
-EFTGenericUI.FormatTime = function(time)
+GenericUI.FormatTime = function(time)
     local minutes = math.floor((time % 3600) / 60)
     local seconds = math.floor(time % 60)
 
@@ -26,3 +28,5 @@ EFTGenericUI.FormatTime = function(time)
     -- TODO Check the current time, depending on this change color of the time on the panel.
     return finalString
 end
+
+return GenericUI

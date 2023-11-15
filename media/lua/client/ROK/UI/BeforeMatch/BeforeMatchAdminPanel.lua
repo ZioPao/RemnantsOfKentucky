@@ -1,5 +1,8 @@
-local BaseAdminPanel = require("EFTUI/BaseAdminPanel")
-local ManagePlayersPanel = require("EFTUI/BeforeMatch/ManagePlayersPanel")
+local BaseAdminPanel = require("ROK/UI/BaseAdminPanel")
+local ManagePlayersPanel = require("ROK/UI/BeforeMatch/ManagePlayersPanel")
+--------------------------------
+
+---@class BeforeMatchAdminPanel : BaseAdminPanel
 local BeforeMatchAdminPanel = BaseAdminPanel:derive("BeforeMatchAdminPanel")
 BeforeMatchAdminPanel.instance = nil
 

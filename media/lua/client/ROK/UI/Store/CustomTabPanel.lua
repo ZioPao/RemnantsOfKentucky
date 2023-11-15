@@ -4,6 +4,7 @@
 
 require "ISUI/ISTabPanel"
 
+---@class CustomTabPanel : ISTabPanel
 local CustomTabPanel = ISTabPanel:derive("CustomTabPanel")
 
 ---Simple override of ISTabPanel, adds tabWidth as a parameter
