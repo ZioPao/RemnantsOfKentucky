@@ -1,12 +1,6 @@
 require "ClientData"
-
-
-------------------
-
 local ExtractionPanel = require("EFTUI/DuringMatch/ExtractionPanel")
-
 ------------------
-
 
 LuaEventManager.AddEvent("PZEFT_UpdateExtractionZoneState")
 
@@ -31,10 +25,9 @@ end
 
 Events.EveryOneMinute.Add(ExtractionUpdateEvent)
 
-
 -------------------------------------------------
 
-
+---@class EFT_ExtractionHandler
 EFT_ExtractionHandler = {}
 local os_time = os.time
 

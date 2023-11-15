@@ -4,11 +4,14 @@ end
 
 require "PZ_EFT_debugtools"
 require "TeleportManager"
-
-local MatchHandler = {}
-
 local Countdown = require("Time/PZEFT_Countdown")
 local Timer = require("Time/PZEFT_Timer")
+
+---------------------------------------------------
+
+---@class MatchHandler
+---@field pvpInstance table
+local MatchHandler = {}
 
 function MatchHandler:new()
     local o = {}

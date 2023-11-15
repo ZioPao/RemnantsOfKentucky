@@ -8,9 +8,11 @@ require "TeleportManager"
 local MODULE = 'PZEFT-PvpInstances'
 local MatchHandler = require("MatchHandler/MatchHandler")
 
+-----------------------------
+
 local ClientCommands = {}
 
-function ClientCommands.RequestExtraction(playerObj, args)
+function ClientCommands.RequestExtraction(playerObj, _)
     local instance = MatchHandler.instance
     if instance == nil then return end
     instance:extractPlayer(playerObj)

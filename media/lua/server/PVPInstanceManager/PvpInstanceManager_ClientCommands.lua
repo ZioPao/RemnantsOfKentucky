@@ -4,9 +4,9 @@ end
 
 require "PZ_EFT_debugtools"
 require "TeleportManager"
-
 local MODULE = 'PZEFT-PvpInstances'
 
+-------------------------------
 local ClientCommands = {}
 
 ClientCommands.GetAmountAvailableInstances = function(_, _)
@@ -15,7 +15,7 @@ ClientCommands.GetAmountAvailableInstances = function(_, _)
     sendServerCommand("PZEFT", "ReceiveAmountAvailableInstances", {amount = amount})
 end
 
-
+-------------------------------
 
 local OnClientCommand = function(module, command, playerObj, args)
     if module == MODULE and ClientCommands[command] then

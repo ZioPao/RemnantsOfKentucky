@@ -1,11 +1,14 @@
 PZEFT_UTILS = PZEFT_UTILS or {}
 
+---@alias coords {x : number, y : number, z : number}
+---@alias areaCoords {x1 : number, y1 : number, z1 : number, x2 : number, y2 : number, z2: number}
+
 --- Maps world coordinates starting at cell 0,0 to different cell coordinates
----@param coordinateList table {x=0,y=0,z=0}
+---@param coordinateList coords {x=0,y=0,z=0}
 ---@param cellX number
 ---@param cellY number
 ---@param otherArgs table list of names of arguments to copy from coordinateList, Example: {"time"}
----@return table? {{x1=5, y1=5, z1=0, x2=5, y2=5, z2=0, time=0}
+---@return areaCoords
 PZEFT_UTILS.MapWorldCoordinatesToCell = function(coordinateList, cellX, cellY, otherArgs)
     local mappedCoordinates = {}
 
@@ -47,10 +50,17 @@ PZEFT_UTILS.MapWorldCoordinatesToCell = function(coordinateList, cellX, cellY, o
     return mappedCoordinates
 end
 
+---comment
+---@param square coords
+---@return string 
 PZEFT_UTILS.getSquareStringCoords = function(square)
     return "X"..square.x.."Y"..square.y.."Z"..square.z
 end
 
+---getSurroundingGridCoordinates
+---@param center coords
+---@param radius number
+---@return coords
 PZEFT_UTILS.getSurroundingGridCoordinates = function(center, radius)
     local coordinates = {}
 
@@ -61,7 +71,8 @@ PZEFT_UTILS.getSurroundingGridCoordinates = function(center, radius)
       for yOffset = -radius, radius do
         local newX = center.x + xOffset
         local newY = center.y + yOffset
-  
+
+        ---@type coords
         local point = { x = newX, y = newY, z = center.z }
         str = PZEFT_UTILS.getSquareStringCoords(point)
         coordinates[str] = true
@@ -71,6 +82,10 @@ PZEFT_UTILS.getSurroundingGridCoordinates = function(center, radius)
     return coordinates
 end
 
+---Merge IPAIRS
+---@param listA table
+---@param listB table
+---@return table
 PZEFT_UTILS.MergeIPairs = function(listA, listB)
     local resultList = {}
 
@@ -139,6 +154,9 @@ PZEFT_UTILS.IsPointWithinDimensions = function(rootX, rootY, north, south, east,
     return posX >= minX and posX <= maxX and posY >= minY and posY <= maxY
 end
 
+---comment
+---@param player IsoPlayer
+---@return coords?
 PZEFT_UTILS.GetCellOfPlayer = function(player)
     if not player then return end
 
@@ -150,7 +168,7 @@ PZEFT_UTILS.GetCellOfPlayer = function(player)
     local cx = math.floor(x / 300)
     local cy = math.floor(y / 300)
 
-    return {x = cx, y = cy}
+    return {x = cx, y = cy, z=0}
 end
 
 --- Copy orig into result
@@ -206,16 +224,23 @@ PZEFT_UTILS.PickRandomPairsWithoutRepetitions = function(table, count)
     return pickedPairs
 end
 
+---Get Object EFT Mod Data
+---@param obj IsoObject
+---@return table
 PZEFT_UTILS.GetObjectModData = function(obj)
     local md = obj:getModData()
     md.PZEFT = md.PZEFT or {}
     return md.PZEFT
 end
 
-PZEFT_UTILS.GetPlayerModData = function(obj)
+PZEFT_UTILS.GetPlayerModData = function()
     return PZEFT_UTILS.GetObjectModData(getPlayer())
 end
 
+---Check if the position is within the area
+---@param pos coords
+---@param area areaCoords
+---@return boolean
 PZEFT_UTILS.IsInRectangle = function(pos, area)
     local inXRange = (pos.x >= area.x1 and pos.x <= area.x2) or (pos.x >= area.x2 and pos.x <= area.x1)
     local inYRange = (pos.y >= area.y1 and pos.y <= area.y2) or (pos.y >= area.y2 and pos.y <= area.y1)

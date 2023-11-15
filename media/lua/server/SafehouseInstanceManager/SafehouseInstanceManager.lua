@@ -32,7 +32,7 @@ end
 ---@param wx number
 ---@param wy number
 ---@param wz number
----@return "wx-wy-wz"
+---@return string "wx-wy-wz"
 SafehouseInstanceManager.getSafehouseInstanceID = function(wx, wy, wz)
     return wx .. "-" .. wy .. "-" .. wz
 end
@@ -78,7 +78,7 @@ end
 --- Assign a safehouse instance by key to player online ID
 ---@param key string
 ---@param username string
----@return "wx-wy-wz" Key of assigned safehouse
+---@return string "wx-wy-wz" Key of assigned safehouse
 SafehouseInstanceManager.assignSafehouseInstanceToPlayer = function(key, username)
     local assignedSafehouses = ServerData.SafehouseInstances.GetSafehouseAssignedInstances()
     assignedSafehouses[key] = username
@@ -87,7 +87,7 @@ end
 
 --- Get player safehouse key by player username
 ---@param username string
----@return "wx-wy-wz"? string of player safehouse
+---@return string? "wx-wy-wz" string of player safehouse
 SafehouseInstanceManager.getPlayerSafehouseKey = function(username)
     local assignedSafehouses = ServerData.SafehouseInstances.GetSafehouseAssignedInstances()
     for key, _ in pairs(assignedSafehouses) do
@@ -115,7 +115,7 @@ SafehouseInstanceManager.getSafehouseInstanceByKey = function(key)
 end
 
 --- Get the key of the next free safehouse, if any
----@return "wx-wy-wz"? string Key of next free safehouse
+---@return string? "wx-wy-wz" string Key of next free safehouse
 SafehouseInstanceManager.getNextFreeSafehouseKey = function()
     local safehouseInstances = ServerData.SafehouseInstances.GetSafehouseInstances()
     local assignedSafehouses = ServerData.SafehouseInstances.GetSafehouseAssignedInstances()
@@ -129,7 +129,7 @@ end
 
 --- Get or assign safehouse and get its key.
 ---@param player IsoPlayer
----@return "wx-wy-wz"? string Key of assigned safehouse
+---@return string? "wx-wy-wz" Key of assigned safehouse
 SafehouseInstanceManager.getOrAssignSafehouse = function(player)
     local id = player:getUsername()
 

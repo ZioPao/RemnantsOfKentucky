@@ -1,22 +1,25 @@
 if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then return end
 
+---@alias pvpInstance {id : string, x : number, y : number, spawnPoints : table, extractionPoints : table}}
+
 require "PZ_EFT_debugtools"
 require "PZ_EFT_config"
-
 local pvpInstanceSettings = PZ_EFT_CONFIG.PVPInstanceSettings
 
-PvpInstanceManager = PvpInstanceManager or {}
+-------------------------------------
+---@class PvpInstanceManager
+PvpInstanceManager = {}
 
 --- Form an instance id using the cell X and Y
 ---@param cellX number
 ---@param cellY number
----@return "cellX-cellY"
+---@return string "cellX-cellY"
 PvpInstanceManager.getInstanceID = function(cellX, cellY)
     return cellX .. "-" .. cellY
 end
 
 --- clear existing PVP instance and reload PVP instances
-PvpInstanceManager.reset = function(clearInstances)
+PvpInstanceManager.reset = function()
     ServerData.PVPInstances.SetPvpInstances({})
     ServerData.PVPInstances.SetPvpUsedInstances({})
     ServerData.PVPInstances.SetPvpCurrentInstance({}, true)
@@ -74,7 +77,7 @@ PvpInstanceManager.loadPvpInstances = function()
 end
 
 --- Marks old instance as used and Gets new instance
----@return table? {id, x, y, spawnPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}, extractionPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}}
+---@return pvpInstance?
 PvpInstanceManager.getNextInstance = function()
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
     local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
@@ -101,7 +104,7 @@ PvpInstanceManager.getNextInstance = function()
 end
 
 --- Get the current active instance
----@return table {id, x, y, spawnPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}, extractionPoints = {{x=0,y=0,z=0},{x=0,y=0,z=0}}}
+---@return pvpInstance?
 PvpInstanceManager.getCurrentInstance = function()
     local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
@@ -111,6 +114,7 @@ end
 --- Sends the current instance to all players
 PvpInstanceManager.sendCurrentInstance = function()
     local currentInstance = PvpInstanceManager.getCurrentInstance()
+    if currentInstance == nil then return end   -- TODO add warning
     sendServerCommand("PZEFT", "SetCurrentInstance", currentInstance)
 end
 
@@ -120,7 +124,7 @@ PvpInstanceManager.sendClearCurrentInstance = function()
 end
 
 ---Consumes a spawnpoint.
----@return table? spawnPoint {x=5, y=5, z=0}
+---@return coords
 PvpInstanceManager.popRandomSpawnPoint = function()
     local currentInstance = PvpInstanceManager.getCurrentInstance()
     local size = #currentInstance.spawnPoints
@@ -143,7 +147,7 @@ end
 ---@param cellX number
 ---@param cellY number
 ---@param count number
----@return table? {x1=5, y1=5, z1=0, x2=5, y2=5, z2=0, time=0}
+---@return areaCoords?
 PvpInstanceManager.getRandomExtractionPoints = function(cellX, cellY, count)
     if not count then
         return {}
@@ -179,7 +183,7 @@ end
 --- Gets a permanent set of extraction points for given an instance
 ---@param cellX number
 ---@param cellY number
----@return table? {x1=5, y1=5, z1=0, x2=5, y2=5, z2=0, time=0}
+---@return areaCoords?
 PvpInstanceManager.getPermanentExtractionPoints = function(cellX, cellY)
     local points = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.PermanentExtractionPoints, cellX, cellY, {"name", "time"})
     return points

@@ -1,6 +1,9 @@
+---@alias client_state {IsInRaid : boolean, ExtractionStatus : table, currentTime : number, availableInstances : number, availableSafehouses : number}
+
+---@type client_state
 ClientState = ClientState or {}
 
-ClientState.IsInRaid = false
+ClientState.IsInRaid = false    -- TODO Lowercase!
 ClientState.ExtractionStatus = {}
 
 ClientState.currentTime = ""

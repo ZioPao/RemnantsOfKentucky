@@ -1,23 +1,24 @@
 if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then return end
 
 require "PZ_EFT_debugtools"
-
 local MODULE = 'PZEFT-BankAccount'
 
+-----------------------------------------
 local ClientCommands = {}
 
 --- Sends command to client to set the player's safehouse
 ---@param playerObj IsoPlayer
----@param args table {isInitialise=true/false} 
-ClientCommands.RequestBankAccount = function(playerObj, args)
-    args = args or {}
+ClientCommands.RequestBankAccount = function(playerObj, _)
     local account = ServerBankManager.getOrCreateAccount(playerObj:getUsername())
     sendServerCommand(playerObj, MODULE, 'UpdateBankAccount', {account=account})
 end
 
+
+---@alias callaback {callbackModule : string, callbackCommand : string, callbackArgs : table}
+
 --- Process a transaction and do a callback if successful or failed.
 --- Also calls the RequestBankAccount->UpdateBankAccount command
----@param args table {amount=x, onSuccess = {callbackModule="abc", callbackCommand="abc", callbackArgs={args...}}, onFail = {callbackModule="abc", callbackCommand="abc", callbackArgs={args...}}}
+---@param args {amount : number, onSuccess : callaback, onFail : callaback} {amount=x, onSuccess = {callbackModule="abc", callbackCommand="abc", callbackArgs={args...}}, onFail = {callbackModule="abc", callbackCommand="abc", callbackArgs={args...}}}
 ClientCommands.ProcessTransaction = function(playerObj, args)
     --amount, callbackCommand, callbackArgs, inventoryCheck
 
@@ -61,6 +62,7 @@ ClientCommands.TransmitBankAccounts = function(playerObj, _)
     sendServerCommand(playerObj, MODULE, 'ReceiveBankAccounts', {accounts=accounts})
 end
 
+-----------------------------------------
 
 local OnClientCommand = function(module, command, playerObj, args)
     if module == MODULE and ClientCommands[command] then
@@ -68,5 +70,6 @@ local OnClientCommand = function(module, command, playerObj, args)
         ClientCommands[command](playerObj, args)
     end
 end
+
 
 Events.OnClientCommand.Add(OnClientCommand)

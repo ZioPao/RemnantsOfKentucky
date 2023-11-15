@@ -21,6 +21,8 @@ ServerCommands.ReceiveAmountAvailableInstances = function(args)
     ClientState.availableInstances = args.amount + 1
 end
 
+---Set client state if is in a raid or not
+---@param args {value : boolean}
 ServerCommands.SetClientStateIsInRaid = function(args)
 
     ClientState.IsInRaid = args.value
@@ -42,6 +44,8 @@ ServerCommands.CommitDieIfInRaid = function()
         getPlayer():getBodyDamage():setHealth(0)
     end
 end
+
+-------------------------
 
 local OnServerCommand = function(module, command, args)
     if module == MODULE and ServerCommands[command] then
