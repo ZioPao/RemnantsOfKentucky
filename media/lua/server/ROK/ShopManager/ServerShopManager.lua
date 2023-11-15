@@ -3,8 +3,10 @@ if (not isServer()) and not (not isServer() and not isClient()) then
 end
 
 require "ShopItems/PZ_EFT_ShopItems"
-require "ServerData"
+require "ROK/ServerData"
+---------------------------
 
+---@class ServerShopManager
 ServerShopManager = ServerShopManager or {}
 
 local function doTags(shopItems, id, item)
@@ -30,7 +32,7 @@ local function doTags(shopItems, id, item)
     return shopItems
 end
 
-ServerShopManager.loadShopPrices = function()
+function ServerShopManager.loadShopPrices()
     local shopItems = ServerData.Shop.GetShopItems()
     shopItems.items = shopItems.items or {}
     shopItems.tags = shopItems.tags or {}
@@ -56,6 +58,6 @@ end
 
 Events.PZEFT_ServerModDataReady.Add(ServerShopManager.loadShopPrices)
 
-ServerShopManager.transmitShopItems = function()
+function ServerShopManager.transmitShopItems()
     ServerData.Shop.TransmitShopItems()
 end

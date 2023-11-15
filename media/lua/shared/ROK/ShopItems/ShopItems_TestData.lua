@@ -1,4 +1,4 @@
-require "ShopItems/PZ_EFT_ShopItems"
+require "ROK/ShopItems/ShopItems"
 
 PZ_EFT_ShopItems_Config.addItem("Base.Apple", {["ESSENTIALS"] = true}, 20, 1, 0.5)
 PZ_EFT_ShopItems_Config.addItem("Base.Bandage", {["ESSENTIALS"] = true}, 20, 1, 0.5)

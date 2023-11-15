@@ -11,6 +11,8 @@ local Countdown = require("Time/PZEFT_Countdown")
 ---@field pvpInstance table
 local MatchHandler = {}
 
+---Creates new MatchHandler
+---@return MatchHandler
 function MatchHandler:new()
     local o = {}
     setmetatable(o, self)
@@ -82,7 +84,8 @@ function MatchHandler:handleZombieSpawns(currentTime)
 end
 
 -- *********************-
-
+--- Get the instance of MatchHandler
+---@return MatchHandler
 function MatchHandler.GetHandler()
     return MatchHandler.instance
 end

@@ -1,5 +1,5 @@
 require("ROK/DebugTools")
-require "PZEFT_Utils"
+require("ROK/Utils")
 require("ROK/Config")
 
 local MODULE = 'PZEFT-Shop'

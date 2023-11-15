@@ -6,7 +6,7 @@ require("ROK/DebugTools")
 local MODULE = 'PZEFT-Shop'
 local ClientCommands = {}
 
---- Recieve updated shop item list from admin client and transmit it back to all clients
+--- Receive updated shop item list from admin client and transmit it back to all clients
 ---@param player IsoPlayer
 ---@param data any
 ClientCommands.transmitShopItems = function(player, data)

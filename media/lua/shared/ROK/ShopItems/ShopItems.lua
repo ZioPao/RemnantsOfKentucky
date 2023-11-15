@@ -1,9 +1,11 @@
 PZ_EFT_ShopItems_Config = PZ_EFT_ShopItems_Config or {} 
 PZ_EFT_ShopItems_Config.data = {}
 
+---@alias shopTags table  [JUNK, ESSENTIALS, HIGHVALUE, LOWVALUE]
+
 --- Add shop item
----@param fullType string
----@param tags table of [JUNK, ESSENTIALS, HIGHVALUE, LOWVALUE]
+---@param fullType itemFullType
+---@param tags shopTags
 ---@param basePrice integer
 ---@param initialMultiplier integer
 ---@param sellMultiplier integer

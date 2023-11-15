@@ -2,7 +2,6 @@ if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHo
     return
 end
 require("ROK/DebugTools")
-require "ROK/TeleportManager"
 local MatchHandler = require("MatchHandler/MatchHandler")
 -----------------------------
 
@@ -13,7 +12,7 @@ local ClientCommands = {}
 ---@param playerObj IsoPlayer player requesting extraction
 ---@param _ any
 function ClientCommands.RequestExtraction(playerObj, _)
-    local instance = MatchHandler.instance
+    local instance = MatchHandler.GetHandler()
     if instance == nil then return end
     instance:extractPlayer(playerObj)
 end

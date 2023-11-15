@@ -1,3 +1,5 @@
+-- TODO Why is it in shared?
+
 ---@alias client_state {IsInRaid : boolean, ExtractionStatus : table, currentTime : number, availableInstances : number, availableSafehouses : number}
 
 ---@type client_state
