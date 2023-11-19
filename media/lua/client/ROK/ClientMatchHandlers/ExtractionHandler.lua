@@ -28,7 +28,7 @@ Events.EveryOneMinute.Add(ExtractionUpdateEvent)
 
 -------------------------------------------------
 
----@class EFT_ExtractionHandler
+---@class ExtractionHandler
 ---@field key string
 local ExtractionHandler = {}
 
@@ -49,7 +49,7 @@ function ExtractionHandler.HandleTimer()
         print("Extract now!")
         sendClientCommand("PZEFT-PvpInstances", "RequestExtraction", {})
         ExtractionPanel.Close()
-        Events.OnTick.Remove(EFT_ExtractionHandler.HandleTimer)
+        Events.OnTick.Remove(ExtractionHandler.HandleTimer)
     end
 end
 

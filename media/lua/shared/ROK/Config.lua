@@ -121,7 +121,7 @@ PZ_EFT_CONFIG.MatchSettings = {
     roundTime = 1200,       -- 20 minutes
     startMatchTime = 5,
     endMatchTime = 5,
-    zombieIncreaseTime = 120,     -- 2 minutes
+    zombieIncreaseTime = 30,     -- todo 2 minutes
 
 }
 
@@ -129,6 +129,9 @@ PZ_EFT_CONFIG.MatchSettings = {
 ---* Spawn points *-- 
 -- World coordinates if PVP instance starts at cell 0,0
 
+---@alias spawnPointsType {name : string, x : integer, y : integer, z : integer}
+
+---@type table<integer, spawnPointsType> 
 PZ_EFT_CONFIG.Spawnpoints = {}
 
 table.insert(PZ_EFT_CONFIG.Spawnpoints, {

@@ -31,7 +31,7 @@ ServerCommands.SetClientStateIsInRaid = function(args)
 
     ClientState.isInRaid = args.value
     if args.value == false then
-        ClientState.IsInExtractionArea = false
+        ClientState.extractionStatus = {}
     end
 
     triggerEvent("PZEFT_UpdateClientStatus", ClientState.isInRaid)
@@ -43,12 +43,12 @@ ServerCommands.SetClientStateIsInRaid = function(args)
 end
 
 ServerCommands.CommitDieIfInRaid = function()
-
-    if ClientState.isInRaid == false then return end
-
-    ClientState.IsInExtractionArea = false      -- FIXME This is wrong!
-    getPlayer():getBodyDamage():setHealth(0)
-    
+    if ClientState.isInRaid then
+        ClientState.extractionStatus = {}
+        local pl = getPlayer()
+        pl:Kill(pl)
+        --getPlayer():getBodyDamage():setHealth(0)
+    end
 end
 
 ServerCommands.Teleport = function(args)

@@ -1,5 +1,6 @@
 PZEFT_UTILS = PZEFT_UTILS or {}
 
+---@alias coords2d {x: number, y : number}
 ---@alias coords {x : number, y : number, z : number}
 ---@alias areaCoords {x1 : number, y1 : number, z1 : number, x2 : number, y2 : number, z2: number}
 
@@ -255,4 +256,29 @@ PZEFT_UTILS.IsInRectangle = function(pos, area)
 
 
     return inXRange and inYRange and inZRange
+end
+
+
+---comment
+---@param p1 coords2d
+---@param p2 coords2d
+---@param p3 coords2d
+function PZEFT_UTILS.Sign(p1, p2, p3)
+    return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y)
+end
+
+---comment
+---@param point coords2d
+---@param trP1 coords2d Triangle coords 1
+---@param trP2 coords2d Triangle coords 2
+---@param trP3 coords2d Triangle coords 3
+function PZEFT_UTILS.IsInTriangle(point, trP1, trP2, trP3)
+    local d1 = PZEFT_UTILS.Sign(point, trP1, trP2)
+    local d2 = PZEFT_UTILS.Sign(point, trP2, trP3)
+    local d3 = PZEFT_UTILS.Sign(point ,trP3, trP1)
+
+    local hasNeg = (d1 < 0) or (d2 < 0) or (d3 < 0)
+    local hasPos = (d1 > 0 ) or (d2 > 0) or (d3 > 0)
+
+    return not(hasNeg and hasPos)
 end
