@@ -37,24 +37,18 @@ end
 
 ---Setup teleporting players to their spawn points
 function MatchHandler:start()
-    print("Starting match!")
+    debugPrint("Starting match!")
     PvpInstanceManager.teleportPlayersToInstance()
 
-    -- * Start timer and the event handling zombie spawning
+    -- Start timer and the event handling zombie spawning
     Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.roundTime, function()
         print("Ending the round!")
         self:stopMatch()
     end)
 
+    -- Setup Zombie handling
+    Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.zombieIncreaseTime, MatchHandler.HandleZombieSpawns)
 
-    -- Reopens the panel on the clients
-    --sendServerCommand("PZEFT-Time", "OpenTimePanel", {})
-
-    -- self.timer = TimerHandler.Setup(30, 5, self.handleZombieSpawns)
-
-    -- self.timer = TimerHandler:new()
-    -- self.timer:setFuncToRun(self.handleZombieSpawns, 5) -- will be run every 5 minnutes
-    -- self.timer:initialise()
 end
 
 --- Kill players that are still in the pvp instance and didn't manage to escape in time
@@ -79,11 +73,14 @@ function MatchHandler:stopMatch()
     PvpInstanceManager.getNextInstance()
 end
 
-function MatchHandler:handleZombieSpawns(currentTime)
-    -- TODO We need to manage the zombie spawns depending on the time.
+---comment
+---@param loops number amount of time that this function has been called by Countdown
+function MatchHandler.HandleZombieSpawns(loops)
+    debugPrint(loops)       
+    debugPrint("Running HandleZombie!")
 end
 
--- *********************-
+--------------------------------------------------
 --- Get the instance of MatchHandler
 ---@return MatchHandler
 function MatchHandler.GetHandler()

@@ -10,14 +10,13 @@ local ClientCommands = {}
 
 ---A client has sent an extraction request
 ---@param playerObj IsoPlayer player requesting extraction
----@param _ any
-function ClientCommands.RequestExtraction(playerObj, _)
+function ClientCommands.RequestExtraction(playerObj)
     local instance = MatchHandler.GetHandler()
     if instance == nil then return end
     instance:extractPlayer(playerObj)
 end
 
-
+---------------------------------
 local OnClientCommand = function(module, command, playerObj, args)
     if module == MODULE and ClientCommands[command] then
         -- debugPrint("Client Command - " .. MODULE .. "." .. command)

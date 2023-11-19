@@ -121,6 +121,7 @@ PZ_EFT_CONFIG.MatchSettings = {
     roundTime = 1200,       -- 20 minutes
     startMatchTime = 5,
     endMatchTime = 5,
+    zombieIncreaseTime = 120,     -- 2 minutes
 
 }
 

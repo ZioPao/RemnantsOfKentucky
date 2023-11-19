@@ -1,8 +1,8 @@
 -- TODO Why is it in shared?
 
----@alias client_state {isInRaid : boolean, extractionStatus : table, currentTime : number, availableInstances : number, availableSafehouses : number}
+---@alias clientStateType {isInRaid : boolean, extractionStatus : table, currentTime : number, availableInstances : number, availableSafehouses : number}
 
----@type client_state
+---@type clientStateType
 ClientState = ClientState or {}
 
 ClientState.isInRaid = false    -- TODO Lowercase!
