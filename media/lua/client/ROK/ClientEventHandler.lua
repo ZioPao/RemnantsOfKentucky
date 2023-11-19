@@ -33,7 +33,7 @@ end
 
 --- Update event subscription
 local function updateClientState()
-    if ClientState.IsInRaid then
+    if ClientState.isInRaid then
         EveryOneMinute_InRaid_Events()
     else
         EveryOneMinute_Not_InRaid_Events()

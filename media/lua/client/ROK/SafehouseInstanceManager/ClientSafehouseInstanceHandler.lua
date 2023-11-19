@@ -12,7 +12,7 @@ end
 ClientSafehouseInstanceHandler.isInSafehouse = function()
     --if isDebugEnabled() then return end
     --print("Running isInSafehouse")
-    if not ClientState.IsInRaid then
+    if not ClientState.isInRaid then
         --print("Player is not in a raid, running check for safehouse")
         local md = PZEFT_UTILS.GetPlayerModData()
 

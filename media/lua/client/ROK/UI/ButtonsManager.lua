@@ -64,7 +64,7 @@ function ButtonManager.RemoveButton(buttonModule)
 end
 
 local function OpenAdminMenu()
-    if not ClientState.IsInRaid then
+    if not ClientState.isInRaid then
         BeforeMatchAdminPanel.OnOpenPanel()
     else
         DuringMatchAdminPanel.OnOpenPanel()

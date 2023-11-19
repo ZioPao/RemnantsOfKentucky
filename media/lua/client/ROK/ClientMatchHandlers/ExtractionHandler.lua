@@ -6,7 +6,7 @@ local os_time = os.time
 LuaEventManager.AddEvent("PZEFT_UpdateExtractionZoneState")
 
 local function ExtractionUpdateEvent()
-    if ClientState.IsInRaid == false then return end
+    if ClientState.isInRaid == false then return end
 
     local pl = getPlayer()
     local currentInstanceData = getPlayer():getModData().currentInstance
@@ -18,7 +18,7 @@ local function ExtractionUpdateEvent()
         local playerPosition = {x = playerSquare:getX(), y = playerSquare:getY(), z = playerSquare:getZ(),}
         for key ,area in ipairs(extractionPoints) do
             local isInArea = PZEFT_UTILS.IsInRectangle(playerPosition, area)
-            ClientState.ExtractionStatus[key] = isInArea
+            ClientState.extractionStatus[key] = isInArea
             triggerEvent("PZEFT_UpdateExtractionZoneState", key)
         end
     end
@@ -34,11 +34,9 @@ local ExtractionHandler = {}
 
 function ExtractionHandler.HandleTimer()
     local cTime = os_time()
-
-    -- TODO Check if player is still in zone. If not, stop timer
     --print(cTime)
-    print(ClientState.ExtractionStatus[ExtractionHandler.key])
-    if ClientState.ExtractionStatus[ExtractionHandler.key] == nil then
+    print(ClientState.extractionStatus[ExtractionHandler.key])
+    if ClientState.extractionStatus[ExtractionHandler.key] == nil then
         Events.OnTick.Remove(EFT_ExtractionHandler.HandleTimer)
         print("Player not in extraction zone anymore")
         return
@@ -68,7 +66,7 @@ end
 function ExtractionHandler.ManageEvent(key)
     if ExtractionHandler.key and ExtractionHandler.key ~= key then return end
 
-    if ClientState.ExtractionStatus[key] then
+    if ClientState.extractionStatus[key] then
         ExtractionHandler.key = key
         ExtractionPanel.Open()
     else
