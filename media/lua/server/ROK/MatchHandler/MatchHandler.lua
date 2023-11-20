@@ -40,15 +40,12 @@ function MatchHandler:start()
     debugPrint("Starting match!")
     PvpInstanceManager.teleportPlayersToInstance()  -- TODO this is kinda shaky, we should integrate it here in MatchHandler
 
-    MatchHandler.players = {}
+    MatchHandler.playersInMatch = {}
     local temp = getOnlinePlayers()
     for i = 0, temp:size() - 1 do
         local player = temp:get(i)
-        -- TODO Consider if they disconnect from server
-        -- TODO Consider players which extract
-        -- TODO Consider player who died
-        table.insert(MatchHandler.players, player)
-
+        local plId = player:getOnlineID()
+        MatchHandler.playersInMatch[plId] = plId
     end
 
     -- Start timer and the event handling zombie spawning
@@ -76,6 +73,8 @@ end
 function MatchHandler:extractPlayer(playerObj)
     --TODO PAO: Look at client/ClientMatchHandlers/ExtractionHandler to check for when player enters/exists extraction zone. Subscribe to event if needed.
     SafehouseInstanceManager.sendPlayerToSafehouse(playerObj)
+
+    MatchHandler.playersInMatch[playerObj:getOnlineID()] = nil
 end
 
 function MatchHandler:stopMatch()
@@ -88,30 +87,42 @@ end
 ---@param loops number amount of time that this function has been called by Countdown
 function MatchHandler.HandleZombieSpawns(loops)
 
-    -- TODO Find a point in the map where there are no players and then move zombies towards them
+    for k, plId in pairs(MatchHandler.playersInMatch) do
+        if plId ~= nil then
+            local player = getPlayerByOnlineID(plId)
+            if player ~= nil then
+                local x = player:getX()
+                local y = player:getY()
+
+                -- We can't go overboard with addedX or addedY
+                local randomX = ZombRand(20, 60)
+                local randomY = ZombRand(20, 60)
+
+                -- Flip sign for X
+                if ZombRand(0,100) > 50 then
+                    randomX = 0 - randomX
+                end
+
+                -- Flip sign for Y
+                if ZombRand(0,100) > 50 then
+                    randomY = 0 - randomY
+                end
 
 
-    -- TODO Start loop until we can actually trigger a correct spawn
-    local onlinePlayers = getOnlinePlayers()
-    for i=0, onlinePlayers:size() - 1 do
-        local player = onlinePlayers:get(i)
+                -- TODO Amount of zombies should scale based on players amount too, to prevent from killing the server
+                local zombiesAmount = math.floor(loops/2)
+                debugPrint("spawning " .. zombiesAmount .. " near " .. player:getUsername())
 
-        local x = player:getX()
-        local y = player:getY()
-
-        -- We can't go overboard with addedX or addedY
-        local randomX = ZombRand(20, 60)
-        local randomY = ZombRand(20, 60)
-
-        -- TODO AMount of zombies should scale based on players amount too, to prevent from killing the server
-        local zombiesAmount = loops
-        debugPrint("spawning " .. zombiesAmount .. " near " .. player:getUsername())
-        -- TODO Check if there are players near this area. If so, redo random
-        addZombiesInOutfit(x + randomX, y + randomY, 0, loops, "", 50, false, false, false, false, 1)
-        addSound(player, math.floor(x), math.floor(y), 0, 300, 100)
-
+                -- TODO Check if square is ok. If it's water skip it
+                addZombiesInOutfit(x + randomX, y + randomY, 0, zombiesAmount, "", 50, false, false, false, false, 1)
+                addSound(player, math.floor(x), math.floor(y), 0, 300, 100)
+            else
+                debugPrint("player was nil")
+            end
+        else
+            debugPrint("plid was nil")
+        end
     end
-
 end
 
 --------------------------------------------------

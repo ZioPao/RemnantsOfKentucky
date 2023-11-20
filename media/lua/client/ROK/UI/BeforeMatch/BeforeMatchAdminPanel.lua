@@ -7,7 +7,7 @@ local GenericUI = require("ROK/UI/GenericUI")
 
 
 ---@class BeforeMatchAdminPanel : BaseAdminPanel
-BeforeMatchAdminPanel = BaseAdminPanel:derive("BeforeMatchAdminPanel")
+local BeforeMatchAdminPanel = BaseAdminPanel:derive("BeforeMatchAdminPanel")
 BeforeMatchAdminPanel.instance = nil
 
 
@@ -165,6 +165,7 @@ function BeforeMatchAdminPanel:update()
     self.btnManagePlayers:setEnable(not self.isStartingMatch)
 
     -- Handles Panel Info stuff
+    -- TODO Set it bigger
     local valInstancesAvailableText = " <CENTRE> " .. tostring(math.floor(ClientState.availableInstances))
     self.labelValInstancesAvailable:setText(valInstancesAvailableText)
     self.labelValInstancesAvailable.textDirty = true
