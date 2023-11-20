@@ -88,76 +88,29 @@ end
 ---@param loops number amount of time that this function has been called by Countdown
 function MatchHandler.HandleZombieSpawns(loops)
 
+    -- TODO Find a point in the map where there are no players and then move zombies towards them
 
 
     -- TODO Start loop until we can actually trigger a correct spawn
+    local onlinePlayers = getOnlinePlayers()
+    for i=0, onlinePlayers:size() - 1 do
+        local player = onlinePlayers:get(i)
 
-    
+        local x = player:getX()
+        local y = player:getY()
 
+        -- We can't go overboard with addedX or addedY
+        local randomX = ZombRand(20, 60)
+        local randomY = ZombRand(20, 60)
 
+        -- TODO AMount of zombies should scale based on players amount too, to prevent from killing the server
+        local zombiesAmount = loops
+        debugPrint("spawning " .. zombiesAmount .. " near " .. player:getUsername())
+        -- TODO Check if there are players near this area. If so, redo random
+        addZombiesInOutfit(x + randomX, y + randomY, 0, loops, "", 50, false, false, false, false, 1)
+        addSound(player, math.floor(x), math.floor(y), 0, 300, 100)
 
-    debugPrint(loops)     
-    debugPrint("Running HandleZombie!")
-
-    local matchInstance = MatchHandler.GetHandler()
-    
-    -- Calculate center of area between players
-
-
-    -- Validation cycle
-    -- for i = 1, #MatchHandler.players do
-    --     local player = MatchHandler.players[i]
-
-    --     -- TODO Check if player is valid. We should have a reference to its clientState to work
-    --     table.insert(availablePlayers, player)
-    -- end
-
-
-    --table.insert(availablePlayers, getPlayerByOnlineID(0))
-
-
-    local spawnPoint
-    local isValid = false
-    local isActive = false
-
-    local pvpInstance = PvpInstanceManager.getCurrentInstance()
-    
-    for i=1, #pvpInstance.spawnPoints do
-        spawnPoint = pvpInstance.spawnPoints[i]
-
-        local onlinePlayers = getOnlinePlayers()
-
-        for y=0, onlinePlayers:size() - 1 do
-            local player = onlinePlayers:get(y)
-            if IsoUtils.DistanceTo(spawnPoint.x, spawnPoint.y, player:getX(), player:getY()) > 50 then
-                isValid = true
-            end
-
-            if not isActive then
-                if IsoUtils.DistanceTo(spawnPoint.x, spawnPoint.y, player:getX(), player:getY()) < 200 then
-                    debugPrint("player close enough to this current spawnpoint!")
-                    isActive = true
-                end
-            end
-            -- todo at least one player should be "close enough" to the chunk
-        end
-
-        if isValid and isActive then
-            debugPrint("Found spawn point for zombies: x= " .. spawnPoint.x .. ", y=" .. spawnPoint.y)
-            break
-        else
-            isActive = false
-            spawnPoint = nil
-        end
     end
-
-    if spawnPoint ~= nil then
-        debugPrint("Spawning " .. 100*loops .. " zombies")
-        -- TODO Won't work, we need to check if the chunk is loaded and ready. An OnTick should loop through the prepared zombie spawns?
-        addZombiesInOutfit(spawnPoint.x, spawnPoint.y, 0, 100 * loops, "", 50, false, false, false, false, 1)
-    end
-
-
 
 end
 
