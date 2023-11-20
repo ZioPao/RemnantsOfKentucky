@@ -1,18 +1,30 @@
 local BaseAdminPanel = require("ROK/UI/BaseAdminPanel")
 local ManagePlayersPanel = require("ROK/UI/BeforeMatch/ManagePlayersPanel")
+local GenericUI = require("ROK/UI/GenericUI")
 --------------------------------
 
+-- TODO Res scaling is broken
+
+
 ---@class BeforeMatchAdminPanel : BaseAdminPanel
-local BeforeMatchAdminPanel = BaseAdminPanel:derive("BeforeMatchAdminPanel")
+BeforeMatchAdminPanel = BaseAdminPanel:derive("BeforeMatchAdminPanel")
 BeforeMatchAdminPanel.instance = nil
 
----
----@param x any
----@param y any
----@param width any
----@param height any
----@return ISCollapsableWindow
+
+local MATCH_START_TEXT = getText("IGUI_AdminPanelBeforeMatch_StartMatch")
+local MATCH_STOP_TEXT = getText("IGUI_AdminPanelBeforeMatch_Stop")
+local AVAILABLE_INSTANCES_STR = getText("IGUI_AdminPanelBeforeMatch_InstancesAvailable")
+local ASSIGNED_SAFEHOUSES_STR = getText("IGUI_AdminPanelBeforeMatch_SafehousesAssigned")
+
+
+
+---@param x number
+---@param y number
+---@param width number
+---@param height number
+---@return BeforeMatchAdminPanel
 function BeforeMatchAdminPanel:new(x, y, width, height)
+    ---@type BeforeMatchAdminPanel
     local o = BaseAdminPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
@@ -25,7 +37,40 @@ end
 function BeforeMatchAdminPanel:createChildren()
     BaseAdminPanel.createChildren(self)
 
-    self.panelInfo = ISRichTextPanel:new(0, 20, self:getWidth(), self:getHeight() / 4)
+    -- Start from the bottom and og up form that
+    local btnHeight = 25
+    local xPadding = 20
+    local yPadding = 10
+    local y = self:getHeight() - btnHeight - yPadding
+    local btnWidth = self:getWidth() - xPadding * 2
+
+    self.btnToggleMatch = ISButton:new(xPadding, y, btnWidth, btnHeight, MATCH_START_TEXT, self, self.onClick)
+    self.btnToggleMatch.internal = "START"      -- TODO Will swap when we click this
+    self.btnToggleMatch:initialise()
+    self:addChild(self.btnToggleMatch)
+
+    y = y - btnHeight - yPadding*2      -- More padding from this
+    self.btnMatchOptions = ISButton:new(xPadding, y, btnWidth, btnHeight,
+        getText("IGUI_AdminPanelBeforeMatch_MatchOptions"), self, self.onClick)
+    self.btnMatchOptions.internal = "MATCH_OPTIONS"
+    self.btnMatchOptions:initialise()
+    self.btnMatchOptions:setEnable(false)
+    self:addChild(self.btnMatchOptions)
+
+    y = y - btnHeight - yPadding
+    self.btnManagePlayers = ISButton:new(xPadding, y, btnWidth, btnHeight,
+        getText("IGUI_AdminPanelBeforeMatch_ManagePlayers"), self, self.onClick)
+    self.btnManagePlayers.internal = "MANAGE_PLAYERS"
+    self.btnManagePlayers:initialise()
+    self.btnManagePlayers:setEnable(false)
+    self:addChild(self.btnManagePlayers)
+
+    y = y - btnHeight
+
+    --------------------
+    -- INFO PANEL, TOP ONE
+
+    self.panelInfo = ISRichTextPanel:new(0, 20, self:getWidth(), self:getHeight() - y)
     self.panelInfo.autosetheight = false
     self.panelInfo.background = true
     self.panelInfo.backgroundColor = { r = 0, g = 0, b = 0, a = 0.5 }
@@ -35,66 +80,72 @@ function BeforeMatchAdminPanel:createChildren()
     self.panelInfo:paginate()
     self:addChild(self.panelInfo)
 
-    -- TODO Maybe a bit of separation between the infos would be nice.
 
-    -- self.labelInstancesAvailable = ISRichTextPanel:new(0, 0, self.panelInfo:getWidth(), 25)
-    -- self.labelInstancesAvailable:initialise()
-    -- self.labelInstancesAvailable:instantiate()
-    -- self.panelInfo:addChild(self.labelInstancesAvailable)
-
-    -- self.labelSafehousesAssigned = ISLabel:new(10, self.labelInstancesAvailable:getBottom() + 10, 25, "", 1, 1, 1, 1, UIFont.Small, true)
-    -- self.labelSafehousesAssigned:initialise()
-    -- self.labelSafehousesAssigned:instantiate()
-    -- self.panelInfo:addChild(self.labelSafehousesAssigned)
-
-    -----------------------
-
-    local xPadding = 20
-    local yPadding = 20
-    local yOffset = self.panelInfo:getBottom() + yPadding
-
-    local btnWidth = self:getWidth() - xPadding * 2
-    local btnHeight = 25
-
-    self.btnStartMatch = ISButton:new(xPadding, yOffset, btnWidth, btnHeight,
-        getText("IGUI_AdminPanelBeforeMatch_StartMatch"), self, self.onClick)
-    self.btnStartMatch.internal = "START_MATCH"
-    self.btnStartMatch:initialise()
-    self.btnStartMatch:setEnable(false)
-    self:addChild(self.btnStartMatch)
-
-    yOffset = yOffset + self.btnStartMatch:getHeight() + yPadding
-
-    self.btnMatchOptions = ISButton:new(xPadding, yOffset, btnWidth, btnHeight,
-        getText("IGUI_AdminPanelBeforeMatch_MatchOptions"), self, self.onClick)
-    self.btnMatchOptions.internal = "MATCH_OPTIONS"
-    self.btnMatchOptions:initialise()
-    self.btnMatchOptions:setEnable(false)
-    self:addChild(self.btnMatchOptions)
-
-    yOffset = yOffset + self.btnMatchOptions:getHeight() + yPadding
-
-    self.btnManagePlayers = ISButton:new(xPadding, yOffset, btnWidth, btnHeight,
-        getText("IGUI_AdminPanelBeforeMatch_ManagePlayers"), self, self.onClick)
-    self.btnManagePlayers.internal = "MANAGE_PLAYERS"
-    self.btnManagePlayers:initialise()
-    self.btnManagePlayers:setEnable(false)
-    self:addChild(self.btnManagePlayers)
+    local labelWidth = self:getWidth()/2
+    local labelHeight = self.panelInfo:getHeight()/2
 
 
-    self.btnStop = ISButton:new(xPadding, self:getHeight() - btnHeight - 10, btnWidth, btnHeight,
-        getText("IGUI_AdminPanelBeforeMatch_Stop"), self, self.onClick)
-    self.btnStop.internal = "STOP"
-    self.btnStop:initialise()
-    self:addChild(self.btnStop)
+    -- TOP of the panelInfo
+    self.labelInstancesAvailable = ISRichTextPanel:new(0, 0, labelWidth, labelHeight)
+    self.labelInstancesAvailable.autosetheight = false
+    self.labelInstancesAvailable.marginBottom = 0
+    self.labelInstancesAvailable.marginTop = labelHeight/4
+    self.labelInstancesAvailable.backgroundColor = { r = 0, g = 0, b = 0, a = 0.5 }
+    self.labelInstancesAvailable.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 0 }
+    self.labelInstancesAvailable:initialise()
+    self.labelInstancesAvailable:setText(AVAILABLE_INSTANCES_STR)
+    self.labelInstancesAvailable:paginate()
+    self.panelInfo:addChild(self.labelInstancesAvailable)
+
+    self.labelAssignedSafehouses = ISRichTextPanel:new(labelWidth, 0, labelWidth, labelHeight)
+    self.labelAssignedSafehouses.autosetheight = false
+    self.labelAssignedSafehouses.marginBottom = 0
+    self.labelAssignedSafehouses.marginTop = labelHeight/4
+    self.labelAssignedSafehouses.backgroundColor = { r = 0, g = 0, b = 0, a = 0.5 }
+    self.labelAssignedSafehouses.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 0 }
+    self.labelAssignedSafehouses:initialise()
+    self.labelAssignedSafehouses:setText(ASSIGNED_SAFEHOUSES_STR)
+    self.labelAssignedSafehouses:paginate()
+    self.panelInfo:addChild(self.labelAssignedSafehouses)
+
+    ---------------------
+    -- Bottom of Panel Info
+    self.labelValInstancesAvailable = ISRichTextPanel:new(0, labelHeight, labelWidth, labelHeight)
+    self.labelValInstancesAvailable.autosetheight = false
+    self.labelValInstancesAvailable.marginBottom = 0
+    self.labelValInstancesAvailable.marginTop = 0
+    self.labelValInstancesAvailable.backgroundColor = { r = 0, g = 0, b = 0, a = 0.5 }
+    self.labelValInstancesAvailable.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 0 }
+    self.labelValInstancesAvailable:initialise()
+    self.labelValInstancesAvailable:paginate()
+    self.panelInfo:addChild(self.labelValInstancesAvailable)
+
+    self.labelValAssignedSafehouses = ISRichTextPanel:new(labelWidth, labelHeight, labelWidth, labelHeight)
+    self.labelValAssignedSafehouses.autosetheight = false
+    self.labelValAssignedSafehouses.marginBottom = 0
+    self.labelValAssignedSafehouses.marginTop = 0
+    self.labelValAssignedSafehouses.backgroundColor = { r = 0, g = 0, b = 0, a = 0.5 }
+    self.labelValAssignedSafehouses.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 0 }
+    self.labelValAssignedSafehouses:initialise()
+    self.labelValAssignedSafehouses:paginate()
+    self.panelInfo:addChild(self.labelValAssignedSafehouses)
 end
 
+
 function BeforeMatchAdminPanel:onClick(btn)
-    if btn.internal == 'START_MATCH' then
+    if btn.internal == 'START' then
         self.isStartingMatch = true
+        btn.internal = "STOP"
+        btn:setTitle(MATCH_STOP_TEXT)
         -- Start timer. Show it on screen
         sendClientCommand("PZEFT-Time", "StartMatchCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.startMatchTime })
         TimePanel.Open("Starting match in...")
+    elseif btn.internal == "STOP" then
+        self.isStartingMatch = false
+        btn.internal = "START"
+        btn:setTitle(MATCH_START_TEXT)
+        sendClientCommand("PZEFT-Time", "StopMatchCountdown", {})
+        TimePanel.Close()
     elseif btn.internal == 'MATCH_OPTIONS' then
         -- TODO Implement match options
     elseif btn.internal == 'MANAGE_PLAYERS' then
@@ -103,39 +154,24 @@ function BeforeMatchAdminPanel:onClick(btn)
         else
             self.openedPanel = ManagePlayersPanel.Open(self:getRight(), self:getBottom() - self:getHeight())
         end
-    elseif btn.internal == 'STOP' then
-        self.isStartingMatch = false
-        sendClientCommand("PZEFT-Time", "StopMatchCountdown", {})
-        TimePanel.Close()
     end
 end
 
 function BeforeMatchAdminPanel:update()
     BaseAdminPanel.update(self)
-    -- When starting the match, we'll disable the start button and default close button and enable the stop one
+    -- When starting the match, we'll disable the default close button
     self.closeButton:setEnable(not self.isStartingMatch)
-
-    self.btnStartMatch:setEnable(not self.isStartingMatch)
     self.btnMatchOptions:setEnable(not self.isStartingMatch)
     self.btnManagePlayers:setEnable(not self.isStartingMatch)
 
-
-    self.btnStop:setVisible(self.isStartingMatch)
-    self.btnStop:setEnable(self.isStartingMatch)
-
     -- Handles Panel Info stuff
+    local valInstancesAvailableText = " <CENTRE> " .. tostring(math.floor(ClientState.availableInstances))
+    self.labelValInstancesAvailable:setText(valInstancesAvailableText)
+    self.labelValInstancesAvailable.textDirty = true
 
-    -- TODO Updating it in real time could be costly
-
-    -- 100 instances by default
-    -- 99 safehouses by default
-
-
-    local instancesAvailableStr = getText("IGUI_AdminPanelBeforeMatch_InstancesAvailable", math.floor(ClientState.availableInstances)) ..
-        "\n" .. getText("IGUI_AdminPanelBeforeMatch_SafehousesAssigned", 4)     -- TODO This is just a plceholder
-
-    self.panelInfo:setText(instancesAvailableStr)
-    self.panelInfo.textDirty = true
+    local valAssignedSafehousesText = " <CENTRE> 4"     -- TODO PLaceholder!
+    self.labelValAssignedSafehouses:setText(valAssignedSafehousesText)
+    self.labelValAssignedSafehouses.textDirty = true
 end
 
 function BeforeMatchAdminPanel:render()
