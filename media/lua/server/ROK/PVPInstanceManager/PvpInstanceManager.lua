@@ -19,7 +19,7 @@ PvpInstanceManager.getInstanceID = function(cellX, cellY)
     return cellX .. "-" .. cellY
 end
 
---- clear existing PVP instance and reload PVP instances
+--- Clear existing PVP instance and reload PVP instances
 PvpInstanceManager.reset = function()
     ServerData.PVPInstances.SetPvpInstances({})
     ServerData.PVPInstances.SetPvpUsedInstances({})

@@ -1,4 +1,4 @@
-require "ClientData"
+require "ROK/ClientData"
 require "BankManager/ClientBankManager"
 
 ClientShopManager = ClientShopManager or {}

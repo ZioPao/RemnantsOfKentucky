@@ -37,7 +37,7 @@ function ExtractionHandler.HandleTimer()
     --print(cTime)
     print(ClientState.extractionStatus[ExtractionHandler.key])
     if ClientState.extractionStatus[ExtractionHandler.key] == nil then
-        Events.OnTick.Remove(EFT_ExtractionHandler.HandleTimer)
+        Events.OnTick.Remove(ExtractionHandler.HandleTimer)
         print("Player not in extraction zone anymore")
         return
     end

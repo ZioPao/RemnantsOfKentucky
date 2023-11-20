@@ -1,3 +1,4 @@
+---@diagnostic disable: lowercase-global
 require("ROK/Config")
 --- DEBUG
 --- Gets player position and copies coordinates to clipboard

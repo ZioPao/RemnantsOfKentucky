@@ -43,7 +43,7 @@ ClientCommands.print_shopitems = function()
 end
 
 ClientCommands.transmitShopItems = function()
-    ServerShopManager.transmitShopItems()
+    ServerShopManager.TransmitShopItems()
 end
 
 ClientCommands.teleportPlayersToInstance = function()
@@ -55,7 +55,7 @@ ClientCommands.sendPlayersToSafehouse = function()
 end
 
 ClientCommands.loadShopPrices = function()
-    ServerShopManager.loadShopPrices()
+    ServerShopManager.LoadShopPrices()
 end
 
 ---Set a bank account

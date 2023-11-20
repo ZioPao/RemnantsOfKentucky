@@ -33,7 +33,7 @@ ServerData.GlobalModDataInit = function(isNewGame)
     local data = ModData.getOrCreate(KEY_SHOP_ITEMS)
     data.doInitShopItems = doInitShopItems
     if data.doInitShopItems then
-        ServerShopManager.loadShopPrices()
+        ServerShopManager.LoadShopPrices()
     end
 
     if not isNewGame then triggerEvent("PZEFT_ServerModDataReady") end

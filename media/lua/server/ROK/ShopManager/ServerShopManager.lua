@@ -32,7 +32,11 @@ local function doTags(shopItems, id, item)
     return shopItems
 end
 
-function ServerShopManager.loadShopPrices()
+function ServerShopManager.TransmitShopItems()
+    ServerData.Shop.TransmitShopItems()
+end
+
+function ServerShopManager.LoadShopPrices()
     local shopItems = ServerData.Shop.GetShopItems()
     shopItems.items = shopItems.items or {}
     shopItems.tags = shopItems.tags or {}
@@ -56,8 +60,5 @@ function ServerShopManager.loadShopPrices()
     ServerData.Shop.TransmitShopItems()
 end
 
-Events.PZEFT_ServerModDataReady.Add(ServerShopManager.loadShopPrices)
+Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
 
-function ServerShopManager.transmitShopItems()
-    ServerData.Shop.TransmitShopItems()
-end
