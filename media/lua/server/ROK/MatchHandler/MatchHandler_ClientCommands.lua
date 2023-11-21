@@ -16,6 +16,16 @@ function ClientCommands.RequestExtraction(playerObj)
     instance:extractPlayer(playerObj)
 end
 
+
+---comment
+---@param playerObj IsoPlayer
+function ClientCommands.RemovePlayer(playerObj)
+    local instance = MatchHandler.GetHandler()
+    if instance == nil then return end
+    instance:removePlayerFromMatchList(playerObj:getOnlineID())
+    
+end
+
 ---------------------------------
 local OnClientCommand = function(module, command, playerObj, args)
     if module == MODULE and ClientCommands[command] then

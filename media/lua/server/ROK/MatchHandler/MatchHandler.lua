@@ -9,6 +9,7 @@ local Countdown = require("ROK/Time/Countdown")
 
 ---@class MatchHandler
 ---@field pvpInstance pvpInstanceTable
+---@field playersInMatch table<number,number>        Table of player ids
 local MatchHandler = {}
 
 ---Creates new MatchHandler
@@ -19,6 +20,7 @@ function MatchHandler:new()
     self.__index = self
 
     o.pvpInstance = PvpInstanceManager.getNextInstance()
+    o.playersInMatch = {}
 
     MatchHandler.instance = o
 
@@ -40,12 +42,11 @@ function MatchHandler:start()
     debugPrint("Starting match!")
     PvpInstanceManager.teleportPlayersToInstance()  -- TODO this is kinda shaky, we should integrate it here in MatchHandler
 
-    MatchHandler.playersInMatch = {}
     local temp = getOnlinePlayers()
     for i = 0, temp:size() - 1 do
         local player = temp:get(i)
         local plId = player:getOnlineID()
-        MatchHandler.playersInMatch[plId] = plId
+        self.playersInMatch[plId] = plId
     end
 
     -- Start timer and the event handling zombie spawning
@@ -71,10 +72,14 @@ end
 --- Extract the player and return to safehouse
 ---@param playerObj IsoPlayer
 function MatchHandler:extractPlayer(playerObj)
-    --TODO PAO: Look at client/ClientMatchHandlers/ExtractionHandler to check for when player enters/exists extraction zone. Subscribe to event if needed.
     SafehouseInstanceManager.sendPlayerToSafehouse(playerObj)
+    self:removePlayerFromMatchList(playerObj:getOnlineID())
+end
 
-    MatchHandler.playersInMatch[playerObj:getOnlineID()] = nil
+---comment
+---@param playerId number
+function MatchHandler:removePlayerFromMatchList(playerId)
+    self.playersInMatch[playerId] = nil
 end
 
 function MatchHandler:stopMatch()
@@ -86,8 +91,7 @@ end
 ---comment
 ---@param loops number amount of time that this function has been called by Countdown
 function MatchHandler.HandleZombieSpawns(loops)
-
-    for k, plId in pairs(MatchHandler.playersInMatch) do
+    for k, plId in pairs(MatchHandler.instance.playersInMatch) do
         if plId ~= nil then
             local player = getPlayerByOnlineID(plId)
             if player ~= nil then

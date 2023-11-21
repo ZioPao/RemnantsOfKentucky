@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-field, undefined-global
 ---@class MapHandler
 ---@field symbolsAPI WorldMapSymbols
 local MapHandler = {}

@@ -1,11 +1,9 @@
--- TODO Why is it in shared?
-
 ---@alias clientStateType {isInRaid : boolean, extractionStatus : table, currentTime : number, availableInstances : number, availableSafehouses : number}
 
 ---@type clientStateType
 ClientState = ClientState or {}
 
-ClientState.isInRaid = false    -- TODO Lowercase!
+ClientState.isInRaid = false
 ClientState.extractionStatus = {}
 
 ClientState.currentTime = ""

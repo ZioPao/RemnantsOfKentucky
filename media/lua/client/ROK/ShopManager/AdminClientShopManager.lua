@@ -22,7 +22,7 @@ function AdminClientShopManager.AdjustItem(fullType, newMultiplier, sellMultipli
     local shopItems = ClientData.Shop.GetShopItems()
     shopItems.items = shopItems.items or {}
 
-    if not shopItems.items[fullType] then 
+    if not shopItems.items[fullType] then
         print("ERROR: AdminClientShopManager.AdjustItem - Adjusted " .. fullType .. " doesn't exist!")
         return false
     end

@@ -38,7 +38,7 @@ function ExtractionHandler.HandleTimer()
     print(ClientState.extractionStatus[ExtractionHandler.key])
     if ClientState.extractionStatus[ExtractionHandler.key] == nil then
         Events.OnTick.Remove(ExtractionHandler.HandleTimer)
-        print("Player not in extraction zone anymore")
+        debugPrint("Player not in extraction zone anymore")
         return
     end
 
@@ -46,7 +46,7 @@ function ExtractionHandler.HandleTimer()
     ExtractionPanel.instance:setExtractButtonTitle(formattedTime)
 
     if cTime >= ExtractionHandler.stopTime then
-        print("Extract now!")
+        debugPrint("Extract now!")
         sendClientCommand("PZEFT-PvpInstances", "RequestExtraction", {})
         ExtractionPanel.Close()
         Events.OnTick.Remove(ExtractionHandler.HandleTimer)
