@@ -1,7 +1,7 @@
 local BeforeMatchAdminPanel = require("ROK/UI/BeforeMatch/BeforeMatchAdminPanel")
 local DuringMatchAdminPanel = require("ROK/UI/DuringMatch/DuringMatchAdminPanel")
 
-local MODULE = "PZEFT-UI"
+local MODULE = EFT_MODULES.UI
 local TIME_PANEL_DESCRIPTIONS = {
     getText("IGUI_TimePanel_MatchStarting"),        -- 1
     getText("IGUI_TimePanel_MatchEnded")            -- 2

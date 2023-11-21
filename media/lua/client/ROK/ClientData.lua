@@ -55,8 +55,7 @@ local ClientDataCommands = {}
 local MODULE = "PZEFT-Data"
 
 ---Triggers PZEFT_ClientModDataReady to initialize Global Mod Data on the client
----@param playerObj IsoPlayer
-function ClientDataCommands.SeverModDataReady(playerObj)
+function ClientDataCommands.SeverModDataReady()
     triggerEvent("PZEFT_ClientModDataReady")
 end
 

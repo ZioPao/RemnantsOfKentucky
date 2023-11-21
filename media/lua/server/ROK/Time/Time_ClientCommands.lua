@@ -1,5 +1,4 @@
 local Countdown = require("ROK/Time/Countdown")
-local Timer = require("ROK/Time/Timer")
 local MatchHandler = require("ROK/MatchHandler/MatchHandler")
 -------------------
 
@@ -14,7 +13,7 @@ function ClientCommands.StartMatchCountdown(playerObj, args)
         handler:initialise()
 
         -- Closes automatically the admin panel\switch it to the during match one
-        sendServerCommand(playerObj, 'PZEFT-UI', 'SwitchMatchAdminUI', {startingState='BEFORE'})
+        sendServerCommand(playerObj, EFT_MODULES.UI, 'SwitchMatchAdminUI', {startingState='BEFORE'})
     end
     Countdown.Setup(args.stopTime, StartMatch)
 end
@@ -31,11 +30,11 @@ function ClientCommands.StartMatchEndCountdown(playerObj, args)
         local handler = MatchHandler.GetHandler()
         if handler then handler:stopMatch() end
 
-        sendServerCommand(playerObj, 'PZEFT-UI', 'SwitchMatchAdminUI', {startingState='DURING'})
+        sendServerCommand(playerObj, EFT_MODULES.UI, 'SwitchMatchAdminUI', {startingState='DURING'})
     end
 
     Countdown.Setup(args.stopTime, StopMatch)
-    sendServerCommand('PZEFT-UI', 'SetTimePanelDescription', {index = 2})       -- 2 = The match has ended
+    sendServerCommand(EFT_MODULES.UI, 'SetTimePanelDescription', {index = 2})       -- 2 = The match has ended
 
 end
 

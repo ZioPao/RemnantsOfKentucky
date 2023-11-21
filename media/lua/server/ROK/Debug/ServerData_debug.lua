@@ -1,6 +1,4 @@
-require "ROK/ServerData"
-require "ROK/PvpInstanceManager/PvpInstanceManager"
-
+if not isServer() then return end
 local ServerShopManager = require("ROK/Economy/ServerShopManager")
 -----------------
 

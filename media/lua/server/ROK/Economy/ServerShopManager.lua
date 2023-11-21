@@ -1,5 +1,6 @@
+if not isServer() then return end
+
 require "ShopItems/PZ_EFT_ShopItems"
-require "ROK/ServerData"
 ------------------------------
 
 ---@class ServerShopManager
@@ -39,10 +40,11 @@ end
 
 
 function ServerShopManager.LoadShopPrices()
+    -- TODO Refactor this as a whole
     local shopItems = ServerData.Shop.GetShopItems()
     shopItems.items = shopItems.items or {}
     shopItems.tags = shopItems.tags or {}
-    shopItems.doInitShopItems = true --TODO: Remove, just for testing.
+    shopItems.doInitShopItems = true 
     if shopItems.doInitShopItems then
         shopItems.doInitShopItems = nil
         for i, v in pairs(PZ_EFT_ShopItems_Config.data) do
@@ -51,7 +53,7 @@ function ServerShopManager.LoadShopPrices()
                 fullType = v.fullType,
                 tags = v.tags,
                 basePrice = v.basePrice,
-                multiplier = v.initialMultiplier,       -- TODO this doesn't work for some reason
+                multiplier = v.initialMultiplier,      
                 sellMultiplier = v.sellMultiplier
             }
 

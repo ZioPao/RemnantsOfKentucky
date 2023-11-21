@@ -1,4 +1,4 @@
-if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then return end
+if not isServer() then return end
 
 require("ROK/DebugTools")
 local ServerShopManager = require("ROK/Economy/ServerShopManager")
@@ -36,7 +36,8 @@ ServerData.GlobalModDataInit = function(isNewGame)
     local data = ModData.getOrCreate(KEY_SHOP_ITEMS)
     data.doInitShopItems = doInitShopItems
     if data.doInitShopItems then
-        ServerShopManager.LoadShopPrices()
+        -- TODO Too early!
+        --ServerShopManager.LoadShopPrices()
     end
 
     if not isNewGame then triggerEvent("PZEFT_ServerModDataReady") end

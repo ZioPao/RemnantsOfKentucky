@@ -51,7 +51,7 @@ function MatchHandler:start()
 
     -- Start timer and the event handling zombie spawning
     Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.roundTime, function()
-        print("Ending the round!")
+        debugPrint("Ending the round!")
         self:stopMatch()
     end)
 
@@ -92,6 +92,7 @@ end
 ---Run it every once, depending on the Config, spawns zombies for each player
 ---@param loops number amount of time that this function has been called by Countdown
 function MatchHandler.HandleZombieSpawns(loops)
+    if MatchHandler.instance == nil then return end
     for k, plId in pairs(MatchHandler.instance.playersInMatch) do
         if plId ~= nil then
             local player = getPlayerByOnlineID(plId)
@@ -115,10 +116,12 @@ function MatchHandler.HandleZombieSpawns(loops)
 
 
                 -- TODO Amount of zombies should scale based on players amount too, to prevent from killing the server
-                local zombiesAmount = math.floor(loops/2)
+                local zombiesAmount = loops  --math.floor(loops/2)
                 debugPrint("spawning " .. zombiesAmount .. " near " .. player:getUsername())
 
-                -- TODO Check if square is ok. If it's water skip it
+                local sq = getSquare(x + randomX, y + randomY, 0)
+
+                -- TODO Check if square is ok. If it's water or too near a player skip it
                 addZombiesInOutfit(x + randomX, y + randomY, 0, zombiesAmount, "", 50, false, false, false, false, 1)
                 addSound(player, math.floor(x), math.floor(y), 0, 300, 100)
             else
