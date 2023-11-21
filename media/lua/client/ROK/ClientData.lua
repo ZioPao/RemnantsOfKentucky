@@ -5,15 +5,19 @@ local KEY_PVP_CURRENTINSTANCE = "PZ-EFT-PVP-CURRENTINSTANCE"
 LuaEventManager.AddEvent("PZEFT_ClientModDataReady")
 LuaEventManager.AddEvent("PZEFT_UpdateClientStatus")
 
+----------------------------------------------------------------------------
+
+---@class ClientData
 ClientData = ClientData or {}
 
-ClientData.requestData = function()
+function ClientData.RequestData()
     ModData.request(KEY_SHOP_ITEMS)
     ModData.request(KEY_PVP_CURRENTINSTANCE)
     ModData.request(KEY_PVP_INSTANCES)
 end
+Events.PZEFT_ClientModDataReady.Add(ClientData.RequestData)
 
-ClientData.OnReceiveGlobalModData = function(key, modData)
+function ClientData.OnReceiveGlobalModData(key, modData)
 	if key == KEY_SHOP_ITEMS then
         ModData.add(key, modData)
     elseif key == KEY_PVP_CURRENTINSTANCE then
@@ -25,20 +29,22 @@ end
 
 Events.OnReceiveGlobalModData.Add(ClientData.OnReceiveGlobalModData)
 
-Events.PZEFT_ClientModDataReady.Add(ClientData.requestData)
+--------------------------------------
 
 ClientData.PVPInstances = ClientData.PVPInstances or {}
 
-ClientData.PVPInstances.GetPvpInstances = function()
+function ClientData.PVPInstances.GetPvpInstances()
     return ModData.getOrCreate(KEY_PVP_INSTANCES)
 end
 
-ClientData.PVPInstances.GetCurrentInstance = function()
+function ClientData.PVPInstances.GetCurrentInstance()
     return ModData.getOrCreate(KEY_PVP_CURRENTINSTANCE)
 end
 
+--------------------------------------
+
 ClientData.Shop = ClientData.Shop or {}
 
-ClientData.Shop.GetShopItems = function()
+function ClientData.Shop.GetShopItems()
     return ModData.getOrCreate(KEY_SHOP_ITEMS)
 end

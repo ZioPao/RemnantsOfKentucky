@@ -32,7 +32,7 @@ local function EveryOneMinute_Not_InRaid_Events()
 end
 
 --- Update event subscription
-local function updateClientState()
+local function UpdateClientState()
     if ClientState.isInRaid then
         EveryOneMinute_InRaid_Events()
     else
@@ -40,4 +40,21 @@ local function updateClientState()
     end
 end
 
-Events.EveryOneMinute.Add(updateClientState)
+Events.EveryOneMinute.Add(UpdateClientState)
+
+
+
+---------------------------------------
+--* Admin only *--
+
+local function ClearZombiesNearSafehouses()
+    -- TODO Bit inefficient, we should select a single admin instead of running this on every one. Also, not sure if works at all
+    if not isAdmin() then return end
+
+    for _,v in ipairs(PZ_EFT_CONFIG.SafehouseCells)do
+        zpopClearZombies(v.x,v.y)
+    end
+
+end
+
+Events.EveryOneMinute.Add(ClearZombiesNearSafehouses)

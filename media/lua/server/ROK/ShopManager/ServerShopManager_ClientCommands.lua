@@ -9,7 +9,7 @@ local ClientCommands = {}
 --- Receive updated shop item list from admin client and transmit it back to all clients
 ---@param player IsoPlayer
 ---@param data any
-ClientCommands.transmitShopItems = function(player, data)
+ClientCommands.TransmitShopItems = function(player, data)
     ServerData.Shop.SetShopItems(data)
     ServerData.Shop.TransmitShopItems()
 end

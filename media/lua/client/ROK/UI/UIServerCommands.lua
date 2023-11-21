@@ -1,18 +1,19 @@
 local BeforeMatchAdminPanel = require("ROK/UI/BeforeMatch/BeforeMatchAdminPanel")
 local DuringMatchAdminPanel = require("ROK/UI/DuringMatch/DuringMatchAdminPanel")
----------------------
 
 local MODULE = "PZEFT-UI"
-
--- TODO Move these to ContextMenu or something
 local TIME_PANEL_DESCRIPTIONS = {
-    "The match is starting", -- 1
-    "The match has ended"    -- 2
+    getText("IGUI_TimePanel_MatchStarting"),        -- 1
+    getText("IGUI_TimePanel_MatchEnded")            -- 2
 }
+
+------------------------------------------
+
+
 local ServerCommands = {}
 
-
-ServerCommands.SwitchMatchAdminUI = function(args)
+---@param args {startingState : string}
+function ServerCommands.SwitchMatchAdminUI(args)
     -- Check if admin UI is already open. If it is, closes it and opens the during match one
     local startingState = args.startingState
 
@@ -27,12 +28,13 @@ ServerCommands.SwitchMatchAdminUI = function(args)
     end
 end
 
-ServerCommands.SetTimePanelDescription = function(args)
+---@param args {index : integer}
+function ServerCommands.SetTimePanelDescription(args)
     local index = args.index
-    -- TODO Fetch from a locally saved array of strings
     TimePanel.instance:setDescription(TIME_PANEL_DESCRIPTIONS[index])
 end
 
+------------------------------------------
 local OnServerCommand = function(module, command, args)
     if module == MODULE and ServerCommands[command] then
         --debugPrint("Server Command - " .. MODULE .. "." .. command)

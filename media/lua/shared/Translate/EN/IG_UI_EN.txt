@@ -19,6 +19,11 @@ IG_UI_EN = {
     IGUI_AdminPanelBeforeMatch_Tooltip_WipeEverything = "Wipe everything about the selected player",
 
 
+
+    IGUI_TimePanel_MatchStarting = "The match is starting",
+    IGUI_TimePanel_MatchEnded = "The match has ended",
+    
+
     
 
     

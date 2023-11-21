@@ -3,26 +3,28 @@ if not (not isClient() and not isServer()) and not isAdmin() then return end
 
 require "ROK/ClientData"
 
+-------------------------------------------------------------------
+
 ---@class AdminClientShopManager
 AdminClientShopManager = AdminClientShopManager or {}
 
 --- Transmit prices to server, which then will be transmitted back to clients
-AdminClientShopManager.transmitShopItems = function()
+function AdminClientShopManager.TransmitShopItems()
     local shopItems = ClientData.Shop.GetShopItems()
-    sendClientCommand('PZEFT-Shop', 'transmitShopItems', shopItems)
+    sendClientCommand('PZEFT-Shop', 'TransmitShopItems', shopItems)
 end
 
 --- Adjust an item's price multiplier
 ---@param fullType String
 ---@param newMultiplier number decimal
 ---@return boolean
-AdminClientShopManager.adjustItem = function(fullType, newMultiplier, sellMultiplier)
+function AdminClientShopManager.AdjustItem(fullType, newMultiplier, sellMultiplier)
     local shopItems = ClientData.Shop.GetShopItems()
     shopItems.items = shopItems.items or {}
-    
+
     if not shopItems.items[fullType] then 
-        print("ERROR: AdminClientShopManager.adjustItem - Adjusted " .. fullType .. " doesn't exist!")
-        return false 
+        print("ERROR: AdminClientShopManager.AdjustItem - Adjusted " .. fullType .. " doesn't exist!")
+        return false
     end
 
     shopItems.items[fullType].multiplier = newMultiplier or shopItems.items[fullType].multiplier
@@ -31,10 +33,9 @@ AdminClientShopManager.adjustItem = function(fullType, newMultiplier, sellMultip
     return true
 end
 
-
 --TODO Refresh daily items with % split between high value and low value
 --- Manually refreshes the daily items
-AdminClientShopManager.refreshDailyItems = function()
+function AdminClientShopManager.RefreshDailyItems()
 
     -- TODO THIS IS JUST HERE AS A WORKAROUND! This stuff should run automatically on the server and not get triggered here
     ServerData_client_debug.loadShopPrices()
@@ -42,7 +43,7 @@ AdminClientShopManager.refreshDailyItems = function()
     local shopItems = ClientData.Shop.GetShopItems()
     shopItems.dailyInventory = shopItems.dailyInventory or {}
     if not shopItems.items then 
-        print("ERROR: AdminClientShopManager.refreshDailyItems - No shop items found!")
+        print("ERROR: AdminClientShopManager.RefreshDailyItems - No shop items found!")
         return
     end
 
@@ -76,11 +77,10 @@ AdminClientShopManager.refreshDailyItems = function()
         end
     end
 
-    sendClientCommand('PZEFT-Shop', 'transmitShopItems', shopItems)
+    sendClientCommand('PZEFT-Shop', 'TransmitShopItems', shopItems)
 end
-
 
 -------------------------------------------------------------------
 
 -- TODO This is just a workaround for the proof of concept build
-Events.OnCreatePlayer.Add(AdminClientShopManager.refreshDailyItems)
+Events.OnCreatePlayer.Add(AdminClientShopManager.RefreshDailyItems)

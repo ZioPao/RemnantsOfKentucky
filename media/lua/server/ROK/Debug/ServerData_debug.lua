@@ -42,7 +42,7 @@ ClientCommands.print_shopitems = function()
     ServerData.debug.print_shopitems()
 end
 
-ClientCommands.transmitShopItems = function()
+ClientCommands.TransmitShopItems = function()
     ServerShopManager.TransmitShopItems()
 end
 
