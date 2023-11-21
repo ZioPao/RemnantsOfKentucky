@@ -3,7 +3,7 @@ if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHo
 require("ROK/DebugTools")
 --------------------
 
-local MODULE = 'PZEFT-Shop'
+local MODULE = EFT_MODULES.Shop
 local ClientCommands = {}
 
 --- Receive updated shop item list from admin client and transmit it back to all clients

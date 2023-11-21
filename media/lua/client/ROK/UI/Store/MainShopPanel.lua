@@ -25,6 +25,9 @@ local CustomTabPanel = require("ROK/UI/Store/CustomTabPanel")
 local StoreCategory = require("ROK/UI/Store/StoreCategory")
 local SellPanel = require("ROK/UI/Store/SellPanel")
 local GenericUI = require("ROK/UI/GenericUI")
+
+local ShopManager = require("ROK/Economy/ShopManager")
+local BankManager = require("ROK/Economy/BankManager")
 ------------------------------
 
 ---@class MainShopPanel : ISCollapsableWindow
@@ -80,9 +83,9 @@ end
 
 function MainShopPanel:initialise()
     ISCollapsableWindow.initialise(self)
-    ClientBankManager.RequestBankAccountFromServer()
+    BankManager.RequestBankAccountFromServer()
 
-    self.accountBalance = ClientBankManager.GetPlayerBankAccountBalance()
+    self.accountBalance = BankManager.GetPlayerBankAccountBalance()
     -- Fetch bank account
     -- if self.accountBalance == nil then
     --     print("No bank account, setting it up now. Close and reopen the menu for now")
@@ -133,7 +136,7 @@ function MainShopPanel:createChildren()
     self.essentialItemsCat:setAnchorRight(true)
     self.essentialItemsCat:setAnchorBottom(true)
     self.panel:addView(getText("IGUI_Shop_TabEssential"), self.essentialItemsCat, self.width / 3 - 2, addedHeight)
-    self.essentialItemsCat:initialiseList(ClientShopManager.GetEssentialItems())
+    self.essentialItemsCat:initialiseList(ShopManager.GetEssentialItems())
     self.essentialItemsCat.parent = self
     self.essentialItemsCat.category = 1
     table.insert(self.categories, self.essentialItemsCat)
@@ -144,7 +147,7 @@ function MainShopPanel:createChildren()
     self.dailyItemsCat:setAnchorRight(true)
     self.dailyItemsCat:setAnchorBottom(true)
     self.panel:addView(getText("IGUI_Shop_TabDaily"), self.dailyItemsCat, self.width / 3 - 2, addedHeight)
-    self.dailyItemsCat:initialiseList(ClientShopManager.GetDailyItems())
+    self.dailyItemsCat:initialiseList(ShopManager.GetDailyItems())
     self.dailyItemsCat.parent = self
     self.dailyItemsCat.category = 2
     table.insert(self.categories, self.dailyItemsCat)
@@ -166,7 +169,7 @@ end
 function MainShopPanel:update()
     ISCollapsableWindow.update(self)
 
-    self.accountBalance = ClientBankManager.GetPlayerBankAccountBalance()
+    self.accountBalance = BankManager.GetPlayerBankAccountBalance()
 end
 
 function MainShopPanel:render()

@@ -229,7 +229,7 @@ function LeadearboardPanel:fillList()
 
 
     -- TODO Request stuff from server, wait 1-2 seconds, show them
-    sendClientCommand('PZEFT-BankAccount', 'TransmitBankAccounts', {})
+    --sendClientCommand('PZEFT-BankAccount', 'TransmitBankAccounts', {})
 
 
     -- TODO Wait 5 seconds or so to update the list

@@ -1,7 +1,7 @@
 if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then return end
 
 require("ROK/DebugTools")
-local MODULE = 'PZEFT-BankAccount'
+local MODULE = EFT_MODULES.Bank
 
 -----------------------------------------
 local ClientCommands = {}
