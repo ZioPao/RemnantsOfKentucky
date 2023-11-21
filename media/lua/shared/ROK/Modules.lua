@@ -4,5 +4,6 @@ EFT_MODULES = {
     UI = "PZEFT-UI",
     Match = "PZEFT-Match",
     PvpInstances = "PZEFT-PvpInstances",
+    Safehouse = "PZEFT-Safehouse",
     Time = "PZEFT-Time"
 }

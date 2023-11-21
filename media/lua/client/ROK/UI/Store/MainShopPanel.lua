@@ -25,7 +25,7 @@ local CustomTabPanel = require("ROK/UI/Store/CustomTabPanel")
 local StoreCategory = require("ROK/UI/Store/StoreCategory")
 local SellPanel = require("ROK/UI/Store/SellPanel")
 local GenericUI = require("ROK/UI/GenericUI")
-
+local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 local ClientShopManager = require("ROK/Economy/ClientShopManager")
 local ClientBankManager = require("ROK/Economy/ClientBankManager")
 ------------------------------
@@ -185,11 +185,9 @@ end
 ------------------------------------------------
 -- Search for PC while in safehouse
 
--- TODO This should be elsewhere
-
-local function OnFillContextMenu(player, context, worldObjects, test)
+local function AddShopMenu(player, context, worldObjects, test)
     if test then return true end
-    if not ClientSafehouseInstanceHandler.isInSafehouse then return true end
+    if not SafehouseInstanceHandler.IsInSafehouse() then return true end
     local clickedObject = worldObjects[1]
     local moveableObject = ISMoveableSpriteProps.fromObject(clickedObject)
 
@@ -201,4 +199,4 @@ local function OnFillContextMenu(player, context, worldObjects, test)
 end
 
 -- For MP, we can access the menu ONLY from the admin panel
-Events.OnFillWorldObjectContextMenu.Add(OnFillContextMenu)
+Events.OnFillWorldObjectContextMenu.Add(AddShopMenu)

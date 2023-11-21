@@ -1,5 +1,6 @@
 if not isServer() then return end
 local ServerShopManager = require("ROK/Economy/ServerShopManager")
+local PvpInstanceManager = require("ROK/PvpInstanceManager")
 -----------------
 
 local MODULE = 'SERVER_DEBUG'
@@ -7,7 +8,7 @@ local MODULE = 'SERVER_DEBUG'
 local ClientCommands = {}
 
 ClientCommands.loadNewInstances = function()
-    PvpInstanceManager.loadPvpInstances()
+    PvpInstanceManager.LoadPvpInstances()
 end
 
 ClientCommands.getNextInstance = function()
@@ -51,7 +52,7 @@ ClientCommands.TeleportPlayersToInstance = function()
 end
 
 ClientCommands.sendPlayersToSafehouse = function()
-    SafehouseInstanceManager.sendPlayersToSafehouse()
+    SafehouseInstanceManager.SendPlayersToSafehouse()
 end
 
 ClientCommands.loadShopPrices = function()

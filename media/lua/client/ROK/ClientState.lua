@@ -58,7 +58,7 @@ Events.OnServerCommand.Add(OnClientStateCommands)
 local function OnPlayerExit()
     if ClientState.isInRaid == false then return end
 
-    sendClientCommand("PZEFT-PvpInstances", "RemovePlayer", {})
+    sendClientCommand(EFT_MODULES.Match, "RemovePlayer", {})
     ClientState.isInRaid = false
 end
 

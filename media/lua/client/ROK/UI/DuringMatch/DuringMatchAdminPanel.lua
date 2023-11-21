@@ -107,8 +107,6 @@ end
 
 function DuringMatchAdminPanel:update()
     BaseAdminPanel.update(self)
-
-
     local firstLabelText = "" -- Time or announcements
 
     if self:getIsMatchEnded() then
@@ -121,15 +119,10 @@ function DuringMatchAdminPanel:update()
         self.btnStop:setEnable(check)   -- FIXME if you press no on the confirmation panel this is always false
 
         firstLabelText = "Match time: " .. GenericUI.FormatTime(tonumber(ClientState.currentTime))
-        --secondLabelText = "Alive Players: <CENTRE> " .. tostring(-1)
-
     end
 
     self.labelTime:setText(firstLabelText)
     self.labelTime.textDirty = true
-
-    -- self.labelSecond:setText(secondLabelText)
-    -- self.labelSecond.textDirty = true
 end
 
 function DuringMatchAdminPanel:setAlivePlayersText(text)

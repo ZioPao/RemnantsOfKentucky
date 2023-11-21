@@ -1,5 +1,6 @@
 require "ROK/ClientData"
 local BankManager = require("ROK/Economy/ClientBankManager")
+local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 ------------------
 
 ---@class ClientShopManager
@@ -121,7 +122,7 @@ function ShopCommands.BuyItem(args)
     debugPrint("BuyItem")
 
     if args and args.item and args.quantity then
-        local cratesTable = ClientSafehouseInstanceHandler.GetCrates()
+        local cratesTable = SafehouseInstanceHandler.GetCrates()
         -- Find the first crate which has available space
         -- TODO Do it
 

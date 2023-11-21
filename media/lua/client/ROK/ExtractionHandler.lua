@@ -35,7 +35,7 @@ local ExtractionHandler = {}
 function ExtractionHandler.HandleTimer()
     local cTime = os_time()
     --print(cTime)
-    print(ClientState.extractionStatus[ExtractionHandler.key])
+    debugPrint(ClientState.extractionStatus[ExtractionHandler.key])
     if ClientState.extractionStatus[ExtractionHandler.key] == nil then
         Events.OnTick.Remove(ExtractionHandler.HandleTimer)
         debugPrint("Player not in extraction zone anymore")
@@ -47,7 +47,7 @@ function ExtractionHandler.HandleTimer()
 
     if cTime >= ExtractionHandler.stopTime then
         debugPrint("Extract now!")
-        sendClientCommand("PZEFT-PvpInstances", "RequestExtraction", {})
+        sendClientCommand(EFT_MODULES.Match, "RequestExtraction", {})
         ExtractionPanel.Close()
         Events.OnTick.Remove(ExtractionHandler.HandleTimer)
     end

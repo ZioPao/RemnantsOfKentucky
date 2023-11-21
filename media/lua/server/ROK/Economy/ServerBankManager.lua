@@ -1,3 +1,4 @@
+if not isServer() then return end
 require "ROK/ServerData"
 ------------------------------
 

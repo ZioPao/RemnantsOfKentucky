@@ -11,7 +11,7 @@ end
 -------------------------------
 
 local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
-
+local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 -------------------------------
 
 ---@class ManagePlayersPanel : ISCollapsableWindow
@@ -170,7 +170,7 @@ function ManagePlayersPanel:onClick(button)
     if button.internal == 'UNASSIGN' then
 
     elseif button.internal == 'CLEAN_STORAGE' then
-        ClientSafehouseInstanceHandler.wipeCrates()
+        SafehouseInstanceHandler.wipeCrates()
     elseif button.internal == 'STARTER_KIT' then
         -- TODO Give Starter kit to selected player
     elseif button.internal == 'WIPE_EVERYTHING' then

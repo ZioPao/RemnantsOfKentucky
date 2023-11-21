@@ -1,20 +1,20 @@
-if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then
-    return
-end
+if not isServer() then return end
 
 require("ROK/DebugTools")
 require "ROK/TeleportManager"
 local Countdown = require("ROK/Time/Countdown")
+local PvpInstanceManager = require("ROK/PvpInstanceManager")
+
 ---------------------------------------------------
 
----@class MatchHandler
+---@class MatchController
 ---@field pvpInstance pvpInstanceTable
 ---@field playersInMatch table<number,number>        Table of player ids
-local MatchHandler = {}
+local MatchController = {}
 
----Creates new MatchHandler
----@return MatchHandler
-function MatchHandler:new()
+---Creates new MatchController
+---@return MatchController
+function MatchController:new()
     local o = {}
     setmetatable(o, self)
     self.__index = self
@@ -22,15 +22,15 @@ function MatchHandler:new()
     o.pvpInstance = PvpInstanceManager.GetNextInstance()
     o.playersInMatch = {}
 
-    MatchHandler.instance = o
+    MatchController.instance = o
 
     return o
 end
 
-function MatchHandler:initialise()
+function MatchController:initialise()
     if self.instance == nil then
         debugPrint("PZ_EFT: No more instances found!")
-        MatchHandler.instance = nil
+        MatchController.instance = nil
         return
     end
 
@@ -38,9 +38,9 @@ function MatchHandler:initialise()
 end
 
 ---Setup teleporting players to their spawn points
-function MatchHandler:start()
+function MatchController:start()
     debugPrint("Starting match!")
-    PvpInstanceManager.TeleportPlayersToInstance()  -- TODO this is kinda shaky, we should integrate it here in MatchHandler
+    PvpInstanceManager.TeleportPlayersToInstance()  -- TODO this is kinda shaky, we should integrate it here in MatchController
 
     local temp = getOnlinePlayers()
     for i = 0, temp:size() - 1 do
@@ -56,12 +56,12 @@ function MatchHandler:start()
     end)
 
     -- Setup Zombie handling
-    Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.zombieIncreaseTime, MatchHandler.HandleZombieSpawns)
+    Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.zombieIncreaseTime, MatchController.HandleZombieSpawns)
 
 end
 
 --- Kill players that are still in the pvp instance and didn't manage to escape in time
-function MatchHandler:killAlivePlayers()
+function MatchController:killAlivePlayers()
     local temp = getOnlinePlayers()
     for i = 0, temp:size() - 1 do
         local player = temp:get(i)
@@ -71,28 +71,28 @@ end
 
 --- Extract the player and return to safehouse
 ---@param playerObj IsoPlayer
-function MatchHandler:extractPlayer(playerObj)
-    SafehouseInstanceManager.sendPlayerToSafehouse(playerObj)
+function MatchController:extractPlayer(playerObj)
+    SafehouseInstanceManager.SendPlayerToSafehouse(playerObj)
     self:removePlayerFromMatchList(playerObj:getOnlineID())
 end
 
 ---comment
 ---@param playerId number
-function MatchHandler:removePlayerFromMatchList(playerId)
+function MatchController:removePlayerFromMatchList(playerId)
     self.playersInMatch[playerId] = nil
 end
 
 --- Stop the match and teleport back everyone
-function MatchHandler:stopMatch()
-    SafehouseInstanceManager.sendPlayersToSafehouse()
-    MatchHandler.instance = nil
+function MatchController:stopMatch()
+    SafehouseInstanceManager.SendPlayersToSafehouse()
+    MatchController.instance = nil
 end
 
 ---Run it every once, depending on the Config, spawns zombies for each player
 ---@param loops number amount of time that this function has been called by Countdown
-function MatchHandler.HandleZombieSpawns(loops)
-    if MatchHandler.instance == nil then return end
-    for k, plId in pairs(MatchHandler.instance.playersInMatch) do
+function MatchController.HandleZombieSpawns(loops)
+    if MatchController.instance == nil then return end
+    for k, plId in pairs(MatchController.instance.playersInMatch) do
         if plId ~= nil then
             local player = getPlayerByOnlineID(plId)
             if player ~= nil then
@@ -133,10 +133,10 @@ function MatchHandler.HandleZombieSpawns(loops)
 end
 
 --------------------------------------------------
---- Get the instance of MatchHandler
----@return MatchHandler
-function MatchHandler.GetHandler()
-    return MatchHandler.instance
+--- Get the instance of MatchController
+---@return MatchController
+function MatchController.GetHandler()
+    return MatchController.instance
 end
 
 
@@ -150,7 +150,7 @@ local MatchCommands = {}
 ---A client has sent an extraction request
 ---@param playerObj IsoPlayer player requesting extraction
 function MatchCommands.RequestExtraction(playerObj)
-    local instance = MatchHandler.GetHandler()
+    local instance = MatchController.GetHandler()
     if instance == nil then return end
     instance:extractPlayer(playerObj)
 end
@@ -158,14 +158,14 @@ end
 ---Removes a player from the current match
 ---@param playerObj IsoPlayer
 function MatchCommands.RemovePlayer(playerObj)
-    local instance = MatchHandler.GetHandler()
+    local instance = MatchController.GetHandler()
     if instance == nil then return end
     instance:removePlayerFromMatchList(playerObj:getOnlineID())
 end
 
 ---@param playerObj IsoPlayer
 function MatchCommands.SendAlivePlayersAmount(playerObj)
-    local instance = MatchHandler.GetHandler()
+    local instance = MatchController.GetHandler()
 
     if instance == nil then return end
     local counter = 0
@@ -190,4 +190,4 @@ Events.OnClientCommand.Add(OnMatchCommand)
 
 
 
-return MatchHandler
+return MatchController

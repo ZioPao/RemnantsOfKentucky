@@ -1,16 +1,14 @@
-local MODULE = 'PZEFT-Time'
-
+local MODULE = EFT_MODULES.Time
 ----------------
 
-local ServerCommands = {}
+local TimeCommands = {}
 
-ServerCommands.OpenTimePanel = function()
+function TimeCommands.OpenTimePanel()
     TimePanel.Open()
 end
 
----comment
 ---@param args {time : number}
-ServerCommands.ReceiveTimeUpdate = function(args)
+function TimeCommands.ReceiveTimeUpdate(args)
     --print("Server Command - ReceiveTimeUpdate")
     --print(time[1])
     ClientState.currentTime = args.time
@@ -26,15 +24,14 @@ ServerCommands.ReceiveTimeUpdate = function(args)
 end
 
 ---------------------
-
-local OnServerCommand = function(module, command, args)
+local OnTimeCommand = function(module, command, args)
 
     if module ~= MODULE then return end
 
     --debugPrint("On Server Command - PZEFT-Time")
-    if ServerCommands[command] then
-        ServerCommands[command](args)
+    if TimeCommands[command] then
+        TimeCommands[command](args)
     end
 end
 
-Events.OnServerCommand.Add(OnServerCommand)
+Events.OnServerCommand.Add(OnTimeCommand)

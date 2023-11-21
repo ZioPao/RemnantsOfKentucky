@@ -1,4 +1,4 @@
-if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then return end
+if not isServer() then return end
 
 ---@alias idPvpInstance string "cellX-cellY"
 ---@alias pvpInstanceTable {id : idPvpInstance, x : number, y : number, spawnPoints : table, extractionPoints : table}}
@@ -10,7 +10,7 @@ local pvpInstanceSettings = PZ_EFT_CONFIG.PVPInstanceSettings
 
 -------------------------------------
 ---@class PvpInstanceManager
-PvpInstanceManager = {}
+local PvpInstanceManager = {}
 
 --- Form an instance id using the cell X and Y
 ---@param cellX number
@@ -25,16 +25,16 @@ function PvpInstanceManager.Reset()
     ServerData.PVPInstances.SetPvpInstances({})
     ServerData.PVPInstances.SetPvpUsedInstances({})
     ServerData.PVPInstances.SetPvpCurrentInstance({}, true)
-    PvpInstanceManager.loadPvpInstances()
+    PvpInstanceManager.LoadPvpInstances()
 end
 
 --- Refreshes the extractions. Used for when you change some values regarding spawnpoints and extractions.
 PvpInstanceManager.refreshPvpInstancesExtractions = function()
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
     for _, value in pairs(pvpInstances) do
-        local permanentExtractions = PvpInstanceManager.getPermanentExtractionPoints(value.x, value.y)
+        local permanentExtractions = PvpInstanceManager.GetPermanentExtractionPoints(value.x, value.y)
         permanentExtractions = permanentExtractions or {}
-        local randomExtractions = PvpInstanceManager.getRandomExtractionPoints(value.x, value.y, pvpInstanceSettings.randomExtractionPointCount)
+        local randomExtractions = PvpInstanceManager.GetRandomExtractionPoints(value.x, value.y, pvpInstanceSettings.randomExtractionPointCount)
         randomExtractions = randomExtractions or {}
 
         value.extractionPoints = PZEFT_UTILS.MergeIPairs(randomExtractions, permanentExtractions)
@@ -43,7 +43,7 @@ PvpInstanceManager.refreshPvpInstancesExtractions = function()
 end
 
 --- load PVP instances and add them to the stores
-PvpInstanceManager.loadPvpInstances = function()
+function PvpInstanceManager.LoadPvpInstances()
     local pvpInstances = {}
     local settings = pvpInstanceSettings
 
@@ -54,8 +54,8 @@ PvpInstanceManager.loadPvpInstances = function()
 
             local id = PvpInstanceManager.getInstanceID(iX, iY)
 
-            local permanentExtractions = PvpInstanceManager.getPermanentExtractionPoints(iX, iY) or {}
-            local randomExtractions = PvpInstanceManager.getRandomExtractionPoints(iX, iY, settings.randomExtractionPointCount) or {}
+            local permanentExtractions = PvpInstanceManager.GetPermanentExtractionPoints(iX, iY) or {}
+            local randomExtractions = PvpInstanceManager.GetRandomExtractionPoints(iX, iY, settings.randomExtractionPointCount) or {}
 
             pvpInstances[id] = {
                 id = id,
@@ -100,7 +100,7 @@ end
 
 --- Get the current active instance
 ---@return pvpInstanceTable?
-PvpInstanceManager.getCurrentInstance = function()
+function PvpInstanceManager.GetCurrentInstance()
     local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
     if currentInstance == nil then return nil end
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
@@ -108,21 +108,21 @@ PvpInstanceManager.getCurrentInstance = function()
 end
 
 --- Sends the current instance to all players
-PvpInstanceManager.sendCurrentInstance = function()
-    local currentInstance = PvpInstanceManager.getCurrentInstance()
+function PvpInstanceManager.SendCurrentInstance()
+    local currentInstance = PvpInstanceManager.GetCurrentInstance()
     if currentInstance == nil then return end   -- TODO add warning
     sendServerCommand("PZEFT-Data", "SetCurrentInstance", currentInstance)
 end
 
 --- Clears the players' current instance
-PvpInstanceManager.sendClearCurrentInstance = function()
+function PvpInstanceManager.SendClearCurrentInstance()
     sendServerCommand("PZEFT-Data", "SetCurrentInstance", {})
 end
 
 ---Consumes a spawnpoint.
 ---@return coords
-PvpInstanceManager.popRandomSpawnPoint = function()
-    local currentInstance = PvpInstanceManager.getCurrentInstance()
+function PvpInstanceManager.PopRandomSpawnPoint()
+    local currentInstance = PvpInstanceManager.GetCurrentInstance()
 
     local size = #currentInstance.spawnPoints
 
@@ -145,7 +145,7 @@ end
 ---@param cellY number
 ---@param count number
 ---@return areaCoords?
-PvpInstanceManager.getRandomExtractionPoints = function(cellX, cellY, count)
+function PvpInstanceManager.GetRandomExtractionPoints(cellX, cellY, count)
     if not count then
         return {}
     end
@@ -181,7 +181,7 @@ end
 ---@param cellX number
 ---@param cellY number
 ---@return areaCoords?
-PvpInstanceManager.getPermanentExtractionPoints = function(cellX, cellY)
+function PvpInstanceManager.GetPermanentExtractionPoints(cellX, cellY)
     local points = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.PermanentExtractionPoints, cellX, cellY, {"name", "time"})
     return points
 end
@@ -191,7 +191,7 @@ function PvpInstanceManager.TeleportPlayersToInstance()
     for i = 0, playersArray:size() - 1 do
         ---@type IsoPlayer
         local player = playersArray:get(i)
-        local spawnPoint = PvpInstanceManager.popRandomSpawnPoint()
+        local spawnPoint = PvpInstanceManager.PopRandomSpawnPoint()
         if not spawnPoint then return end --no more spawnpoints available
 
         --debugPrint("Teleporting to instance")
@@ -201,27 +201,47 @@ function PvpInstanceManager.TeleportPlayersToInstance()
         sendServerCommand(player, "PZEFT-State", "SetClientStateIsInRaid", {value = true})
     end
 
-    PvpInstanceManager.sendCurrentInstance()
+    PvpInstanceManager.SendCurrentInstance()
 end
 
+local function OnLoad()
+    PvpInstanceManager.LoadPvpInstances()
+end
 
-----
+Events.OnLoad.Add(OnLoad)
+Events.OnServerStarted.Add(OnLoad)
 
-PvpInstanceManager.GetAmountUsedInstances = function()
-    --debugPrint("Get amount used instances")
+
+------------------------------------------------------------------------
+--* COMMANDS FROM CLIENTS *--
+------------------------------------------------------------------------
+
+local MODULE = EFT_MODULES.PvpInstances
+local PvpInstanceCommands = {}
+
+
+---Calculate how many available instances there are and send them back to the clients
+function PvpInstanceCommands.GetAmountAvailableInstances()
     local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
     local counter = 0
     for _ in pairs(usedInstances) do
         counter = counter + 1
     end
 
-    return counter
+    local amount = 100 - counter
+    sendServerCommand(EFT_MODULES.UI, "ReceiveAmountAvailableInstances", {amount = amount})
 end
 
-
-local function OnLoad()
-    PvpInstanceManager.loadPvpInstances()
+local OnPvpInstanceCommands = function(module, command, playerObj, args)
+    if module == MODULE and PvpInstanceCommands[command] then
+        -- debugPrint("Client Command - " .. MODULE .. "." .. command)
+        PvpInstanceCommands[command](playerObj, args)
+    end
 end
 
-Events.OnLoad.Add(OnLoad)
-Events.OnServerStarted.Add(OnLoad)
+Events.OnClientCommand.Add(OnPvpInstanceCommands)
+
+
+-----------------------------
+
+return PvpInstanceManager

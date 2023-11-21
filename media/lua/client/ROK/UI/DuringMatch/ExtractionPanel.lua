@@ -38,7 +38,6 @@ function ExtractionPanel:runExtractionMethod()
     self.btnExtract:setEnable(false)
     local ExtractionHandler = require("ROK/ClientMatchHandlers/ExtractionHandler")
     ExtractionHandler.DoExtraction()
-    --self:close()
 end
 
 ---Set the text that will appear in the button
