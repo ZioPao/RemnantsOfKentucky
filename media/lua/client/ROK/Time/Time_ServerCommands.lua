@@ -8,11 +8,12 @@ ServerCommands.OpenTimePanel = function()
     TimePanel.Open()
 end
 
-
-ServerCommands.ReceiveTimeUpdate = function(time)
+---comment
+---@param args {time : number}
+ServerCommands.ReceiveTimeUpdate = function(args)
     --print("Server Command - ReceiveTimeUpdate")
     --print(time[1])
-    ClientState.currentTime = time[1]
+    ClientState.currentTime = args.time
 
     -- Check if the timer is visible.
     if not TimePanel.instance:getIsVisible() then -- TODO this is mostly a workaround for now.

@@ -15,6 +15,11 @@ local Countdown = {}
 ---@param fun function
 function Countdown.Setup(stopTime, fun)
 	Countdown.fun = fun
+
+	if fun == nil then
+		error("Function is nil!")
+	end
+
 	Countdown.stopTime = os_time() + stopTime
 
 	Events.OnTickEvenPaused.Add(Countdown.Update)
@@ -39,11 +44,10 @@ function Countdown.Update()
 
 	-- TODO THIS IS JUST FOR DEBUG
 	if not isServer() then
-		sendServerCommand(getPlayer(), "PZEFT-Time", "ReceiveTimeUpdate", {currSeconds})
+		sendServerCommand(getPlayer(), EFT_MODULES.Time, "ReceiveTimeUpdate", { time = currSeconds })
 	else
-		sendServerCommand("PZEFT-Time", "ReceiveTimeUpdate", {currSeconds})
+		sendServerCommand(EFT_MODULES.Time, "ReceiveTimeUpdate", { time = currSeconds })
 	end
-
 
 	-- Check interval fun
 	if Countdown.interval then
@@ -55,12 +59,10 @@ function Countdown.Update()
 		end
 	end
 
-
-
 	if currTime >= Countdown.stopTime then
-		print("STOP COUNTDOWN! Running func!")
-		Countdown.fun()
 		Events.OnTickEvenPaused.Remove(Countdown.Update)
+		debugPrint("STOP COUNTDOWN! Running func!")
+		Countdown.fun()
 	end
 end
 

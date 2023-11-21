@@ -16,7 +16,7 @@ require("ROK/Config")
 
 function debugPrint(text)
     if PZ_EFT_CONFIG.Debug then
-        print(text)
+        print("PZEFT: " .. tostring(text))
     end
 end
 

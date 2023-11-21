@@ -1,8 +1,9 @@
 local Countdown = require("ROK/Time/Countdown")
-local MatchHandler = require("ROK/MatchHandler/MatchHandler")
+local MatchHandler = require("ROK/MatchHandler/ServerMatchHandler")
 -------------------
 
 local ClientCommands = {}
+local MODULE = EFT_MODULES.Time
 
 ---@param playerObj IsoPlayer
 ---@param args {stopTime : number}
@@ -41,7 +42,7 @@ end
 -----------------------------
 
 local OnClientCommand = function(module, command, playerObj, args)
-    if module == 'PZEFT-Time' and ClientCommands[command] then
+    if module == MODULE and ClientCommands[command] then
         ClientCommands[command](playerObj, args)
     end
 end

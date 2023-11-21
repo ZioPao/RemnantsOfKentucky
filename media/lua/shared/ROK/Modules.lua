@@ -3,5 +3,6 @@ EFT_MODULES = {
     Shop = "PZEFT-Shop",
     UI = "PZEFT-UI",
     Match = "PZEFT-Match",
-    PvpInstances = "PZEFT-PvpInstances"
+    PvpInstances = "PZEFT-PvpInstances",
+    Time = "PZEFT-Time"
 }

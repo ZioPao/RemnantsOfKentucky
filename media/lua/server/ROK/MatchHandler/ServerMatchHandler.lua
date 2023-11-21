@@ -161,7 +161,6 @@ function MatchCommands.RemovePlayer(playerObj)
     local instance = MatchHandler.GetHandler()
     if instance == nil then return end
     instance:removePlayerFromMatchList(playerObj:getOnlineID())
-    
 end
 
 ---@param playerObj IsoPlayer
@@ -175,7 +174,7 @@ function MatchCommands.SendAlivePlayersAmount(playerObj)
             counter = counter + 1
         end
     end
-
+    debugPrint("Alive players in match: " .. tostring(counter))
     sendServerCommand(playerObj, EFT_MODULES.UI, "ReceiveAlivePlayersAmount", {amount = counter})
 
 end

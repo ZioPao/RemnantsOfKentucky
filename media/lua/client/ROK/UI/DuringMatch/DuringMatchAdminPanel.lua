@@ -13,9 +13,23 @@ function DuringMatchAdminPanel:new(x, y, width, height)
 
     o.isMatchEnded = false
     DuringMatchAdminPanel.instance = o
+
+    -- Event that handles updating the alive players thing
+    Events.EveryOneMinute.Add(DuringMatchAdminPanel.RequestAlivePlayersUpdate)
+
+
     return o
 end
 
+function DuringMatchAdminPanel.RequestAlivePlayersUpdate()
+    if DuringMatchAdminPanel.instance == nil then
+        Events.EveryOneMinute.Remove(DuringMatchAdminPanel.RequestAlivePlayersUpdate)
+        return
+    end
+    --debugPrint("Asking for alive players")
+    sendClientCommand(EFT_MODULES.Match, "SendAlivePlayersAmount", {})
+
+end
 -------------------------------------
 function DuringMatchAdminPanel:getIsMatchEnded()
     return self.isMatchEnded
@@ -107,15 +121,15 @@ function DuringMatchAdminPanel:update()
         self.btnStop:setEnable(check)   -- FIXME if you press no on the confirmation panel this is always false
 
         firstLabelText = "Match time: " .. GenericUI.FormatTime(tonumber(ClientState.currentTime))
-        secondLabelText = "Alive Players: <CENTRE> " .. tostring(-1)
+        --secondLabelText = "Alive Players: <CENTRE> " .. tostring(-1)
 
     end
 
     self.labelFirst:setText(firstLabelText)
     self.labelFirst.textDirty = true
 
-    self.labelSecond:setText(secondLabelText)
-    self.labelSecond.textDirty = true
+    -- self.labelSecond:setText(secondLabelText)
+    -- self.labelSecond.textDirty = true
 end
 
 function DuringMatchAdminPanel:setAlivePlayersText(text)
@@ -128,7 +142,7 @@ function DuringMatchAdminPanel:close()
     if self.confirmationPanel then
         self.confirmationPanel:close()
     end
-
+    DuringMatchAdminPanel.instance = nil
     BaseAdminPanel.close(self)
 end
 
