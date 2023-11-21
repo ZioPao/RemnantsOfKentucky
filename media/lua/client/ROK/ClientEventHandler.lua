@@ -1,5 +1,5 @@
 require "ROK/ClientState"
-local ClientSafehouseInstanceHandler = require("ROK/Handlers/ClientSafehouseInstanceHandler")
+local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 -----------------------------
 
 local isInSafehouseUpdateActive = false
@@ -10,22 +10,22 @@ local isRefreshSafehouseAllocationUpdateActive = false
 local function EveryOneMinute_InRaid_Events()
     if isInSafehouseUpdateActive then
         isInSafehouseUpdateActive = false
-        Events.EveryOneMinute.Remove(ClientSafehouseInstanceHandler.IsInSafehouse)
+        Events.EveryOneMinute.Remove(SafehouseInstanceHandler.IsInSafehouse)
     end
     if isRefreshSafehouseAllocationUpdateActive then
         isRefreshSafehouseAllocationUpdateActive = false
-        Events.EveryOneMinute.Remove(ClientSafehouseInstanceHandler.RefreshSafehouseAllocation)
+        Events.EveryOneMinute.Remove(SafehouseInstanceHandler.RefreshSafehouseAllocation)
     end
 end
 
 local function EveryOneMinute_Not_InRaid_Events()
     if not isInSafehouseUpdateActive then
         isInSafehouseUpdateActive = true
-        Events.EveryOneMinute.Add(ClientSafehouseInstanceHandler.IsInSafehouse)
+        Events.EveryOneMinute.Add(SafehouseInstanceHandler.IsInSafehouse)
     end
     if not isRefreshSafehouseAllocationUpdateActive then
         isRefreshSafehouseAllocationUpdateActive = true
-        Events.EveryOneMinute.Add(ClientSafehouseInstanceHandler.RefreshSafehouseAllocation)
+        Events.EveryOneMinute.Add(SafehouseInstanceHandler.RefreshSafehouseAllocation)
     end
 
     -- TODO Move this away, just for test

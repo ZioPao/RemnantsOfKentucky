@@ -1,7 +1,6 @@
 if not isServer() then return end
 
 require("ROK/DebugTools")
-local ServerShopManager = require("ROK/Economy/ServerShopManager")
 ------------------------
 
 LuaEventManager.AddEvent("PZEFT_ServerModDataReady")

@@ -1,5 +1,5 @@
 local Countdown = require("ROK/Time/Countdown")
-local MatchHandler = require("ROK/MatchHandler/ServerMatchHandler")
+local MatchHandler = require("ROK/MatchController")
 -------------------
 
 local ClientCommands = {}

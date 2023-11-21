@@ -60,8 +60,6 @@ function DuringMatchAdminPanel:createChildren()
     --self.panelInfo:paginate()
     self:addChild(self.panelInfo)
 
-
-
     self.labelTime = ISRichTextPanel:new(0, 30, self.panelInfo:getWidth(), 25)
     self.labelTime:initialise()
     self.labelTime:instantiate()
@@ -112,7 +110,7 @@ function DuringMatchAdminPanel:update()
     if self:getIsMatchEnded() then
         firstLabelText = "<SIZE:large> <CENTRE> <RED> The match has ended."
         self.btnStop:setEnable(false)
-        self:setAlivePlayersText("")
+        self:setAlivePlayersText(nil)
     else
         -- Handle confirmation panel to stop the match
         local check = self.confirmationPanel == nil or (self.confirmationPanel:isVisible())
@@ -126,7 +124,13 @@ function DuringMatchAdminPanel:update()
 end
 
 function DuringMatchAdminPanel:setAlivePlayersText(text)
-    local secondLabelText = "Alive Players: <CENTRE> " .. tostring(text)
+    local fullText
+    if text == nil then
+        fullText = ""
+    else
+        fullText = "Alive Players: <CENTRE> " .. tostring(text)
+    end
+    local secondLabelText = fullText
     self.labelAlivePlayers:setText(secondLabelText)
     self.labelAlivePlayers.textDirty = true
 end
