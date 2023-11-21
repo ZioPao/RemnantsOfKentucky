@@ -1,6 +1,9 @@
 if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHost() then return end
 
 require("ROK/DebugTools")
+local ServerShopManager = require("ROK/Economy/ServerShopManager")
+------------------------
+
 LuaEventManager.AddEvent("PZEFT_ServerModDataReady")
 
 local PZ_EFT = "PZ-EFT"

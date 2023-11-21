@@ -1,6 +1,5 @@
 local BaseAdminPanel = require("ROK/UI/BaseAdminPanel")
 local ManagePlayersPanel = require("ROK/UI/BeforeMatch/ManagePlayersPanel")
-local GenericUI = require("ROK/UI/GenericUI")
 --------------------------------
 
 -- TODO Res scaling is broken

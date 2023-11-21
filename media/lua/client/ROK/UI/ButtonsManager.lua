@@ -6,6 +6,7 @@ local DuringMatchAdminPanel = require("ROK/UI/DuringMatch/DuringMatchAdminPanel"
 -- Override ISSafetyUI to have a instance of that so we can reference it later
 local og_ISSafetyUI = ISSafetyUI.new
 
+---@diagnostic disable-next-line: duplicate-set-field
 function ISSafetyUI:new(x, y, playerNum)
     local o = og_ISSafetyUI(self, x, y, playerNum)
     ISSafetyUI.instance = o

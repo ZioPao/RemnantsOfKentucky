@@ -197,6 +197,7 @@ function CustomTabPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
 
+	---@cast o CustomTabPanel
 	return o
 end
 

@@ -10,6 +10,34 @@ function ServerShopManager.TransmitShopItems()
     ServerData.Shop.TransmitShopItems()
 end
 
+---@param shopItems any
+---@param id any
+---@param item any
+---@return table
+local function DoTags(shopItems, id, item)
+    if item.tags["JUNK"] then
+        shopItems.tags["JUNK"] = shopItems.tags["JUNK"] or {}
+        shopItems.tags["JUNK"][id] = true
+    end
+
+    if item.tags["ESSENTIALS"] then
+        shopItems.tags["ESSENTIALS"] = shopItems.tags["ESSENTIALS"] or {}
+        shopItems.tags["ESSENTIALS"][id] = true
+    end
+
+    if item.tags["HIGHVALUE"] then
+        shopItems.tags["HIGHVALUE"] = shopItems.tags["HIGHVALUE"] or {}
+        shopItems.tags["HIGHVALUE"][id] = true
+    end
+
+    if item.tags["LOWVALUE"] then
+        shopItems.tags["LOWVALUE"] = shopItems.tags["LOWVALUE"] or {}
+        shopItems.tags["LOWVALUE"][id] = true
+    end
+    return shopItems
+end
+
+
 function ServerShopManager.LoadShopPrices()
     local shopItems = ServerData.Shop.GetShopItems()
     shopItems.items = shopItems.items or {}

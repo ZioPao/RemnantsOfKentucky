@@ -6,7 +6,7 @@ local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
 local GenericUI = require("ROK/UI/GenericUI")
 local CommonStore = require("ROK/UI/Store/CommonStore")
 
-local ShopManager = require("ROK/Economy/ShopManager")
+local ClientShopManager = require("ROK/Economy/ClientShopManager")
 ------------------------
 
 
@@ -92,7 +92,7 @@ function BuyQuantityPanel:onConfirmBuy()
     }
 
     local quantity = tonumber(self.entryAmount:getInternalText())
-    ShopManager.TryBuy(itemTable, quantity)
+    ClientShopManager.TryBuy(itemTable, quantity)
 end
 
 function BuyQuantityPanel:onStartBuy()

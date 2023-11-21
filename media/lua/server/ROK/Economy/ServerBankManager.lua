@@ -73,7 +73,7 @@ function BankCommands.ProcessTransaction(playerObj, args)
     end
 
     --Send updated bank account details to player
-    ClientCommands.RequestBankAccount(playerObj, {})
+    BankCommands.RequestBankAccount(playerObj)
 end
 
 

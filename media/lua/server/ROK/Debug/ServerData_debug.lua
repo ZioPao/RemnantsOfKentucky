@@ -1,5 +1,7 @@
 require "ROK/ServerData"
 require "ROK/PvpInstanceManager/PvpInstanceManager"
+
+local ServerShopManager = require("ROK/Economy/ServerShopManager")
 -----------------
 
 local MODULE = 'SERVER_DEBUG'

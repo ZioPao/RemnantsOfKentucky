@@ -1,5 +1,5 @@
 require "ROK/ClientData"
-local BankManager = require("ROK/Economy/BankManager")
+local BankManager = require("ROK/Economy/ClientBankManager")
 ------------------
 
 ---@class ClientShopManager
