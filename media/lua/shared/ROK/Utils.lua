@@ -4,6 +4,9 @@ PZEFT_UTILS = PZEFT_UTILS or {}
 ---@alias coords {x : number, y : number, z : number}
 ---@alias areaCoords {x1 : number, y1 : number, z1 : number, x2 : number, y2 : number, z2: number}
 
+---@alias bankAccountTable {balance : number}
+---@alias EFTModData {bankAccount : bankAccountTable, safehouse : coords}
+
 --- Maps world coordinates starting at cell 0,0 to different cell coordinates
 ---@param coordinateList coords {x=0,y=0,z=0}
 ---@param cellX number
@@ -227,13 +230,15 @@ end
 
 ---Get Object EFT Mod Data
 ---@param obj IsoObject
----@return table
+---@return EFTModData
 PZEFT_UTILS.GetObjectModData = function(obj)
     local md = obj:getModData()
     md.PZEFT = md.PZEFT or {}
     return md.PZEFT
 end
 
+---comment
+---@return EFTModData
 PZEFT_UTILS.GetPlayerModData = function()
     return PZEFT_UTILS.GetObjectModData(getPlayer())
 end

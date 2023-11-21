@@ -64,7 +64,6 @@ function MainShopPanel:close()
     ISCollapsableWindow.close(self)
 end
 
-
 function MainShopPanel.Open()
     MainShopPanel.instance = MainShopPanel:new(0, 0, 800, 600, getPlayer())
     MainShopPanel.instance:initialise()
@@ -81,9 +80,9 @@ end
 
 function MainShopPanel:initialise()
     ISCollapsableWindow.initialise(self)
-    ClientBankManager.requestBankAccountFromServer()
+    ClientBankManager.RequestBankAccountFromServer()
 
-    self.accountBalance = ClientBankManager.getPlayerBankAccountBalance()
+    self.accountBalance = ClientBankManager.GetPlayerBankAccountBalance()
     -- Fetch bank account
     -- if self.accountBalance == nil then
     --     print("No bank account, setting it up now. Close and reopen the menu for now")
@@ -167,7 +166,7 @@ end
 function MainShopPanel:update()
     ISCollapsableWindow.update(self)
 
-    self.accountBalance = ClientBankManager.getPlayerBankAccountBalance()
+    self.accountBalance = ClientBankManager.GetPlayerBankAccountBalance()
 end
 
 function MainShopPanel:render()

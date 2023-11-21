@@ -1,15 +1,11 @@
---[[
-    A panel that will appear on the right of the scrolling list.
-    Asks how how much stuff you want of that specific object, show the total cost, and has a button to exec the transaction
-]]
-
+-- A panel that will appear on the right of the scrolling list.
+-- Asks how how much stuff you want of that specific object, show the total cost, and has a button to exec the transaction
 
 -------------------------
 local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
 local GenericUI = require("ROK/UI/GenericUI")
 local CommonStore = require("ROK/UI/Store/CommonStore")
 ------------------------
-
 
 
 ---@class BuyQuantityPanel : ISPanel

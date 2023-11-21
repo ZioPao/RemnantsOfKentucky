@@ -64,10 +64,10 @@ ClientCommands.setBankAccount = function(args)
     local name = args.name
     local balance = args.balance
 
-    local bankAccount = {}
-    bankAccount[name] = {balance = balance}
-
-    ServerData.Bank.SetBankAccounts(bankAccount)
+    -- Get Bank accounts 
+    local bankAccounts = ServerData.Bank.GetBankAccounts()
+    bankAccounts[name] = {balance = balance}
+    ServerData.Bank.SetBankAccounts(bankAccounts)
 
 end
 

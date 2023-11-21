@@ -9,7 +9,7 @@ require "ROK/ServerData"
 ---@class ServerShopManager
 ServerShopManager = ServerShopManager or {}
 
-local function doTags(shopItems, id, item)
+local function DoTags(shopItems, id, item)
     if item.tags["JUNK"] then
         shopItems.tags["JUNK"] = shopItems.tags["JUNK"] or {}
         shopItems.tags["JUNK"][id] = true
@@ -44,7 +44,7 @@ function ServerShopManager.LoadShopPrices()
     if shopItems.doInitShopItems then
         shopItems.doInitShopItems = nil
         for i, v in pairs(PZ_EFT_ShopItems_Config.data) do
-            shopItems = doTags(shopItems, i, v)
+            shopItems = DoTags(shopItems, i, v)
             shopItems.items[i] = {
                 fullType = v.fullType,
                 tags = v.tags,

@@ -49,7 +49,6 @@ ClientSafehouseInstanceHandler.getSafehouse = function()
     return md.safehouse
 end
 
-
 ---@return table? {ItemContainer}
 ClientSafehouseInstanceHandler.GetCrates = function()
     local cratesTable = {}

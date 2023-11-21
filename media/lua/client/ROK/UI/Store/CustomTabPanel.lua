@@ -1,9 +1,6 @@
---[[
-    A simple modification of the original ISTabPanel
-]]
-
 require "ISUI/ISTabPanel"
 
+--- A simple modification of the original ISTabPanel
 ---@class CustomTabPanel : ISTabPanel
 local CustomTabPanel = ISTabPanel:derive("CustomTabPanel")
 

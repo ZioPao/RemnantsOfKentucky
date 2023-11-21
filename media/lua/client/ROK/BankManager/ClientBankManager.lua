@@ -1,8 +1,9 @@
+---@class ClientBankManager
 ClientBankManager = ClientBankManager or {}
 
 --TODO: When opening shop menu, request account
 --- Get account information by username
-ClientBankManager.requestBankAccountFromServer = function()
+function ClientBankManager.RequestBankAccountFromServer()
     local md = PZEFT_UTILS.GetPlayerModData()
     md.bankAccount = nil
 
@@ -11,7 +12,7 @@ end
 
 --- Returns account balance from player's mod data
 ---@return number?
-ClientBankManager.getPlayerBankAccountBalance = function()
+function ClientBankManager.GetPlayerBankAccountBalance()
     local md = PZEFT_UTILS.GetPlayerModData()
 
     if md.bankAccount and md.bankAccount.balance then
@@ -32,8 +33,9 @@ end
 ---@param failCallbackModule string
 ---@param failCallbackCommand string
 ---@param failCallbackArgs table
-ClientBankManager.TryProcessTransaction = function(amount, successCallbackModule, successCallbackCommand,
+ function ClientBankManager.TryProcessTransaction(amount, successCallbackModule, successCallbackCommand,
     successCallbackArgs, failCallbackModule, failCallbackCommand, failCallbackArgs)
+
     sendClientCommand('PZEFT-BankAccount', "ProcessTransaction", {
         amount = amount,
         onSuccess = {

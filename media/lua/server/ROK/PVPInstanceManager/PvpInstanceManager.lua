@@ -109,6 +109,7 @@ end
 ---@return pvpInstanceTable?
 PvpInstanceManager.getCurrentInstance = function()
     local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
+    if currentInstance == nil then return nil end
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
     return pvpInstances[currentInstance.id]
 end
@@ -129,6 +130,7 @@ end
 ---@return coords
 PvpInstanceManager.popRandomSpawnPoint = function()
     local currentInstance = PvpInstanceManager.getCurrentInstance()
+
     local size = #currentInstance.spawnPoints
 
     if size <= 0 then
