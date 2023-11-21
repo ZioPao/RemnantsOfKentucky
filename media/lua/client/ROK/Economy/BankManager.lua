@@ -1,9 +1,9 @@
 --- Requests, updates, etc bank accounts from the client
 
----@class BankManager
-local BankManager = {}
+---@class ClientBankManager
+local ClientBankManager = {}
 
-function BankManager.RequestBankAccountFromServer()
+function ClientBankManager.RequestBankAccountFromServer()
     local md = PZEFT_UTILS.GetPlayerModData()
     md.bankAccount = nil
     sendClientCommand(EFT_MODULES.bank, "RequestBankAccount", {})
@@ -11,7 +11,7 @@ end
 
 --- Returns account balance from player's mod data
 ---@return number?
-function BankManager.GetPlayerBankAccountBalance()
+function ClientBankManager.GetPlayerBankAccountBalance()
     local md = PZEFT_UTILS.GetPlayerModData()
     if md.bankAccount and md.bankAccount.balance then
         return md.bankAccount.balance
@@ -30,7 +30,7 @@ end
 ---@param failCallbackModule string
 ---@param failCallbackCommand string
 ---@param failCallbackArgs table
-function BankManager.TryProcessTransaction(amount, successCallbackModule, successCallbackCommand,
+function ClientBankManager.TryProcessTransaction(amount, successCallbackModule, successCallbackCommand,
     successCallbackArgs, failCallbackModule, failCallbackCommand, failCallbackArgs)
 
     sendClientCommand(EFT_MODULES.Bank, "ProcessTransaction", {
@@ -88,4 +88,4 @@ end
 Events.OnServerCommand.Add(OnBankCommands)
 
 
-return BankManager
+return ClientBankManager

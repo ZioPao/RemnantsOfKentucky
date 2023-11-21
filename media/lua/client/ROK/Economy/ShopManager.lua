@@ -2,16 +2,16 @@ require "ROK/ClientData"
 local BankManager = require("ROK/Economy/BankManager")
 ------------------
 
----@class ShopManager
-local ShopManager = {}
+---@class ClientShopManager
+local ClientShopManager = {}
 
 --- Try buy an item for quantity
 ---@param item table
 ---@param quantity number?
-function ShopManager.TryBuy(item, quantity)
+function ClientShopManager.TryBuy(item, quantity)
     local totalPrice = item.basePrice * item.multiplier * quantity
 
-    if not ShopManager.CanBuy(totalPrice) then
+    if not ClientShopManager.CanBuy(totalPrice) then
         print("WARN: ClientShopManager.CanBuy - Player tried to buy with insufficient balance")
         return false
     end
@@ -28,7 +28,7 @@ end
 --- Try sell items for quantity
 --- See PZ_EFT_ShopItems_Config.addItem for item value
 ---@param sellData table {{item = {}, quantity = 0}...}
-function ShopManager.TrySell(sellData)
+function ClientShopManager.TrySell(sellData)
     local hasData = false
     local data = {}
     data.items = {}
@@ -48,7 +48,7 @@ function ShopManager.TrySell(sellData)
         end
     end
 
-    if not hasData or not ShopManager.CanSell(data.items) then
+    if not hasData or not ClientShopManager.CanSell(data.items) then
         return
     end
 
@@ -57,7 +57,7 @@ end
 
 ---@param totalPrice number
 ---@return boolean
-function ShopManager.CanBuy(totalPrice)
+function ClientShopManager.CanBuy(totalPrice)
     local md = PZEFT_UTILS.GetPlayerModData()
     if md.bankAccount and type(md.bankAccount.balance) == 'number' then
         return md.bankAccount.balance >= totalPrice
@@ -70,7 +70,7 @@ end
 
 ---@param items any
 ---@return boolean
-function ShopManager.CanSell(items)
+function ClientShopManager.CanSell(items)
     local player = getPlayer()
     local inventory = player:getInventory()
 
@@ -84,7 +84,7 @@ function ShopManager.CanSell(items)
 end
 
 ---@return table
-function ShopManager.GetDailyItems()
+function ClientShopManager.GetDailyItems()
     local shopItems = ClientData.Shop.GetShopItems()
     if shopItems and shopItems.dailyInventory then
         return shopItems.dailyInventory
@@ -94,7 +94,7 @@ function ShopManager.GetDailyItems()
 end
 
 ---@return table
-function ShopManager.GetEssentialItems()
+function ClientShopManager.GetEssentialItems()
     local shopItems = ClientData.Shop.GetShopItems()
     if shopItems and shopItems.tags and shopItems.tags['ESSENTIALS'] then
         local essentialsList = {}
@@ -174,4 +174,4 @@ end
 
 Events.OnServerCommand.Add(OnShopCommand)
 
-return ShopManager
+return ClientShopManager

@@ -2,11 +2,11 @@
 require "ROK/ClientData"
 -----------------------
 
----@class AdminShopManager
-local AdminShopManager = {}
+---@class ClientAdminShopManager
+local ClientAdminShopManager = {}
 
 --- Transmit prices to server, which then will be transmitted back to clients
-function AdminShopManager.TransmitShopItems()
+function ClientAdminShopManager.TransmitShopItems()
     local shopItems = ClientData.Shop.GetShopItems()
     sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', shopItems)
 end
@@ -15,7 +15,7 @@ end
 ---@param fullType String
 ---@param newMultiplier number decimal
 ---@return boolean
-function AdminShopManager.AdjustItem(fullType, newMultiplier, sellMultiplier)
+function ClientAdminShopManager.AdjustItem(fullType, newMultiplier, sellMultiplier)
     local shopItems = ClientData.Shop.GetShopItems()
     shopItems.items = shopItems.items or {}
 
@@ -32,14 +32,14 @@ end
 
 --TODO Refresh daily items with % split between high value and low value
 --- Manually refreshes the daily items
-function AdminShopManager.RefreshDailyItems()
+function ClientAdminShopManager.RefreshDailyItems()
 
     -- TODO THIS IS JUST HERE AS A WORKAROUND! This stuff should run automatically on the server and not get triggered here
     ServerData_client_debug.loadShopPrices()
 
     local shopItems = ClientData.Shop.GetShopItems()
     shopItems.dailyInventory = shopItems.dailyInventory or {}
-    if not shopItems.items then 
+    if not shopItems.items then
         debugPrint("ERROR: AdminClientShopManager.RefreshDailyItems - No shop items found!")
         return
     end
@@ -80,4 +80,7 @@ end
 -------------------------------------------------------------------
 
 -- TODO This is just a workaround for the proof of concept build
-Events.OnCreatePlayer.Add(AdminShopManager.RefreshDailyItems)
+Events.OnCreatePlayer.Add(ClientAdminShopManager.RefreshDailyItems)
+
+
+return ClientAdminShopManager
