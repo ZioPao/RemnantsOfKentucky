@@ -19,7 +19,7 @@ function MatchHandler:new()
     setmetatable(o, self)
     self.__index = self
 
-    o.pvpInstance = PvpInstanceManager.getNextInstance()
+    o.pvpInstance = PvpInstanceManager.GetNextInstance()
     o.playersInMatch = {}
 
     MatchHandler.instance = o
@@ -85,7 +85,6 @@ end
 --- Stop the match and teleport back everyone
 function MatchHandler:stopMatch()
     SafehouseInstanceManager.sendPlayersToSafehouse()
-    PvpInstanceManager.getNextInstance()
     MatchHandler.instance = nil
 end
 

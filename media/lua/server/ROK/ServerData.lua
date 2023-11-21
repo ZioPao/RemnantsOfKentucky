@@ -74,13 +74,13 @@ ServerData.PVPInstances.SetPvpInstances = function(data)
 end
 
 --- Get table of PVP used instances data
----@return pvpInstanceTable
+---@return table<string, boolean>
 ServerData.PVPInstances.GetPvpUsedInstances = function()
     return ModData.getOrCreate(KEY_PVP_USEDINSTANCES)
 end
 
 --- Set table of PVP used instances data
----@param data pvpInstanceTable
+---@param data table<string, boolean>       id and if it's used or not
 ServerData.PVPInstances.SetPvpUsedInstances = function(data)
     ModData.add(KEY_PVP_USEDINSTANCES, data)
 end

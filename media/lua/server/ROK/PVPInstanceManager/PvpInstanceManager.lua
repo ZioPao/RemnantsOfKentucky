@@ -72,7 +72,7 @@ end
 
 --- Marks old instance as used and Gets new instance
 ---@return pvpInstanceTable?
-PvpInstanceManager.getNextInstance = function()
+function PvpInstanceManager.GetNextInstance()
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
     local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
     local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
@@ -83,6 +83,7 @@ PvpInstanceManager.getNextInstance = function()
             changedInstance = true
             usedInstances[key] = true
             currentInstance.id = key
+            debugPrint("Set to used: " .. tostring(key))
             break
         end
     end

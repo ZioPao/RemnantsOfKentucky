@@ -11,7 +11,7 @@ ClientCommands.loadNewInstances = function()
 end
 
 ClientCommands.getNextInstance = function()
-    PvpInstanceManager.getNextInstance()
+    PvpInstanceManager.GetNextInstance()
 end
 
 ClientCommands.print_pvp_instances = function()
