@@ -27,7 +27,7 @@ function TimePanel:render()
     if timeNumber == nil then return end
 
     if timeNumber <= 0 then
-        print("Closing timer")
+        debugPrint("Closing timer")
         self:close()
     end
     self.timePanel:setText(GenericUI.FormatTime(timeNumber))
@@ -86,7 +86,7 @@ function TimePanel.Open(description)
         TimePanel.instance:close()
     end
 
-    print("Opening up timer")
+    debugPrint("Opening up timer")
     local width = 300
     local height = 100
     local padding = 50
@@ -103,6 +103,5 @@ function TimePanel.Open(description)
 end
 
 function TimePanel.Close()
-    -- FIXME sometimes it breaks.
     TimePanel.instance:close()
 end

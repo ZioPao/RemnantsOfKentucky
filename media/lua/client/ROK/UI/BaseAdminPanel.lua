@@ -4,6 +4,13 @@
 ---@class BaseAdminPanel : ISCollapsableWindow
 local BaseAdminPanel = ISCollapsableWindow:derive("BaseAdminPanel")
 
+local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
+local FONT_SCALE = FONT_HGT_SMALL / 16
+
+if FONT_SCALE < 1 then
+    FONT_SCALE = 1
+end
+
 function BaseAdminPanel:new(x, y, width, height)
     local o = ISCollapsableWindow:new(x, y, width, height)
     setmetatable(o, self)
@@ -36,9 +43,9 @@ function BaseAdminPanel.OnOpenPanel(type)
         ButtonManager["AdminPanel"]:setImage(BUTTONS_DATA_TEXTURES["AdminPanel"].OFF)
         return
     end
-    -- TODO Make it scale based on resolution
-    local width = 250
-    local height = 300
+
+    local width = 250 * FONT_SCALE
+    local height = 300 * FONT_SCALE
 
     local x = getCore():getScreenWidth() / 2 - width
     local y = getCore():getScreenHeight() / 2 - height

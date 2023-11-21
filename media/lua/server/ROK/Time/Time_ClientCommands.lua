@@ -5,14 +5,11 @@ local MatchHandler = require("ROK/MatchHandler/MatchHandler")
 
 local ClientCommands = {}
 
--- TODO Remove this
-local function test()
-    print("Done!")
-end
-
-ClientCommands.StartMatchCountdown = function(playerObj, args)
+---@param playerObj IsoPlayer
+---@param args {stopTime : number}
+function ClientCommands.StartMatchCountdown(playerObj, args)
     local function StartMatch()
-        print("Start Match")
+        debugPrint("Start Match")
         local handler = MatchHandler:new()
         handler:initialise()
 
@@ -22,11 +19,13 @@ ClientCommands.StartMatchCountdown = function(playerObj, args)
     Countdown.Setup(args.stopTime, StartMatch)
 end
 
-ClientCommands.StopMatchCountdown = function (_, _)
+function ClientCommands.StopMatchCountdown()
     Countdown.Stop()
 end
 
-ClientCommands.StartMatchEndCountdown = function(playerObj, args)
+---@param playerObj IsoPlayer
+---@param args {stopTime : number}
+function ClientCommands.StartMatchEndCountdown(playerObj, args)
 
     local function StopMatch()
         local handler = MatchHandler.GetHandler()
@@ -38,11 +37,6 @@ ClientCommands.StartMatchEndCountdown = function(playerObj, args)
     Countdown.Setup(args.stopTime, StopMatch)
     sendServerCommand('PZEFT-UI', 'SetTimePanelDescription', {index = 2})       -- 2 = The match has ended
 
-end
-
-ClientCommands.StartTimer = function(_, args)
-    --print("PZFET-Time: timer setup")
-    Timer.Setup(args.stopTime, args.timeBetweenFunc, test)
 end
 
 -----------------------------

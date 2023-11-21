@@ -63,5 +63,5 @@ function debug_testCountdown()
 end
 
 function debug_testTimer()
-    sendClientCommand("PZEFT-Time", "StartTimer", {stopTime = 30, timeBetweenFunc=5})
+    --sendClientCommand("PZEFT-Time", "StartTimer", {stopTime = 30, timeBetweenFunc=5})
 end

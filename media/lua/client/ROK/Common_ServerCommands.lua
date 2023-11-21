@@ -47,7 +47,6 @@ ServerCommands.CommitDieIfInRaid = function()
         ClientState.extractionStatus = {}
         local pl = getPlayer()
         pl:Kill(pl)
-        --getPlayer():getBodyDamage():setHealth(0)
     end
 end
 

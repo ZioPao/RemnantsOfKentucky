@@ -9,17 +9,17 @@ PZEFT_UTILS = PZEFT_UTILS or {}
 ---@param cellX number
 ---@param cellY number
 ---@param otherArgs table list of names of arguments to copy from coordinateList, Example: {"time"}
----@return areaCoords
+---@return areaCoords?
 PZEFT_UTILS.MapWorldCoordinatesToCell = function(coordinateList, cellX, cellY, otherArgs)
     local mappedCoordinates = {}
 
-    print("CELLX: " .. tostring(cellX))
-    print("CELLY: " .. tostring(cellY))
+    debugPrint("CELLX: " .. tostring(cellX))
+    debugPrint("CELLY: " .. tostring(cellY))
 
     if not coordinateList then return nil end
 
     for index, point in ipairs(coordinateList) do
-        local wX = cellX * 300 -- TODO Add multiplier per used instances
+        local wX = cellX * 300
         local wY = cellY * 300
         local newEntry
         if point.x ~= nil then

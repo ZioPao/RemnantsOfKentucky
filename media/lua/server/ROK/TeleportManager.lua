@@ -4,15 +4,16 @@ end
 
 ------------------------
 
-
--- TODO Make it local
-
 ---@class TeleportManager
-TeleportManager = TeleportManager or {}
+local TeleportManager = {}
 
 --- Handle teleportation from the client side
-TeleportManager.Teleport = function(player, x, y, z)
-    print("TeleportManager.Teleport: Teleporting player")
+---@param player IsoPlayer
+---@param x number
+---@param y number
+---@param z number
+function TeleportManager.Teleport(player, x, y, z)
+    debugPrint("TeleportManager.Teleport: Teleporting player")
     sendServerCommand(player, "PZEFT", "Teleport", {
         x = x,
         y = y,
@@ -21,4 +22,4 @@ TeleportManager.Teleport = function(player, x, y, z)
 end
 
 
---return TeleportManager
+return TeleportManager

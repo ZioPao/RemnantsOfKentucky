@@ -5,6 +5,7 @@ if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHo
 
 require("ROK/DebugTools")
 require("ROK/Config")
+local TeleportManager = require("ROK/TeleportManager")
 local pvpInstanceSettings = PZ_EFT_CONFIG.PVPInstanceSettings
 
 -------------------------------------
@@ -95,7 +96,7 @@ PvpInstanceManager.getNextInstance = function()
     end
 
     if not changedInstance then
-        print("No more instances left! Please reset map files.")
+        debugPrint("No more instances left! Please reset map files.")
         return nil
     end
 
@@ -131,7 +132,7 @@ PvpInstanceManager.popRandomSpawnPoint = function()
     local size = #currentInstance.spawnPoints
 
     if size <= 0 then
-        print("No more spawn points left to pop!")
+        debugPrint("No more spawn points left to pop!")
         return nil
     end
 
@@ -157,7 +158,7 @@ PvpInstanceManager.getRandomExtractionPoints = function(cellX, cellY, count)
     local extractionPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.RandomExtractionPoints, cellX, cellY, {"name", "time"})
 
     if extractionPoints == nil then
-        print("ERROR: no extraction points")
+        debugPrint("ERROR: no extraction points")
         return nil
     end
 
@@ -193,7 +194,7 @@ end
 PvpInstanceManager.teleportPlayersToInstance = function()
     --local currentInstance = PvpInstanceManager.getCurrentInstance()
 
-    --print("Teleport Players to Instance")
+    --debugPrint("Teleport Players to Instance")
     local temp = getOnlinePlayers()
     for i = 0, temp:size() - 1 do
 
@@ -202,7 +203,7 @@ PvpInstanceManager.teleportPlayersToInstance = function()
         local spawnPoint = PvpInstanceManager.popRandomSpawnPoint()
         if not spawnPoint then return end --no more spawnpoints available
 
-        --print("Teleporting to instance")
+        --debugPrint("Teleporting to instance")
         TeleportManager.Teleport(player, spawnPoint.x, spawnPoint.y, spawnPoint.z)
 
         -- Client Data
@@ -216,10 +217,10 @@ end
 ----
 
 PvpInstanceManager.getAmountUsedInstances = function()
-    --print("Get amount used instances")
+    --debugPrint("Get amount used instances")
     local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
     if usedInstances ~= nil then
-        --print("Used instances is not nil")
+        --debugPrint("Used instances is not nil")
         --0print(PZEFT_UTILS.PrintTable(usedInstances))
 
         -- TODO For some fucking reason I can't use # even if it's a normal table.
