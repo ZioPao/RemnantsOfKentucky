@@ -1,5 +1,6 @@
 require("ROK/DebugTools")
 
+---@class ClientSafehouseInstanceHandler
 ClientSafehouseInstanceHandler = ClientSafehouseInstanceHandler or {}
 
 ClientSafehouseInstanceHandler.refreshSafehouseAllocation = function()
@@ -100,8 +101,8 @@ end
 --- On player initialise
 --- Request safehouse allocation of player from server
 ---@param player IsoPlayer
-ClientSafehouseInstanceHandler.onPlayerInit = function(player)
-    print("Running onplayerinit")
+function ClientSafehouseInstanceHandler.OnPlayerInit(player)
+    debugPrint("Running onplayerinit")
     if player and player == getPlayer() then
         local md = PZEFT_UTILS.GetPlayerModData()
         if not md.safehouse then
@@ -113,7 +114,7 @@ ClientSafehouseInstanceHandler.onPlayerInit = function(player)
     end
 
     -- TODO This probably needs to be moved somewhere else
-    Events.OnPlayerUpdate.Remove(ClientSafehouseInstanceHandler.onPlayerInit)
+    Events.OnPlayerUpdate.Remove(ClientSafehouseInstanceHandler.OnPlayerInit)
 end
 
-Events.OnPlayerUpdate.Add(ClientSafehouseInstanceHandler.onPlayerInit)
+Events.OnPlayerUpdate.Add(ClientSafehouseInstanceHandler.OnPlayerInit)

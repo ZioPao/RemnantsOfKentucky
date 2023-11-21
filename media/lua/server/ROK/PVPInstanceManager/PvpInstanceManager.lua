@@ -16,7 +16,7 @@ PvpInstanceManager = {}
 ---@param cellX number
 ---@param cellY number
 ---@return string "cellX-cellY"
-PvpInstanceManager.getInstanceID = function(cellX, cellY)
+function PvpInstanceManager.getInstanceID(cellX, cellY)
     return cellX .. "-" .. cellY
 end
 
@@ -118,12 +118,12 @@ end
 PvpInstanceManager.sendCurrentInstance = function()
     local currentInstance = PvpInstanceManager.getCurrentInstance()
     if currentInstance == nil then return end   -- TODO add warning
-    sendServerCommand("PZEFT", "SetCurrentInstance", currentInstance)
+    sendServerCommand("PZEFT-Data", "SetCurrentInstance", currentInstance)
 end
 
 --- Clears the players' current instance
 PvpInstanceManager.sendClearCurrentInstance = function()
-    sendServerCommand("PZEFT", "SetCurrentInstance", {})
+    sendServerCommand("PZEFT-Data", "SetCurrentInstance", {})
 end
 
 ---Consumes a spawnpoint.
@@ -193,15 +193,11 @@ PvpInstanceManager.getPermanentExtractionPoints = function(cellX, cellY)
     return points
 end
 
-PvpInstanceManager.teleportPlayersToInstance = function()
-    --local currentInstance = PvpInstanceManager.getCurrentInstance()
-
-    --debugPrint("Teleport Players to Instance")
-    local temp = getOnlinePlayers()
-    for i = 0, temp:size() - 1 do
-
+function PvpInstanceManager.TeleportPlayersToInstance()
+    local playersArray = getOnlinePlayers()
+    for i = 0, playersArray:size() - 1 do
         ---@type IsoPlayer
-        local player = temp:get(i)
+        local player = playersArray:get(i)
         local spawnPoint = PvpInstanceManager.popRandomSpawnPoint()
         if not spawnPoint then return end --no more spawnpoints available
 
@@ -209,7 +205,7 @@ PvpInstanceManager.teleportPlayersToInstance = function()
         TeleportManager.Teleport(player, spawnPoint.x, spawnPoint.y, spawnPoint.z)
 
         -- Client Data
-        sendServerCommand(player, "PZEFT", "SetClientStateIsInRaid", {value = true})
+        sendServerCommand(player, "PZEFT-State", "SetClientStateIsInRaid", {value = true})
     end
 
     PvpInstanceManager.sendCurrentInstance()

@@ -3,22 +3,6 @@ require "PZEFT_debugtools"
 local MODULE = "PZEFT"
 local ServerCommands = {}
 
-
----Triggers PZEFT_ClientModDataReady to initialize Global Mod Data on the client
----@param playerObj any
-ServerCommands.SeverModDataReady = function(playerObj)
-    triggerEvent("PZEFT_ClientModDataReady")
-end
-
---- Sets pvpInstanceTable
---- Or use ClientCommands.print_pvp_currentinstance() to print current instance on the server's console
----@param instanceData pvpInstanceTable
-ServerCommands.SetCurrentInstance = function(instanceData)
-    local md = getPlayer():getModData()
-    md.currentInstance = md.currentInstance or {}
-    md.currentInstance = instanceData
-end
-
 --- Sets the amount of available instances to the client state
 ---@param args {amount : integer}
 ServerCommands.ReceiveAmountAvailableInstances = function(args)
@@ -27,7 +11,7 @@ end
 
 ---Set client state if is in a raid or not
 ---@param args {value : boolean}
-ServerCommands.SetClientStateIsInRaid = function(args)
+function ServerCommands.SetClientStateIsInRaid(args)
 
     ClientState.isInRaid = args.value
     if args.value == false then
@@ -42,7 +26,7 @@ ServerCommands.SetClientStateIsInRaid = function(args)
 
 end
 
-ServerCommands.CommitDieIfInRaid = function()
+function ServerCommands.CommitDieIfInRaid()
     if ClientState.isInRaid then
         ClientState.extractionStatus = {}
         local pl = getPlayer()
@@ -50,7 +34,9 @@ ServerCommands.CommitDieIfInRaid = function()
     end
 end
 
-ServerCommands.Teleport = function(args)
+---Teleport the player
+---@param args {x : number, y : number, z : number}
+function ServerCommands.Teleport(args)
     local player = getPlayer()
     player:setX(args.x)
     player:setY(args.y)

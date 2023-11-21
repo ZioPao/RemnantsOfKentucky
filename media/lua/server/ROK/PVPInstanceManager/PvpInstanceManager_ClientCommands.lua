@@ -9,10 +9,10 @@ local MODULE = 'PZEFT-PvpInstances'
 
 local ClientCommands = {}
 
-ClientCommands.GetAmountAvailableInstances = function(_, _)
+function ClientCommands.GetAmountAvailableInstances()
     local amount = 100 - PvpInstanceManager.getAmountUsedInstances()
     --print("Amount of available instances: " .. amount)
-    sendServerCommand("PZEFT", "ReceiveAmountAvailableInstances", {amount = amount})
+    sendServerCommand("PZEFT-State", "ReceiveAmountAvailableInstances", {amount = amount})
 end
 
 -------------------------------

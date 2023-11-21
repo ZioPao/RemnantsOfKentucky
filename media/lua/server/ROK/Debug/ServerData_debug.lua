@@ -46,8 +46,8 @@ ClientCommands.TransmitShopItems = function()
     ServerShopManager.TransmitShopItems()
 end
 
-ClientCommands.teleportPlayersToInstance = function()
-    PvpInstanceManager.teleportPlayersToInstance()
+ClientCommands.TeleportPlayersToInstance = function()
+    PvpInstanceManager.TeleportPlayersToInstance()
 end
 
 ClientCommands.sendPlayersToSafehouse = function()

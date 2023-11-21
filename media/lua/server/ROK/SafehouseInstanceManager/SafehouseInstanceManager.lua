@@ -157,7 +157,7 @@ SafehouseInstanceManager.sendPlayerToSafehouse = function(player)
 
     --print("Teleporting to safehouse from sendPlayerToSafehouse")
     TeleportManager.Teleport(player, safehouse.x, safehouse.y, safehouse.z)
-    sendServerCommand(player, "PZEFT", "SetClientStateIsInRaid", {value = false})
+    sendServerCommand(player, "PZEFT-State", "SetClientStateIsInRaid", {value = false})
 end
 
 SafehouseInstanceManager.sendPlayersToSafehouse = function()

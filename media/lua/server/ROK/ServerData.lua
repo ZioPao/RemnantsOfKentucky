@@ -211,6 +211,8 @@ end
 
 ------------------------------------------------
 
-local function OnServerModDataReady() sendServerCommand("PZEFT", "SeverModDataReady", {}) end
+local function OnServerModDataReady()
+    sendServerCommand("PZEFT-Data", "SeverModDataReady", {})
+end
 
 Events.PZEFT_ServerModDataReady.Add(OnServerModDataReady)

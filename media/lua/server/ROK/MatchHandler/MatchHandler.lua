@@ -40,7 +40,7 @@ end
 ---Setup teleporting players to their spawn points
 function MatchHandler:start()
     debugPrint("Starting match!")
-    PvpInstanceManager.teleportPlayersToInstance()  -- TODO this is kinda shaky, we should integrate it here in MatchHandler
+    PvpInstanceManager.TeleportPlayersToInstance()  -- TODO this is kinda shaky, we should integrate it here in MatchHandler
 
     local temp = getOnlinePlayers()
     for i = 0, temp:size() - 1 do
@@ -65,7 +65,7 @@ function MatchHandler:killAlivePlayers()
     local temp = getOnlinePlayers()
     for i = 0, temp:size() - 1 do
         local player = temp:get(i)
-        sendServerCommand(player, "PZEFT", "CommitDieIfInRaid", {})
+        sendServerCommand(player, "PZEFT-State", "CommitDieIfInRaid", {})
     end
 end
 
@@ -82,13 +82,14 @@ function MatchHandler:removePlayerFromMatchList(playerId)
     self.playersInMatch[playerId] = nil
 end
 
+--- Stop the match and teleport back everyone
 function MatchHandler:stopMatch()
-    -- Teleport back everyone
     SafehouseInstanceManager.sendPlayersToSafehouse()
     PvpInstanceManager.getNextInstance()
+    MatchHandler.instance = nil
 end
 
----comment
+---Run it every once, depending on the Config, spawns zombies for each player
 ---@param loops number amount of time that this function has been called by Countdown
 function MatchHandler.HandleZombieSpawns(loops)
     for k, plId in pairs(MatchHandler.instance.playersInMatch) do

@@ -16,8 +16,7 @@ function ClientCommands.RequestExtraction(playerObj)
     instance:extractPlayer(playerObj)
 end
 
-
----comment
+---Removes a player from the current match
 ---@param playerObj IsoPlayer
 function ClientCommands.RemovePlayer(playerObj)
     local instance = MatchHandler.GetHandler()

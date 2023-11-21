@@ -48,3 +48,32 @@ ClientData.Shop = ClientData.Shop or {}
 function ClientData.Shop.GetShopItems()
     return ModData.getOrCreate(KEY_SHOP_ITEMS)
 end
+
+-----------------------------------------------------------------
+
+local ClientDataCommands = {}
+local MODULE = "PZEFT-Data"
+
+---Triggers PZEFT_ClientModDataReady to initialize Global Mod Data on the client
+---@param playerObj IsoPlayer
+function ClientDataCommands.SeverModDataReady(playerObj)
+    triggerEvent("PZEFT_ClientModDataReady")
+end
+
+--- Sets pvpInstanceTable
+--- Or use ClientCommands.print_pvp_currentinstance() to print current instance on the server's console
+---@param instanceData pvpInstanceTable
+function ClientDataCommands.SetCurrentInstance(instanceData)
+    local md = getPlayer():getModData()
+    md.currentInstance = md.currentInstance or {}
+    md.currentInstance = instanceData
+end
+
+local function OnClientDataCommands(module, command, args)
+    if (module == MODULE or module == MODULE) and ClientDataCommands[command] then
+        --debugPrint("Server Command - " .. MODULE .. "." .. command)
+        ClientDataCommands[command](args)
+    end
+end
+
+Events.OnServerCommand.Add(OnClientDataCommands)

@@ -51,8 +51,8 @@ function ServerData_client_debug.getNextInstance()
     sendClientCommand("SERVER_DEBUG", "getNextInstance", {})
 end
 
-function ServerData_client_debug.teleportPlayersToInstance()
-    sendClientCommand("SERVER_DEBUG", "teleportPlayersToInstance", {})
+function ServerData_client_debug.TeleportPlayersToInstance()
+    sendClientCommand("SERVER_DEBUG", "TeleportPlayersToInstance", {})
 end
 
 function ServerData_client_debug.sendPlayersToSafehouse()
