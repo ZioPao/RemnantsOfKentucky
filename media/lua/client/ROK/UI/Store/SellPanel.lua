@@ -9,26 +9,24 @@ local GenericUI = require("ROK/UI/GenericUI")
 ---@class SellPanel : ISPanelJoypad
 local SellPanel = ISPanelJoypad:derive("SellPanel")
 
----comment
 ---@param x number
 ---@param y number
 ---@param width number
 ---@param height number
----@return ISPanelJoypad
+---@return SellPanel
 function SellPanel:new(x, y, width, height)
     local o = ISPanelJoypad:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
 
+    ---@cast o SellPanel
     return o
 end
 
 function SellPanel:createChildren()
     local fontHgtSmall = GenericUI.SMALL_FONT_HGT
     local entryHgt = fontHgtSmall + 2 * 2
-
     local xMargin = 10
-
 
     self.sellList = ISScrollingListBox:new(xMargin, entryHgt, self.width / 2, self.height - (entryHgt))
     self.sellList:initialise()
@@ -50,11 +48,11 @@ function SellPanel:createChildren()
     local infoPanelY = entryHgt
 
 
-    self.infoPanel = ISPanel:new(infoPanelX, infoPanelY, infoPanelWidth, infoPanelHeight)
+    self.infoPanel = ISRichTextPanel:new(infoPanelX, infoPanelY, infoPanelWidth, infoPanelHeight)
     self.infoPanel:initialise()
     self:addChild(self.infoPanel)
 
-    self.btnSell = ISButton:new(xMargin, self.infoPanel:getHeight()/2, self.infoPanel:getWidth() - xMargin*2, 50, "Sell", self, self.onClick)
+    self.btnSell = ISButton:new(xMargin, self.infoPanel:getHeight()/2, self.infoPanel:getWidth() - xMargin*2, 50, "Sell", self, self.onSell)
     self.btnSell.internal = "SELL"
     self.btnSell:initialise()
     self.btnSell:setEnable(false)
@@ -64,15 +62,38 @@ end
 
 ----------------------------------
 
+---comment
+---@param btn ISButton
+function SellPanel:onSell(btn)
+    debugPrint("Sell function")
+end
+
+function SellPanel:calculateSellPrice()
+
+
+end
+
 
 ---Triggered when the user drags a item into the scrollingList
 function SellPanel:updateInfoPanel()
     -- TODO Update text with info about the transaction
     self.infoPanel:setText("Money that you will receive: 10000$")
     self.infoPanel.textDirty = true
+
+    -- Count amount of items
+    debugPrint(#self.sellList.items)
+    self.btnSell:setEnable(#self.sellList.items > 0)
 end
 
+----------------------------------
+
+---Override onDragItem of sellList. This means that self is sellList
+---@param x any
+---@param y any
 function SellPanel:onDragItem(x, y)
+
+    -- TODO Should remove item from player!
+
     if self.vscroll then
         self.vscroll.scrolling = false
     end
@@ -99,6 +120,11 @@ function SellPanel:onDragItem(x, y)
     self.parent:updateInfoPanel()
 end
 
+---Override for sellList
+---@param y any
+---@param item any
+---@param alt any
+---@return unknown
 function SellPanel:onDrawItem(y, item, alt)
     self:drawRectBorder(0, (y), self:getWidth(), self.itemheight - 1, 0.9, self.borderColor.r, self.borderColor.g,
         self.borderColor.b)

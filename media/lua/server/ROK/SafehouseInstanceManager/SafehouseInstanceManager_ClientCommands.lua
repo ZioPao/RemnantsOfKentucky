@@ -3,9 +3,10 @@ if (not isServer()) and not (not isServer() and not isClient()) and not isCoopHo
 end
 
 require("ROK/DebugTools")
-require "ROK/TeleportManager"
-
+local TeleportManager = require("ROK/TeleportManager")
 local MODULE = 'PZEFT-Safehouse'
+
+-----------------------------
 
 local ClientCommands = {}
 

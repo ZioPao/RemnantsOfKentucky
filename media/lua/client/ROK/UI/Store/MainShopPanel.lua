@@ -29,26 +29,7 @@ local GenericUI = require("ROK/UI/GenericUI")
 
 ---@class MainShopPanel : ISCollapsableWindow
 MainShopPanel = ISCollapsableWindow:derive("MainShopPanel")
-
--- todo use generic UI not this
---MainShopPanel.largeFontHeight = getTextManager():getFontHeight(UIFont.Large)
---MainShopPanel.mediumFontHeight = getTextManager():getFontHeight(UIFont.Medium)
---MainShopPanel.smallFontHeight = getTextManager():getFontHeight(UIFont.Small)
 MainShopPanel.bottomInfoHeight = GenericUI.SMALL_FONT_HGT * 4
-
-
-function MainShopPanel.Open()
-    MainShopPanel.instance = MainShopPanel:new(0, 0, 800, 600, getPlayer())
-    MainShopPanel.instance:initialise()
-    MainShopPanel.instance:addToUIManager()
-    MainShopPanel.instance:setVisible(true)
-    MainShopPanel.instance:setEnabled(true)
-end
-
--- Debug only
-function MainShopPanel.ForceClose()
-    MainShopPanel.instance:close()
-end
 
 function MainShopPanel:new(x, y, width, height, character)
     local o = {}
@@ -61,7 +42,7 @@ function MainShopPanel:new(x, y, width, height, character)
     o.minimumHeight = 600
     setmetatable(o, self)
 
-    o.title = "Shop"
+    o.title = getText("IGUI_Shop_Title")
     self.__index = self
     o.character = character
     o.playerNum = character and character:getPlayerNum() or -1
@@ -83,6 +64,19 @@ function MainShopPanel:close()
     ISCollapsableWindow.close(self)
 end
 
+
+function MainShopPanel.Open()
+    MainShopPanel.instance = MainShopPanel:new(0, 0, 800, 600, getPlayer())
+    MainShopPanel.instance:initialise()
+    MainShopPanel.instance:addToUIManager()
+    MainShopPanel.instance:setVisible(true)
+    MainShopPanel.instance:setEnabled(true)
+end
+
+-- Debug only
+function MainShopPanel.ForceClose()
+    MainShopPanel.instance:close()
+end
 --**********************************************--
 
 function MainShopPanel:initialise()
@@ -125,8 +119,7 @@ function MainShopPanel:createChildren()
     self.balancePanel:initialise()
     self:addChild(self.balancePanel)
 
-    local balanceText = "<SIZE:large>Current Balance: "
-    self.balancePanel:setText(balanceText)
+    self.balancePanel:setText(getText("IGUI_Shop_CurrentBalance"))
     self.balancePanel:paginate()
     -------------------------
     self.categories = {}
@@ -140,7 +133,7 @@ function MainShopPanel:createChildren()
     self.essentialItemsCat:initialise()
     self.essentialItemsCat:setAnchorRight(true)
     self.essentialItemsCat:setAnchorBottom(true)
-    self.panel:addView("Essential Items", self.essentialItemsCat, self.width / 3 - 2, addedHeight)
+    self.panel:addView(getText("IGUI_Shop_TabEssential"), self.essentialItemsCat, self.width / 3 - 2, addedHeight)
     self.essentialItemsCat:initialiseList(ClientShopManager.GetEssentialItems())
     self.essentialItemsCat.parent = self
     self.essentialItemsCat.category = 1
@@ -151,7 +144,7 @@ function MainShopPanel:createChildren()
     self.dailyItemsCat:initialise()
     self.dailyItemsCat:setAnchorRight(true)
     self.dailyItemsCat:setAnchorBottom(true)
-    self.panel:addView("Daily Items", self.dailyItemsCat, self.width / 3 - 2, addedHeight)
+    self.panel:addView(getText("IGUI_Shop_TabDaily"), self.dailyItemsCat, self.width / 3 - 2, addedHeight)
     self.dailyItemsCat:initialiseList(ClientShopManager.GetDailyItems())
     self.dailyItemsCat.parent = self
     self.dailyItemsCat.category = 2
@@ -162,13 +155,13 @@ function MainShopPanel:createChildren()
     self.sellCat:initialise()
     self.sellCat:setAnchorRight(true)
     self.sellCat:setAnchorBottom(true)
-    self.panel:addView("Sell Items", self.sellCat, self.width / 3 - 2, addedHeight)
+    self.panel:addView(getText("IGUI_Shop_TabSell"), self.sellCat, self.width / 3 - 2, addedHeight)
     self.sellCat.parent = self
     self.sellCat.category = 3
     table.insert(self.categories, self.sellCat)
 
     -- Set default stuff
-    self.panel:activateView("Essential Items")
+    self.panel:activateView(getText("IGUI_Shop_TabEssential"))
 end
 
 function MainShopPanel:update()
@@ -181,7 +174,7 @@ function MainShopPanel:render()
     ISCollapsableWindow.render(self)
     if self.accountBalance == nil then return end
 
-    local balanceText = "<SIZE:large>Current Balance: "
+    local balanceText = getText("IGUI_Shop_CurrentBalance")
     if isClient() then balanceText = balanceText .. self.accountBalance end
     self.balancePanel:setText(balanceText)
     self.balancePanel:paginate()

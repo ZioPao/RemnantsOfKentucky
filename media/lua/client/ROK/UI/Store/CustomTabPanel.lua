@@ -189,4 +189,18 @@ function CustomTabPanel:close()
 	ISTabPanel.close(self)
 end
 
+---comment
+---@param x any
+---@param y any
+---@param width any
+---@param height any
+---@return CustomTabPanel
+function CustomTabPanel:new(x, y, width, height)
+    local o = ISTabPanel:new(x, y, width, height)
+    setmetatable(o, self)
+    self.__index = self
+
+	return o
+end
+
 return CustomTabPanel

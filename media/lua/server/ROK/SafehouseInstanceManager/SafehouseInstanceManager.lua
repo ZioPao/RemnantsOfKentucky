@@ -4,6 +4,7 @@ end
 
 require("ROK/DebugTools")
 require("ROK/Config")
+local TeleportManager = require("ROK/TeleportManager")
 local safehouseSettings = PZ_EFT_CONFIG.SafehouseInstanceSettings
 ----------------------
 

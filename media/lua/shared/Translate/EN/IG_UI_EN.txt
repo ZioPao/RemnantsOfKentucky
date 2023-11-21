@@ -22,7 +22,13 @@ IG_UI_EN = {
 
     IGUI_TimePanel_MatchStarting = "The match is starting",
     IGUI_TimePanel_MatchEnded = "The match has ended",
-    
+
+
+    IGUI_Shop_Title = "Shop",
+    IGUI_Shop_CurrentBalance = "<SIZE:large> Current Balance: ",
+    IGUI_Shop_TabEssential = "Essential Items",
+    IGUI_Shop_TabDaily = "Daily Items",
+    IGUI_Shop_TabSell = "Sell Items",
 
     
 
