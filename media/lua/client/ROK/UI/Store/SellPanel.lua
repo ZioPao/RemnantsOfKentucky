@@ -1,12 +1,14 @@
---[[
-    Users should be able to drag n drop items in this panel to sell them.
-    Opens confirmation panel when you select "Sell". Compatible with Tarkov UI
-]]
+-- Users should be able to drag n drop items in this panel to sell them.
+-- Opens confirmation panel when you select "Sell". Compatible with Tarkov UI
 
 local GenericUI = require("ROK/UI/GenericUI")
-
+local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
+local CommonStore = require("ROK/UI/Store/CommonStore")
 ------------------------
+
+
 ---@class SellPanel : ISPanelJoypad
+---@field infoPanel ISPanel
 local SellPanel = ISPanelJoypad:derive("SellPanel")
 
 ---@param x number
@@ -47,41 +49,64 @@ function SellPanel:createChildren()
     local infoPanelX = self.width - infoPanelWidth - xMargin
     local infoPanelY = entryHgt
 
-
-    self.infoPanel = ISRichTextPanel:new(infoPanelX, infoPanelY, infoPanelWidth, infoPanelHeight)
+    self.infoPanel = ISPanel:new(infoPanelX, infoPanelY, infoPanelWidth, infoPanelHeight)
     self.infoPanel:initialise()
+    self.infoPanel.backgroundColor = { r = 0, g = 0, b = 0, a = 0.7 }
     self:addChild(self.infoPanel)
 
-    self.btnSell = ISButton:new(xMargin, self.infoPanel:getHeight()/2, self.infoPanel:getWidth() - xMargin*2, 50, "Sell", self, self.onSell)
+    local yMargin = CommonStore.MARGIN_Y
+
+    local elementWidth = self.width - xMargin * 2
+    local elementHeight = CommonStore.BIG_BTN_HEIGHT
+    local elementX = CommonStore.MARGIN_X
+    local elementY = self.infoPanel:getBottom() - elementHeight - yMargin
+
+    self.btnSell = ISButton:new(elementX, elementY, elementWidth, elementHeight, "Sell", self, self.onClickSell)
     self.btnSell.internal = "SELL"
     self.btnSell:initialise()
     self.btnSell:setEnable(false)
     self.infoPanel:addChild(self.btnSell)
 end
 
-
 ----------------------------------
 
----comment
+---Runs after clicking the SELL button
 ---@param btn ISButton
-function SellPanel:onSell(btn)
+function SellPanel:onClickSell(btn)
     debugPrint("Sell function")
+    self.confirmationPanel = ConfirmationPanel.Open("Are you sure you want to sell these items?", self.mainPanel:getX(),
+    self.mainPanel:getY() + self.mainPanel:getHeight() + 20, self, self.onConfirmSell)
+end
+
+---Runs after you confirm that you want to sell
+function SellPanel:onConfirmSell()
+    debugPrint("OnConfirmSell")
+
+    self.sellList.items = {}        -- Clean it
 end
 
 function SellPanel:calculateSellPrice()
+    debugPrint(#self.sellList.items)
+    local price = 0
 
+    for i=1, #self.sellList.items do
+        price = price + i + ZombRand(0, 10)
+    end
 
+    return price
 end
-
 
 ---Triggered when the user drags a item into the scrollingList
 function SellPanel:updateInfoPanel()
     -- TODO Update text with info about the transaction
+
+    local price = self:calculateSellPrice()
+    debugPrint(price)
+
     self.infoPanel:setText("Money that you will receive: 10000$")
     self.infoPanel.textDirty = true
 
     -- Count amount of items
-    debugPrint(#self.sellList.items)
     self.btnSell:setEnable(#self.sellList.items > 0)
 end
 
@@ -140,5 +165,6 @@ function SellPanel:onDrawItem(y, item, alt)
 
     return y + self.itemheight
 end
+
 
 return SellPanel

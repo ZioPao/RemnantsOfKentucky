@@ -1,5 +1,7 @@
 require "ROK/ShopItems/ShopItems"
 
+-- TODO In theory we need to account for every item, basically. Or do we just assign a random value to the sold one?
+
 PZ_EFT_ShopItems_Config.addItem("Base.Apple", {["ESSENTIALS"] = true}, 20, 1, 0.5)
 PZ_EFT_ShopItems_Config.addItem("Base.Bandage", {["ESSENTIALS"] = true}, 20, 1, 0.5)
 PZ_EFT_ShopItems_Config.addItem("Base.WaterBottleFull", {["ESSENTIALS"] = true}, 20, 1, 0.5)

@@ -6,7 +6,10 @@
 
 -------------------------
 local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
+local GenericUI = require("ROK/UI/GenericUI")
+local CommonStore = require("ROK/UI/Store/CommonStore")
 ------------------------
+
 
 
 ---@class BuyQuantityPanel : ISPanel
@@ -19,7 +22,7 @@ local BuyQuantityPanel = ISPanel:derive("BuyQuantityPanel")
 ---@param width number
 ---@param height number
 ---@param mainPanel ISCollapsableWindow
----@return ISPanel
+---@return BuyQuantityPanel
 function BuyQuantityPanel:new(x, y, width, height, mainPanel)
     local o = ISPanel:new(x, y, width, height)
     setmetatable(o, self)
@@ -30,50 +33,44 @@ function BuyQuantityPanel:new(x, y, width, height, mainPanel)
     o.backgroundColor = { r = 0, g = 0, b = 0, a = 0.7 }
 
     BuyQuantityPanel.instance = o
+
+    ---@cast o BuyQuantityPanel
     return o
 end
 
 function BuyQuantityPanel:createChildren()
     ISPanel.createChildren(self)
 
-    self.textPanel = ISRichTextPanel:new(0, 0, self.width, self.height)
-    self.textPanel:initialise()
-    self:addChild(self.textPanel)
-    self.textPanel.defaultFont = UIFont.Medium
-    self.textPanel.anchorTop = true
-    self.textPanel.anchorLeft = false
-    self.textPanel.anchorBottom = true
-    self.textPanel.anchorRight = false
-    self.textPanel.marginLeft = 0
-    self.textPanel.marginTop = 10
-    self.textPanel.marginRight = 0
-    self.textPanel.marginBottom = 0
-    self.textPanel.autosetheight = false
-    self.textPanel.background = false
-    self.textPanel:setText("")
-    self.textPanel:paginate()
+    GenericUI.CreateISRichTextPanel(self, "textPanel", 0, 0, self.width, self.height)
 
-    local xMargin = 10
-    local yMargin = 20
-    local elementHeight = 50
+    local xMargin = CommonStore.MARGIN_X
+    local yMargin = CommonStore.MARGIN_Y
 
-    self.entryAmount = ISTextEntryBox:new("1", xMargin, elementHeight + (self.height / 2), self.width - xMargin * 2,
-        elementHeight)
+    local elementX = xMargin
+    local elementY = self:getBottom() - CommonStore.BIG_BTN_HEIGHT -  CommonStore.MARGIN_Y
+    local elementWidth = self.width - xMargin * 2
+    local elementHeight = CommonStore.BIG_BTN_HEIGHT
+
+    self.btnBuy = ISButton:new(elementX, elementY, elementWidth, elementHeight, "Buy", self, self.onClick)
+    self.btnBuy.internal = "BUY"
+    self.btnBuy:initialise()
+    self.btnBuy:setEnable(false)
+    self:addChild(self.btnBuy)
+
+    elementY = self.btnBuy:getY() - elementHeight - yMargin
+
+    self.entryAmount = ISTextEntryBox:new("1", elementX, elementY, elementWidth, elementHeight)
     self.entryAmount:initialise()
     self.entryAmount:instantiate()
     self.entryAmount:setClearButton(true)
     self.entryAmount:setOnlyNumbers(true)
     self.entryAmount:setMaxTextLength(2)
     self:addChild(self.entryAmount)
+end
 
-
-    self.btnBuy = ISButton:new(xMargin, self.entryAmount:getBottom() + yMargin, self.width - xMargin * 2, elementHeight *
-        2, "Buy", self,
-        self.onClick)
-    self.btnBuy.internal = "BUY"
-    self.btnBuy:initialise()
-    self.btnBuy:setEnable(true)
-    self:addChild(self.btnBuy)
+function BuyQuantityPanel:update()
+    ISPanel.update(self)
+    self.btnBuy:setEnable(self.selectedItem ~= nil)
 end
 
 ---Set the item that's been selected from the list
@@ -89,7 +86,7 @@ function BuyQuantityPanel:getCostForSelectedItem()
 end
 
 function BuyQuantityPanel:onConfirmBuy()
-    print("Confirm buy")
+    debugPrint("Confirm buy")
     local itemTable = {
         fullType = self.selectedItem["fullType"],
         basePrice = self.selectedItem["basePrice"],
@@ -101,8 +98,7 @@ function BuyQuantityPanel:onConfirmBuy()
 end
 
 function BuyQuantityPanel:onStartBuy()
-    print("Buy")
-
+    debugPrint("Buy")
 
     -- TODO Disable text entry for the amount of items from here
 
