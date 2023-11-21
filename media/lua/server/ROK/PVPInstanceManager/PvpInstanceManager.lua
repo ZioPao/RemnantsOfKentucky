@@ -21,7 +21,7 @@ function PvpInstanceManager.getInstanceID(cellX, cellY)
 end
 
 --- Clear existing PVP instance and reload PVP instances
-PvpInstanceManager.reset = function()
+function PvpInstanceManager.Reset()
     ServerData.PVPInstances.SetPvpInstances({})
     ServerData.PVPInstances.SetPvpUsedInstances({})
     ServerData.PVPInstances.SetPvpCurrentInstance({}, true)
@@ -44,19 +44,18 @@ end
 
 --- load PVP instances and add them to the stores
 PvpInstanceManager.loadPvpInstances = function()
-    local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
-    -- iterators
-    local iX = pvpInstanceSettings.firstXCellPos
-    local iY = pvpInstanceSettings.firstYCellPos
+    local pvpInstances = {}
+    local settings = pvpInstanceSettings
 
-    repeat
-        repeat
+    for iY = settings.firstYCellPos, settings.firstYCellPos + (settings.yLength * (settings.yRepeat - 1)) +
+        (settings.buffer * (settings.yRepeat - 1)), settings.yLength + 1 do
+        for iX = settings.firstXCellPos, settings.firstXCellPos + (settings.xLength * (settings.xRepeat - 1)) +
+            (settings.buffer * (settings.xRepeat - 1)), settings.xLength + 1 do
+
             local id = PvpInstanceManager.getInstanceID(iX, iY)
 
-            local permanentExtractions = PvpInstanceManager.getPermanentExtractionPoints(iX, iY)
-            permanentExtractions = permanentExtractions or {}
-            local randomExtractions = PvpInstanceManager.getRandomExtractionPoints(iX, iY, pvpInstanceSettings.randomExtractionPointCount)
-            randomExtractions = randomExtractions or {}
+            local permanentExtractions = PvpInstanceManager.getPermanentExtractionPoints(iX, iY) or {}
+            local randomExtractions = PvpInstanceManager.getRandomExtractionPoints(iX, iY, settings.randomExtractionPointCount) or {}
 
             pvpInstances[id] = {
                 id = id,
@@ -65,16 +64,9 @@ PvpInstanceManager.loadPvpInstances = function()
                 spawnPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.Spawnpoints, iX, iY, {"name"}),
                 extractionPoints = PZEFT_UTILS.MergeIPairs(randomExtractions, permanentExtractions)
             }
-            iX = iX + pvpInstanceSettings.xLength + 1
-        until iX > pvpInstanceSettings.firstXCellPos + (pvpInstanceSettings.xLength * (pvpInstanceSettings.xRepeat - 1)) +
-            ((pvpInstanceSettings.buffer * (pvpInstanceSettings.xRepeat - 1)))
+        end
+    end
 
-        iX = pvpInstanceSettings.firstXCellPos
-        iY = iY + pvpInstanceSettings.yLength + 1
-    until iY > pvpInstanceSettings.firstYCellPos + (pvpInstanceSettings.yLength * (pvpInstanceSettings.yRepeat - 1)) +
-        ((pvpInstanceSettings.buffer * (pvpInstanceSettings.yRepeat - 1)))
-
-        
     ServerData.PVPInstances.SetPvpInstances(pvpInstances)
 end
 

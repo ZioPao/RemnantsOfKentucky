@@ -8,7 +8,7 @@ PZEFT_UTILS = PZEFT_UTILS or {}
 ---@alias EFTModData {bankAccount : bankAccountTable, safehouse : coords}
 
 --- Maps world coordinates starting at cell 0,0 to different cell coordinates
----@param coordinateList coords {x=0,y=0,z=0}
+---@param coordinateList table<integer, table>
 ---@param cellX number
 ---@param cellY number
 ---@param otherArgs table list of names of arguments to copy from coordinateList, Example: {"time"}
