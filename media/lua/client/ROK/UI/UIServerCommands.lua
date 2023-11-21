@@ -34,6 +34,20 @@ function ServerCommands.SetTimePanelDescription(args)
     TimePanel.instance:setDescription(TIME_PANEL_DESCRIPTIONS[index])
 end
 
+--- Sets the amount of available instances to the client state
+---@param args {amount : integer}
+function ServerCommands.ReceiveAmountAvailableInstances(args)
+    if BeforeMatchAdminPanel.instance == nil then return end
+    BeforeMatchAdminPanel.instance:setAvailableInstancesText(tostring(args.amount + 1))
+end
+
+---@param args {amount : number}
+function ServerCommands.ReceiveAlivePlayersAmount(args)
+    if DuringMatchAdminPanel.instance == nil then return end
+    DuringMatchAdminPanel.instance:setAlivePlayersText(tostring(args.amount))
+
+end
+
 ------------------------------------------
 local OnServerCommand = function(module, command, args)
     if module == MODULE and ServerCommands[command] then

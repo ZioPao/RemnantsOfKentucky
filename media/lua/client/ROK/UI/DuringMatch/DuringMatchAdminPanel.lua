@@ -118,6 +118,12 @@ function DuringMatchAdminPanel:update()
     self.labelSecond.textDirty = true
 end
 
+function DuringMatchAdminPanel:setAlivePlayersText(text)
+    local secondLabelText = "Alive Players: <CENTRE> " .. tostring(text)
+    self.labelSecond:setText(secondLabelText)
+    self.labelSecond.textDirty = true
+end
+
 function DuringMatchAdminPanel:close()
     if self.confirmationPanel then
         self.confirmationPanel:close()

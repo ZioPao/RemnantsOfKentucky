@@ -1,5 +1,7 @@
 EFT_MODULES = {
     Bank = "PZEFT-Bank",
     Shop = "PZEFT-Shop",
-    UI = "PZEFT-UI"
+    UI = "PZEFT-UI",
+    Match = "PZEFT-Match",
+    PvpInstances = "PZEFT-PvpInstances"
 }

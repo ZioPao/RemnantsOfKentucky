@@ -4,15 +4,14 @@ end
 
 require("ROK/DebugTools")
 require "ROK/TeleportManager"
-local MODULE = 'PZEFT-PvpInstances'
+local MODULE = EFT_MODULES.PvpInstances
 -------------------------------
 
 local ClientCommands = {}
 
 function ClientCommands.GetAmountAvailableInstances()
     local amount = 100 - PvpInstanceManager.GetAmountUsedInstances()
-    --print("Amount of available instances: " .. amount)
-    sendServerCommand("PZEFT-State", "ReceiveAmountAvailableInstances", {amount = amount})
+    sendServerCommand(EFT_MODULES.UI, "ReceiveAmountAvailableInstances", {amount = amount})
 end
 
 -------------------------------

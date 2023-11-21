@@ -27,7 +27,7 @@ local function EveryOneMinute_Not_InRaid_Events()
     end
 
     -- TODO Move this away, just for test
-    sendClientCommand("PZEFT-PvpInstances", "GetAmountAvailableInstances", {})
+    sendClientCommand(EFT_MODULES.PvpInstances, "GetAmountAvailableInstances", {})
 
 end
 

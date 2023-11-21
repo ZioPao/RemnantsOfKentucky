@@ -139,4 +139,56 @@ function MatchHandler.GetHandler()
     return MatchHandler.instance
 end
 
+
+------------------------------------------------------------------------
+--* COMMANDS FROM CLIENTS *--
+------------------------------------------------------------------------
+
+local MODULE = EFT_MODULES.Match
+local MatchCommands = {}
+
+---A client has sent an extraction request
+---@param playerObj IsoPlayer player requesting extraction
+function MatchCommands.RequestExtraction(playerObj)
+    local instance = MatchHandler.GetHandler()
+    if instance == nil then return end
+    instance:extractPlayer(playerObj)
+end
+
+---Removes a player from the current match
+---@param playerObj IsoPlayer
+function MatchCommands.RemovePlayer(playerObj)
+    local instance = MatchHandler.GetHandler()
+    if instance == nil then return end
+    instance:removePlayerFromMatchList(playerObj:getOnlineID())
+    
+end
+
+---@param playerObj IsoPlayer
+function MatchCommands.SendAlivePlayersAmount(playerObj)
+    local instance = MatchHandler.GetHandler()
+
+    if instance == nil then return end
+    local counter = 0
+    for k,v in pairs(instance.playersInMatch) do
+        if v then
+            counter = counter + 1
+        end
+    end
+
+    sendServerCommand(playerObj, EFT_MODULES.UI, "ReceiveAlivePlayersAmount", {amount = counter})
+
+end
+---------------------------------
+local OnMatchCommand = function(module, command, playerObj, args)
+    if module == MODULE and MatchCommands[command] then
+        -- debugPrint("Client Command - " .. MODULE .. "." .. command)
+        MatchCommands[command](playerObj, args)
+    end
+end
+
+Events.OnClientCommand.Add(OnMatchCommand)
+
+
+
 return MatchHandler

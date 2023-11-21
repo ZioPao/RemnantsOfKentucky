@@ -3,12 +3,6 @@ require "PZEFT_debugtools"
 local MODULE = "PZEFT"
 local ServerCommands = {}
 
---- Sets the amount of available instances to the client state
----@param args {amount : integer}
-ServerCommands.ReceiveAmountAvailableInstances = function(args)
-    ClientState.availableInstances = args.amount + 1
-end
-
 ---Set client state if is in a raid or not
 ---@param args {value : boolean}
 function ServerCommands.SetClientStateIsInRaid(args)

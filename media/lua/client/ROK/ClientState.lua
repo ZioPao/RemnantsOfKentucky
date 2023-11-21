@@ -8,21 +8,11 @@ ClientState.extractionStatus = {}
 
 ClientState.currentTime = ""
 
-ClientState.availableInstances = 0
-ClientState.availableSafehouses = 0
-
-
 -----------------------------------
 --* Commands from the server
 
 local ClientStateCommands = {}
 local MODULE = "PZEFT-State"
-
---- Sets the amount of available instances to the client state
----@param args {amount : integer}
-function ClientStateCommands.ReceiveAmountAvailableInstances(args)
-    ClientState.availableInstances = args.amount + 1
-end
 
 ---Set client state if is in a raid or not
 ---@param args {value : boolean}
@@ -49,7 +39,7 @@ function ClientStateCommands.CommitDieIfInRaid()
     end
 end
 
-
+-----------------------------------
 
 local function OnClientStateCommands(module, command, args)
     if (module == MODULE or module == MODULE) and ClientStateCommands[command] then

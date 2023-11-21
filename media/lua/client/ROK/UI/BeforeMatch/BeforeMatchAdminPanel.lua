@@ -163,15 +163,16 @@ function BeforeMatchAdminPanel:update()
     self.btnMatchOptions:setEnable(not self.isStartingMatch)
     self.btnManagePlayers:setEnable(not self.isStartingMatch)
 
-    -- Handles Panel Info stuff
-    -- TODO Set it bigger
-    local valInstancesAvailableText = " <CENTRE> " .. tostring(math.floor(ClientState.availableInstances))
-    self.labelValInstancesAvailable:setText(valInstancesAvailableText)
-    self.labelValInstancesAvailable.textDirty = true
-
     local valAssignedSafehousesText = " <CENTRE> 4"     -- TODO PLaceholder!
     self.labelValAssignedSafehouses:setText(valAssignedSafehousesText)
     self.labelValAssignedSafehouses.textDirty = true
+end
+
+function BeforeMatchAdminPanel:setAvailableInstancesText(text)
+    -- TODO Set it bigger
+    local valInstancesAvailableText = " <CENTRE> " .. tostring(text)
+    self.labelValInstancesAvailable:setText(valInstancesAvailableText)
+    self.labelValInstancesAvailable.textDirty = true
 end
 
 function BeforeMatchAdminPanel:render()
