@@ -22,7 +22,7 @@ function DuringMatchAdminPanel:new(x, y, width, height)
 end
 
 function DuringMatchAdminPanel.RequestAlivePlayersUpdate()
-    if DuringMatchAdminPanel.instance == nil then
+    if DuringMatchAdminPanel.instance == nil or DuringMatchAdminPanel.instance.isMatchEnded then
         Events.EveryOneMinute.Remove(DuringMatchAdminPanel.RequestAlivePlayersUpdate)
         return
     end
@@ -35,7 +35,7 @@ function DuringMatchAdminPanel:getIsMatchEnded()
     return self.isMatchEnded
 end
 
----Set isMatchEnded
+---Set isMatchEnded and disables the other labels
 ---@param isMatchEnded boolean
 function DuringMatchAdminPanel:setIsMatchEnded(isMatchEnded)
     self.isMatchEnded = isMatchEnded
@@ -62,17 +62,17 @@ function DuringMatchAdminPanel:createChildren()
 
 
 
-    self.labelFirst = ISRichTextPanel:new(0, 30, self.panelInfo:getWidth(), 25)
-    self.labelFirst:initialise()
-    self.labelFirst:instantiate()
-    self.labelFirst:paginate()
-    self.panelInfo:addChild(self.labelFirst)
+    self.labelTime = ISRichTextPanel:new(0, 30, self.panelInfo:getWidth(), 25)
+    self.labelTime:initialise()
+    self.labelTime:instantiate()
+    self.labelTime:paginate()
+    self.panelInfo:addChild(self.labelTime)
 
-    self.labelSecond = ISRichTextPanel:new(0, 60, self.panelInfo:getWidth(), 25)
-    self.labelSecond:initialise()
-    self.labelSecond:instantiate()
-    self.labelSecond:paginate()
-    self.panelInfo:addChild(self.labelSecond)
+    self.labelAlivePlayers = ISRichTextPanel:new(0, 60, self.panelInfo:getWidth(), 25)
+    self.labelAlivePlayers:initialise()
+    self.labelAlivePlayers:instantiate()
+    self.labelAlivePlayers:paginate()
+    self.panelInfo:addChild(self.labelAlivePlayers)
 
     -----------------------
 
@@ -110,11 +110,11 @@ function DuringMatchAdminPanel:update()
 
 
     local firstLabelText = "" -- Time or announcements
-    local secondLabelText = ""
 
     if self:getIsMatchEnded() then
         firstLabelText = "<SIZE:large> <CENTRE> <RED> The match has ended."
         self.btnStop:setEnable(false)
+        self:setAlivePlayersText("")
     else
         -- Handle confirmation panel to stop the match
         local check = self.confirmationPanel == nil or (self.confirmationPanel:isVisible())
@@ -125,8 +125,8 @@ function DuringMatchAdminPanel:update()
 
     end
 
-    self.labelFirst:setText(firstLabelText)
-    self.labelFirst.textDirty = true
+    self.labelTime:setText(firstLabelText)
+    self.labelTime.textDirty = true
 
     -- self.labelSecond:setText(secondLabelText)
     -- self.labelSecond.textDirty = true
@@ -134,8 +134,8 @@ end
 
 function DuringMatchAdminPanel:setAlivePlayersText(text)
     local secondLabelText = "Alive Players: <CENTRE> " .. tostring(text)
-    self.labelSecond:setText(secondLabelText)
-    self.labelSecond.textDirty = true
+    self.labelAlivePlayers:setText(secondLabelText)
+    self.labelAlivePlayers.textDirty = true
 end
 
 function DuringMatchAdminPanel:close()
