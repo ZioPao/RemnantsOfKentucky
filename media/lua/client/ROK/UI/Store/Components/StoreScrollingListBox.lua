@@ -1,4 +1,3 @@
---local BuyQuantityPanel = require("ROK/UI/Store/BuyQuantityPanel")
 local GenericUI = require("ROK/UI/GenericUI")
 -----------------------
 
@@ -104,31 +103,49 @@ function StoreScrollingListBox:doDrawItem(y, item, alt)
 
     return y + item.height
 end
+---This is run on the the ScrollingBoxList!
+---@param x number
+---@param y number
+function StoreScrollingListBox:onMouseDownItems(x, y)
+    if #self.items == 0 then return end
+    local row = self:rowAt(x, y)
 
--- ---This is run on the the ScrollingBoxList!
--- ---@param x number
--- ---@param y number
--- function StoreScrollingListBox:onMouseDownItems(x, y)
---     if #self.items == 0 then return end
---     local row = self:rowAt(x, y)
+    if row > #self.items then
+        row = #self.items
+    end
+    if row < 1 then
+        row = 1
+    end
 
---     if row > #self.items then
---         row = #self.items
---     end
---     if row < 1 then
---         row = 1
---     end
+    getSoundManager():playUISound("UISelectListItem")
+    self.selected = row
+    if self.onmousedown then
+        self.onmousedown(self.target, self.items[self.selected].item)
+    end
 
---     getSoundManager():playUISound("UISelectListItem")
---     self.selected = row
---     if self.onmousedown then
---         self.onmousedown(self.target, self.items[self.selected].item)
---     end
+    -- TODO Send data to the BuyQuantityPanel
 
---     -- TODO Send data to the BuyQuantityPanel
+    self.parent:setSelectedItem(self.items[self.selected].item)
+end
 
---     self.parent.buyPanel:setSelectedItem(self.items[self.selected].item)
--- end
+---Set the item that's been selected from the list
+---@param item selectedItemType
+function StoreScrollingListBox:setSelectedItem(item)
+    debugPrint(item)
+    self.selectedItem = item
+end
+
+---comment
+---@return selectedItemType
+function StoreScrollingListBox:getSelectedItem()
+    return self.selectedItem
+end
+
+function StoreScrollingListBox:getCostForSelectedItem()
+    local itemCost = self.selectedItem["basePrice"]
+    local finalCost = tonumber(self.entryAmount:getInternalText()) * itemCost
+    return finalCost
+end
 
 function StoreScrollingListBox:close()
     --debugPrint("Closing StoreCategory")

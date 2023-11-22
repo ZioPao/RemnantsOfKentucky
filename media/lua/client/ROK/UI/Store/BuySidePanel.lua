@@ -8,10 +8,8 @@ local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
 local CommonStore = require("ROK/UI/Store/Components/CommonStore")
 ------------------------
 
----@alias selectedItemType {actualItem : string, basePrice : number}
-
 ---@class BuySidePanel : RightSidePanel
----@field mainPanel ISPanel
+---@field mainPanel StoreScrollingListBox
 local BuySidePanel = RightSidePanel:derive("BuyQuantityPanel")
 
 ---Starts a new quantity panel
@@ -19,7 +17,7 @@ local BuySidePanel = RightSidePanel:derive("BuyQuantityPanel")
 ---@param y number
 ---@param width number
 ---@param height number
----@param mainPanel ISCollapsableWindow
+---@param mainPanel StoreScrollingListBox
 ---@return BuySidePanel
 function BuySidePanel:new(x, y, width, height, mainPanel)
     local o = RightSidePanel:new(x, y, width, height, mainPanel)
@@ -106,11 +104,12 @@ end
 
 function BuySidePanel:render()
     RightSidePanel.render(self)
+    local selectedItem = self.mainPanel:getSelectedItem()
 
-    if self.selectedItem == nil then return end
+    if selectedItem == nil then return end
 
     -- Handle icons
-    local actualItem = self.selectedItem.actualItem
+    local actualItem = selectedItem.actualItem
     local icon = actualItem:getIcon()
     if actualItem:getIconsForTexture() and not actualItem:getIconsForTexture():isEmpty() then
         icon = actualItem:getIconsForTexture():get(0)
@@ -123,7 +122,7 @@ function BuySidePanel:render()
     end
 
     -- Handle Text
-    local itemCost = self.selectedItem.basePrice
+    local itemCost = selectedItem.basePrice
     local entryAmountText = self.entryAmount:getInternalText()
     if entryAmountText == nil or entryAmountText == "" or entryAmountText == "0" then
         self.entryAmount:setText("1")

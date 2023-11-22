@@ -1,9 +1,6 @@
 -- Users should be able to drag n drop items in this panel to sell them.
 -- Opens confirmation panel when you select "Sell". Compatible with Tarkov UI
-
-local GenericUI = require("ROK/UI/GenericUI")
 local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
-local CommonStore = require("ROK/UI/Store/Components/CommonStore")
 local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
 ------------------------
 

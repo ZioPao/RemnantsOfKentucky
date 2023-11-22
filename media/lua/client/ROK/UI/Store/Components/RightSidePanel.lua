@@ -12,7 +12,7 @@ local RightSidePanel = ISPanel:derive("RightSidePanel")
 ---@param y number
 ---@param width number
 ---@param height number
----@param mainPanel ISCollapsableWindow
+---@param mainPanel StoreScrollingListBox
 ---@return RightSidePanel
 function RightSidePanel:new(x, y, width, height, mainPanel)
     local o = ISPanel:new(x, y, width, height)
@@ -46,17 +46,6 @@ function RightSidePanel:createChildren()
     self:addChild(self.bottomBtn)
 end
 
----Set the item that's been selected from the list
----@param item Item
-function RightSidePanel:setSelectedItem(item)
-    self.selectedItem = item
-end
-
-function RightSidePanel:getCostForSelectedItem()
-    local itemCost = self.selectedItem["basePrice"]
-    local finalCost = tonumber(self.entryAmount:getInternalText()) * itemCost
-    return finalCost
-end
 
 function RightSidePanel:render()
     ISPanel.render(self)

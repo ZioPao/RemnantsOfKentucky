@@ -35,16 +35,16 @@ function SellCategory:createChildren()
     local sellPanelX = self.width - sellPanelWidth - 10
     local sellPanelY = entryHgt
 
-    self.SellSidePanel = SellSidePanel:new(sellPanelX, sellPanelY, sellPanelWidth, sellPanelHeight, self.shopPanel)
-    self.SellSidePanel:initialise()
-    self:addChild(self.SellSidePanel)
+    self.sellSidePanel = SellSidePanel:new(sellPanelX, sellPanelY, sellPanelWidth, sellPanelHeight, self)
+    self.sellSidePanel:initialise()
+    self:addChild(self.sellSidePanel)
 end
 
 ----------------------------------
 
 function SellCategory:close()
-    self.SellSidePanel:removeFromUIManager()
-    self.SellSidePanel:close()
+    self.sellSidePanel:removeFromUIManager()
+    self.sellSidePanel:close()
     StoreScrollingListBox.close(self)
 end
 

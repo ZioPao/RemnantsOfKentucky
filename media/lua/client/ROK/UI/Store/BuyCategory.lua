@@ -35,41 +35,18 @@ function BuyCategory:createChildren()
     local buyPanelX = self.width - buyPanelWidth - 10
     local buyPanelY = entryHgt
 
-    self.BuySidePanel = BuySidePanel:new(buyPanelX, buyPanelY, buyPanelWidth, buyPanelHeight, self.shopPanel)
-    self.BuySidePanel:initialise()
-    self:addChild(self.BuySidePanel)
+    self.buySidePanel = BuySidePanel:new(buyPanelX, buyPanelY, buyPanelWidth, buyPanelHeight, self)
+    self.buySidePanel:initialise()
+    self:addChild(self.buySidePanel)
 end
 
 ----------------------------------
----This is run on the the ScrollingBoxList!
----@param x number
----@param y number
-function BuyCategory:onMouseDownItems(x, y)
-    if #self.items == 0 then return end
-    local row = self:rowAt(x, y)
 
-    if row > #self.items then
-        row = #self.items
-    end
-    if row < 1 then
-        row = 1
-    end
-
-    getSoundManager():playUISound("UISelectListItem")
-    self.selected = row
-    if self.onmousedown then
-        self.onmousedown(self.target, self.items[self.selected].item)
-    end
-
-    -- TODO Send data to the BuyQuantityPanel
-
-    self.parent.BuySidePanel:setSelectedItem(self.items[self.selected].item)
-end
 
 function BuyCategory:close()
     debugPrint("Closing BuyCategory")
-    self.BuySidePanel:removeFromUIManager()
-    self.BuySidePanel:close()
+    self.buySidePanel:removeFromUIManager()
+    self.buySidePanel:close()
     StoreScrollingListBox.close(self)
 end
 
