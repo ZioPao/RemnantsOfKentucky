@@ -47,8 +47,10 @@ local BankCommands = {}
 
 --- Sends command to client to set the player's safehouse
 ---@param playerObj IsoPlayer
-function BankCommands.RequestBankAccount(playerObj)
+function BankCommands.SendBankAccount(playerObj)
     local account = ServerBankManager.GetOrCreateAccount(playerObj:getUsername())
+    --debugPrint("Running SendBankAccount")
+    --PZEFT_UTILS.PrintTable(account)
     sendServerCommand(playerObj, EFT_MODULES.Bank, 'UpdateBankAccount', {account=account})
 end
 
@@ -89,7 +91,6 @@ end
 
 local function OnBankCommands(module, command, playerObj, args)
     if module == EFT_MODULES.Bank and BankCommands[command] then
-        debugPrint("Client Command - " .. EFT_MODULES.Bank .. "." .. command)
         BankCommands[command](playerObj, args)
     end
 end

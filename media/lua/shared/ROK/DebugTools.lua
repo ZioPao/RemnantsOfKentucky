@@ -53,9 +53,6 @@ function debug_testTimer()
     --sendClientCommand("PZEFT-Time", "StartTimer", {stopTime = 30, timeBetweenFunc=5})
 end
 
-
-if not isClient() then return end
-
 --* Client Only
 
 ---@diagnostic disable: lowercase-global

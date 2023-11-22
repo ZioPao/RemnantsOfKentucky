@@ -4,7 +4,7 @@ local CommonStore = require("ROK/UI/Store/Components/CommonStore")
 
 
 ---@class RightSidePanel : ISPanel
----@field mainPanel ISPanel
+---@field mainPanel StoreScrollingListBox
 local RightSidePanel = ISPanel:derive("RightSidePanel")
 
 ---Starts a new quantity panel
@@ -46,6 +46,14 @@ function RightSidePanel:createChildren()
     self:addChild(self.bottomBtn)
 end
 
+function RightSidePanel:getCostForSelectedItem()
+    local selectedItem = self.mainPanel:getSelectedItem()
+    if selectedItem == nil then return end
+    local itemCost = selectedItem.basePrice
+
+    local finalCost = tonumber(self.entryAmount:getInternalText()) * itemCost
+    return finalCost
+end
 
 function RightSidePanel:render()
     ISPanel.render(self)

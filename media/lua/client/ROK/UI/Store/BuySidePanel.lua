@@ -59,20 +59,16 @@ end
 
 function BuySidePanel:update()
     RightSidePanel.update(self)
-    self.bottomBtn:setEnable(self.selectedItem ~= nil)
+    self.bottomBtn:setEnable(self.mainPanel:getSelectedItem() ~= nil)
 end
 
-function BuySidePanel:getCostForSelectedItem()
-    local itemCost = self.selectedItem["basePrice"]
-    local finalCost = tonumber(self.entryAmount:getInternalText()) * itemCost
-    return finalCost
-end
 
 function BuySidePanel:onConfirmBuy()
     debugPrint("Confirm buy")
+    local selectedItem = self.mainPanel:getSelectedItem()
     local itemTable = {
-        fullType = self.selectedItem["fullType"],
-        basePrice = self.selectedItem["basePrice"],
+        fullType = selectedItem["fullType"],
+        basePrice = selectedItem["basePrice"],
         multiplier = 1 -- FIXME This should be with the selectedItem, but it's not there for some reason
     }
 
@@ -82,6 +78,8 @@ end
 
 function BuySidePanel:onStartBuy()
     debugPrint("Buy")
+    local selectedItem = self.mainPanel:getSelectedItem()
+    local cost = self:getCostForSelectedItem()      -- TODO We're getting selectedItem again here, optimize it
 
     -- TODO Disable text entry for the amount of items from here
 
@@ -90,7 +88,7 @@ function BuySidePanel:onStartBuy()
     local text = " <CENTRE> Are you sure you want to buy " ..
         tostring(self.entryAmount:getInternalText()) ..
         " of " ..
-        self.selectedItem["actualItem"]:getName() .. " for " .. tostring(self:getCostForSelectedItem()) .. "$ ?"
+        selectedItem["actualItem"]:getName() .. " for " .. tostring(cost) .. "$ ?"
 
     self.confirmationPanel = ConfirmationPanel.Open(text, self.mainPanel:getX(),
         self.mainPanel:getY() + self.mainPanel:getHeight() + 20, self, self.onConfirmBuy)

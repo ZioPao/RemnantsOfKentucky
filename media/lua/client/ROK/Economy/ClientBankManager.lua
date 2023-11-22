@@ -6,7 +6,8 @@ local ClientBankManager = {}
 function ClientBankManager.RequestBankAccountFromServer()
     local md = PZEFT_UTILS.GetPlayerModData()
     md.bankAccount = nil
-    sendClientCommand(EFT_MODULES.bank, "RequestBankAccount", {})
+    debugPrint("Requesting bank account from client")
+    sendClientCommand(EFT_MODULES.Bank, "SendBankAccount", {})
 end
 
 --- Returns account balance from player's mod data
@@ -57,7 +58,7 @@ local BankCommands = {}
 
 --- Update bank account information with data from server
 ---@param args {account : any}      -- TODO Set the correct param
- function BankCommands.UpdateBankAccount(args)
+function BankCommands.UpdateBankAccount(args)
     if not args then
         debugPrint('ERROR: ServerCommands.UpdateBankAccount - Tried to update bank account without ARGS')
         return

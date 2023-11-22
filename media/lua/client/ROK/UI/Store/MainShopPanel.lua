@@ -83,14 +83,9 @@ end
 function MainShopPanel:initialise()
     ISCollapsableWindow.initialise(self)
     ClientBankManager.RequestBankAccountFromServer()
-
+    local AdminShopManager = require("ROK/Economy/AdminShopManager")
+    AdminShopManager.RefreshDailyItems()
     self.accountBalance = ClientBankManager.GetPlayerBankAccountBalance()
-    -- Fetch bank account
-    -- if self.accountBalance == nil then
-    --     print("No bank account, setting it up now. Close and reopen the menu for now")
-    -- else
-    --     print("Bank account found")
-    -- end
 end
 
 function MainShopPanel:createChildren()
@@ -167,7 +162,6 @@ end
 
 function MainShopPanel:update()
     ISCollapsableWindow.update(self)
-
     self.accountBalance = ClientBankManager.GetPlayerBankAccountBalance()
 end
 

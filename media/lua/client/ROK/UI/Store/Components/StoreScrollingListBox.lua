@@ -55,15 +55,6 @@ function StoreScrollingListBox:createChildren()
 
     self.items.SMALL_FONT_HGT = GenericUI.SMALL_FONT_HGT
     self.items.MEDIUM_FONT_HGT = GenericUI.MEDIUM_FONT_HGT
-
-    -- local buyPanelWidth = self.width / 2 - 20
-    -- local buyPanelHeight = self.height - entryHgt
-    -- local buyPanelX = self.width - buyPanelWidth - 10
-    -- local buyPanelY = entryHgt
-
-    -- self.buyPanel = BuyQuantityPanel:new(buyPanelX, buyPanelY, buyPanelWidth, buyPanelHeight, self.shopPanel)
-    -- self.buyPanel:initialise()
-    -- self:addChild(self.buyPanel)
 end
 
 ----------------------------------
@@ -139,12 +130,6 @@ end
 ---@return selectedItemType
 function StoreScrollingListBox:getSelectedItem()
     return self.selectedItem
-end
-
-function StoreScrollingListBox:getCostForSelectedItem()
-    local itemCost = self.selectedItem["basePrice"]
-    local finalCost = tonumber(self.entryAmount:getInternalText()) * itemCost
-    return finalCost
 end
 
 function StoreScrollingListBox:close()
