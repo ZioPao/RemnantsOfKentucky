@@ -9,6 +9,7 @@ function SafehouseInstanceHandler.RefreshSafehouseAllocation()
 end
 
 --- This check is on the client side. Maybe somehow move to the server but that might be costly.
+---@return boolean
 function SafehouseInstanceHandler.IsInSafehouse()
     --if isDebugEnabled() then return end
     --print("Running isInSafehouse")
@@ -17,13 +18,13 @@ function SafehouseInstanceHandler.IsInSafehouse()
         local md = PZEFT_UTILS.GetPlayerModData()
 
         if not md.safehouse then
-            return
+            return false
         end
 
         local sq = getPlayer():getSquare()
 
         if not sq then
-            return
+            return false
         end
 
         if sq:getZ() ~= 0 then
@@ -37,7 +38,11 @@ function SafehouseInstanceHandler.IsInSafehouse()
                 teleport = true
             })
         end
+
+        return true
     end
+
+    return false
 end
 
 ---Return safehouse coords for the current player

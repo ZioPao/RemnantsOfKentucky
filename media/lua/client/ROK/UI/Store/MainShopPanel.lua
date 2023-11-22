@@ -186,6 +186,12 @@ end
 -- Search for PC while in safehouse
 
 local function AddShopMenu(player, context, worldObjects, test)
+
+    -- DEBUG SP
+    if not isClient() and not isServer() then
+        context:addOption(getText("ContextMenu_EFT_OpenShop"), worldObjects, MainShopPanel.Open, player)
+    end
+
     if test then return true end
     if not SafehouseInstanceHandler.IsInSafehouse() then return true end
     local clickedObject = worldObjects[1]
@@ -194,7 +200,7 @@ local function AddShopMenu(player, context, worldObjects, test)
     local pcTileName = "Desktop Computer"
 
     if instanceof(clickedObject, "IsoObject") and moveableObject.name == pcTileName then
-        context:addOption("Open Shop", worldObjects, MainShopPanel.Open, player)
+        context:addOption(getText("ContextMenu_EFT_OpenShop"), worldObjects, MainShopPanel.Open, player)
     end
 end
 

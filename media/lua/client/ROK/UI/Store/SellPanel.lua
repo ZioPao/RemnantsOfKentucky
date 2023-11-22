@@ -6,6 +6,7 @@ local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
 local CommonStore = require("ROK/UI/Store/CommonStore")
 ------------------------
 
+-- TODO ADD remove Item from list
 
 ---@class SellPanel : ISPanelJoypad
 ---@field infoPanel ISPanel
@@ -20,6 +21,8 @@ function SellPanel:new(x, y, width, height)
     local o = ISPanelJoypad:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
+
+    o.draggedItems = {}
 
     ---@cast o SellPanel
     return o
@@ -56,7 +59,7 @@ function SellPanel:createChildren()
 
     local yMargin = CommonStore.MARGIN_Y
 
-    local elementWidth = self.width - xMargin * 2
+    local elementWidth = infoPanelWidth - (xMargin * 2)
     local elementHeight = CommonStore.BIG_BTN_HEIGHT
     local elementX = CommonStore.MARGIN_X
     local elementY = self.infoPanel:getBottom() - elementHeight - yMargin
@@ -86,7 +89,7 @@ function SellPanel:onConfirmSell()
 end
 
 function SellPanel:calculateSellPrice()
-    debugPrint(#self.sellList.items)
+    --debugPrint(#self.sellList.items)
     local price = 0
 
     for i=1, #self.sellList.items do
@@ -101,16 +104,25 @@ function SellPanel:updateInfoPanel()
     -- TODO Update text with info about the transaction
 
     local price = self:calculateSellPrice()
-    debugPrint(price)
+    --debugPrint(price)
 
-    self.infoPanel:setText("Money that you will receive: 10000$")
-    self.infoPanel.textDirty = true
+    --self.infoPanel:setText("Money that you will receive: 10000$")
+    --self.infoPanel.textDirty = true
 
     -- Count amount of items
     self.btnSell:setEnable(#self.sellList.items > 0)
 end
 
+
 ----------------------------------
+
+function SellPanel:addToDraggedItems(id)
+    if self.draggedItems == nil then
+        self.draggedItems = {}
+    end
+
+    self.draggedItems[id] = id
+end
 
 ---Override onDragItem of sellList. This means that self is sellList
 ---@param x any
@@ -127,13 +139,22 @@ function SellPanel:onDragItem(x, y)
         for i = 1, #ISMouseDrag.dragging do
             count = 1
             if instanceof(ISMouseDrag.dragging[i], "InventoryItem") then
-                self:addItem(count, ISMouseDrag.dragging[i])
+                local id = ISMouseDrag.dragging[i]:getID()
+                if self.parent.draggedItems[id] == nil then
+                    self:addItem(count, ISMouseDrag.dragging[i])
+                    self.parent:addToDraggedItems(ISMouseDrag.dragging[i]:getID())
+                end
+
             else
                 if ISMouseDrag.dragging[i].invPanel.collapsed[ISMouseDrag.dragging[i].name] then
                     count = 1
                     for j = 1, #ISMouseDrag.dragging[i].items do
                         if count > 1 then
-                            self:addItem(count, ISMouseDrag.dragging[i].items[j])
+                            local id = ISMouseDrag.dragging[i].items[j]:getID()
+                            if self.parent.draggedItems[id] == nil then
+                                self:addItem(count, ISMouseDrag.dragging[i].items[j])
+                                self.parent:addToDraggedItems(id)
+                            end
                         end
                         count = count + 1
                     end

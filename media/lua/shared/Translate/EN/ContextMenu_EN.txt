@@ -1,0 +1,4 @@
+ContextMenu_EN = {
+    ContextMenu_EFT_OpenShop = "Open Shop",
+
+}

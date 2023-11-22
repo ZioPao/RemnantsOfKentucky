@@ -5,14 +5,13 @@ ClientState = ClientState or {}
 
 ClientState.isInRaid = false
 ClientState.extractionStatus = {}
-
 ClientState.currentTime = ""
 
 -----------------------------------
 --* Commands from the server
 
 local ClientStateCommands = {}
-local MODULE = "PZEFT-State"
+local MODULE = EFT_MODULES.State
 
 ---Set client state if is in a raid or not
 ---@param args {value : boolean}
