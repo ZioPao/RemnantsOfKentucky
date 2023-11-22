@@ -170,7 +170,7 @@ function ManagePlayersPanel:onClick(button)
     if button.internal == 'UNASSIGN' then
 
     elseif button.internal == 'CLEAN_STORAGE' then
-        SafehouseInstanceHandler.wipeCrates()
+        SafehouseInstanceHandler.WipeCrates()
     elseif button.internal == 'STARTER_KIT' then
         -- TODO Give Starter kit to selected player
     elseif button.internal == 'WIPE_EVERYTHING' then

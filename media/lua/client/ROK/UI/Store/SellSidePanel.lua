@@ -3,92 +3,60 @@
 
 local GenericUI = require("ROK/UI/GenericUI")
 local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
-local CommonStore = require("ROK/UI/Store/CommonStore")
+local CommonStore = require("ROK/UI/Store/Components/CommonStore")
+local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
 ------------------------
 
 -- TODO ADD remove Item from list
 
----@class SellPanel : ISPanelJoypad
+---@class SellSidePanel : RightSidePanel
 ---@field infoPanel ISPanel
-local SellPanel = ISPanelJoypad:derive("SellPanel")
+local SellSidePanel = RightSidePanel:derive("SellSidePanel")
 
 ---@param x number
 ---@param y number
 ---@param width number
 ---@param height number
----@return SellPanel
-function SellPanel:new(x, y, width, height)
-    local o = ISPanelJoypad:new(x, y, width, height)
+---@param mainPanel any
+---@return SellSidePanel
+function SellSidePanel:new(x, y, width, height, mainPanel)
+    local o = RightSidePanel:new(x, y, width, height, mainPanel)
     setmetatable(o, self)
     self.__index = self
 
     o.draggedItems = {}
 
-    ---@cast o SellPanel
+    ---@cast o SellSidePanel
     return o
 end
 
-function SellPanel:createChildren()
-    local fontHgtSmall = GenericUI.SMALL_FONT_HGT
-    local entryHgt = fontHgtSmall + 2 * 2
-    local xMargin = 10
+function SellSidePanel:createChildren()
+    RightSidePanel.createChildren(self)
 
-    self.sellList = ISScrollingListBox:new(xMargin, entryHgt, self.width / 2, self.height - (entryHgt))
-    self.sellList:initialise()
-    self.sellList:instantiate()
-    self.sellList:setAnchorRight(false) -- resize in update()
-    self.sellList:setAnchorBottom(true)
-    self.sellList.itemHeight = 2 + GenericUI.MEDIUM_FONT_HGT + 32 + 4
-    self.sellList.selected = 0
-    self.sellList.doDrawItem = self.onDrawItem
-    self.sellList.onMouseUp = self.onDragItem
-    self.sellList.joypadParent = self
-    self.sellList.drawBorder = true
-    self:addChild(self.sellList)
-
-    --* Info panels and buttons, on the right
-    local infoPanelWidth = self.width / 2 - 20
-    local infoPanelHeight = self.height - entryHgt
-    local infoPanelX = self.width - infoPanelWidth - xMargin
-    local infoPanelY = entryHgt
-
-    self.infoPanel = ISPanel:new(infoPanelX, infoPanelY, infoPanelWidth, infoPanelHeight)
-    self.infoPanel:initialise()
-    self.infoPanel.backgroundColor = { r = 0, g = 0, b = 0, a = 0.7 }
-    self:addChild(self.infoPanel)
-
-    local yMargin = CommonStore.MARGIN_Y
-
-    local elementWidth = infoPanelWidth - (xMargin * 2)
-    local elementHeight = CommonStore.BIG_BTN_HEIGHT
-    local elementX = CommonStore.MARGIN_X
-    local elementY = self.infoPanel:getBottom() - elementHeight - yMargin
-
-    self.btnSell = ISButton:new(elementX, elementY, elementWidth, elementHeight, "Sell", self, self.onClickSell)
-    self.btnSell.internal = "SELL"
-    self.btnSell:initialise()
-    self.btnSell:setEnable(false)
-    self.infoPanel:addChild(self.btnSell)
+    self.bottomBtn:setTitle("Sell")      -- TODO GetText
+    self.bottomBtn.internal = "SELL"
+    self.bottomBtn:initialise()
+    self.bottomBtn:setEnable(false)
 end
 
 ----------------------------------
 
 ---Runs after clicking the SELL button
 ---@param btn ISButton
-function SellPanel:onClickSell(btn)
+function SellSidePanel:onClickSell(btn)
     debugPrint("Sell function")
     self.confirmationPanel = ConfirmationPanel.Open("Are you sure you want to sell these items?", self.mainPanel:getX(),
     self.mainPanel:getY() + self.mainPanel:getHeight() + 20, self, self.onConfirmSell)
 end
 
 ---Runs after you confirm that you want to sell
-function SellPanel:onConfirmSell()
+function SellSidePanel:onConfirmSell()
     debugPrint("OnConfirmSell")
 
     self.sellList.items = {}        -- Clean it
 end
 
-function SellPanel:calculateSellPrice()
+function SellSidePanel:calculateSellPrice()
     --debugPrint(#self.sellList.items)
     local price = 0
 
@@ -100,7 +68,7 @@ function SellPanel:calculateSellPrice()
 end
 
 ---Triggered when the user drags a item into the scrollingList
-function SellPanel:updateInfoPanel()
+function SellSidePanel:updateInfoPanel()
     -- TODO Update text with info about the transaction
 
     local price = self:calculateSellPrice()
@@ -110,13 +78,12 @@ function SellPanel:updateInfoPanel()
     --self.infoPanel.textDirty = true
 
     -- Count amount of items
-    self.btnSell:setEnable(#self.sellList.items > 0)
+    self.bottomBtn:setEnable(#self.sellList.items > 0)
 end
-
 
 ----------------------------------
 
-function SellPanel:addToDraggedItems(id)
+function SellSidePanel:addToDraggedItems(id)
     if self.draggedItems == nil then
         self.draggedItems = {}
     end
@@ -127,7 +94,7 @@ end
 ---Override onDragItem of sellList. This means that self is sellList
 ---@param x any
 ---@param y any
-function SellPanel:onDragItem(x, y)
+function SellSidePanel:onDragItem(x, y)
 
     -- TODO Should remove item from player!
 
@@ -171,7 +138,7 @@ end
 ---@param item any
 ---@param alt any
 ---@return unknown
-function SellPanel:onDrawItem(y, item, alt)
+function SellSidePanel:onDrawItem(y, item, alt)
     self:drawRectBorder(0, (y), self:getWidth(), self.itemheight - 1, 0.9, self.borderColor.r, self.borderColor.g,
         self.borderColor.b)
     if self.selected == item.index then
@@ -188,4 +155,4 @@ function SellPanel:onDrawItem(y, item, alt)
 end
 
 
-return SellPanel
+return SellSidePanel

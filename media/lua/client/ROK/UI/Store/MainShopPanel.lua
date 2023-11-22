@@ -15,19 +15,18 @@
     be placed should have a limit of weight
 ]]
 
-
 -- TODO Add filtering
 -- TODO add visible player balance
 require "ISUI/ISCollapsableWindow"
 -- TODO Add sellMultiplier
 
-local CustomTabPanel = require("ROK/UI/Store/CustomTabPanel")
-local StoreCategory = require("ROK/UI/Store/StoreCategory")
-local SellPanel = require("ROK/UI/Store/SellPanel")
 local GenericUI = require("ROK/UI/GenericUI")
 local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 local ClientShopManager = require("ROK/Economy/ClientShopManager")
 local ClientBankManager = require("ROK/Economy/ClientBankManager")
+local CustomTabPanel = require("ROK/UI/Store/Components/CustomTabPanel")
+local BuyCategory = require("ROK/UI/Store/BuyCategory")
+local SellCategory = require("ROK/UI/Store/SellCategory")
 ------------------------------
 
 ---@class MainShopPanel : ISCollapsableWindow
@@ -131,7 +130,7 @@ function MainShopPanel:createChildren()
 
 
     --* ESSENTIAL ITEMS *--
-    self.essentialItemsCat = StoreCategory:new(0, 0, self.width, catHeight, self)
+    self.essentialItemsCat = BuyCategory:new(0, 0, self.width, catHeight, self)
     self.essentialItemsCat:initialise()
     self.essentialItemsCat:setAnchorRight(true)
     self.essentialItemsCat:setAnchorBottom(true)
@@ -142,7 +141,7 @@ function MainShopPanel:createChildren()
     table.insert(self.categories, self.essentialItemsCat)
 
     --* DAILY ITEMS *--
-    self.dailyItemsCat = StoreCategory:new(0, 0, self.width, catHeight, self)
+    self.dailyItemsCat = BuyCategory:new(0, 0, self.width, catHeight, self)
     self.dailyItemsCat:initialise()
     self.dailyItemsCat:setAnchorRight(true)
     self.dailyItemsCat:setAnchorBottom(true)
@@ -153,7 +152,7 @@ function MainShopPanel:createChildren()
     table.insert(self.categories, self.dailyItemsCat)
 
     --* SELL MENU *--
-    self.sellCat = SellPanel:new(0, 0, self.width, catHeight)
+    self.sellCat = SellCategory:new(0, 0, self.width, catHeight)
     self.sellCat:initialise()
     self.sellCat:setAnchorRight(true)
     self.sellCat:setAnchorBottom(true)
