@@ -1,4 +1,4 @@
-require "ROK/ClientState"
+local ClientState = require("ROK/ClientState")
 local BeforeMatchAdminPanel = require("ROK/UI/BeforeMatch/BeforeMatchAdminPanel")
 local DuringMatchAdminPanel = require("ROK/UI/DuringMatch/DuringMatchAdminPanel")
 ----------------

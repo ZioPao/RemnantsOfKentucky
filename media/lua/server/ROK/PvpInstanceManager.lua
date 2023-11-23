@@ -5,7 +5,6 @@ if not isServer() then return end
 
 require("ROK/DebugTools")
 require("ROK/Config")
-local TeleportManager = require("ROK/TeleportManager")
 local pvpInstanceSettings = PZ_EFT_CONFIG.PVPInstanceSettings
 
 -------------------------------------
@@ -195,10 +194,11 @@ function PvpInstanceManager.TeleportPlayersToInstance()
         if not spawnPoint then return end --no more spawnpoints available
 
         --debugPrint("Teleporting to instance")
-        TeleportManager.Teleport(player, spawnPoint.x, spawnPoint.y, spawnPoint.z)
+        -- Teleport the player to their instance
+        sendServerCommand(player, EFT_MODULES.Common, "Teleport", spawnPoint)
 
-        -- Client Data
-        sendServerCommand(player, "PZEFT-State", "SetClientStateIsInRaid", {value = true})
+        -- Set the correct client data
+        sendServerCommand(player, EFT_MODULES.State, "SetClientStateIsInRaid", {value = true})
     end
 
     PvpInstanceManager.SendCurrentInstance()

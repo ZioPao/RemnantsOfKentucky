@@ -1,6 +1,7 @@
-local MODULE = EFT_MODULES.Time
+local ClientState = require("ROK/ClientState")
 ----------------
 
+local MODULE = EFT_MODULES.Time
 local TimeCommands = {}
 
 function TimeCommands.OpenTimePanel()

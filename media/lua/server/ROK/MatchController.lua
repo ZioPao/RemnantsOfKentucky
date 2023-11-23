@@ -1,7 +1,6 @@
 if not isServer() then return end
 
 require("ROK/DebugTools")
-require "ROK/TeleportManager"
 local Countdown = require("ROK/Time/Countdown")
 local PvpInstanceManager = require("ROK/PvpInstanceManager")
 

@@ -2,6 +2,7 @@
 require "ISUI/ISPanel"
 require "ISUI/ISRichTextPanel"
 require "ISUI/ISButton"
+local ClientState = require("ROK/ClientState")
 local GenericUI = require("ROK/UI/GenericUI")
 ---------------------------
 -- TODO Make this local

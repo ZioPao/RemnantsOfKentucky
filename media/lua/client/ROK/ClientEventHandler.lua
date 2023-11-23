@@ -1,5 +1,5 @@
-require "ROK/ClientState"
 local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
+local ClientState = require("ROK/ClientState")
 -----------------------------
 
 local isInSafehouseUpdateActive = false
@@ -44,7 +44,16 @@ end
 
 Events.EveryOneMinute.Add(UpdateClientState)
 
+-- If player in raid, set that they're not in it anymore
+local function OnPlayerExit()
+    if ClientState.isInRaid == false then return end
 
+    sendClientCommand(EFT_MODULES.Match, "RemovePlayer", {})
+    ClientState.isInRaid = false
+end
+
+Events.OnPlayerDeath.Add(OnPlayerExit)
+Events.OnDisconnect.Add(OnPlayerExit)
 
 ---------------------------------------
 --* Admin only *--

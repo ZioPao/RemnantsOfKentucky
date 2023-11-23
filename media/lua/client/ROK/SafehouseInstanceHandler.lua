@@ -1,4 +1,5 @@
 require("ROK/DebugTools")
+local ClientState = require("ROK/ClientState")
 --------------------------
 
 ---@class SafehouseInstanceHandler
@@ -11,38 +12,22 @@ end
 --- This check is on the client side. Maybe somehow move to the server but that might be costly.
 ---@return boolean
 function SafehouseInstanceHandler.IsInSafehouse()
-    --if isDebugEnabled() then return end
-    --print("Running isInSafehouse")
-    if not ClientState.isInRaid then
-        --print("Player is not in a raid, running check for safehouse")
-        local md = PZEFT_UTILS.GetPlayerModData()
+    local md = PZEFT_UTILS.GetPlayerModData()
+    if not md.safehouse then return false end
 
-        if not md.safehouse then
-            return false
-        end
+    local sq = getPlayer():getSquare()
+    if not sq or sq:getZ() ~= 0 then return false end
 
-        local sq = getPlayer():getSquare()
 
-        if not sq then
-            return false
-        end
-
-        if sq:getZ() ~= 0 then
-            return false
-        end
-
-        local dimensions = PZ_EFT_CONFIG.SafehouseInstanceSettings.dimensions
-        if getPlayer():isOutside() or not PZEFT_UTILS.IsPointWithinDimensions(md.safehouse.x, md.safehouse.y, dimensions.n,
-                dimensions.s, dimensions.e, dimensions.w, sq:getX(), sq:getY()) then
-            sendClientCommand("PZEFT-Safehouse", "RequestSafehouseAllocation", {
-                teleport = true
-            })
-        end
-
-        return true
+    local dimensions = PZ_EFT_CONFIG.SafehouseInstanceSettings.dimensions
+    if getPlayer():isOutside() or not PZEFT_UTILS.IsPointWithinDimensions(md.safehouse.x, md.safehouse.y, dimensions.n,
+            dimensions.s, dimensions.e, dimensions.w, sq:getX(), sq:getY()) then
+        sendClientCommand(EFT_MODULES.Safehouse, "RequestSafehouseAllocation", {
+            teleport = true
+        })
     end
 
-    return false
+    return true
 end
 
 ---Return safehouse coords for the current player

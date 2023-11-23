@@ -1,5 +1,6 @@
 require "ROK/ClientData"
 local ExtractionPanel = require("ROK/UI/DuringMatch/ExtractionPanel")
+local ClientState = require("ROK/ClientState")
 local os_time = os.time
 ------------------
 

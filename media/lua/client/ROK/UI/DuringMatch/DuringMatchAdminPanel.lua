@@ -1,3 +1,4 @@
+local ClientState = require("ROK/ClientState")
 local GenericUI = require("ROK/UI/GenericUI")
 local BaseAdminPanel = require("ROK/UI/BaseAdminPanel")
 local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")

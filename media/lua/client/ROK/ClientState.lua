@@ -1,11 +1,11 @@
 ---@alias clientStateType {isInRaid : boolean, extractionStatus : table, currentTime : number, availableInstances : number, availableSafehouses : number}
 
 ---@type clientStateType
-ClientState = ClientState or {}
-
-ClientState.isInRaid = false
-ClientState.extractionStatus = {}
-ClientState.currentTime = ""
+local ClientState = {
+    isInRaid = false,
+    currentTime = -1,
+    extractionStatus = {},
+}
 
 -----------------------------------
 --* Commands from the server
@@ -38,8 +38,6 @@ function ClientStateCommands.CommitDieIfInRaid()
     end
 end
 
------------------------------------
-
 local function OnClientStateCommands(module, command, args)
     if (module == MODULE or module == MODULE) and ClientStateCommands[command] then
         --debugPrint("Server Command - " .. MODULE .. "." .. command)
@@ -49,17 +47,6 @@ end
 
 Events.OnServerCommand.Add(OnClientStateCommands)
 
-
 -----------------------------------
---* Events, client only *--
 
--- If player in raid, set that they're not in it anymore
-local function OnPlayerExit()
-    if ClientState.isInRaid == false then return end
-
-    sendClientCommand(EFT_MODULES.Match, "RemovePlayer", {})
-    ClientState.isInRaid = false
-end
-
-Events.OnPlayerDeath.Add(OnPlayerExit)
-Events.OnDisconnect.Add(OnPlayerExit)
+return ClientState

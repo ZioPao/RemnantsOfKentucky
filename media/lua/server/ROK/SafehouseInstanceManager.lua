@@ -2,7 +2,6 @@ if not isServer() then return end
 
 require("ROK/DebugTools")
 require("ROK/Config")
-local TeleportManager = require("ROK/TeleportManager")
 local safehouseSettings = PZ_EFT_CONFIG.SafehouseInstanceSettings
 ----------------------
 
@@ -137,11 +136,10 @@ end
 ---@param player IsoPlayer
 function SafehouseInstanceManager.SendPlayerToSafehouse(player)
     local playerSafehouseKey = SafehouseInstanceManager.GetOrAssignSafehouse(player)
-    local safehouse = SafehouseInstanceManager.GetSafehouseInstanceByKey(playerSafehouseKey)
+    local safehouseCoords = SafehouseInstanceManager.GetSafehouseInstanceByKey(playerSafehouseKey)
 
-    --print("Teleporting to safehouse from sendPlayerToSafehouse")
-    TeleportManager.Teleport(player, safehouse.x, safehouse.y, safehouse.z)
-    sendServerCommand(player, "PZEFT-State", "SetClientStateIsInRaid", {value = false})
+    sendServerCommand(player, EFT_MODULES.Common, "Teleport", safehouseCoords)
+    sendServerCommand(player, EFT_MODULES.State, "SetClientStateIsInRaid", {value = false})
 end
 
 ---Send all the players to their respective safehouse
@@ -194,25 +192,29 @@ local SafehouseInstanceManagerCommands = {}
 ---@param playerObj IsoPlayer
 ---@param args table {teleport=true/false}
 function SafehouseInstanceManagerCommands.RequestSafehouseAllocation(playerObj, args)
-    if args.teleport then
-        TeleportManager.Teleport(playerObj, (PZ_EFT_CONFIG.SpawnCell.x * 300) + 150,
-            (PZ_EFT_CONFIG.SpawnCell.y * 300) + 150, 0)
-    end
+    -- if args.teleport then
+    --     local coords = {
+    --         x = (PZ_EFT_CONFIG.SpawnCell.x * 300) + 150,
+    --         y = (PZ_EFT_CONFIG.SpawnCell.y * 300) + 150,
+    --         z = 0
+    --     }
+    --     sendServerCommand(playerObj, EFT_MODULES.Common, "Teleport", coords)
+    -- end
 
     local safehouseKey = SafehouseInstanceManager.GetOrAssignSafehouse(playerObj)
-    local safehouseInstance = SafehouseInstanceManager.GetSafehouseInstanceByKey(safehouseKey)
+    local safehouseCoords = SafehouseInstanceManager.GetSafehouseInstanceByKey(safehouseKey)
 
-    sendServerCommand(playerObj, MODULE, 'SetSafehouse', safehouseInstance)
+    sendServerCommand(playerObj, MODULE, 'SetSafehouse', safehouseCoords)
 
     -- TODO Clean Inventory Box here to be sure that it doesn't contain old items.
 
     if args.teleport then
         print("Teleporting to instance from request safehouse allocation")
-        TeleportManager.Teleport(playerObj, safehouseInstance.x, safehouseInstance.y, safehouseInstance.z)
+        sendServerCommand(playerObj, EFT_MODULES.Common, "Teleport", safehouseCoords)
     end
 
     if args.cleanStorage then
-        sendServerCommand(playerObj, MODULE, 'CleanStorage', safehouseInstance)
+        sendServerCommand(playerObj, MODULE, 'CleanStorage', safehouseCoords)
     end
 end
 
