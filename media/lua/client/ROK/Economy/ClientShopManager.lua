@@ -128,6 +128,7 @@ function ShopCommands.BuyItem(args)
 
         local crate = cratesTable[1]
         crate:AddItems(args.item.fullType, args.quantity)
+        crate:requestSync()     -- TODO Will it work?
     else
         debugPrint("ERROR: ServerCommands.BuyItem - Invalid buyData (args)")
     end

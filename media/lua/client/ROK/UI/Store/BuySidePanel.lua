@@ -58,10 +58,10 @@ function BuySidePanel:createChildren()
 end
 
 function BuySidePanel:update()
+    --debugPrint("BuySidePanel update")
     RightSidePanel.update(self)
     self.bottomBtn:setEnable(self.mainPanel:getSelectedItem() ~= nil)
 end
-
 
 function BuySidePanel:onConfirmBuy()
     debugPrint("Confirm buy")
@@ -90,8 +90,8 @@ function BuySidePanel:onStartBuy()
         " of " ..
         selectedItem["actualItem"]:getName() .. " for " .. tostring(cost) .. "$ ?"
 
-    self.confirmationPanel = ConfirmationPanel.Open(text, self.mainPanel:getX(),
-        self.mainPanel:getY() + self.mainPanel:getHeight() + 20, self, self.onConfirmBuy)
+    self.confirmationPanel = ConfirmationPanel.Open(text, self.mainPanel.shopPanel:getX(),
+        self.mainPanel.shopPanel:getY() + self.mainPanel.shopPanel:getHeight() + 20, self, self.onConfirmBuy)
 end
 
 function BuySidePanel:onClick(btn)
@@ -139,12 +139,5 @@ function BuySidePanel:render()
     self.textPanel:paginate()
 end
 
-function BuySidePanel:close()
-    if self.confirmationPanel then
-        self.confirmationPanel:close()
-    end
-
-    RightSidePanel.close(self)
-end
 
 return BuySidePanel

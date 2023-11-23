@@ -30,10 +30,19 @@ local SellCategory = require("ROK/UI/Store/SellCategory")
 ------------------------------
 
 ---@class MainShopPanel : ISCollapsableWindow
+---@field pcPosition coords
 MainShopPanel = ISCollapsableWindow:derive("MainShopPanel")
 MainShopPanel.bottomInfoHeight = GenericUI.SMALL_FONT_HGT * 4
 
-function MainShopPanel:new(x, y, width, height, character)
+---comment
+---@param x any
+---@param y any
+---@param width any
+---@param height any
+---@param character IsoPlayer
+---@param pcPosition coords
+---@return MainShopPanel
+function MainShopPanel:new(x, y, width, height, character, pcPosition)
     local o = {}
     if x == 0 and y == 0 then
         x = (getCore():getScreenWidth() / 2) - (width / 2)
@@ -48,26 +57,32 @@ function MainShopPanel:new(x, y, width, height, character)
     self.__index = self
     o.character = character
     o.playerNum = character and character:getPlayerNum() or -1
+    o.pcPosition = pcPosition
     o:setResizable(false)
     o.lineH = 10
     o.fgBar = { r = 0, g = 0.6, b = 0, a = 0.7 }
     o.craftInProgress = false
     o.selectedIndex = {}
     o:setWantKeyEvents(true)
+
+    ---@type MainShopPanel
     return o
 end
 
 ---Closes all the related tabs too
 function MainShopPanel:close()
-    self.panel:close()
-    self.essentialItemsCat:close()
-    self.dailyItemsCat:close()
-    self.sellCat:close()
+    -- self.panel:close()
+    -- self.essentialItemsCat:close()
+    -- self.dailyItemsCat:close()
+    -- self.sellCat:close()
+    self:removeFromUIManager()
     ISCollapsableWindow.close(self)
 end
 
-function MainShopPanel.Open()
-    MainShopPanel.instance = MainShopPanel:new(0, 0, 800, 600, getPlayer())
+---@param player IsoPlayer
+---@param pcPos coords
+function MainShopPanel.Open(player, pcPos)
+    MainShopPanel.instance = MainShopPanel:new(0, 0, 800, 600, player, pcPos)
     MainShopPanel.instance:initialise()
     MainShopPanel.instance:addToUIManager()
     MainShopPanel.instance:setVisible(true)
@@ -163,6 +178,11 @@ end
 function MainShopPanel:update()
     ISCollapsableWindow.update(self)
     self.accountBalance = ClientBankManager.GetPlayerBankAccountBalance()
+
+    -- Check distance from computer
+    if IsoUtils.DistanceTo(self.pcPosition.x, self.pcPosition.y, self.character:getX(), self.character:getY()) > 2 then
+        self:close()
+    end
 end
 
 function MainShopPanel:render()
@@ -176,25 +196,37 @@ function MainShopPanel:render()
 end
 
 ------------------------------------------------
--- Search for PC while in safehouse
-
-local function AddShopMenu(player, context, worldObjects, test)
-
-    -- DEBUG SP
-    if not isClient() and not isServer() then
-        context:addOption(getText("ContextMenu_EFT_OpenShop"), worldObjects, MainShopPanel.Open, player)
-    end
+--- Search for PC while in safehouse
+---@param playerNum number
+---@param context any
+---@param worldObjects any
+---@param test any
+---@return boolean
+local function AddShopMenu(playerNum, context, worldObjects, test)
 
     if test then return true end
-    if not SafehouseInstanceHandler.IsInSafehouse() then return true end
+
+    -- SP DEBUG THING
+    if isClient() then
+        if not SafehouseInstanceHandler.IsInSafehouse() then return true end
+
+    end
+
+    ---@type IsoObject
     local clickedObject = worldObjects[1]
     local moveableObject = ISMoveableSpriteProps.fromObject(clickedObject)
-
     local pcTileName = "Desktop Computer"
 
     if instanceof(clickedObject, "IsoObject") and moveableObject.name == pcTileName then
-        context:addOption(getText("ContextMenu_EFT_OpenShop"), worldObjects, MainShopPanel.Open, player)
+        local sq = clickedObject:getSquare()
+        local coords = {x = sq:getX(), y = sq:getY()}
+        local playerObj = getSpecificPlayer(playerNum)
+        local isNear = IsoUtils.DistanceTo(coords.x, coords.y, playerObj:getX(), playerObj:getY()) < 2
+        if isNear then
+            context:addOption(getText("ContextMenu_EFT_OpenShop"), playerObj, MainShopPanel.Open, coords)
+        end
     end
+    return false
 end
 
 -- For MP, we can access the menu ONLY from the admin panel

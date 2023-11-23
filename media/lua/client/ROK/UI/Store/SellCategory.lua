@@ -4,6 +4,8 @@ local SellSidePanel = require("ROK/UI/Store/SellSidePanel")
 -----------------------
 
 ---@class SellCategory : StoreScrollingListBox
+---@field shopPanel MainShopPanel
+---@field sellSidePanel SellSidePanel
 local SellCategory = StoreScrollingListBox:derive("SellCategory")
 
 ---@param x number
@@ -43,8 +45,8 @@ end
 ----------------------------------
 
 function SellCategory:close()
-    self.sellSidePanel:removeFromUIManager()
-    self.sellSidePanel:close()
+    -- self.sellSidePanel:removeFromUIManager()
+    -- self.sellSidePanel:close()
     StoreScrollingListBox.close(self)
 end
 

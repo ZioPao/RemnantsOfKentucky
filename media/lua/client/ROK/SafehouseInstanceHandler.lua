@@ -56,7 +56,7 @@ function SafehouseInstanceHandler.GetSafehouse()
     return md.safehouse
 end
 
----@return table? {ItemContainer}
+---@return table<integer, ItemContainer>?
 function SafehouseInstanceHandler.GetCrates()
     local cratesTable = {}
     local safehouse = SafehouseInstanceHandler.GetSafehouse()

@@ -59,6 +59,7 @@ end
 
 ----------------------------------
 function StoreScrollingListBox:update()
+    --debugPrint("StoreScrollingListBox update")
     if not self.parent:getIsVisible() then return end
 end
 
