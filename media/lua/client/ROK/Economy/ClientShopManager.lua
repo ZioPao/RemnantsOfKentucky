@@ -127,17 +127,18 @@ function ShopCommands.BuyItem(args)
     end
 
     local cratesTable = SafehouseInstanceHandler.GetCrates()
-    -- Find the first crate which has available space
-    -- TODO Do it
 
+    if cratesTable == nil then debugPrint("Crates are nil!") return end
+    
+    -- Find the first crate which has available space
     local crateCounter = 1
+    local switchedToPlayer = false
     local inv = cratesTable[crateCounter]
 
-    --getPlayer():getInventory():AddItems(args.item.fullType, args.quantity)
     for i=1, args.quantity do
         local item = InventoryItemFactory.CreateItem(args.item.fullType)
 
-        if not inv:hasRoomFor(getPlayer(), item) then
+        if not inv:hasRoomFor(getPlayer(), item) and not switchedToPlayer then
             debugPrint("Switching to next crate")
             crateCounter = crateCounter + 1
             if crateCounter < #cratesTable then
@@ -145,11 +146,12 @@ function ShopCommands.BuyItem(args)
             else
                 debugPrint("No more space in the crates, switching to dropping stuff in the player's inventory")
                 inv = getPlayer():getInventory()
+                switchedToPlayer = true
             end
         end
         inv:addItemOnServer(item)
         inv:addItem(item)
-        inv:setDrawDirty(true)      -- TODO Not working, it doesn't show until next restart!
+        inv:setDrawDirty(true)
         ISInventoryPage.renderDirty = true
     end
 end
