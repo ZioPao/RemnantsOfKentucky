@@ -8,6 +8,9 @@ Mod ID: LuaTimers
 --]]
 
 local os_time = os.time
+
+---@class Countdown
+---@field intervals {}
 local Countdown = {}
 
 ---Will run the func after the end
@@ -25,17 +28,22 @@ function Countdown.Setup(stopTime, fun)
 	Events.OnTickEvenPaused.Add(Countdown.Update)
 end
 
----comment
 ---@param interval number in seconds
 ---@param fun function
 function Countdown.AddIntervalFunc(interval, fun)
 
-	Countdown.interval = {
+	-- TODO Handle multiple timers
+	local intTab = {
 		counter = 0,
 		base = interval,
 		stopTime = os_time() + interval,
 		fun = fun
 	}
+
+	if Countdown.intervals == nil then
+		Countdown.intervals = {}
+	end
+	table.insert(Countdown.intervals, intTab)
 end
 
 function Countdown.Update()
@@ -49,13 +57,16 @@ function Countdown.Update()
 		sendServerCommand(EFT_MODULES.Time, "ReceiveTimeUpdate", { time = currSeconds })
 	end
 
-	-- Check interval fun
-	if Countdown.interval then
-		if currTime >= Countdown.interval.stopTime then
-			Countdown.interval.counter = Countdown.interval.counter + 1
-			Countdown.interval.stopTime = os_time() + Countdown.interval.base	-- Updates it for the next iteration
-			debugPrint("Running interval function")
-			Countdown.interval.fun(Countdown.interval.counter)
+	-- Check interval funcs
+	if Countdown.intervals then
+		for i=1, #Countdown.intervals do
+			local intTab = Countdown.intervals[i]
+			if currTime >= intTab.stopTime then
+				intTab.counter = intTab.counter + 1
+				intTab.stopTime = os_time() + intTab.base	-- Updates it for the next iteration
+				debugPrint("Running interval function -> " .. tostring(intTab.fun))
+				intTab.fun(intTab.counter)
+			end
 		end
 	end
 

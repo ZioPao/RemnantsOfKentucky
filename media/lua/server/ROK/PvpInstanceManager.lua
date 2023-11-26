@@ -119,7 +119,7 @@ function PvpInstanceManager.SendClearCurrentInstance()
 end
 
 ---Consumes a spawnpoint.
----@return coords
+---@return {name : string, x : number, y : number, z : number}
 function PvpInstanceManager.PopRandomSpawnPoint()
     local currentInstance = PvpInstanceManager.GetCurrentInstance()
 
@@ -193,9 +193,15 @@ function PvpInstanceManager.TeleportPlayersToInstance()
         local spawnPoint = PvpInstanceManager.PopRandomSpawnPoint()
         if not spawnPoint then return end --no more spawnpoints available
 
+        debugPrint(spawnPoint.name)
         --debugPrint("Teleporting to instance")
         -- Teleport the player to their instance
-        sendServerCommand(player, EFT_MODULES.Common, "Teleport", spawnPoint)
+        local coords = {
+            x = spawnPoint.x,
+            y = spawnPoint.y,
+            z = spawnPoint.z
+        }
+        sendServerCommand(player, EFT_MODULES.Common, "Teleport", coords)
 
         -- Set the correct client data
         sendServerCommand(player, EFT_MODULES.State, "SetClientStateIsInRaid", {value = true})

@@ -56,6 +56,7 @@ function MatchController:start()
 
     -- Setup Zombie handling
     Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.zombieIncreaseTime, MatchController.HandleZombieSpawns)
+    Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.zombieIncreaseTime, MatchController.CheckAlivePlayers)
 
 end
 
@@ -99,28 +100,16 @@ function MatchController.HandleZombieSpawns(loops)
                 local y = player:getY()
 
                 -- We can't go overboard with addedX or addedY
-                local randomX = ZombRand(20, 60)
-                local randomY = ZombRand(20, 60)
-
-                -- Flip sign for X
-                if ZombRand(0,100) > 50 then
-                    randomX = 0 - randomX
-                end
-
-                -- Flip sign for Y
-                if ZombRand(0,100) > 50 then
-                    randomY = 0 - randomY
-                end
-
-
+                local sq
+                repeat
+                    local randomX = ZombRand(20, 60) * (ZombRand(0, 100) > 50 and -1 or 1)
+                    local randomY = ZombRand(20, 60) * (ZombRand(0, 100) > 50 and -1 or 1)
+                    sq = getSquare(x + randomX, y + randomY, 0)
+                until sq and not sq:getFloor():getSprite():getProperties():Is(IsoFlagType.water)
                 -- TODO Amount of zombies should scale based on players amount too, to prevent from killing the server
                 local zombiesAmount = loops  --math.floor(loops/2)
                 debugPrint("spawning " .. zombiesAmount .. " near " .. player:getUsername())
-
-                local sq = getSquare(x + randomX, y + randomY, 0)
-
-                -- TODO Check if square is ok. If it's water or too near a player skip it
-                addZombiesInOutfit(x + randomX, y + randomY, 0, zombiesAmount, "", 50, false, false, false, false, 1)
+                addZombiesInOutfit(sq:getX(), sq:getY(), 0, zombiesAmount, "", 50, false, false, false, false, 1)
                 addSound(player, math.floor(x), math.floor(y), 0, 300, 100)
             else
                 debugPrint("player was nil")
@@ -129,6 +118,29 @@ function MatchController.HandleZombieSpawns(loops)
             debugPrint("plid was nil")
         end
     end
+end
+
+---Checks if there are players still alive in a match. When it gets to 0, stop the match
+---@param loops any
+function MatchController.CheckAlivePlayers(loops)
+    local instance = MatchController.GetHandler()
+    if instance == nil then return end
+    if MatchController.GetAmountAlivePlayers() == 0 then
+        MatchController.instance:stopMatch()
+    end
+end
+
+---Returns the amount of alive players in a match
+---@return integer
+function MatchController.GetAmountAlivePlayers()
+    local counter = 0
+    for k,v in pairs(MatchController.instance.playersInMatch) do
+        if v then
+            counter = counter + 1
+        end
+    end
+
+    return counter
 end
 
 --------------------------------------------------
@@ -167,12 +179,7 @@ function MatchCommands.SendAlivePlayersAmount(playerObj)
     local instance = MatchController.GetHandler()
 
     if instance == nil then return end
-    local counter = 0
-    for k,v in pairs(instance.playersInMatch) do
-        if v then
-            counter = counter + 1
-        end
-    end
+    local counter = MatchController.GetAmountAlivePlayers()
     debugPrint("Alive players in match: " .. tostring(counter))
     sendServerCommand(playerObj, EFT_MODULES.UI, "ReceiveAlivePlayersAmount", {amount = counter})
 

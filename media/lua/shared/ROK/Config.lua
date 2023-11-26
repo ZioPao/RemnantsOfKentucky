@@ -122,6 +122,7 @@ PZ_EFT_CONFIG.MatchSettings = {
     startMatchTime = 5,
     endMatchTime = 5,
     zombieIncreaseTime = 30,     -- todo 2 minutes
+    checkAlivePlayers = 10      -- Every 10 seconds, we check if there are players alive in the match
 
 }
 
@@ -133,6 +134,8 @@ PZ_EFT_CONFIG.MatchSettings = {
 
 ---@type table<integer, spawnPointsType> 
 PZ_EFT_CONFIG.Spawnpoints = {}
+
+-- FIXME Some spawn points are broken!
 
 table.insert(PZ_EFT_CONFIG.Spawnpoints, {
     name = "SOUTHERN SHORE SPAWN #1",
