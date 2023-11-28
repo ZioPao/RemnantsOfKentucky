@@ -98,13 +98,13 @@ end
 
 --************************************************************************--
 
--- TODO Make this local
-LeadearboardPanel = ISCollapsableWindow:derive("LeadearboardPanel")
+---@class LeaderboardPanel : ISCollapsableWindow
+local LeaderboardPanel = ISCollapsableWindow:derive("LeaderboardPanel")
 
-function LeadearboardPanel.Open(x, y)
+function LeaderboardPanel.Open(x, y)
     -- TODO Find a better way to handle icons
-    if LeadearboardPanel.instance and LeadearboardPanel.instance:getIsVisible() then
-        LeadearboardPanel.instance:close()
+    if LeaderboardPanel.instance and LeaderboardPanel.instance:getIsVisible() then
+        LeaderboardPanel.instance:close()
         ButtonManager["Leaderboard"]:setImage(BUTTONS_DATA_TEXTURES["Leaderboard"].OFF)
         return
     end
@@ -113,7 +113,7 @@ function LeadearboardPanel.Open(x, y)
     local width = 400 * FONT_SCALE
     local height = 600 * FONT_SCALE
 
-    local modal = LeadearboardPanel:new(x, y, width, height)
+    local modal = LeaderboardPanel:new(x, y, width, height)
     modal:initialise()
     modal:addToUIManager()
     modal.instance:setKeyboardFocus()
@@ -122,7 +122,7 @@ function LeadearboardPanel.Open(x, y)
     return modal
 end
 
-function LeadearboardPanel:new(x, y, width, height)
+function LeaderboardPanel:new(x, y, width, height)
     local o = {}
     o = ISCollapsableWindow:new(x, y, width, height)
     setmetatable(o, self)
@@ -132,13 +132,13 @@ function LeadearboardPanel:new(x, y, width, height)
     o.resizable = false
     o.moveWithMouse = true
 
-    LeadearboardPanel.instance = o
+    LeaderboardPanel.instance = o
     return o
 end
 
 --- SETTERS
-function LeadearboardPanel.SetBankAccounts(accounts)
-    if LeadearboardPanel.instance then
+function LeaderboardPanel.SetBankAccounts(accounts)
+    if LeaderboardPanel.instance then
         print("Setting bank accounts to LeaderboardPanel")
 
         local sortedAccounts = {}
@@ -153,19 +153,19 @@ function LeadearboardPanel.SetBankAccounts(accounts)
         table.sort(sortedAccounts, SortByBalance)
 
 
-        LeadearboardPanel.bankAccounts = sortedAccounts
+        LeaderboardPanel.bankAccounts = sortedAccounts
         debugPrint(sortedAccounts)
         PZEFT_UTILS.PrintTable(sortedAccounts)
     end
 end
 
-function LeadearboardPanel:initialise()
+function LeaderboardPanel:initialise()
     ISCollapsableWindow.initialise(self)
     sendClientCommand(EFT_MODULES.Bank, 'TransmitAllBankAccounts', {})
 
 end
 
-function LeadearboardPanel:createChildren()
+function LeaderboardPanel:createChildren()
     ISCollapsableWindow.createChildren(self)
     local yOffset = 30
     local xOffset = 10
@@ -213,7 +213,7 @@ function LeadearboardPanel:createChildren()
     self:fillList()
 end
 
-function LeadearboardPanel:fillList()
+function LeaderboardPanel:fillList()
 
     -- TODO Use BankAccounts
 
@@ -224,27 +224,27 @@ function LeadearboardPanel:fillList()
     -- TODO Wait 5 seconds or so to update the list
     --while LeadearboardPanel.bankAccounts == nil do print("Waiting for accounts") end
 
-    self.mainCategory:initList(LeadearboardPanel.bankAccounts)
+    self.mainCategory:initList(LeaderboardPanel.bankAccounts)
 end
 
-function LeadearboardPanel:prerender()
+function LeaderboardPanel:prerender()
     self:drawRect(0, 0, self.width, self.height, self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g,
         self.backgroundColor.b)
     self:drawRectBorder(0, 0, self.width, self.height, self.borderColor.a, self.borderColor.r, self.borderColor.g,
         self.borderColor.b)
 end
 
-function LeadearboardPanel:setKeyboardFocus()
+function LeaderboardPanel:setKeyboardFocus()
     local view = self.panel:getActiveView()
     if not view then return end
     Core.UnfocusActiveTextEntryBox()
     --view.filterWidgetMap.Type:focus()
 end
 
-function LeadearboardPanel:close()
+function LeaderboardPanel:close()
     ISCollapsableWindow.close(self)
 end
 
 --************************************************************************--
 
---return LeadearboardPanel
+return LeaderboardPanel

@@ -1,6 +1,7 @@
 local ClientState = require("ROK/ClientState")
 local BeforeMatchAdminPanel = require("ROK/UI/BeforeMatch/BeforeMatchAdminPanel")
 local DuringMatchAdminPanel = require("ROK/UI/DuringMatch/DuringMatchAdminPanel")
+local LeaderboardPanel = require("ROK/UI/BeforeMatch/LeaderboardPanel")
 ----------------
 
 -- Override ISSafetyUI to have a instance of that so we can reference it later
@@ -90,34 +91,9 @@ function ButtonManager.CreateButtons(isInRaid)
     end
 
     if type(isInRaid) ~= "boolean" or not isInRaid then
-        ButtonManager.AddNewButton("Leaderboard", function() LeadearboardPanel.Open(100, 100) end)
+        ButtonManager.AddNewButton("Leaderboard", function() LeaderboardPanel.Open(100, 100) end)
     end
 end
 
 Events.PZEFT_UpdateClientStatus.Add(ButtonManager.CreateButtons)
 Events.OnCreatePlayer.Add(ButtonManager.CreateButtons)
-
-----------------------------------------------------------
-
--- require "ISUI/ISAdminPanelUI"
--- local _ISAdminPanelUICreate = ISAdminPanelUI.create
-
--- function ISAdminPanelUI:create()
---     _ISAdminPanelUICreate(self)
-
---     local function OpenAdminMenu()
---         if not ClientState.IsInRaid then
---             BeforeMatchAdminPanel.OnOpenPanel()
---         else
---             DuringMatchAdminPanel.OnOpenPanel()
---         end
---     end
-
-
---     local lastButton = self.children[self.IDMax-1].internal == "CANCEL" and self.children[self.IDMax-2] or self.children[self.IDMax-1]
---     self.btnOpenAdminMenu = ISButton:new(lastButton.x, lastButton.y + 5 + lastButton.height, self.sandboxOptionsBtn.width, self.sandboxOptionsBtn.height, "EFT Admin Menu", self, OpenAdminMenu)
---     self.btnOpenAdminMenu:initialise()
---     self.btnOpenAdminMenu:instantiate()
---     self.btnOpenAdminMenu.borderColor = self.buttonBorderColor
---     self:addChild(self.btnOpenAdminMenu)
--- end
