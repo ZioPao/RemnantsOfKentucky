@@ -53,19 +53,10 @@ end
 ---@param module table
 function LeaderboardScrollingTable:initList(module)
     self.datas:clear()
-    -- TODO This is not like this anymore, fix it
-    -- Orders it based on balance
-    -- local function SortByBalance(a, b)
-    --     return a.balance > b.balance
-    -- end
-
-    -- table.sort(module, SortByBalance)
-
     if module == nil then return end
-
-    for username, balance in ipairs(module) do
+    for username, bankAccount in ipairs(module) do
         if self.viewer.filterEntry:getInternalText() ~= "" and string.trim(self.viewer.filterEntry:getInternalText()) == nil or string.contains(string.lower(username), string.lower(string.trim(self.viewer.filterEntry:getInternalText()))) then
-            self.datas:addItem(username, balance)
+            self.datas:addItem(username, bankAccount)
         end
     end
 end
@@ -96,12 +87,10 @@ function LeaderboardScrollingTable:drawDatas(y, item, alt)
     local clipY = math.max(0, y + self:getYScroll())
     local clipY2 = math.min(self.height, y + self:getYScroll() + self.itemheight)
 
-    self:setStencilRect(clipX, clipY, clipX2 - clipX, clipY2 - clipY)
-    self:drawText(item.item.pl:getUsername(), xOffset, y + 4, 1, 1, 1, a, self.font)
-    self:clearStencilRect()
+    --self:setStencilRect(clipX, clipY, clipX2 - clipX, clipY2 - clipY)
+    --self:clearStencilRect()
 
-    -- Balance
-    --TODO local balance = GetBalance(item.item)
+    self:drawText(item.item.username, xOffset, y + 4, 1, 1, 1, a, self.font)
     self:drawText(tostring(item.item.balance), self.columns[2].size + xOffset, y + 4, 1, 1, 1, a, self.font)
 
     return y + self.itemheight
@@ -151,8 +140,22 @@ end
 function LeadearboardPanel.SetBankAccounts(accounts)
     if LeadearboardPanel.instance then
         print("Setting bank accounts to LeaderboardPanel")
-        LeadearboardPanel.bankAccounts = accounts
-        debugPrint(accounts)
+
+        local sortedAccounts = {}
+        for _, v in pairs(accounts) do
+            table.insert(sortedAccounts, v)
+        end
+
+        local function SortByBalance(a,b)
+            return a.balance < b.balance
+        end
+
+        table.sort(sortedAccounts, SortByBalance)
+
+
+        LeadearboardPanel.bankAccounts = sortedAccounts
+        debugPrint(sortedAccounts)
+        PZEFT_UTILS.PrintTable(sortedAccounts)
     end
 end
 

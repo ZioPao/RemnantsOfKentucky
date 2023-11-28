@@ -5,13 +5,24 @@ require "ROK/ServerData"
 ---@class ServerBankManager
 local ServerBankManager =  {}
 
+---comment
+---@param username string
+---@return bankPlayerTable
+local function CreateAccountTable(username)
+    return {
+        username = username,
+        balance = PZ_EFT_CONFIG.Default.balance
+    }
+end
+
+
 --- Get account information by username
 ---@param username string
 function ServerBankManager.GetOrCreateAccount(username)
     local bankAccounts = ServerData.Bank.GetBankAccounts()
     if not bankAccounts[username] then
-        print("ServerBankManager.addAmountToAccount: Account " .. username .. " doesn't exist! Creating one.")
-        bankAccounts[username] = {balance = PZ_EFT_CONFIG.Default.balance}
+        debugPrint("ServerBankManager.addAmountToAccount: Account " .. username .. " doesn't exist! Creating one.")
+        bankAccounts[username] = CreateAccountTable(username)
         ServerData.Bank.SetBankAccounts(bankAccounts)
     end
     return bankAccounts[username]
@@ -49,15 +60,13 @@ local BankCommands = {}
 ---Set a bank account for the player
 ---@param playerObj IsoPlayer
 function BankCommands.SetBankAccount(playerObj)
-    local playerName = playerObj:getUsername()
-    local balance = PZ_EFT_CONFIG.Default.balance
+    local username = playerObj:getUsername()
 
     -- Get Bank accounts and re-set them
     local bankAccounts = ServerData.Bank.GetBankAccounts()
-    bankAccounts[playerName] = {balance = balance}
+    bankAccounts[username] = CreateAccountTable(username)
     ServerData.Bank.SetBankAccounts(bankAccounts)
 end
-
 
 --- Sends command to client to set the player's safehouse
 ---@param playerObj IsoPlayer

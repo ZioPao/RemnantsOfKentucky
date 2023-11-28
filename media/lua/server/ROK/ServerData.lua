@@ -131,7 +131,7 @@ end
 
 ------------------------------------------------
 ---@alias username string
----@alias bankPlayerTable {balance : number}
+---@alias bankPlayerTable {username : string, balance : number}
 ---@alias bankAccountsTable table<username, bankPlayerTable>
 
 ServerData.Bank = ServerData.Bank or {}
