@@ -113,27 +113,6 @@ end
 ---@class LeaderboardPanel : ISCollapsableWindow
 local LeaderboardPanel = ISCollapsableWindow:derive("LeaderboardPanel")
 
-function LeaderboardPanel.Open(x, y)
-    -- TODO Find a better way to handle icons
-    if LeaderboardPanel.instance and LeaderboardPanel.instance:getIsVisible() then
-        LeaderboardPanel.instance:close()
-        ButtonManager["Leaderboard"]:setImage(BUTTONS_DATA_TEXTURES["Leaderboard"].OFF)
-        return
-    end
-
-    -- TODO Make it scale based on resolution
-    local width = 400 * FONT_SCALE
-    local height = 600 * FONT_SCALE
-
-    local modal = LeaderboardPanel:new(x, y, width, height)
-    modal:initialise()
-    modal:addToUIManager()
-    modal.instance:setKeyboardFocus()
-    ButtonManager["Leaderboard"]:setImage(BUTTONS_DATA_TEXTURES["Leaderboard"].ON)
-
-    return modal
-end
-
 function LeaderboardPanel:new(x, y, width, height)
     local o = {}
     o = ISCollapsableWindow:new(x, y, width, height)
@@ -148,33 +127,11 @@ function LeaderboardPanel:new(x, y, width, height)
     return o
 end
 
---- SETTERS
-function LeaderboardPanel.SetBankAccounts(accounts)
-    if LeaderboardPanel.instance then
-        print("Setting bank accounts to LeaderboardPanel")
-
-        local sortedAccounts = {}
-        for _, v in pairs(accounts) do
-            table.insert(sortedAccounts, v)
-        end
-
-        local function SortByBalance(a,b)
-            return a.balance < b.balance
-        end
-
-        table.sort(sortedAccounts, SortByBalance)
-
-
-        LeaderboardPanel.bankAccounts = sortedAccounts
-        debugPrint(sortedAccounts)
-        PZEFT_UTILS.PrintTable(sortedAccounts)
-    end
-end
-
 function LeaderboardPanel:initialise()
     ISCollapsableWindow.initialise(self)
-    sendClientCommand(EFT_MODULES.Bank, 'TransmitAllBankAccounts', {})
 
+    -- Request all the banks account to fill the leaderboard
+    sendClientCommand(EFT_MODULES.Bank, 'TransmitAllBankAccounts', {})
 end
 
 function LeaderboardPanel:createChildren()
@@ -248,5 +205,49 @@ function LeaderboardPanel:close()
 end
 
 --************************************************************************--
+function LeaderboardPanel.Open(x, y)
+    -- TODO Find a better way to handle icons
+    if LeaderboardPanel.instance and LeaderboardPanel.instance:getIsVisible() then
+        LeaderboardPanel.instance:close()
+        ButtonManager["Leaderboard"]:setImage(BUTTONS_DATA_TEXTURES["Leaderboard"].OFF)
+        return
+    end
+
+    -- TODO Too big in some parts
+    local width = 400 * FONT_SCALE
+    local height = 600 * FONT_SCALE
+
+    local modal = LeaderboardPanel:new(x, y, width, height)
+    modal:initialise()
+    modal:addToUIManager()
+    modal.instance:setKeyboardFocus()
+    ButtonManager["Leaderboard"]:setImage(BUTTONS_DATA_TEXTURES["Leaderboard"].ON)
+
+    return modal
+end
+function LeaderboardPanel.SetBankAccounts(accounts)
+
+    if LeaderboardPanel.instance == nil then return end
+
+    debugPrint("Setting bank accounts to LeaderboardPanel")
+
+    local sortedAccounts = {}
+    for _, v in pairs(accounts) do
+        table.insert(sortedAccounts, v)
+    end
+
+    local function SortByBalance(a,b)
+        return a.balance < b.balance
+    end
+
+    table.sort(sortedAccounts, SortByBalance)
+
+
+    LeaderboardPanel.bankAccounts = sortedAccounts
+        --debugPrint(sortedAccounts)
+        --PZEFT_UTILS.PrintTable(sortedAccounts)
+    
+end
+
 
 return LeaderboardPanel
