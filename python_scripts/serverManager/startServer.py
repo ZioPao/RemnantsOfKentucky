@@ -5,7 +5,7 @@
 # Starts server normally
 
 from os import listdir, remove
-from os.path import split as join 
+from os.path import split as path_split, abspath, join, isfile
 
 def in_boundary(X, Y, startX, startY, endX, endY):
     """Determines if a co-ordinate is within a boundary
@@ -54,6 +54,6 @@ def reset_instances(path):
 
 
 # TEST PATH C:\Users\...\Zomboid\Saves\Multiplayer\pzeft
-#t_path = #
+t_path = ""
 
-#reset_instances(t_path)
+reset_instances(t_path)

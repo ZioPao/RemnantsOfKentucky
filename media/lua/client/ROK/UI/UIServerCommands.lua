@@ -38,7 +38,7 @@ end
 ---@param args {amount : integer}
 function ServerCommands.ReceiveAmountAvailableInstances(args)
     if BeforeMatchAdminPanel.instance == nil then return end
-    BeforeMatchAdminPanel.instance:setAvailableInstancesText(tostring(args.amount + 1))
+    BeforeMatchAdminPanel.instance:setAvailableInstancesText(tostring(args.amount))
 end
 
 ---@param args {amount : number}

@@ -235,6 +235,7 @@ function PvpInstanceCommands.GetAmountAvailableInstances()
     end
 
     local amount = 100 - counter
+    --print("Amount of instances on the server " .. tostring(amount))
     sendServerCommand(EFT_MODULES.UI, "ReceiveAmountAvailableInstances", {amount = amount})
 end
 
