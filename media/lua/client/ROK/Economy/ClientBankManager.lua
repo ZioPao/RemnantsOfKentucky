@@ -58,19 +58,19 @@ local BankCommands = {}
 
 --- Update bank account information with data from server
 ---@param args {account : any}      -- TODO Set the correct param
-function BankCommands.UpdateBankAccount(args)
+function BankCommands.GetBankAccount(args)
     if not args then
-        debugPrint('ERROR: ServerCommands.UpdateBankAccount - Tried to update bank account without ARGS')
+        debugPrint('ERROR: ServerCommands.GetBankAccount - Tried to update bank account without ARGS')
         return
     end
-
+    PZEFT_UTILS.PrintTable(args.account)
     local md = PZEFT_UTILS.GetPlayerModData()
     md.bankAccount = args.account
 end
 
---- Receive the updated bank accounts from the server
+--- Receive the updated bank accounts from the server, to be used in the leaderboard
 ---@param args {accounts : table}
- function BankCommands.ReceiveBankAccounts(args)
+ function BankCommands.GetAllBankAccounts(args)
     if args.accounts then
         debugPrint("Setting accounts")
         LeadearboardPanel.SetBankAccounts(args.accounts)

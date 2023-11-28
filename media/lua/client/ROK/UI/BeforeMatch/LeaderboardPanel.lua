@@ -152,11 +152,14 @@ function LeadearboardPanel.SetBankAccounts(accounts)
     if LeadearboardPanel.instance then
         print("Setting bank accounts to LeaderboardPanel")
         LeadearboardPanel.bankAccounts = accounts
+        debugPrint(accounts)
     end
 end
 
 function LeadearboardPanel:initialise()
     ISCollapsableWindow.initialise(self)
+    sendClientCommand(EFT_MODULES.Bank, 'TransmitAllBankAccounts', {})
+
 end
 
 function LeadearboardPanel:createChildren()
@@ -208,28 +211,11 @@ function LeadearboardPanel:createChildren()
 end
 
 function LeadearboardPanel:fillList()
-    --[[
-        -- TODO Should be able to list EVERY player that has ever played, not only online ones.
-        Save everything in a global mod data table
-    ]]
-    -- local players = {}
-    -- if isClient() then
-    --     local temp = getOnlinePlayers()
-    --     for i = 0, temp:size() - 1 do
-    --         table.insert(players, { pl = temp:get(i), balance = ZombRand(1000) })
-    --     end
 
-    -- else
-    --     -- DEBUG Only for test
-    --     for i = 1, 20 do
-    --         table.insert(players, { pl = getPlayer(), balance = ZombRand(1000) })
-    --     end
-    -- end
-
-
+    -- TODO Use BankAccounts
 
     -- TODO Request stuff from server, wait 1-2 seconds, show them
-    --sendClientCommand('PZEFT-BankAccount', 'TransmitBankAccounts', {})
+    --sendClientCommand('PZEFT-BankAccount', 'SendAllBankAccounts', {})
 
 
     -- TODO Wait 5 seconds or so to update the list

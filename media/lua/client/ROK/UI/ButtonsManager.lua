@@ -82,7 +82,7 @@ function ButtonManager.CreateButtons(isInRaid)
     end
 
     -- Cleans up the buttons before resetting them
-    ButtonManager.RemoveButton("Leaderboard")
+    ButtonManager.RemoveButton("Leaderboard")           -- TODO Leaadboeard doesn't work so great, we need to click more in the upper portion to have it working
     ButtonManager.RemoveButton("AdminPanel")
 
     if isAdmin() then

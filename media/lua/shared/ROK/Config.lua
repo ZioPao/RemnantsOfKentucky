@@ -126,6 +126,10 @@ PZ_EFT_CONFIG.MatchSettings = {
 
 }
 
+PZ_EFT_CONFIG.Default = {
+    balance = 10000
+}
+
 ------------------------------------------
 ---* Spawn points *-- 
 -- World coordinates if PVP instance starts at cell 0,0

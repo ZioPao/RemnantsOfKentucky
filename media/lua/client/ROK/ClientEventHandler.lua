@@ -1,4 +1,5 @@
 local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
+local ClientBankManager = require("ROK/Economy/ClientBankManager")
 local ClientState = require("ROK/ClientState")
 -----------------------------
 
@@ -54,6 +55,21 @@ end
 
 Events.OnPlayerDeath.Add(OnPlayerExit)
 Events.OnDisconnect.Add(OnPlayerExit)
+
+
+
+
+-- local function OnCreatePlayer()
+--     -- TODO too early
+
+--     for i=1, 500 do
+--         ClientBankManager.RequestBankAccountFromServer()
+--     end
+-- end
+
+
+-- Events.OnCreatePlayer.Add(OnCreatePlayer)
+
 
 ---------------------------------------
 --* Admin only *--

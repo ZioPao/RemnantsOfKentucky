@@ -5,7 +5,6 @@ require("ROK/DebugTools")
 
 LuaEventManager.AddEvent("PZEFT_ServerModDataReady")
 
-local PZ_EFT = "PZ-EFT"
 local KEY_PVP_INSTANCES = "PZ-EFT-PVP-INSTANCES"
 local KEY_PVP_USEDINSTANCES = "PZ-EFT-PVP-USEDINSTANCES"
 local KEY_PVP_CURRENTINSTANCE = "PZ-EFT-PVP-CURRENTINSTANCE"
@@ -139,13 +138,13 @@ ServerData.Bank = ServerData.Bank or {}
 
 --- Get table of bank accounts
 ---@return bankAccountsTable
-ServerData.Bank.GetBankAccounts = function()
+function ServerData.Bank.GetBankAccounts()
     return ModData.getOrCreate(KEY_BANK_ACCOUNTS)
 end
 
 --- Set table of bank accounts
 ---@param data bankAccountsTable
-ServerData.Bank.SetBankAccounts = function(data)
+function ServerData.Bank.SetBankAccounts(data)
     ModData.add(KEY_BANK_ACCOUNTS, data)
 end
 

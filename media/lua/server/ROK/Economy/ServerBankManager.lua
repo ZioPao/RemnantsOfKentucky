@@ -11,9 +11,9 @@ function ServerBankManager.GetOrCreateAccount(username)
     local bankAccounts = ServerData.Bank.GetBankAccounts()
     if not bankAccounts[username] then
         print("ServerBankManager.addAmountToAccount: Account " .. username .. " doesn't exist! Creating one.")
-        bankAccounts[username] = {balance = 10000}      -- TODO Just for debug, change it back to 0
+        bankAccounts[username] = {balance = PZ_EFT_CONFIG.Default.balance}
+        ServerData.Bank.SetBankAccounts(bankAccounts)
     end
-
     return bankAccounts[username]
 end
 
@@ -45,20 +45,34 @@ end
 
 local BankCommands = {}
 
+-- TODO Remove this
+---Set a bank account for the player
+---@param playerObj IsoPlayer
+function BankCommands.SetBankAccount(playerObj)
+    local playerName = playerObj:getUsername()
+    local balance = PZ_EFT_CONFIG.Default.balance
+
+    -- Get Bank accounts and re-set them
+    local bankAccounts = ServerData.Bank.GetBankAccounts()
+    bankAccounts[playerName] = {balance = balance}
+    ServerData.Bank.SetBankAccounts(bankAccounts)
+end
+
+
 --- Sends command to client to set the player's safehouse
 ---@param playerObj IsoPlayer
 function BankCommands.SendBankAccount(playerObj)
     local account = ServerBankManager.GetOrCreateAccount(playerObj:getUsername())
-    --debugPrint("Running SendBankAccount")
+    debugPrint("Running SendBankAccount")
     --PZEFT_UTILS.PrintTable(account)
-    sendServerCommand(playerObj, EFT_MODULES.Bank, 'UpdateBankAccount', {account=account})
+    sendServerCommand(playerObj, EFT_MODULES.Bank, 'GetBankAccount', {account=account})
 end
 
 
 ---@alias callaback {callbackModule : string, callbackCommand : string, callbackArgs : table}
 
 --- Process a transaction and do a callback if successful or failed.
---- Also calls the RequestBankAccount->UpdateBankAccount command
+--- Also calls the SendBankAccount -> GetBankAccount command from server to client
 ---@param args {amount : number, onSuccess : callaback, onFail : callaback} {amount=x, onSuccess = {callbackModule="abc", callbackCommand="abc", callbackArgs={args...}}, onFail = {callbackModule="abc", callbackCommand="abc", callbackArgs={args...}}}
 function BankCommands.ProcessTransaction(playerObj, args)
     local result = ServerBankManager.ProcessTransaction(playerObj:getUsername(), args.amount)
@@ -79,27 +93,23 @@ function BankCommands.ProcessTransaction(playerObj, args)
     BankCommands.SendBankAccount(playerObj)
 end
 
-
 --- Sends the full table of Bank accounts to a client, to be used in the leaderboard
 ---@param playerObj IsoPlayer
-function BankCommands.TransmitBankAccounts(playerObj)
+function BankCommands.TransmitAllBankAccounts(playerObj)
     local accounts = ServerData.Bank.GetBankAccounts()
-    sendServerCommand(playerObj, EFT_MODULES.Bank, 'ReceiveBankAccounts', {accounts=accounts})
+    sendServerCommand(playerObj, EFT_MODULES.Bank, 'GetAllBankAccounts', {accounts=accounts})
 end
 
 -----------------------------------------
 
 local function OnBankCommands(module, command, playerObj, args)
     if module == EFT_MODULES.Bank and BankCommands[command] then
+        debugPrint("Client Command - " .. EFT_MODULES.Bank .. "." .. command)
         BankCommands[command](playerObj, args)
     end
 end
 
-
 Events.OnClientCommand.Add(OnBankCommands)
-
-
-
 
 
 return ServerBankManager

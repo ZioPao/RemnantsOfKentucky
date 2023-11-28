@@ -16,8 +16,8 @@ PZEFT_UTILS = PZEFT_UTILS or {}
 PZEFT_UTILS.MapWorldCoordinatesToCell = function(coordinateList, cellX, cellY, otherArgs)
     local mappedCoordinates = {}
 
-    debugPrint("CELLX: " .. tostring(cellX))
-    debugPrint("CELLY: " .. tostring(cellY))
+    --debugPrint("CELLX: " .. tostring(cellX))
+    --debugPrint("CELLY: " .. tostring(cellY))
 
     if not coordinateList then return nil end
 

@@ -97,6 +97,8 @@ end
 
 function MainShopPanel:initialise()
     ISCollapsableWindow.initialise(self)
+
+    -- TODO Move this away, we must request the account earlier!
     ClientBankManager.RequestBankAccountFromServer()
     local AdminShopManager = require("ROK/Economy/AdminShopManager")
     AdminShopManager.RefreshDailyItems()

@@ -1,6 +1,11 @@
 require "ROK/ShopItems/ShopItems"
 
 -- TODO In theory we need to account for every item, basically. Or do we just assign a random value to the sold one?
+--[[
+how should the sold items cost it be calculated? I guess you 
+would want to have a multiplier to decrease their cost by some
+amount compared to the normal
+--]]
 
 PZ_EFT_ShopItems_Config.addItem("Base.Apple", {["ESSENTIALS"] = true}, 20, 1, 0.5)
 PZ_EFT_ShopItems_Config.addItem("Base.Bandage", {["ESSENTIALS"] = true}, 20, 1, 0.5)
