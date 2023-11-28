@@ -1,5 +1,7 @@
---- Requests, updates, etc bank accounts from the client
+local LeaderboardPanel = require("ROK/UI/BeforeMatch/LeaderboardPanel")
+-------------
 
+--- Requests, updates, etc bank accounts from the client
 ---@class ClientBankManager
 local ClientBankManager = {}
 
@@ -73,7 +75,7 @@ end
  function BankCommands.GetAllBankAccounts(args)
     if args.accounts then
         debugPrint("Setting accounts")
-        LeadearboardPanel.SetBankAccounts(args.accounts)
+        LeaderboardPanel.SetBankAccounts(args.accounts)
     end
 end
 
