@@ -14,7 +14,6 @@ function StoreScrollingListBox:new(x, y, width, height, shopPanel)
     return o
 end
 
--- Can't override initialise for some reason
 function StoreScrollingListBox:initalise()
     ISPanelJoypad.initialise(self)
 end

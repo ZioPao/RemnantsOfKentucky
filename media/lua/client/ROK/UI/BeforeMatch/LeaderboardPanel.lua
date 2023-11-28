@@ -44,8 +44,9 @@ function LeaderboardScrollingTable:createChildren()
     self.datas.font = UIFont.Large
     self.datas.doDrawItem = self.drawDatas
     self.datas.drawBorder = true
-    self.datas:addColumn("Player", 0)
-    self.datas:addColumn("Balance", 200)
+    self.datas:addColumn("#", 0)
+    self.datas:addColumn("Player", 100)
+    self.datas:addColumn("Balance", 400)
     self:addChild(self.datas)
 end
 
@@ -54,7 +55,8 @@ end
 function LeaderboardScrollingTable:initList(module)
     self.datas:clear()
     if module == nil then return end
-    for username, bankAccount in ipairs(module) do
+    for index, bankAccount in ipairs(module) do
+        local username = bankAccount.username
         if self.viewer.filterEntry:getInternalText() ~= "" and string.trim(self.viewer.filterEntry:getInternalText()) == nil or string.contains(string.lower(username), string.lower(string.trim(self.viewer.filterEntry:getInternalText()))) then
             self.datas:addItem(username, bankAccount)
         end
@@ -82,16 +84,26 @@ function LeaderboardScrollingTable:drawDatas(y, item, alt)
         self.borderColor.b)
 
     local xOffset = 10
+
     local clipX = self.columns[1].size
     local clipX2 = self.columns[2].size
     local clipY = math.max(0, y + self:getYScroll())
     local clipY2 = math.min(self.height, y + self:getYScroll() + self.itemheight)
+    self:setStencilRect(clipX, clipY, clipX2 - clipX, clipY2 - clipY)
 
-    --self:setStencilRect(clipX, clipY, clipX2 - clipX, clipY2 - clipY)
-    --self:clearStencilRect()
+    -- Index
+    self:drawText(tostring(item.itemindex), xOffset, y + 4, 1, 1, 1, a, self.font)
+    self:clearStencilRect()
 
-    self:drawText(item.item.username, xOffset, y + 4, 1, 1, 1, a, self.font)
-    self:drawText(tostring(item.item.balance), self.columns[2].size + xOffset, y + 4, 1, 1, 1, a, self.font)
+    -- Player name
+    clipX = self.columns[2].size
+    clipX2 = self.columns[3].size
+    self:setStencilRect(clipX, clipY, clipX2 - clipX, clipY2 - clipY)
+    self:drawText(item.text, self.columns[2].size + xOffset, y + 4, 1, 1, 1, a, self.font)
+    self:clearStencilRect()
+
+    -- Balance
+    self:drawText(tostring(item.item.balance) .. " $", self.columns[3].size + xOffset, y + 4, 1, 1, 1, a, self.font)
 
     return y + self.itemheight
 end
@@ -214,16 +226,6 @@ function LeaderboardPanel:createChildren()
 end
 
 function LeaderboardPanel:fillList()
-
-    -- TODO Use BankAccounts
-
-    -- TODO Request stuff from server, wait 1-2 seconds, show them
-    --sendClientCommand('PZEFT-BankAccount', 'SendAllBankAccounts', {})
-
-
-    -- TODO Wait 5 seconds or so to update the list
-    --while LeadearboardPanel.bankAccounts == nil do print("Waiting for accounts") end
-
     self.mainCategory:initList(LeaderboardPanel.bankAccounts)
 end
 

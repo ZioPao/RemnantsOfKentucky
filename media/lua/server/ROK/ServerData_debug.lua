@@ -59,19 +59,6 @@ ClientCommands.loadShopPrices = function()
     ServerShopManager.LoadShopPrices()
 end
 
----Set a bank account
----@param args {name : string, balance : number}
-ClientCommands.setBankAccount = function(args)
-    local name = args.name
-    local balance = args.balance
-
-    -- Get Bank accounts 
-    local bankAccounts = ServerData.Bank.GetBankAccounts()
-    bankAccounts[name] = {balance = balance}
-    ServerData.Bank.SetBankAccounts(bankAccounts)
-
-end
-
 ---------------
 local OnClientCommand = function(module, command, playerObj, args)
     if module == MODULE and ClientCommands[command] then

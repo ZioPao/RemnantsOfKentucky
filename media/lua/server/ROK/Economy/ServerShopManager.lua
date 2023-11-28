@@ -43,7 +43,7 @@ function ServerShopManager.LoadShopPrices()
     local shopItems = ServerData.Shop.GetShopItems()
     shopItems.items = shopItems.items or {}
     shopItems.tags = shopItems.tags or {}
-    shopItems.doInitShopItems = true 
+    shopItems.doInitShopItems = true
     if shopItems.doInitShopItems then
         shopItems.doInitShopItems = nil
         for i, v in pairs(PZ_EFT_ShopItems_Config.data) do
@@ -52,10 +52,9 @@ function ServerShopManager.LoadShopPrices()
                 fullType = v.fullType,
                 tags = v.tags,
                 basePrice = v.basePrice,
-                multiplier = v.initialMultiplier,      
+                multiplier = v.initialMultiplier,
                 sellMultiplier = v.sellMultiplier
             }
-
             --PZEFT_UTILS.PrintTable(shopItems.items[i])
         end
     end

@@ -56,7 +56,6 @@ end
 
 local BankCommands = {}
 
--- TODO Remove this
 ---Set a bank account for the player
 ---@param playerObj IsoPlayer
 function BankCommands.SetBankAccount(playerObj)

@@ -69,15 +69,6 @@ function MainShopPanel:new(x, y, width, height, character, pcPosition)
     return o
 end
 
----Closes all the related tabs too
-function MainShopPanel:close()
-    -- self.panel:close()
-    -- self.essentialItemsCat:close()
-    -- self.dailyItemsCat:close()
-    -- self.sellCat:close()
-    self:removeFromUIManager()
-    ISCollapsableWindow.close(self)
-end
 
 ---@param player IsoPlayer
 ---@param pcPos coords
@@ -89,10 +80,12 @@ function MainShopPanel.Open(player, pcPos)
     MainShopPanel.instance:setEnabled(true)
 end
 
--- Debug only
-function MainShopPanel.ForceClose()
-    MainShopPanel.instance:close()
+---Closes all the related tabs too
+function MainShopPanel:close()
+    self:removeFromUIManager()
+    ISCollapsableWindow.close(self)
 end
+
 --**********************************************--
 
 function MainShopPanel:initialise()
