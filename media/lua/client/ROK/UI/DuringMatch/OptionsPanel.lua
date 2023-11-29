@@ -6,7 +6,7 @@ if FONT_SCALE < 1 then
 end
 
 ---@class OptionsPanel : ISCollapsableWindow
----@field counterOptions number
+---@field options table
 OptionsPanel = ISCollapsableWindow:derive("OptionsPanel")
 
 function OptionsPanel:new(x, y, width, height)
@@ -47,15 +47,23 @@ function OptionsPanel:createChildren()
     self:addChild(self.btnApply)
 end
 
+function OptionsPanel:onClick(btn)
+    if btn.internal ~= "APPLY" then return end
+
+    for i=1, #self.options do
+        -- get option and apply it accordingly. Send it to the server
+    end
+
+end
+
 ---@param name string
 ---@param textLabel string
 function OptionsPanel:createHorizontalPanel(name, textLabel)
-    self.counterOptions = self.counterOptions + 1
     local height = 50
+    local counter = #self.options + 1
 
-    local y = height * self.counterOptions
-
-    if self.counterOptions == 1 then
+    local y = height * counter
+    if counter == 1 then
         local th = self:titleBarHeight()
         y = y + th
     end
@@ -71,7 +79,6 @@ function OptionsPanel:createHorizontalPanel(name, textLabel)
     self[name].label:instantiate()
     self[name]:addChild(self[name].label)
 
-
     -- Option
     local optionWidth = 50
     self[name].option = ISTextEntryBox:new("", self.width - optionWidth, 0, optionWidth, height)
@@ -81,8 +88,12 @@ function OptionsPanel:createHorizontalPanel(name, textLabel)
     self[name].option:setText("")
     self[name]:addChild(self[name].option)
 
+
+    table.insert(self.options, self[name])
+
 end
 
+------------------
 
 function OptionsPanel.Open(x,y)
     local pnl = OptionsPanel:new(x, y, 400, 600)
