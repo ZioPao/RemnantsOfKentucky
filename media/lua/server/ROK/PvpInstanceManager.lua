@@ -211,7 +211,11 @@ function PvpInstanceManager.TeleportPlayersToInstance()
 end
 
 local function OnLoad()
-    PvpInstanceManager.LoadPvpInstances()
+
+    -- TODO We should make this more obvious that the admin needs to start the resetter before starting up the game
+
+    PvpInstanceManager.Reset()
+    --PvpInstanceManager.LoadPvpInstances()
 end
 
 Events.OnLoad.Add(OnLoad)
@@ -224,7 +228,6 @@ Events.OnServerStarted.Add(OnLoad)
 
 local MODULE = EFT_MODULES.PvpInstances
 local PvpInstanceCommands = {}
-
 
 ---Calculate how many available instances there are and send them back to the clients
 function PvpInstanceCommands.GetAmountAvailableInstances()

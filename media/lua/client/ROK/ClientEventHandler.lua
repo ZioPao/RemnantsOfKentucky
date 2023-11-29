@@ -11,7 +11,7 @@ local isRefreshSafehouseAllocationUpdateActive = false
 local function EveryOneMinute_InRaid_Events()
     if isInSafehouseUpdateActive then
         isInSafehouseUpdateActive = false
-        Events.EveryOneMinute.Remove(SafehouseInstanceHandler.IsInSafehouse)
+        Events.EveryOneMinute.Remove(SafehouseInstanceHandler.HandlePlayerInSafehouse)
     end
     if isRefreshSafehouseAllocationUpdateActive then
         isRefreshSafehouseAllocationUpdateActive = false
@@ -22,7 +22,7 @@ end
 local function EveryOneMinute_Not_InRaid_Events()
     if not isInSafehouseUpdateActive then
         isInSafehouseUpdateActive = true
-        Events.EveryOneMinute.Add(SafehouseInstanceHandler.IsInSafehouse)
+        Events.EveryOneMinute.Add(SafehouseInstanceHandler.HandlePlayerInSafehouse)
     end
     if not isRefreshSafehouseAllocationUpdateActive then
         isRefreshSafehouseAllocationUpdateActive = true
@@ -59,16 +59,13 @@ Events.OnDisconnect.Add(OnPlayerExit)
 
 
 
--- local function OnCreatePlayer()
---     -- TODO too early
-
---     for i=1, 500 do
---         ClientBankManager.RequestBankAccountFromServer()
---     end
--- end
+local function OnCreatePlayer()
+    local BlackScreen = require("ROK/UI/BeforeMatch/BlackScreen")
+    BlackScreen.Open()
+end
 
 
--- Events.OnCreatePlayer.Add(OnCreatePlayer)
+Events.OnCreatePlayer.Add(OnCreatePlayer)
 
 
 ---------------------------------------

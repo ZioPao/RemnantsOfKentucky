@@ -201,11 +201,11 @@ local function AddShopMenu(playerNum, context, worldObjects, test)
 
     if test then return true end
 
-    -- SP DEBUG THING
-    if isClient() then
-        if not SafehouseInstanceHandler.IsInSafehouse() then return true end
+    -- -- SP DEBUG THING
+    -- if isClient() then
+    --     if not SafehouseInstanceHandler.IsInSafehouse() then return true end
 
-    end
+    -- end
 
     ---@type IsoObject
     local clickedObject = worldObjects[1]
