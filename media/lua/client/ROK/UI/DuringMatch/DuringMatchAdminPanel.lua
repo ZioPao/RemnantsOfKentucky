@@ -81,11 +81,21 @@ function DuringMatchAdminPanel:createChildren()
     local btnWidth = self:getWidth() - xPadding * 2
     local btnHeight = 25
 
-    self.btnStop = ISButton:new(xPadding, self:getHeight() - btnHeight - yPadding, btnWidth, btnHeight,
-        getText("IGUI_AdminPanelBeforeMatch_Stop"), self, self.onClick)
+    local y = self:getHeight() - btnHeight - yPadding
+
+    self.btnStop = ISButton:new(xPadding, y, btnWidth, btnHeight,
+        getText("IGUI_EFT_AdminPanel_Stop"), self, self.onClick)
     self.btnStop.internal = "STOP"
     self.btnStop:initialise()
     self:addChild(self.btnStop)
+
+    y = y - btnHeight - yPadding*2      -- More padding from this
+    self.btnMatchOptions = ISButton:new(xPadding, y, btnWidth, btnHeight,
+    getText("IGUI_EFT_AdminPanel_MatchOptions"), self, self.onClick)
+    self.btnMatchOptions.internal = "MATCH_OPTIONS"
+    self.btnMatchOptions:initialise()
+    self.btnMatchOptions:setEnable(false)
+    self:addChild(self.btnMatchOptions)
 end
 
 function DuringMatchAdminPanel:onConfirmStop()
@@ -101,6 +111,12 @@ function DuringMatchAdminPanel:onClick(btn)
 
         self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, self,
             self.onConfirmStop)
+    elseif btn.internal == "MATH_OPTIONS" then
+        if self.openedPanel and self.openedPanel:getIsVisible() then
+            self.openedPanel:close()
+        else
+            self.openedPanel = OptionsPanel.Open(self:getRight(), self:getBottom() - self:getHeight())
+        end
     end
 end
 

@@ -82,9 +82,9 @@ function ManagePlayersPanel:initialise()
 
     -- Middle button
     self.btnCleanStorage = ISButton:new(btnX, btnY, btnSize, btnSize / 1.5,
-        getText("IGUI_AdminPanelBeforeMatch_CleanStorage"), self, ManagePlayersPanel.onClick)
+        getText("IGUI_EFT_AdminPanel_CleanStorage"), self, ManagePlayersPanel.onClick)
     self.btnCleanStorage.internal = "CLEAN_STORAGE"
-    self.btnCleanStorage:setTooltip(getText("IGUI_AdminPanelBeforeMatch_Tooltip_CleanStorage"))
+    self.btnCleanStorage:setTooltip(getText("IGUI_EFT_AdminPanel_Tooltip_CleanStorage"))
     self.btnCleanStorage:setImage(openIco)
     self.btnCleanStorage.anchorTop = false
     self.btnCleanStorage.anchorBottom = true
@@ -94,9 +94,9 @@ function ManagePlayersPanel:initialise()
     self:addChild(self.btnCleanStorage)
 
     self.btnUnassign = ISButton:new(btnX, btnY - self.btnCleanStorage:getHeight() - 10, btnSize, btnSize / 1.5,
-        getText("IGUI_AdminPanelBeforeMatch_Unassign"), self, ManagePlayersPanel.onClick)
+        getText("IGUI_EFT_AdminPanel_Unassign"), self, ManagePlayersPanel.onClick)
     self.btnUnassign.internal = "UNASSIGN"
-    self.btnUnassign:setTooltip(getText("IGUI_AdminPanelBeforeMatch_Unassign"))
+    self.btnUnassign:setTooltip(getText("IGUI_EFT_AdminPanel_Unassign"))
     self.btnUnassign:setImage(refreshListIco)
     self.btnUnassign.anchorTop = false
     self.btnUnassign.anchorBottom = true

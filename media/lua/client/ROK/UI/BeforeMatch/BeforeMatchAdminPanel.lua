@@ -10,10 +10,10 @@ local BeforeMatchAdminPanel = BaseAdminPanel:derive("BeforeMatchAdminPanel")
 BeforeMatchAdminPanel.instance = nil
 
 
-local MATCH_START_TEXT = getText("IGUI_AdminPanelBeforeMatch_StartMatch")
-local MATCH_STOP_TEXT = getText("IGUI_AdminPanelBeforeMatch_Stop")
-local AVAILABLE_INSTANCES_STR = getText("IGUI_AdminPanelBeforeMatch_InstancesAvailable")
-local ASSIGNED_SAFEHOUSES_STR = getText("IGUI_AdminPanelBeforeMatch_SafehousesAssigned")
+local MATCH_START_TEXT = getText("IGUI_EFT_AdminPanel_StartMatch")
+local MATCH_STOP_TEXT = getText("IGUI_EFT_AdminPanel_Stop")
+local AVAILABLE_INSTANCES_STR = getText("IGUI_EFT_AdminPanel_InstancesAvailable")
+local ASSIGNED_SAFEHOUSES_STR = getText("IGUI_EFT_AdminPanel_SafehousesAssigned")
 
 
 
@@ -49,16 +49,8 @@ function BeforeMatchAdminPanel:createChildren()
     self:addChild(self.btnToggleMatch)
 
     y = y - btnHeight - yPadding*2      -- More padding from this
-    self.btnMatchOptions = ISButton:new(xPadding, y, btnWidth, btnHeight,
-        getText("IGUI_AdminPanelBeforeMatch_MatchOptions"), self, self.onClick)
-    self.btnMatchOptions.internal = "MATCH_OPTIONS"
-    self.btnMatchOptions:initialise()
-    self.btnMatchOptions:setEnable(false)
-    self:addChild(self.btnMatchOptions)
-
-    y = y - btnHeight - yPadding
     self.btnManagePlayers = ISButton:new(xPadding, y, btnWidth, btnHeight,
-        getText("IGUI_AdminPanelBeforeMatch_ManagePlayers"), self, self.onClick)
+        getText("IGUI_EFT_AdminPanel_ManagePlayers"), self, self.onClick)
     self.btnManagePlayers.internal = "MANAGE_PLAYERS"
     self.btnManagePlayers:initialise()
     self.btnManagePlayers:setEnable(false)

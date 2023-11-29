@@ -1,16 +1,16 @@
 IG_UI_EN = {
-    IGUI_AdminPanelBeforeMatch_InstancesAvailable = " <CENTRE> Instances Available",
-    IGUI_AdminPanelBeforeMatch_SafehousesAssigned = " <CENTRE> Assigned Safehouses",
-    IGUI_AdminPanelBeforeMatch_StartMatch = "Start Match",
-    IGUI_AdminPanelBeforeMatch_MatchOptions = "Match Options",
-    IGUI_AdminPanelBeforeMatch_ManagePlayers = "Manage Players",
-    IGUI_AdminPanelBeforeMatch_Stop = "Stop",
+    IGUI_EFT_AdminPanel_InstancesAvailable = " <CENTRE> Instances Available",
+    IGUI_EFT_AdminPanel_SafehousesAssigned = " <CENTRE> Assigned Safehouses",
+    IGUI_EFT_AdminPanel_StartMatch = "Start Match",
+    IGUI_EFT_AdminPanel_MatchOptions = "Match Options",
+    IGUI_EFT_AdminPanel_ManagePlayers = "Manage Players",
+    IGUI_EFT_AdminPanel_Stop = "Stop",
+    IGUI_EFT_AdminPanel_Unassign = "Unassign",
+    IGUI_EFT_AdminPanel_Apply = "Apply",
+    IGUI_EFT_AdminPanel_Tooltip_Unassign = "Unassign",
 
-    IGUI_AdminPanelBeforeMatch_Unassign = "Unassign",
-    IGUI_AdminPanelBeforeMatch_Tooltip_Unassign = "Unassign",
-
-    IGUI_AdminPanelBeforeMatch_CleanStorage = "Clean Storage",
-    IGUI_AdminPanelBeforeMatch_Tooltip_CleanStorage = "Wipes the content of the crates for that specific player",
+    IGUI_EFT_AdminPanel_CleanStorage = "Clean Storage",
+    IGUI_EFT_AdminPanel_Tooltip_CleanStorage = "Wipes the content of the crates for that specific player",
     
     IGUI_AdminPanelBeforeMatch_StarterKit = "Give Starter Kit",
     IGUI_AdminPanelBeforeMatch_Tooltip_StarterKit = "Give Starter Kit",
