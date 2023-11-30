@@ -2,6 +2,7 @@ local ClientState = require("ROK/ClientState")
 local GenericUI = require("ROK/UI/GenericUI")
 local BaseAdminPanel = require("ROK/UI/BaseAdminPanel")
 local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
+local OptionsPanel = require("ROK/UI/DuringMatch/OptionsPanel")
 --------------------------------
 
 ---@class DuringMatchAdminPanel : BaseAdminPanel
@@ -44,6 +45,13 @@ end
 
 ---------------------------------------
 
+function DuringMatchAdminPanel:render()
+    BaseAdminPanel.render(self)
+    if self.openedPanel then
+        self.openedPanel:setX(self:getRight())
+        self.openedPanel:setY(self:getBottom() - self:getHeight())
+    end
+end
 
 
 function DuringMatchAdminPanel:createChildren()
@@ -94,7 +102,7 @@ function DuringMatchAdminPanel:createChildren()
     getText("IGUI_EFT_AdminPanel_MatchOptions"), self, self.onClick)
     self.btnMatchOptions.internal = "MATCH_OPTIONS"
     self.btnMatchOptions:initialise()
-    self.btnMatchOptions:setEnable(self:getIsMatchEnded())
+    self.btnMatchOptions:setEnable(not self:getIsMatchEnded())
     self:addChild(self.btnMatchOptions)
 end
 
@@ -111,7 +119,7 @@ function DuringMatchAdminPanel:onClick(btn)
 
         self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, self,
             self.onConfirmStop)
-    elseif btn.internal == "MATH_OPTIONS" then
+    elseif btn.internal == "MATCH_OPTIONS" then
         if self.openedPanel and self.openedPanel:getIsVisible() then
             self.openedPanel:close()
         else
@@ -156,6 +164,11 @@ function DuringMatchAdminPanel:close()
     if self.confirmationPanel then
         self.confirmationPanel:close()
     end
+
+    if self.openedPanel then
+        self.openedPanel:close()
+    end
+
     DuringMatchAdminPanel.instance = nil
     BaseAdminPanel.close(self)
 end

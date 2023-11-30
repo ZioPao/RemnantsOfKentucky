@@ -6,6 +6,7 @@ local ClientState = require("ROK/ClientState")
 local GenericUI = require("ROK/UI/GenericUI")
 ---------------------------
 -- TODO Make this local
+--TODO Add OnResolutionChange event
 
 ---@class TimePanel : ISPanel
 ---@field isStartingMatch boolean

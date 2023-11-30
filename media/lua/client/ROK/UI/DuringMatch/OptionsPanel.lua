@@ -16,7 +16,7 @@ local optionsReferenceTable = {
 
 ---@class OptionsPanel : ISCollapsableWindow
 ---@field options table<integer, optionType>
-OptionsPanel = ISCollapsableWindow:derive("OptionsPanel")
+local OptionsPanel = ISCollapsableWindow:derive("OptionsPanel")
 
 function OptionsPanel:new(x, y, width, height)
     local o = {}
@@ -38,6 +38,9 @@ end
 
 function OptionsPanel:initialise()
     ISCollapsableWindow.initialise(self)
+
+    self.counterOptions = 0
+    self.options = {}
 
     -- TODO Fetch config from server
 end
@@ -125,8 +128,12 @@ function OptionsPanel.Open(x,y)
     pnl:instantiate()
     pnl:addToUIManager()
     pnl:bringToTop()
+
+    return pnl
 end
 
 function OptionsPanel.Close()
     OptionsPanel.instance:close()
 end
+
+return OptionsPanel

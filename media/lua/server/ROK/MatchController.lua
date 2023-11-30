@@ -50,6 +50,7 @@ function MatchController:start()
         self.playersInMatch[plId] = plId
     end
 
+    -- FIXME Not working ffs
     self.zombieSpawnMultiplier = PZ_EFT_CONFIG.MatchSettings.zombieMultiplier
 
     -- Start timer and the event handling zombie spawning
@@ -119,7 +120,7 @@ function MatchController.HandleZombieSpawns(loops)
                 until sq and not sq:getFloor():getSprite():getProperties():Is(IsoFlagType.water)
                 
                 -- Amount of zombies should scale based on players amount too, to prevent from killing the server
-                local zombiesAmount = math.log(loops, MatchController.GetAmountAlivePlayers()) * MatchController.instance.zombieSpawnMultiplier
+                local zombiesAmount = math.floor(math.log(loops, MatchController.GetAmountAlivePlayers()) * MatchController.instance.zombieSpawnMultiplier)
                 debugPrint("spawning " .. zombiesAmount .. " near " .. player:getUsername())
                 addZombiesInOutfit(sq:getX(), sq:getY(), 0, zombiesAmount, "", 50, false, false, false, false, 1)
                 addSound(player, math.floor(x), math.floor(y), 0, 300, 100)

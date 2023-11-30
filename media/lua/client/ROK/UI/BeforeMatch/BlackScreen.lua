@@ -4,6 +4,7 @@
 ---@field textY number
 local BlackScreen = ISPanelJoypad:derive("BlackScreen")
 
+--TODO Add OnResolutionChange event
 
 function BlackScreen:new()
     local o = ISPanelJoypad:new(0, 0, getCore():getScreenWidth(), getCore():getScreenHeight())
@@ -37,14 +38,14 @@ end
 
 function BlackScreen.Open()
     if not isClient() then return end       -- SP workaround
-    --debugPrint("Opening black screen")
+    debugPrint("Opening black screen")
     local blackScreen = BlackScreen:new()
     blackScreen:initialise()
     blackScreen:addToUIManager()
 end
 
 function BlackScreen.Close()
-    --debugPrint("Closing black screen")
+    debugPrint("Closing black screen")
     if BlackScreen.instance then
         BlackScreen.instance:close()
     end
