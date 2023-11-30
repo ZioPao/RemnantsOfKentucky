@@ -55,11 +55,11 @@ function OptionsPanel:createChildren()
 
     local y = self:getHeight() - btnHeight - yPadding
 
-    self.btnApply = ISButton:new(xPadding, y, btnWidth, btnHeight,
-        getText("IGUI_EFT_AdminPanel_Apply"), self, self.onClick)
+    self.btnApply = ISButton:new(xPadding, y, btnWidth, btnHeight, getText("IGUI_EFT_AdminPanel_Apply"), self, self.onClick)
     self.btnApply.internal = "APPLY"
     self.btnApply:initialise()
     self:addChild(self.btnApply)
+
 end
 
 function OptionsPanel:onClick(btn)

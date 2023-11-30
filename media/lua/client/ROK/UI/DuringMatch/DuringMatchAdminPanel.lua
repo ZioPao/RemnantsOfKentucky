@@ -94,7 +94,7 @@ function DuringMatchAdminPanel:createChildren()
     getText("IGUI_EFT_AdminPanel_MatchOptions"), self, self.onClick)
     self.btnMatchOptions.internal = "MATCH_OPTIONS"
     self.btnMatchOptions:initialise()
-    self.btnMatchOptions:setEnable(false)
+    self.btnMatchOptions:setEnable(self:getIsMatchEnded())
     self:addChild(self.btnMatchOptions)
 end
 

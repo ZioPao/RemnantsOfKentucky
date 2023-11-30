@@ -170,9 +170,8 @@ end
 local MODULE = EFT_MODULES.Match
 local MatchCommands = {}
 
----@param _ any
 ---@param args {val : number}
-function MatchCommands.SetZombieSpawnMultiplier(playerObj, args)
+function MatchCommands.SetZombieSpawnMultiplier(_, args)
     local instance = MatchController.GetHandler()
     if instance == nil then return end
 

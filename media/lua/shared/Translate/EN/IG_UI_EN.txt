@@ -7,6 +7,7 @@ IG_UI_EN = {
     IGUI_EFT_AdminPanel_Stop = "Stop",
     IGUI_EFT_AdminPanel_Unassign = "Unassign",
     IGUI_EFT_AdminPanel_Apply = "Apply",
+    IGUI_EFT_AdminPanel_Close = "Close",
     IGUI_EFT_AdminPanel_Tooltip_Unassign = "Unassign",
 
     IGUI_EFT_AdminPanel_CleanStorage = "Clean Storage",

@@ -137,8 +137,6 @@ function BeforeMatchAdminPanel:onClick(btn)
         btn:setTitle(MATCH_START_TEXT)
         sendClientCommand("PZEFT-Time", "StopMatchCountdown", {})
         TimePanel.Close()
-    elseif btn.internal == 'MATCH_OPTIONS' then
-        -- TODO Implement match options
     elseif btn.internal == 'MANAGE_PLAYERS' then
         if self.openedPanel and self.openedPanel:getIsVisible() then
             self.openedPanel:close()
@@ -152,7 +150,6 @@ function BeforeMatchAdminPanel:update()
     BaseAdminPanel.update(self)
     -- When starting the match, we'll disable the default close button
     self.closeButton:setEnable(not self.isStartingMatch)
-    self.btnMatchOptions:setEnable(not self.isStartingMatch)
     self.btnManagePlayers:setEnable(not self.isStartingMatch)
 
     local valAssignedSafehousesText = " <CENTRE> -1"     -- TODO This is a placeholder!
