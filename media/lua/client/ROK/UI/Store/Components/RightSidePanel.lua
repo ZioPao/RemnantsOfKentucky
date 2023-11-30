@@ -33,7 +33,23 @@ end
 function RightSidePanel:createChildren()
     ISPanel.createChildren(self)
 
-    GenericUI.CreateISRichTextPanel(self, "textPanel", 0, 0, self.width, self.height)
+    self.textPanel = ISRichTextPanel:new(0, 0, self.width, self.height)
+    self.textPanel:initialise()
+    self:addChild(self.textPanel)
+    self.textPanel.defaultFont = UIFont.Medium
+    self.textPanel.anchorTop = true
+    self.textPanel.anchorLeft = false
+    self.textPanel.anchorBottom = true
+    self.textPanel.anchorRight = false
+    self.textPanel.marginLeft = 0
+    self.textPanel.marginTop = 10
+    self.textPanel.marginRight = 0
+    self.textPanel.marginBottom = 0
+    self.textPanel.autosetheight = false
+    self.textPanel.background = false
+    self.textPanel:setText("")
+    self.textPanel:paginate()
+
 
     local xMargin = CommonStore.MARGIN_X
     local elementX = xMargin

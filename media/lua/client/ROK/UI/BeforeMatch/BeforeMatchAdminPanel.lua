@@ -77,49 +77,13 @@ function BeforeMatchAdminPanel:createChildren()
 
 
     -- TOP of the panelInfo
-    self.labelInstancesAvailable = ISRichTextPanel:new(0, 0, labelWidth, labelHeight)
-    self.labelInstancesAvailable.autosetheight = false
-    self.labelInstancesAvailable.marginBottom = 0
-    self.labelInstancesAvailable.marginTop = labelHeight/4
-    self.labelInstancesAvailable.backgroundColor = { r = 0, g = 0, b = 0, a = 0.5 }
-    self.labelInstancesAvailable.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 0 }
-    self.labelInstancesAvailable:initialise()
-    self.labelInstancesAvailable:setText(AVAILABLE_INSTANCES_STR)
-    self.labelInstancesAvailable:paginate()
-    self.panelInfo:addChild(self.labelInstancesAvailable)
+    self:createIsRichTextPanel("labelInstancesAvailable", "panelInfo", 0, 0, labelWidth, labelHeight, labelHeight/4, AVAILABLE_INSTANCES_STR)
+    self:createIsRichTextPanel("labelAssignedSafehouses", "panelInfo", labelWidth, 0, labelWidth, labelHeight, labelHeight/4, ASSIGNED_SAFEHOUSES_STR)
 
-    self.labelAssignedSafehouses = ISRichTextPanel:new(labelWidth, 0, labelWidth, labelHeight)
-    self.labelAssignedSafehouses.autosetheight = false
-    self.labelAssignedSafehouses.marginBottom = 0
-    self.labelAssignedSafehouses.marginTop = labelHeight/4
-    self.labelAssignedSafehouses.backgroundColor = { r = 0, g = 0, b = 0, a = 0.5 }
-    self.labelAssignedSafehouses.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 0 }
-    self.labelAssignedSafehouses:initialise()
-    self.labelAssignedSafehouses:setText(ASSIGNED_SAFEHOUSES_STR)
-    self.labelAssignedSafehouses:paginate()
-    self.panelInfo:addChild(self.labelAssignedSafehouses)
-
-    ---------------------
     -- Bottom of Panel Info
-    self.labelValInstancesAvailable = ISRichTextPanel:new(0, labelHeight, labelWidth, labelHeight)
-    self.labelValInstancesAvailable.autosetheight = false
-    self.labelValInstancesAvailable.marginBottom = 0
-    self.labelValInstancesAvailable.marginTop = 0
-    self.labelValInstancesAvailable.backgroundColor = { r = 0, g = 0, b = 0, a = 0.5 }
-    self.labelValInstancesAvailable.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 0 }
-    self.labelValInstancesAvailable:initialise()
-    self.labelValInstancesAvailable:paginate()
-    self.panelInfo:addChild(self.labelValInstancesAvailable)
+    self:createIsRichTextPanel("labelValInstancesAvailable", "panelInfo", 0, labelHeight + yPadding, labelWidth, labelHeight, 0, "")
+    self:createIsRichTextPanel("labelValAssignedSafehouses", "panelInfo", labelWidth, labelHeight + yPadding, labelWidth, labelHeight, 0, "")
 
-    self.labelValAssignedSafehouses = ISRichTextPanel:new(labelWidth, labelHeight, labelWidth, labelHeight)
-    self.labelValAssignedSafehouses.autosetheight = false
-    self.labelValAssignedSafehouses.marginBottom = 0
-    self.labelValAssignedSafehouses.marginTop = 0
-    self.labelValAssignedSafehouses.backgroundColor = { r = 0, g = 0, b = 0, a = 0.5 }
-    self.labelValAssignedSafehouses.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 0 }
-    self.labelValAssignedSafehouses:initialise()
-    self.labelValAssignedSafehouses:paginate()
-    self.panelInfo:addChild(self.labelValAssignedSafehouses)
 end
 
 

@@ -58,26 +58,24 @@ function DuringMatchAdminPanel:createChildren()
     BaseAdminPanel.createChildren(self)
 
     self.panelInfo = ISPanel:new(0, 20, self:getWidth(), self:getHeight() / 1.5)
-
-    --self.panelInfo = ISRichTextPanel:new(0, 20, self:getWidth(), self:getHeight() / 1.5)
-    --self.panelInfo.autosetheight = false
     self.panelInfo.background = true
     self.panelInfo.backgroundColor = { r = 0, g = 0, b = 0, a = 0.5 }
     self.panelInfo.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 1 }
     self.panelInfo.marginTop = self.panelInfo:getHeight() / 2
     self.panelInfo:initialise()
-    --self.panelInfo:paginate()
     self:addChild(self.panelInfo)
 
     self.labelTime = ISRichTextPanel:new(0, 30, self.panelInfo:getWidth(), 25)
     self.labelTime:initialise()
     self.labelTime:instantiate()
+    self.labelTime.backgroundColor = { r = 0, g = 0, b = 0, a = 0 }
     self.labelTime:paginate()
     self.panelInfo:addChild(self.labelTime)
 
     self.labelAlivePlayers = ISRichTextPanel:new(0, 60, self.panelInfo:getWidth(), 25)
     self.labelAlivePlayers:initialise()
     self.labelAlivePlayers:instantiate()
+    self.labelAlivePlayers.backgroundColor = { r = 0, g = 0, b = 0, a = 0 }
     self.labelAlivePlayers:paginate()
     self.panelInfo:addChild(self.labelAlivePlayers)
 
@@ -133,15 +131,15 @@ function DuringMatchAdminPanel:update()
     local firstLabelText = "" -- Time or announcements
 
     if self:getIsMatchEnded() then
-        firstLabelText = "<SIZE:large> <CENTRE> <RED> The match has ended."
+        firstLabelText = getText("IGUI_EFT_AdminPanel_MatchEnded")
         self.btnStop:setEnable(false)
         self:setAlivePlayersText(nil)
     else
         -- Handle confirmation panel to stop the match
-        local check = self.confirmationPanel == nil or (self.confirmationPanel:isVisible())
-        self.btnStop:setEnable(check)   -- FIXME if you press no on the confirmation panel this is always false
+        local isStopDisabled = self.confirmationPanel and self.confirmationPanel:isVisible()
+        self.btnStop:setEnable(not isStopDisabled)
 
-        firstLabelText = "Match time: " .. GenericUI.FormatTime(tonumber(ClientState.currentTime))
+        firstLabelText = getText("IGUI_EFT_AdminPanel_MatchTime", GenericUI.FormatTime(tonumber(ClientState.currentTime)))
     end
 
     self.labelTime:setText(firstLabelText)

@@ -1,13 +1,16 @@
 IG_UI_EN = {
+
+    // Admin Panel common
+    IGUI_EFT_AdminPanel_Apply = "Apply",
+    IGUI_EFT_AdminPanel_Close = "Close",
+
+    // Admin Panel Before Match
     IGUI_EFT_AdminPanel_InstancesAvailable = " <CENTRE> Instances Available",
     IGUI_EFT_AdminPanel_SafehousesAssigned = " <CENTRE> Assigned Safehouses",
     IGUI_EFT_AdminPanel_StartMatch = "Start Match",
-    IGUI_EFT_AdminPanel_MatchOptions = "Match Options",
     IGUI_EFT_AdminPanel_ManagePlayers = "Manage Players",
     IGUI_EFT_AdminPanel_Stop = "Stop",
     IGUI_EFT_AdminPanel_Unassign = "Unassign",
-    IGUI_EFT_AdminPanel_Apply = "Apply",
-    IGUI_EFT_AdminPanel_Close = "Close",
     IGUI_EFT_AdminPanel_Tooltip_Unassign = "Unassign",
 
     IGUI_EFT_AdminPanel_CleanStorage = "Clean Storage",
@@ -18,6 +21,13 @@ IG_UI_EN = {
     
     IGUI_AdminPanelBeforeMatch_WipeEverything = "WIPE EVERYTHING",
     IGUI_AdminPanelBeforeMatch_Tooltip_WipeEverything = "Wipe everything about the selected player",
+
+    // ADMIN PANEL - DURING MATCH
+
+    IGUI_EFT_AdminPanel_MatchTime = "Match time: %1"
+    IGUI_EFT_AdminPanel_MatchEnded = "<SIZE:large> <CENTRE> <RED> The match has ended.",
+    IGUI_EFT_AdminPanel_MatchOptions = "Match Options",
+
 
 
 
