@@ -6,8 +6,12 @@ if FONT_SCALE < 1 then
 end
 
 
+local optionsReferenceTable = {
+    ZombieSpawnMultiplier = {title = "Zombie Spawn Multiplier", command = "SetZombieSpawnMultiplier"},
+}
 
----@alias optionType {label : ISLabel, entry : ISTextEntryBox} This is ISPanel
+
+---@alias optionType {label : ISLabel, entry : ISTextEntryBox, referencedCommand : string} This is ISPanel
 
 
 ---@class OptionsPanel : ISCollapsableWindow
@@ -32,11 +36,17 @@ function OptionsPanel:new(x, y, width, height)
     return o
 end
 
+function OptionsPanel:initialise()
+    ISCollapsableWindow.initialise(self)
+
+    -- TODO Fetch config from server
+end
 function OptionsPanel:createChildren()
     ISCollapsableWindow.createChildren(self)
-    self:createHorizontalPanel("testPanel", "Zombie multiplier")
-    self:createHorizontalPanel("testPanel2", "Zombie multiplier2")
-    self:createHorizontalPanel("testPanel3", "Zombie multiplier3")
+
+    for k,v in pairs(optionsReferenceTable) do
+        self:createHorizontalPanel(k, v.title, v.command)
+    end
 
     local xPadding = 20
     local yPadding = 20
@@ -58,14 +68,16 @@ function OptionsPanel:onClick(btn)
     for i=1, #self.options do
         -- get option and apply it accordingly. Send it to the server
         local optVal = self.options[i].entry:getInternalText()
-
+        local command = self.options[i].referencedCommand
+        sendClientCommand(EFT_MODULES.Match, command, {val = optVal})
     end
 
 end
 
 ---@param name string
 ---@param textLabel string
-function OptionsPanel:createHorizontalPanel(name, textLabel)
+---@param command string
+function OptionsPanel:createHorizontalPanel(name, textLabel, command)
     local height = 50
     local counter = #self.options + 1
 
@@ -99,6 +111,7 @@ function OptionsPanel:createHorizontalPanel(name, textLabel)
     self[name].entry:setText("")
     self[name]:addChild(self[name].entry)
 
+    self[name].referencedCommand = command
 
     table.insert(self.options, self[name])
 

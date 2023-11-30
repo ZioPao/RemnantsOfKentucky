@@ -9,6 +9,7 @@ local PvpInstanceManager = require("ROK/PvpInstanceManager")
 ---@class MatchController
 ---@field pvpInstance pvpInstanceTable
 ---@field playersInMatch table<number,number>        Table of player ids
+---@field zombieSpawnMultiplier number
 local MatchController = {}
 
 ---Creates new MatchController
@@ -21,6 +22,7 @@ function MatchController:new()
     o.pvpInstance = PvpInstanceManager.GetNextInstance()
     o.playersInMatch = {}
 
+    ---@type MatchController
     MatchController.instance = o
 
     return o
@@ -48,6 +50,8 @@ function MatchController:start()
         self.playersInMatch[plId] = plId
     end
 
+    self.zombieSpawnMultiplier = PZ_EFT_CONFIG.MatchSettings.zombieMultiplier
+
     -- Start timer and the event handling zombie spawning
     Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.roundTime, function()
         debugPrint("Ending the round!")
@@ -60,6 +64,11 @@ function MatchController:start()
     -- Setup checking alive players to stop the match and such things
     Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.checkAlivePlayersTime, MatchController.CheckAlivePlayers)
 
+end
+
+---@param val number
+function MatchController:setZombieSpawnMultiplier(val)
+    self.zombieSpawnMultiplier = val
 end
 
 --- Kill players that are still in the pvp instance and didn't manage to escape in time
@@ -110,7 +119,7 @@ function MatchController.HandleZombieSpawns(loops)
                 until sq and not sq:getFloor():getSprite():getProperties():Is(IsoFlagType.water)
                 
                 -- Amount of zombies should scale based on players amount too, to prevent from killing the server
-                local zombiesAmount = math.log(loops, MatchController.GetAmountAlivePlayers()) * PZ_EFT_CONFIG.MatchSettings.zombieMultiplier
+                local zombiesAmount = math.log(loops, MatchController.GetAmountAlivePlayers()) * MatchController.instance.zombieSpawnMultiplier
                 debugPrint("spawning " .. zombiesAmount .. " near " .. player:getUsername())
                 addZombiesInOutfit(sq:getX(), sq:getY(), 0, zombiesAmount, "", 50, false, false, false, false, 1)
                 addSound(player, math.floor(x), math.floor(y), 0, 300, 100)
@@ -160,6 +169,18 @@ end
 
 local MODULE = EFT_MODULES.Match
 local MatchCommands = {}
+
+---@param _ any
+---@param args {val : number}
+function MatchCommands.SetZombieSpawnMultiplier(playerObj, args)
+    local instance = MatchController.GetHandler()
+    if instance == nil then return end
+
+    instance:setZombieSpawnMultiplier(args.val)
+end
+
+
+
 
 ---A client has sent an extraction request
 ---@param playerObj IsoPlayer player requesting extraction
