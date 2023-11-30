@@ -5,8 +5,13 @@ if FONT_SCALE < 1 then
     FONT_SCALE = 1
 end
 
+
+
+---@alias optionType {label : ISLabel, entry : ISTextEntryBox} This is ISPanel
+
+
 ---@class OptionsPanel : ISCollapsableWindow
----@field options table
+---@field options table<integer, optionType>
 OptionsPanel = ISCollapsableWindow:derive("OptionsPanel")
 
 function OptionsPanel:new(x, y, width, height)
@@ -52,6 +57,8 @@ function OptionsPanel:onClick(btn)
 
     for i=1, #self.options do
         -- get option and apply it accordingly. Send it to the server
+        local optVal = self.options[i].entry:getInternalText()
+
     end
 
 end
@@ -81,12 +88,16 @@ function OptionsPanel:createHorizontalPanel(name, textLabel)
 
     -- Option
     local optionWidth = 50
-    self[name].option = ISTextEntryBox:new("", self.width - optionWidth, 0, optionWidth, height)
-    self[name].option:initialise()
-    self[name].option:instantiate()
-    self[name].option:setClearButton(false)
-    self[name].option:setText("")
-    self[name]:addChild(self[name].option)
+    self[name].entry = ISTextEntryBox:new("", self.width - optionWidth, 0, optionWidth, height)
+    self[name].entry:initialise()
+    self[name].entry:instantiate()
+    self[name].entry:setClearButton(false)
+
+    -- TODO Set Text from values got from the server
+    -- TODO We need a reference to the setting on the server
+
+    self[name].entry:setText("")
+    self[name]:addChild(self[name].entry)
 
 
     table.insert(self.options, self[name])

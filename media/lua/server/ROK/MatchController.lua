@@ -56,7 +56,9 @@ function MatchController:start()
 
     -- Setup Zombie handling
     Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.zombieIncreaseTime, MatchController.HandleZombieSpawns)
-    Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.zombieIncreaseTime, MatchController.CheckAlivePlayers)
+
+    -- Setup checking alive players to stop the match and such things
+    Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.checkAlivePlayersTime, MatchController.CheckAlivePlayers)
 
 end
 
@@ -106,8 +108,9 @@ function MatchController.HandleZombieSpawns(loops)
                     local randomY = ZombRand(20, 60) * (ZombRand(0, 100) > 50 and -1 or 1)
                     sq = getSquare(x + randomX, y + randomY, 0)
                 until sq and not sq:getFloor():getSprite():getProperties():Is(IsoFlagType.water)
-                -- TODO Amount of zombies should scale based on players amount too, to prevent from killing the server
-                local zombiesAmount = loops  --math.floor(loops/2)
+                
+                -- Amount of zombies should scale based on players amount too, to prevent from killing the server
+                local zombiesAmount = math.log(loops, MatchController.GetAmountAlivePlayers()) * PZ_EFT_CONFIG.MatchSettings.zombieMultiplier
                 debugPrint("spawning " .. zombiesAmount .. " near " .. player:getUsername())
                 addZombiesInOutfit(sq:getX(), sq:getY(), 0, zombiesAmount, "", 50, false, false, false, false, 1)
                 addSound(player, math.floor(x), math.floor(y), 0, 300, 100)
