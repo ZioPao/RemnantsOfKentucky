@@ -12,7 +12,14 @@ local GenericUI = require("ROK/UI/GenericUI")
 ---@field isStartingMatch boolean
 TimePanel = ISPanel:derive("TimePanel")
 
+---@param x number
+---@param y number
+---@param width number
+---@param height number
+---@param isStartingMatch boolean
+---@return TimePanel
 function TimePanel:new(x, y, width, height, isStartingMatch)
+    ---@type TimePanel
     local o = ISPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
@@ -20,27 +27,9 @@ function TimePanel:new(x, y, width, height, isStartingMatch)
     o.isStartingMatch = isStartingMatch
     o:initialise()
 
+    ---@type TimePanel
     TimePanel.instance = o
     return o
-end
-
-function TimePanel:render()
-    local timeNumber = tonumber(ClientState.currentTime)
-    if timeNumber == nil then return end
-
-    if timeNumber <= 0 then
-        debugPrint("Closing timer")
-        self:close()
-    end
-    self.timePanel:setText(GenericUI.FormatTime(timeNumber))
-    self.timePanel.textDirty = true
-
-    if self.isStartingMatch then return end
-
-    -- todo In game timer will fade out after some seconds
-    -- TODO if we do it via update it could be faster depending on the framerate. Keep this in mind
-
-    --self.color.a = self.timeText.color.a - 0.0001
 end
 
 function TimePanel:initialise()
@@ -75,10 +64,34 @@ function TimePanel:initialise()
     self.timePanel:addChild(self.textLabel)
 end
 
+function TimePanel:render()
+    local timeNumber = tonumber(ClientState.currentTime)
+    if timeNumber == nil then return end
+
+    if timeNumber <= 0 then
+        debugPrint("Closing timer")
+        self:close()
+    end
+    self.timePanel:setText(GenericUI.FormatTime(timeNumber))
+    self.timePanel.textDirty = true
+
+    if self.isStartingMatch then return end
+
+    -- todo In game timer will fade out after some seconds
+    -- TODO if we do it via update it could be faster depending on the framerate. Keep this in mind
+
+    --self.color.a = self.timeText.color.a - 0.0001
+end
+
 ---Show a description on tye upper part of the time panel
 function TimePanel:setDescription(description)
     -- TODO This doesn't work reliably
     self.textLabel:setName(description)
+end
+
+function TimePanel:setPosition(x, y)
+    self:setX(x)
+    self:setY(y)
 end
 
 -------------------------
@@ -108,3 +121,18 @@ end
 function TimePanel.Close()
     TimePanel.instance:close()
 end
+
+function TimePanel.HandleResolutionChange(oldW, oldH, w, h)
+    if TimePanel.instance == nil then return end
+    local width = 300
+    local height = 100
+    local padding = 50
+    local posX = w - width - padding
+    local posY = h - height - padding
+
+    TimePanel.instance:setPosition(posX, posY)
+
+end
+
+Events.OnResolutionChange.Add(TimePanel.HandleResolutionChange)
+

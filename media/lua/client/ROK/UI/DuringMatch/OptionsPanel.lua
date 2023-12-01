@@ -124,9 +124,6 @@ function OptionsPanel:createHorizontalPanel(name, textLabel, setCommand, askComm
     self[name].entry:setEditable(false)     -- By default it's not enabled, until we get the ok from the server
     self[name].entry.syncedWithServer = false
     self[name]:addChild(self[name].entry)
-
-    -- TODO Should set that if nil is invalid
-
     self[name].referencedCommand = setCommand
     sendClientCommand(EFT_MODULES.Match, askCommand, {})
 

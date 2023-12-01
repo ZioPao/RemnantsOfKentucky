@@ -278,7 +278,6 @@ function ManagePlayersScrollingTable:drawDatas(y, item, alt)
     self:drawRectBorder(0, (y), self:getWidth(), self.itemheight, a, self.borderColor.r, self.borderColor.g,
         self.borderColor.b)
 
-    -- TODO ADD BALANCE
     local xOffset = 10
     self:drawText(item.text, xOffset, y + 4, 1, 1, 1, a, self.font)
     return y + self.itemheight

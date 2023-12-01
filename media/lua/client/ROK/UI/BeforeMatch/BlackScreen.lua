@@ -3,9 +3,6 @@
 ---@field textX number
 ---@field textY number
 local BlackScreen = ISPanel:derive("BlackScreen")
-
---TODO Closing this is finnicky for some reason.
-
 function BlackScreen:new()
     local o = ISPanel:new(0, 0, getCore():getScreenWidth(), getCore():getScreenHeight())
     setmetatable(o, self)
