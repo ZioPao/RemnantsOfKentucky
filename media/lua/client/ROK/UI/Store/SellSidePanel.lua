@@ -5,6 +5,11 @@ local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
 ------------------------
 
 -- TODO ADD remove Item from list
+-- TODO This is broken now for some reason
+-- TODO Add review after extraction for players
+
+-- TODO Add separate icon for the random extraction points 
+
 
 ---@class SellSidePanel : RightSidePanel
 ---@field infoPanel ISPanel

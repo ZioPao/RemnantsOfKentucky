@@ -9,7 +9,6 @@ function TimeCommands.OpenTimePanel(args)
     TimePanel.Close()
     TimePanel.Open(args.description)
 
-    --TODO FIX THIS
     ClientState.currentTime = 100       -- Workaround to prevent the TimePanel from closing
 end
 

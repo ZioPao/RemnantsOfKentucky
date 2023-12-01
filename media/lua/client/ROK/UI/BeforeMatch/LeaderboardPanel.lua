@@ -161,6 +161,7 @@ function LeaderboardPanel:createChildren()
     self.filterEntry:setText("")
     self:addChild(self.filterEntry)
 
+    ---@diagnostic disable-next-line: duplicate-set-field
     self.filterEntry.onTextChange = function()
         self:fillList()
     end

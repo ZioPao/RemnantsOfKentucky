@@ -1,3 +1,6 @@
+local ExtractionHandler = require("ROK/ExtractionHandler")
+
+
 ---@class ExtractionPanel : ISPanel
 local ExtractionPanel = ISPanel:derive("ExtractionPanel")
 --TODO Add OnResolutionChange event
@@ -37,7 +40,6 @@ end
 
 function ExtractionPanel:runExtractionMethod()
     self.btnExtract:setEnable(false)
-    local ExtractionHandler = require("ROK/ClientMatchHandlers/ExtractionHandler")
     ExtractionHandler.DoExtraction()
 end
 
