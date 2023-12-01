@@ -90,13 +90,13 @@ function BeforeMatchAdminPanel:onClick(btn)
         btn.internal = "STOP"
         btn:setTitle(MATCH_STOP_TEXT)
         -- Start timer. Show it on screen
-        sendClientCommand("PZEFT-Time", "StartMatchCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.startMatchTime })
+        sendClientCommand(EFT_MODULES.Time, "StartMatchCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.startMatchTime })
         TimePanel.Open("Starting match in...")
     elseif btn.internal == "STOP" then
         self.isStartingMatch = false
         btn.internal = "START"
         btn:setTitle(MATCH_START_TEXT)
-        sendClientCommand("PZEFT-Time", "StopMatchCountdown", {})
+        sendClientCommand(EFT_MODULES.Time, "StopMatchCountdown", {})
         TimePanel.Close()
     elseif btn.internal == 'MANAGE_PLAYERS' then
         if self.openedPanel and self.openedPanel:getIsVisible() then

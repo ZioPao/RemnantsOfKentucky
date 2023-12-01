@@ -124,6 +124,7 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
 PZ_EFT_CONFIG.MatchSettings = {
     -- Time related stuff, in seconds. Handled on the client
     startMatchTime = 5,
+    loadWaitTime = 5,
     endMatchTime = 5,
 
     -- Server only

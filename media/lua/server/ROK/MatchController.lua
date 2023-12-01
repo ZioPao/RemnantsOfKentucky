@@ -35,12 +35,6 @@ function MatchController:initialise()
         return
     end
 
-    self:start()
-end
-
----Setup teleporting players to their spawn points
-function MatchController:start()
-    debugPrint("Starting match!")
     PvpInstanceManager.TeleportPlayersToInstance()  -- TODO this is kinda shaky, we should integrate it here in MatchController
 
     local temp = getOnlinePlayers()
@@ -52,6 +46,19 @@ function MatchController:start()
 
     -- Default value for the zombie multiplier
     self:setZombieSpawnMultiplier(PZ_EFT_CONFIG.MatchSettings.zombieSpawnMultiplier)
+    --self:start()
+end
+
+---Wait 5 seconds before starting the match
+function MatchController:waitForStart()
+    Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.loadWaitTime, function () self:start() end, false)
+    sendServerCommand(EFT_MODULES.UI, "OpenBlackScreen", {})
+end
+
+
+---Setup teleporting players to their spawn points
+function MatchController:start()
+    debugPrint("Starting match!")
 
     -- Start timer and the event handling zombie spawning
     Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.roundTime, function()
@@ -64,6 +71,8 @@ function MatchController:start()
 
     -- Setup checking alive players to stop the match and such things
     Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.checkAlivePlayersTime, MatchController.CheckAlivePlayers)
+
+    sendServerCommand(EFT_MODULES.UI, "CloseBlackScreen", {})
 
 end
 

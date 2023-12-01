@@ -8,17 +8,20 @@ function TimeCommands.OpenTimePanel()
     TimePanel.Open()
 end
 
----@param args {time : number}
+---@param args {time : number, openTimePanel : boolean}
 function TimeCommands.ReceiveTimeUpdate(args)
     --print("Server Command - ReceiveTimeUpdate")
     --print(time[1])
     ClientState.currentTime = args.time
 
-    -- Check if the timer is visible.
-    if not TimePanel.instance:getIsVisible() then -- TODO this is mostly a workaround for now.
-        TimePanel.Close()
-        TimePanel.Open()
+    if args.openTimePanel then
+        -- Check if the timer is visible.
+        if not TimePanel.instance:getIsVisible() then -- TODO this is mostly a workaround for now.
+            TimePanel.Close()
+            TimePanel.Open()
+        end
     end
+
 
 
     -- Locally, 1 player, about 4-5 ms of delay.

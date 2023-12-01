@@ -1,13 +1,13 @@
----@class BlackScreen : ISPanelJoypad
+---@class BlackScreen : ISPanel
 ---@field text string
 ---@field textX number
 ---@field textY number
-local BlackScreen = ISPanelJoypad:derive("BlackScreen")
+local BlackScreen = ISPanel:derive("BlackScreen")
 
---TODO Add OnResolutionChange event
+--TODO Closing this is finnicky for some reason.
 
 function BlackScreen:new()
-    local o = ISPanelJoypad:new(0, 0, getCore():getScreenWidth(), getCore():getScreenHeight())
+    local o = ISPanel:new(0, 0, getCore():getScreenWidth(), getCore():getScreenHeight())
     setmetatable(o, self)
     self.__index = self
     o.backgroundColor = { r = 0, g = 0, b = 0, a = 1 }
@@ -17,7 +17,7 @@ function BlackScreen:new()
 end
 
 function BlackScreen:initialise()
-    ISPanelJoypad.initialise(self)
+    ISPanel.initialise(self)
 
     self.text = getText("UI_EFT_Wait")
     self.textX = (self.width - getTextManager():MeasureStringX(UIFont.Massive, self.text))/2
@@ -37,7 +37,7 @@ end
 -------------------
 
 function BlackScreen.Open()
-    if not isClient() then return end       -- SP workaround
+    --if not isClient() then return end       -- SP workaround
     debugPrint("Opening black screen")
     local blackScreen = BlackScreen:new()
     blackScreen:initialise()
@@ -45,10 +45,8 @@ function BlackScreen.Open()
 end
 
 function BlackScreen.Close()
-    debugPrint("Closing black screen")
-    if BlackScreen.instance ~= nil then
+    if BlackScreen.instance then
         BlackScreen.instance:close()
-        BlackScreen.instance = nil
     end
 end
 

@@ -12,6 +12,7 @@ function ClientCommands.StartMatchCountdown(playerObj, args)
         debugPrint("Start Match")
         local handler = MatchHandler:new()
         handler:initialise()
+        handler:waitForStart()
 
         -- Closes automatically the admin panel\switch it to the during match one
         sendServerCommand(playerObj, EFT_MODULES.UI, 'SwitchMatchAdminUI', {startingState='BEFORE'})

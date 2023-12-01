@@ -59,16 +59,16 @@ Events.OnDisconnect.Add(OnPlayerExit)
 
 
 
--- local function OnCreatePlayer()
---     if not SafehouseInstanceHandler.IsInSafehouse() then
---         local BlackScreen = require("ROK/UI/BeforeMatch/BlackScreen")
---         BlackScreen.Open()
---     end
+local function OnGameStart()
+    if not SafehouseInstanceHandler.IsInSafehouse() then
+        local BlackScreen = require("ROK/UI/BeforeMatch/BlackScreen")
+        BlackScreen.Open()
+    end
 
--- end
+end
 
 
--- Events.OnCreatePlayer.Add(OnCreatePlayer)
+Events.OnGameStart.Add(OnGameStart)
 
 
 ---------------------------------------

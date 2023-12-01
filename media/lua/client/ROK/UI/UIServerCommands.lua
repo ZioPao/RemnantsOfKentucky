@@ -1,5 +1,6 @@
 local BeforeMatchAdminPanel = require("ROK/UI/BeforeMatch/BeforeMatchAdminPanel")
 local DuringMatchAdminPanel = require("ROK/UI/DuringMatch/DuringMatchAdminPanel")
+local BlackScreen = require("ROK/UI/BeforeMatch/BlackScreen")
 
 local MODULE = EFT_MODULES.UI
 local TIME_PANEL_DESCRIPTIONS = {
@@ -11,6 +12,14 @@ local TIME_PANEL_DESCRIPTIONS = {
 
 
 local ServerCommands = {}
+
+function ServerCommands.OpenBlackScreen()
+    BlackScreen.Open()
+end
+
+function ServerCommands.CloseBlackScreen()
+    BlackScreen.Close()
+end
 
 ---@param args {startingState : string}
 function ServerCommands.SwitchMatchAdminUI(args)

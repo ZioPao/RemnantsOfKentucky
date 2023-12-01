@@ -16,7 +16,8 @@ local Countdown = {}
 ---Will run the func after the end
 ---@param stopTime number
 ---@param fun function
-function Countdown.Setup(stopTime, fun)
+---@param displayOnClient boolean?
+function Countdown.Setup(stopTime, fun, displayOnClient)
 	Countdown.fun = fun
 
 	if fun == nil then
@@ -24,6 +25,11 @@ function Countdown.Setup(stopTime, fun)
 	end
 
 	Countdown.stopTime = os_time() + stopTime
+	if displayOnClient == nil then
+		Countdown.displayOnClient = true
+	else
+		Countdown.displayOnClient = displayOnClient
+	end
 
 	Events.OnTickEvenPaused.Add(Countdown.Update)
 end
@@ -50,13 +56,7 @@ function Countdown.Update()
 	local currTime = os_time()
 	local currSeconds = Countdown.stopTime - currTime
 
-	-- TODO THIS IS JUST FOR DEBUG
-	if not isServer() then
-		sendServerCommand(getPlayer(), EFT_MODULES.Time, "ReceiveTimeUpdate", { time = currSeconds })
-	else
-		sendServerCommand(EFT_MODULES.Time, "ReceiveTimeUpdate", { time = currSeconds })
-	end
-
+	sendServerCommand(EFT_MODULES.Time, "ReceiveTimeUpdate", { time = currSeconds, openTimePanel = Countdown.displayOnClient})
 	-- Check interval funcs
 	if Countdown.intervals then
 		for i=1, #Countdown.intervals do
