@@ -1,13 +1,4 @@
 version=1
 title=PZ-EFT
-description=[h2]Brief 1 sentence description.[/h2]
-description=[h3]Commissioned by [b]client name[/b][/h3]
-description=
-description=
-description=[url=https://discord.gg/2skchrKrDv][img]https://raw.githubusercontent.com/Glytch3r/TeamOrbitAds/main/square_serve.gif[/img][/url]
-description=[url=https://steamcommunity.com/id/glytch3r/myworkshopfiles/?section=collections&appid=108600][img]https://raw.githubusercontent.com/Glytch3r/TeamOrbitAds/main/workshop.png[/img][/url]
-description=
-description=
-description=
-tags=Build 41;
+tags=Build 41
 visibility=unlisted
