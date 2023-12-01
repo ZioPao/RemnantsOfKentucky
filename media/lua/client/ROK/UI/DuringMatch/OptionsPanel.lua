@@ -84,7 +84,8 @@ end
 
 ---@param name string
 ---@param textLabel string
----@param command string
+---@param setCommand string
+---@param askCommand string
 function OptionsPanel:createHorizontalPanel(name, textLabel, setCommand, askCommand)
     local height = 50
     local counter = #self.options + 1

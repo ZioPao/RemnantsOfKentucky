@@ -1,11 +1,11 @@
 #Based on https://github.com/Orcicorn-ProjectZomboid/ResetMapChunks
-
 # Clean maps before starting it up
-
 # Starts server normally
 
-from os import listdir, remove
+from os import listdir, remove, getcwd
 from os.path import split as path_split, abspath, join, isfile
+import subprocess
+import json
 
 def in_boundary(X, Y, startX, startY, endX, endY):
     """Determines if a co-ordinate is within a boundary
@@ -52,8 +52,16 @@ def reset_instances(path):
 
 ################################
 
+# Load json
+config_path = getcwd() + '\config.json'
 
-# TEST PATH C:\Users\...\Zomboid\Saves\Multiplayer\pzeft
-t_path = ""
+with open(config_path) as config_data:
+    data = json.load(config_data)
 
-reset_instances(t_path)
+# Reset map files
+save_path = data.get("savePath")
+reset_instances(save_path)
+
+# Run the actual server
+sh_path = data.get("serverStartPath")
+subprocess.call(['sh', sh_path])
