@@ -41,7 +41,7 @@ function BuySidePanel:createChildren()
     local elementWidth = self.width - xMargin * 2
     local elementHeight = CommonStore.BIG_BTN_HEIGHT
 
-    self.bottomBtn:setTitle("Buy")      -- TODO GetText
+    self.bottomBtn:setTitle(getText("IGUI_Shop_Buy"))
     self.bottomBtn.internal = "BUY"
     self.bottomBtn:initialise()
     self.bottomBtn:setEnable(false)

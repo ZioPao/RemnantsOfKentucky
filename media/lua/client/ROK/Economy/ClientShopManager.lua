@@ -129,7 +129,7 @@ function ShopCommands.BuyItem(args)
     local cratesTable = SafehouseInstanceHandler.GetCrates()
 
     if cratesTable == nil then debugPrint("Crates are nil!") return end
-    
+
     -- Find the first crate which has available space
     local crateCounter = 1
     local switchedToPlayer = false

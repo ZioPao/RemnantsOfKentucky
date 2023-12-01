@@ -37,6 +37,7 @@ IG_UI_EN = {
 
 
     IGUI_Shop_Title = "Shop",
+    IGUI_Shop_Buy = "Buy",
     IGUI_Shop_CurrentBalance = "<SIZE:large> Current Balance: ",
     IGUI_Shop_TabEssential = "Essential Items",
     IGUI_Shop_TabDaily = "Daily Items",

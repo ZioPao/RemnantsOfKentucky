@@ -22,10 +22,8 @@ function GenericUI.FormatTime(time)
         addedColor = string.format(" <RGB:%.2f,%.2f,%.2f> ", 1, 1, 1)
     end
 
-    --debugPrint(addedColor)
+    -- Check the current time, depending on this change color of the time on the panel.
     local finalString = string.format(" %s <CENTRE> %02d:%02d", addedColor, minutes, seconds)
-
-    -- TODO Check the current time, depending on this change color of the time on the panel.
     return finalString
 end
 
