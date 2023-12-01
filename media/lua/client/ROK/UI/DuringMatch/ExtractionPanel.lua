@@ -1,4 +1,3 @@
-local ExtractionHandler = require("ROK/ExtractionHandler")
 
 
 ---@class ExtractionPanel : ISPanel
@@ -40,6 +39,7 @@ end
 
 function ExtractionPanel:runExtractionMethod()
     self.btnExtract:setEnable(false)
+    local ExtractionHandler = require("ROK/ExtractionHandler")
     ExtractionHandler.DoExtraction()
 end
 

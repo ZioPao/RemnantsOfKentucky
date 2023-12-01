@@ -113,7 +113,7 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
     yRepeat = 10,
 
     -- number of random extraction points for each instance
-    randomExtractionPointCount = 0
+    randomExtractionPointCount = 1
 }
 
 
@@ -346,15 +346,29 @@ table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
 --- Time taken to extract
 PZ_EFT_CONFIG.RandomExtractionPoints = {}
 
---[[
+
 table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
-    name = "extract point 1",
-    x1 = 5,
-    y1 = 5,
+    name = "Dock Top",
+    x1 = 212,
+    y1 = 85,
     z1 = 0,
-    x2 = 5,
-    y2 = 5,
+    x2 = 217,
+    y2 = 110,
     z2 = 0,
     time = 10,
+    isRandom = true
 })
---]]
+
+
+-- TODO Placeholder, delete me
+table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
+    name = "Heliport",
+    x1 = 423,
+    y1 = 542,
+    z1 = 0,
+    x2 = 444,
+    y2 = 565,
+    z2 = 0,
+    time = 10,
+    isRandom = true
+})

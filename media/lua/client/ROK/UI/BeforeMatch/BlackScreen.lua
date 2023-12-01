@@ -52,7 +52,7 @@ function BlackScreen.Open()
 end
 
 function BlackScreen.Close()
-    debugPrint("Closing black screen")
+    --debugPrint("Closing black screen")
     if BlackScreen.instance then
         debugPrint("black screen instance available, closing")
         BlackScreen.instance:close()

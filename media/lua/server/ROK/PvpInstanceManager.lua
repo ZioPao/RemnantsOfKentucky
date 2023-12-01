@@ -145,10 +145,14 @@ end
 ---@param count number
 ---@return areaCoords?
 function PvpInstanceManager.GetRandomExtractionPoints(cellX, cellY, count)
+    --debugPrint("GetRandomExtractionsPoints")
+    --debugPrint("cellX=" .. tostring(cellX))
+    --debugPrint("cellY=" .. tostring(cellY))
+    --debugPrint("count=" .. tostring(count))
     if not count then
         return {}
     end
-    
+
     local extractionPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.RandomExtractionPoints, cellX, cellY, {"name", "time"})
 
     if extractionPoints == nil then
@@ -159,6 +163,8 @@ function PvpInstanceManager.GetRandomExtractionPoints(cellX, cellY, count)
 
     local extractionPointCount = #extractionPoints
     if extractionPointCount <= count then
+        --debugPrint("extractionPointCount <= 0")
+        --debugPrint(extractionPointCount)
         return extractionPoints
     end
 
@@ -172,6 +178,8 @@ function PvpInstanceManager.GetRandomExtractionPoints(cellX, cellY, count)
         table.insert(activeExtractionPoints, extractionPoint)
         table.remove(extractionPoints, randIndex)
     end
+
+    --PZEFT_UTILS.PrintTable(activeExtractionPoints)
 
     return activeExtractionPoints
 end

@@ -106,7 +106,7 @@ end
 
 PZEFT_UTILS.PrintTable = function(table, indent)
     if not PZ_EFT_CONFIG.Debug then return end
-    
+
     if not table then return end
 
     indent = indent or ""
