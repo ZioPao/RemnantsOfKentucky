@@ -93,15 +93,5 @@ function ExtractionPanel.Close()
     end
 end
 
-function ExtractionPanel.HandleResolutionChange(oldW, oldH, w, h)
-
-    -- TODO We would need to wait for the OnResolutionChange event in TimePanel
-    local pos = ExtractionPanel.GetPosition()
-    ExtractionPanel.instance:setX(pos.x)
-    ExtractionPanel.instance:setY(pos.y)
-end
-
-Events.OnResolutionChange.Add(ExtractionPanel.HandleResolutionChange)
-
 
 return ExtractionPanel

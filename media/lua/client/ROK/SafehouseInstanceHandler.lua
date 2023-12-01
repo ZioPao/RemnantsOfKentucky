@@ -1,5 +1,6 @@
 require("ROK/DebugTools")
 local BlackScreen = require("ROK/UI/BeforeMatch/BlackScreen")
+local ClientState = require("ROK/ClientState")
 --------------------------
 
 ---@class SafehouseInstanceHandler
@@ -26,6 +27,11 @@ end
 
 ---Used in a Loop, check if the player is in the safehouse and if not teleports them forcefully. Opens a Black screen if they're not in the safehouse too
 function SafehouseInstanceHandler.HandlePlayerInSafehouse()
+
+    -- Prevent this from running if we're starting a match
+    if ClientState.isStartingMatch then return end
+
+
     if not SafehouseInstanceHandler.IsInSafehouse() then
         BlackScreen.Open()
         sendClientCommand(EFT_MODULES.Safehouse, "RequestSafehouseAllocation", {
@@ -33,6 +39,11 @@ function SafehouseInstanceHandler.HandlePlayerInSafehouse()
         })
     else
         BlackScreen.Close()
+
+        -- TODO Test this
+        for _,v in ipairs(PZ_EFT_CONFIG.SafehouseCells)do
+            zpopClearZombies(v.x,v.y)
+        end
     end
 end
 

@@ -1,8 +1,9 @@
----@alias clientStateType {isInRaid : boolean, extractionStatus : table, currentTime : number, availableInstances : number, availableSafehouses : number}
+---@alias clientStateType {isInRaid : boolean, isStartingMatch : boolean, extractionStatus : table, currentTime : number, availableInstances : number, availableSafehouses : number}
 
 ---@type clientStateType
 local ClientState = {
     isInRaid = false,
+    isStartingMatch = false,
     currentTime = -1,
     extractionStatus = {},
 }
@@ -29,6 +30,7 @@ function ClientStateCommands.SetClientStateIsInRaid(args)
     ISWorldMap.HandleEFTExits(getPlayer():getPlayerNum(), not args.value)
 
 end
+
 
 function ClientStateCommands.CommitDieIfInRaid()
     if ClientState.isInRaid then

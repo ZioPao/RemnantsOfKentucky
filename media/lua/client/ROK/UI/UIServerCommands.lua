@@ -3,10 +3,6 @@ local DuringMatchAdminPanel = require("ROK/UI/DuringMatch/DuringMatchAdminPanel"
 local BlackScreen = require("ROK/UI/BeforeMatch/BlackScreen")
 
 local MODULE = EFT_MODULES.UI
-local TIME_PANEL_DESCRIPTIONS = {
-    getText("IGUI_TimePanel_MatchStarting"),        -- 1
-    getText("IGUI_TimePanel_MatchEnded")            -- 2
-}
 
 ------------------------------------------
 
@@ -35,12 +31,6 @@ function ServerCommands.SwitchMatchAdminUI(args)
             BeforeMatchAdminPanel.OnOpenPanel()
         end
     end
-end
-
----@param args {index : integer}
-function ServerCommands.SetTimePanelDescription(args)
-    local index = args.index
-    TimePanel.instance:setDescription(TIME_PANEL_DESCRIPTIONS[index])
 end
 
 --- Sets the amount of available instances to the client state

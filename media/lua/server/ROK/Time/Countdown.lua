@@ -17,7 +17,8 @@ local Countdown = {}
 ---@param stopTime number
 ---@param fun function
 ---@param displayOnClient boolean?
-function Countdown.Setup(stopTime, fun, displayOnClient)
+---@param description string?
+function Countdown.Setup(stopTime, fun, displayOnClient, description)
 	Countdown.fun = fun
 
 	if fun == nil then
@@ -25,10 +26,14 @@ function Countdown.Setup(stopTime, fun, displayOnClient)
 	end
 
 	Countdown.stopTime = os_time() + stopTime
-	if displayOnClient == nil then
+
+
+	if displayOnClient and displayOnClient == true then
+		description = description or ""
+		sendServerCommand(EFT_MODULES.Time, "OpenTimePanel", {description = description})
 		Countdown.displayOnClient = true
 	else
-		Countdown.displayOnClient = displayOnClient
+		Countdown.displayOnClient = false
 	end
 
 	Events.OnTickEvenPaused.Add(Countdown.Update)
@@ -38,7 +43,6 @@ end
 ---@param fun function
 function Countdown.AddIntervalFunc(interval, fun)
 
-	-- TODO Handle multiple timers
 	local intTab = {
 		counter = 0,
 		base = interval,
@@ -56,7 +60,10 @@ function Countdown.Update()
 	local currTime = os_time()
 	local currSeconds = Countdown.stopTime - currTime
 
-	sendServerCommand(EFT_MODULES.Time, "ReceiveTimeUpdate", { time = currSeconds, openTimePanel = Countdown.displayOnClient})
+	if Countdown.displayOnClient and Countdown.displayOnClient == true then
+		sendServerCommand(EFT_MODULES.Time, "ReceiveTimeUpdate", { time = currSeconds })
+	end
+
 	-- Check interval funcs
 	if Countdown.intervals then
 		for i=1, #Countdown.intervals do

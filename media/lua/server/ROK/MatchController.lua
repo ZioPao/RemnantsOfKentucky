@@ -6,6 +6,8 @@ local PvpInstanceManager = require("ROK/PvpInstanceManager")
 
 ---------------------------------------------------
 
+-- TODO Add Overtime
+
 ---@class MatchController
 ---@field pvpInstance pvpInstanceTable
 ---@field playersInMatch table<number,number>        Table of player ids
@@ -60,11 +62,13 @@ end
 function MatchController:start()
     debugPrint("Starting match!")
 
+
     -- Start timer and the event handling zombie spawning
     Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.roundTime, function()
-        debugPrint("Ending the round!")
-        self:stopMatch()
-    end)
+
+        debugPrint("Overtime!")
+        self:startOvertime()
+    end, true)
 
     -- Setup Zombie handling
     Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.zombieIncreaseTime, MatchController.HandleZombieSpawns)
@@ -74,6 +78,13 @@ function MatchController:start()
 
     sendServerCommand(EFT_MODULES.UI, "CloseBlackScreen", {})
 
+end
+
+function MatchController:startOvertime()
+    Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.roundOvertime, function()
+        debugPrint("End match")
+        self:stopMatch()
+    end, true, "Overtime")
 end
 
 --- Kill players that are still in the pvp instance and didn't manage to escape in time

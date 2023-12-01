@@ -1,5 +1,6 @@
 local BaseAdminPanel = require("ROK/UI/BaseAdminPanel")
 local ManagePlayersPanel = require("ROK/UI/BeforeMatch/ManagePlayersPanel")
+local ClientState = require("ROK/ClientState")
 --------------------------------
 
 ---@class BeforeMatchAdminPanel : BaseAdminPanel
@@ -25,7 +26,6 @@ function BeforeMatchAdminPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
 
-    o.isStartingMatch = false
     BeforeMatchAdminPanel.instance = o
     return o
 end
@@ -86,14 +86,14 @@ end
 
 function BeforeMatchAdminPanel:onClick(btn)
     if btn.internal == 'START' then
-        self.isStartingMatch = true
+        ClientState.isStartingMatch = true
         btn.internal = "STOP"
         btn:setTitle(MATCH_STOP_TEXT)
         -- Start timer. Show it on screen
         sendClientCommand(EFT_MODULES.Time, "StartMatchCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.startMatchTime })
-        TimePanel.Open("Starting match in...")
+        TimePanel.Open("Starting match in...")      -- TODO This gets overriden easily
     elseif btn.internal == "STOP" then
-        self.isStartingMatch = false
+        ClientState.isStartingMatch = false
         btn.internal = "START"
         btn:setTitle(MATCH_START_TEXT)
         sendClientCommand(EFT_MODULES.Time, "StopMatchCountdown", {})
@@ -110,8 +110,8 @@ end
 function BeforeMatchAdminPanel:update()
     BaseAdminPanel.update(self)
     -- When starting the match, we'll disable the default close button
-    self.closeButton:setEnable(not self.isStartingMatch)
-    self.btnManagePlayers:setEnable(not self.isStartingMatch)
+    self.closeButton:setEnable(not ClientState.isStartingMatch)
+    self.btnManagePlayers:setEnable(not ClientState.isStartingMatch)
 
     local valAssignedSafehousesText = " <CENTRE> -1"     -- TODO This is a placeholder!
     self.labelValAssignedSafehouses:setText(valAssignedSafehousesText)

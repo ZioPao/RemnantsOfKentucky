@@ -123,12 +123,13 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
 --- STATIC ONLY SETTINGS!
 PZ_EFT_CONFIG.MatchSettings = {
     -- Time related stuff, in seconds. Handled on the client
-    startMatchTime = 5,
+    startMatchTime = 5,     -- TODO 1 Minute
     loadWaitTime = 5,
     endMatchTime = 5,
 
     -- Server only
     roundTime = 1200,       -- 20 minutes
+    roundOvertime = 300,    -- 5 minutes
     zombieIncreaseTime = 60,     -- todo 2 minutes
     zombieSpawnMultiplier = 4,       -- 4 as default
     checkAlivePlayersTime = 10      -- Every 10 seconds, we check if there are players alive in the match
@@ -184,12 +185,13 @@ table.insert(PZ_EFT_CONFIG.Spawnpoints, {
     z = 0
 })
 
-table.insert(PZ_EFT_CONFIG.Spawnpoints, {
-    name = "WESTERN SHORE SPAWN #2",
-    x = 854,
-    y = 226,
-    z = 0
-})
+-- FIXME This is broken! 
+-- table.insert(PZ_EFT_CONFIG.Spawnpoints, {
+--     name = "WESTERN SHORE SPAWN #2",
+--     x = 854,
+--     y = 226,
+--     z = 0
+-- })
 
 table.insert(PZ_EFT_CONFIG.Spawnpoints, {
     name = "MEDICAL CENTER BATHROOMS SPAWN",

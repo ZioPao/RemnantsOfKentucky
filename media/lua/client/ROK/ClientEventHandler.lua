@@ -57,31 +57,13 @@ Events.OnPlayerDeath.Add(OnPlayerExit)
 Events.OnDisconnect.Add(OnPlayerExit)
 
 
+-- local function OnLoad()
+--     if not SafehouseInstanceHandler.IsInSafehouse() then
+--         local BlackScreen = require("ROK/UI/BeforeMatch/BlackScreen")
+--         -- TODO This is so early that it overrides the reference, fuck sake
+--         BlackScreen.Open()
+--     end
 
+-- end
 
-local function OnGameStart()
-    if not SafehouseInstanceHandler.IsInSafehouse() then
-        local BlackScreen = require("ROK/UI/BeforeMatch/BlackScreen")
-        BlackScreen.Open()
-    end
-
-end
-
-
-Events.OnGameStart.Add(OnGameStart)
-
-
----------------------------------------
---* Admin only *--
-
-local function ClearZombiesNearSafehouses()
-    -- TODO Bit inefficient, we should select a single admin instead of running this on every one. Also, not sure if works at all
-    if not isAdmin() then return end
-
-    for _,v in ipairs(PZ_EFT_CONFIG.SafehouseCells)do
-        zpopClearZombies(v.x,v.y)
-    end
-
-end
-
-Events.EveryOneMinute.Add(ClearZombiesNearSafehouses)
+-- Events.OnLoad.Add(OnLoad)

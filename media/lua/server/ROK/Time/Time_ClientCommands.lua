@@ -17,7 +17,10 @@ function ClientCommands.StartMatchCountdown(playerObj, args)
         -- Closes automatically the admin panel\switch it to the during match one
         sendServerCommand(playerObj, EFT_MODULES.UI, 'SwitchMatchAdminUI', {startingState='BEFORE'})
     end
-    Countdown.Setup(args.stopTime, StartMatch)
+
+    -- TODO Can't load getText from here for some reason. Workaround
+    local matchStartingText = "The match is starting"
+    Countdown.Setup(args.stopTime, StartMatch, true, matchStartingText)
 end
 
 function ClientCommands.StopMatchCountdown()
@@ -35,9 +38,9 @@ function ClientCommands.StartMatchEndCountdown(playerObj, args)
         sendServerCommand(playerObj, EFT_MODULES.UI, 'SwitchMatchAdminUI', {startingState='DURING'})
     end
 
-    Countdown.Setup(args.stopTime, StopMatch)
-    sendServerCommand(EFT_MODULES.UI, 'SetTimePanelDescription', {index = 2})       -- 2 = The match has ended
-
+    local text = "The match has ended"
+    Countdown.Setup(args.stopTime, StopMatch, true, text)
+    --sendServerCommand(EFT_MODULES.UI, 'SetTimePanelDescription', {index = 2})       -- 2 = The match has ended
 end
 
 -----------------------------

@@ -119,19 +119,29 @@ function TimePanel.Open(description)
 end
 
 function TimePanel.Close()
-    TimePanel.instance:close()
+    if TimePanel.instance then
+        TimePanel.instance:close()
+    end
 end
 
 function TimePanel.HandleResolutionChange(oldW, oldH, w, h)
-    if TimePanel.instance == nil then return end
-    local width = 300
-    local height = 100
-    local padding = 50
-    local posX = w - width - padding
-    local posY = h - height - padding
+    if TimePanel.instance and TimePanel.instance:isVisible() then
+        local width = 300
+        local height = 100
+        local padding = 50
+        local posX = w - width - padding
+        local posY = h - height - padding
+        TimePanel.instance:setPosition(posX, posY)
 
-    TimePanel.instance:setPosition(posX, posY)
+        -- We need to handle the ExtractionPanel from here since it's dependant on the TimePanel
+        local ExtractionPanel = require("ROK/UI/DuringMatch/ExtractionPanel")
 
+        if ExtractionPanel.instance and ExtractionPanel.instance:isVisible() then
+            local pos = ExtractionPanel.GetPosition()
+            ExtractionPanel.instance:setX(pos.x)
+            ExtractionPanel.instance:setY(pos.y)
+        end
+    end
 end
 
 Events.OnResolutionChange.Add(TimePanel.HandleResolutionChange)

@@ -3,6 +3,10 @@
 ---@field textX number
 ---@field textY number
 local BlackScreen = ISPanel:derive("BlackScreen")
+
+
+-- TODO This piece of shit is still broken
+
 function BlackScreen:new()
     local o = ISPanel:new(0, 0, getCore():getScreenWidth(), getCore():getScreenHeight())
     setmetatable(o, self)
@@ -27,6 +31,12 @@ function BlackScreen:prerender()
     self:drawText(self.text, self.textX, self.textY, 1, 1, 1, 1, UIFont.Massive)
 end
 
+function BlackScreen:close()
+    self:setVisible(false)
+    self:removeFromUIManager()
+    BlackScreen.instance = nil
+end
+
 -- function BlackScreen:render()
 --     ISPanelJoypad.render(self)
 -- end
@@ -42,15 +52,18 @@ function BlackScreen.Open()
 end
 
 function BlackScreen.Close()
+    debugPrint("Closing black screen")
     if BlackScreen.instance then
+        debugPrint("black screen instance available, closing")
         BlackScreen.instance:close()
     end
 end
 
 function BlackScreen.HandleResolutionChange(oldW, oldH, w, h)
-    if BlackScreen.instance == nil then return end
-    BlackScreen.Close()
-    BlackScreen.Open()
+    if BlackScreen.instance then
+        BlackScreen.instance:setWidth(w)
+        BlackScreen.instance:setHeight(h)
+    end
 end
 
 Events.OnResolutionChange.Add(BlackScreen.HandleResolutionChange)

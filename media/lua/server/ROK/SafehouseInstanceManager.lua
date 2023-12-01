@@ -192,15 +192,6 @@ local SafehouseInstanceManagerCommands = {}
 ---@param playerObj IsoPlayer
 ---@param args table {teleport=true/false}
 function SafehouseInstanceManagerCommands.RequestSafehouseAllocation(playerObj, args)
-    -- if args.teleport then
-    --     local coords = {
-    --         x = (PZ_EFT_CONFIG.SpawnCell.x * 300) + 150,
-    --         y = (PZ_EFT_CONFIG.SpawnCell.y * 300) + 150,
-    --         z = 0
-    --     }
-    --     sendServerCommand(playerObj, EFT_MODULES.Common, "Teleport", coords)
-    -- end
-
     local safehouseKey = SafehouseInstanceManager.GetOrAssignSafehouse(playerObj)
     local safehouseCoords = SafehouseInstanceManager.GetSafehouseInstanceByKey(safehouseKey)
 
@@ -209,7 +200,7 @@ function SafehouseInstanceManagerCommands.RequestSafehouseAllocation(playerObj, 
     -- TODO Clean Inventory Box here to be sure that it doesn't contain old items.
 
     if args.teleport then
-        print("Teleporting to instance from request safehouse allocation")
+        debugPrint("Teleporting to instance from request safehouse allocation")
         sendServerCommand(playerObj, EFT_MODULES.Common, "Teleport", safehouseCoords)
     end
 

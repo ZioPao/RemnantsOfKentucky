@@ -33,6 +33,7 @@ IG_UI_EN = {
 
     IGUI_TimePanel_MatchStarting = "The match is starting",
     IGUI_TimePanel_MatchEnded = "The match has ended",
+    IGUI_TimePanel_Overtime = "Overtime",
 
 
     IGUI_Shop_Title = "Shop",
