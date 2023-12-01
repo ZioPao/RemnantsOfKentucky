@@ -50,8 +50,8 @@ function MatchController:start()
         self.playersInMatch[plId] = plId
     end
 
-    -- FIXME Not working ffs
-    self.zombieSpawnMultiplier = PZ_EFT_CONFIG.MatchSettings.zombieMultiplier
+    -- Default value for the zombie multiplier
+    self:setZombieSpawnMultiplier(PZ_EFT_CONFIG.MatchSettings.zombieSpawnMultiplier)
 
     -- Start timer and the event handling zombie spawning
     Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.roundTime, function()
@@ -65,11 +65,6 @@ function MatchController:start()
     -- Setup checking alive players to stop the match and such things
     Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.checkAlivePlayersTime, MatchController.CheckAlivePlayers)
 
-end
-
----@param val number
-function MatchController:setZombieSpawnMultiplier(val)
-    self.zombieSpawnMultiplier = val
 end
 
 --- Kill players that are still in the pvp instance and didn't manage to escape in time
@@ -99,6 +94,18 @@ function MatchController:stopMatch()
     SafehouseInstanceManager.SendPlayersToSafehouse()
     MatchController.instance = nil
 end
+
+
+--* Options/Configurations mid game
+---@param val number
+function MatchController:setZombieSpawnMultiplier(val)
+    self.zombieSpawnMultiplier = val
+end
+
+function MatchController:getZombieSpawnMultiplier()
+    return self.zombieSpawnMultiplier
+end
+
 
 ---Run it every once, depending on the Config, spawns zombies for each player
 ---@param loops number amount of time that this function has been called by Countdown
@@ -179,7 +186,13 @@ function MatchCommands.SetZombieSpawnMultiplier(_, args)
     instance:setZombieSpawnMultiplier(args.val)
 end
 
+function MatchCommands.SendZombieSpawnMultiplier(playerObj)
+    local instance = MatchController.GetHandler()
+    if instance == nil then return end
+    local spawnZombieMultiplier = instance:getZombieSpawnMultiplier()
+    sendServerCommand(playerObj, EFT_MODULES.Match, "ReceiveCurrentZombieSpawnMultiplier", {spawnZombieMultiplier = spawnZombieMultiplier})
 
+end
 
 
 ---A client has sent an extraction request
@@ -204,14 +217,14 @@ function MatchCommands.SendAlivePlayersAmount(playerObj)
 
     if instance == nil then return end
     local counter = MatchController.GetAmountAlivePlayers()
-    debugPrint("Alive players in match: " .. tostring(counter))
+    --debugPrint("Alive players in match: " .. tostring(counter))
     sendServerCommand(playerObj, EFT_MODULES.UI, "ReceiveAlivePlayersAmount", {amount = counter})
 
 end
 ---------------------------------
 local OnMatchCommand = function(module, command, playerObj, args)
     if module == MODULE and MatchCommands[command] then
-        -- debugPrint("Client Command - " .. MODULE .. "." .. command)
+        --debugPrint("Client Command - " .. MODULE .. "." .. command)
         MatchCommands[command](playerObj, args)
     end
 end

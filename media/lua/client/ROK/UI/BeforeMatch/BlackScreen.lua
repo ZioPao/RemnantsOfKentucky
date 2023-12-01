@@ -46,9 +46,18 @@ end
 
 function BlackScreen.Close()
     debugPrint("Closing black screen")
-    if BlackScreen.instance then
+    if BlackScreen.instance ~= nil then
         BlackScreen.instance:close()
+        BlackScreen.instance = nil
     end
 end
+
+function BlackScreen.HandleResolutionChange(oldW, oldH, w, h)
+    if BlackScreen.instance == nil then return end
+    BlackScreen.Close()
+    BlackScreen.Open()
+end
+
+Events.OnResolutionChange.Add(BlackScreen.HandleResolutionChange)
 
 return BlackScreen

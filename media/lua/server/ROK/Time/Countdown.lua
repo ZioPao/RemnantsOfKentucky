@@ -64,7 +64,7 @@ function Countdown.Update()
 			if currTime >= intTab.stopTime then
 				intTab.counter = intTab.counter + 1
 				intTab.stopTime = os_time() + intTab.base	-- Updates it for the next iteration
-				debugPrint("Running interval function -> " .. tostring(intTab.fun))
+				--debugPrint("Running interval function -> " .. tostring(intTab.fun))
 				intTab.fun(intTab.counter)
 			end
 		end

@@ -116,14 +116,18 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
     randomExtractionPointCount = 0
 }
 
+
+
 -- TODO Separate client from server only settings
+
+--- STATIC ONLY SETTINGS!
 PZ_EFT_CONFIG.MatchSettings = {
-    -- Time related stuff, in seconds
-    roundTime = 1200,       -- 20 minutes
+    -- Time related stuff, in seconds. Handled on the client
     startMatchTime = 5,
     endMatchTime = 5,
 
     -- Server only
+    roundTime = 1200,       -- 20 minutes
     zombieIncreaseTime = 60,     -- todo 2 minutes
     zombieSpawnMultiplier = 4,       -- 4 as default
     checkAlivePlayersTime = 10      -- Every 10 seconds, we check if there are players alive in the match

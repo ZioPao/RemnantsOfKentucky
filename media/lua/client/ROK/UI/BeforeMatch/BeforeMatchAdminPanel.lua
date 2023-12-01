@@ -2,9 +2,6 @@ local BaseAdminPanel = require("ROK/UI/BaseAdminPanel")
 local ManagePlayersPanel = require("ROK/UI/BeforeMatch/ManagePlayersPanel")
 --------------------------------
 
--- TODO Res scaling is broken
-
-
 ---@class BeforeMatchAdminPanel : BaseAdminPanel
 local BeforeMatchAdminPanel = BaseAdminPanel:derive("BeforeMatchAdminPanel")
 BeforeMatchAdminPanel.instance = nil
@@ -44,7 +41,7 @@ function BeforeMatchAdminPanel:createChildren()
     local btnWidth = self:getWidth() - xPadding * 2
 
     self.btnToggleMatch = ISButton:new(xPadding, y, btnWidth, btnHeight, MATCH_START_TEXT, self, self.onClick)
-    self.btnToggleMatch.internal = "START"      -- TODO Will swap when we click this
+    self.btnToggleMatch.internal = "START"
     self.btnToggleMatch:initialise()
     self:addChild(self.btnToggleMatch)
 
@@ -146,8 +143,6 @@ end
 --*****************************************--
 ---@return ISCollapsableWindow?
 function BeforeMatchAdminPanel.OnOpenPanel()
-    -- TODO Request available safehouses
-
     return BaseAdminPanel.OnOpenPanel(BeforeMatchAdminPanel)
 end
 
