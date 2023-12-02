@@ -29,8 +29,8 @@ end
 function SellCategory:createChildren()
     StoreScrollingListBox.createChildren(self)
 
-    self.doDrawItem = self.onDrawItem
-    self.onMouseUp = self.onDragItem
+    self.items.doDrawItem = self.onDrawItem
+    self.items.onMouseUp = self.onDragItem
     self.selected = 0
 
     local fontHgtSmall = GenericUI.SMALL_FONT_HGT
@@ -52,6 +52,7 @@ end
 ---@param y any
 function SellCategory:onDragItem(x, y)
     -- TODO Should remove item from player!
+    debugPrint("on drag item")
 
     if self.vscroll then
         self.vscroll.scrolling = false

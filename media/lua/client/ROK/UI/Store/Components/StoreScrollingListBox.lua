@@ -1,6 +1,7 @@
 local GenericUI = require("ROK/UI/GenericUI")
 -----------------------
 
+
 ---@class StoreScrollingListBox : ISPanelJoypad
 local StoreScrollingListBox = ISPanelJoypad:derive("StoreScrollingListBox")
 
@@ -46,7 +47,6 @@ function StoreScrollingListBox:createChildren()
     self.items:setAnchorBottom(true)
     self.items.itemHeight = 2 + GenericUI.MEDIUM_FONT_HGT + 32 + 4
     self.items.selected = 0
-    self.items.doDrawItem = StoreScrollingListBox.doDrawItem
     self.items.onMouseDown = StoreScrollingListBox.onMouseDownItems
     self.items.joypadParent = self
     self.items.drawBorder = true
@@ -65,35 +65,9 @@ end
 function StoreScrollingListBox:prerender()
     ISPanelJoypad.prerender(self)
     self.items.backgroundColor.a = 0.8
-    self.items.doDrawItem = StoreScrollingListBox.doDrawItem
 end
 
-function StoreScrollingListBox:doDrawItem(y, item, alt)
-    if y + self:getYScroll() >= self.height then return y + item.height end
-    if y + item.height + self:getYScroll() <= 0 then return y + item.height end
 
-    local a = 0.9
-
-    -- Border of single item
-    self:drawRectBorder(0, (y), self:getWidth(), item.height - 1, a, self.borderColor.r, self.borderColor.g,
-        self.borderColor.b)
-    if self.selected == item.index then
-        self:drawRect(0, (y), self:getWidth(), item.height - 1, 0.3, 0.7, 0.35, 0.15)
-    end
-
-    -- Items are stored in a table that works as a container, let's unpack them here to make it more readable
-
-    local itemDisplayName = item.item.actualItem:getDisplayName()
-    local itemCost = item.item.basePrice
-
-    --* ITEM NAME *--
-    self:drawText(itemDisplayName, 6, y + 2, 1, 1, 1, a, UIFont.Medium)
-
-    --* ITEM COST *--
-    self:drawText(itemCost .. " $", self:getWidth() - 100, y + 2, 1, 1, 1, a, UIFont.Medium)
-
-    return y + item.height
-end
 ---This is run on the the ScrollingBoxList!
 ---@param x number
 ---@param y number

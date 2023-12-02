@@ -71,7 +71,7 @@ end
 function SellSidePanel:updateInfoPanel()
     -- TODO Update text with info about the transaction
 
-    local price = self:calculateSellPrice()
+    --local price = self:calculateSellPrice()
     --debugPrint(price)
     self.textPanel:setText("test sell side panel")
 
