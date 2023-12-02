@@ -19,7 +19,7 @@ function MapHandler:write()
     local instance = getPlayer():getModData().currentInstance
     local extractionPoints = instance.extractionPoints
 
-    -- TODO Symbol should be different than the permanent one
+    -- TODO Add separate icon for the random extraction points 
 
     --Loop through extraction points and add the note on the map
     for i = 1, #extractionPoints do
@@ -29,7 +29,6 @@ function MapHandler:write()
         local y = instance.y + (singleExtractionPoint.y1 + singleExtractionPoint.y2)/2 - 5
         local iconSymbol = self.symbolsAPI:addTexture("PZEFT-Exit", x, y)
 
-        
         if singleExtractionPoint.isRandom then
             iconSymbol:setRGBA(0, 0, 1, 1.0)-- FIXME not working doesn't change color
         else

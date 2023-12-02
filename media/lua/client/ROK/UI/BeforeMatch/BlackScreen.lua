@@ -37,33 +37,31 @@ function BlackScreen:close()
     BlackScreen.instance = nil
 end
 
--- function BlackScreen:render()
---     ISPanelJoypad.render(self)
--- end
-
 -------------------
+
+-- TODO Re-enable black screen 
 
 function BlackScreen.Open()
     --if not isClient() then return end       -- SP workaround
-    debugPrint("Opening black screen")
-    local blackScreen = BlackScreen:new()
-    blackScreen:initialise()
-    blackScreen:addToUIManager()
+--     debugPrint("Opening black screen")
+--     local blackScreen = BlackScreen:new()
+--     blackScreen:initialise()
+--     blackScreen:addToUIManager()
 end
 
 function BlackScreen.Close()
     --debugPrint("Closing black screen")
-    if BlackScreen.instance then
-        debugPrint("black screen instance available, closing")
-        BlackScreen.instance:close()
-    end
+    -- if BlackScreen.instance then
+    --     debugPrint("black screen instance available, closing")
+    --     BlackScreen.instance:close()
+    -- end
 end
 
 function BlackScreen.HandleResolutionChange(oldW, oldH, w, h)
-    if BlackScreen.instance then
-        BlackScreen.instance:setWidth(w)
-        BlackScreen.instance:setHeight(h)
-    end
+    -- if BlackScreen.instance then
+    --     BlackScreen.instance:setWidth(w)
+    --     BlackScreen.instance:setHeight(h)
+    -- end
 end
 
 Events.OnResolutionChange.Add(BlackScreen.HandleResolutionChange)
