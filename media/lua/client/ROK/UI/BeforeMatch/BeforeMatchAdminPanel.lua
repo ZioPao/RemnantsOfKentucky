@@ -3,6 +3,9 @@ local ManagePlayersPanel = require("ROK/UI/BeforeMatch/ManagePlayersPanel")
 local ClientState = require("ROK/ClientState")
 --------------------------------
 
+
+-- TODO Add option to change day time
+
 ---@class BeforeMatchAdminPanel : BaseAdminPanel
 local BeforeMatchAdminPanel = BaseAdminPanel:derive("BeforeMatchAdminPanel")
 BeforeMatchAdminPanel.instance = nil
