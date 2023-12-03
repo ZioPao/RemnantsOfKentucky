@@ -64,6 +64,11 @@ function ServerShopManager.LoadShopPrices()
     --ServerData.Shop.TransmitShopItems()
 end
 
+function ServerShopManager.GetItems()
+    local items = ServerData.Shop.GetShopItems()
+    return items
+end
+
 Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
 
 ------------------------------------------------------------------------
@@ -75,8 +80,10 @@ local ShopCommands = {}
 --- Send data to clients
 ---@param playerObj IsoPlayer
 function ShopCommands.TransmitShopItems(playerObj)
-    debugPrint(playerObj:getUsername() .. " asked for a retransmission of Shop Items")
-    ServerData.Shop.TransmitShopItems()
+    local items = ServerShopManager.GetItems()
+    sendServerCommand(playerObj, EFT_MODULES.Shop, "GetShopItems", items)
+    --debugPrint(playerObj:getUsername() .. " asked for a retransmission of Shop Items")
+    --ServerData.Shop.TransmitShopItems()
 end
 
 ------------------------------------

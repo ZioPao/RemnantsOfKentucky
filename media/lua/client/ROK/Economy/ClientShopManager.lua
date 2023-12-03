@@ -117,6 +117,16 @@ end
 
 local ShopCommands = {}
 
+
+---@param items any
+function ShopCommands.GetShopItems(items)
+    if items then
+        local KEY_SHOP_ITEMS = "PZ-EFT-SHOP-ITEMS"
+        ModData.add(KEY_SHOP_ITEMS, items)
+    end
+
+end
+
 ---@param args {item : any, quantity : number}
 function ShopCommands.BuyItem(args)
     debugPrint("BuyItem")
