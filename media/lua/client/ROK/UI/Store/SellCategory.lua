@@ -46,6 +46,21 @@ function SellCategory:createChildren()
     self:addChild(self.sellSidePanel)
 end
 
+---comment
+---@param id any
+function SellCategory:addToDraggedItems(id)
+    if self.draggedItems == nil then
+        self.draggedItems = {}
+    end
+
+    self.draggedItems[id] = id
+end
+
+function SellCategory:checkDraggedItemsList(id)
+    if self.draggedItems == nil then return false end
+
+    if self.draggedItems[id] == id then return true else return false end
+end
 
 ---Override onDragItem of sellList. This means that self is sellList
 ---@param x any
@@ -57,18 +72,30 @@ function SellCategory:onDragItem(x, y)
     if self.vscroll then
         self.vscroll.scrolling = false
     end
+
     local count = 1
     if ISMouseDrag.dragging then
         for i = 1, #ISMouseDrag.dragging do
             count = 1
             if instanceof(ISMouseDrag.dragging[i], "InventoryItem") then
-                self:addItem(count, ISMouseDrag.dragging[i])
+                local item = ISMouseDrag.dragging[i]
+                local itemID = item:getID()
+                if not self.parent:checkDraggedItemsList(itemID) then
+                    self.parent:addToDraggedItems(itemID)
+                    self:addItem(count, ISMouseDrag.dragging[i])
+                end
             else
                 if ISMouseDrag.dragging[i].invPanel.collapsed[ISMouseDrag.dragging[i].name] then
                     count = 1
                     for j = 1, #ISMouseDrag.dragging[i].items do
                         if count > 1 then
-                            self:addItem(count, ISMouseDrag.dragging[i].items[j])
+                            ---@type InventoryItem
+                            local item = ISMouseDrag.dragging[i].items[j]
+                            local itemID = item:getID()
+                            if not self.parent:checkDraggedItemsList(itemID) then
+                                self.parent:addToDraggedItems(itemID)
+                                self:addItem(count, item)
+                            end
                         end
                         count = count + 1
                     end

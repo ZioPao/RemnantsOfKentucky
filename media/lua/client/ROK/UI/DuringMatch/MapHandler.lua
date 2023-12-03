@@ -30,8 +30,10 @@ function MapHandler:write()
         local iconSymbol = self.symbolsAPI:addTexture("PZEFT-Exit", x, y)
 
         if singleExtractionPoint.isRandom then
+            debugPrint("Found random extraction point, adding it to the map")
             iconSymbol:setRGBA(0, 0, 1, 1.0)-- FIXME not working doesn't change color
         else
+            debugPrint("Found permanent extraction point, adding it to the ma p")
             iconSymbol:setRGBA(0, 0, 0, 1.0)
         end
 

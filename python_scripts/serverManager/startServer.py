@@ -22,8 +22,6 @@ def in_boundary(X, Y, startX, startY, endX, endY):
         boolean: Is the defined X,Y within the boundaries of Start/Stop
     """
 
-    # TODO Exception for 100 x 100 and nearby
-
     return (int(X) >= int(startX)) and (int(X) <= int(endX)) and \
            (int(Y) >= int(startY)) and (int(Y) <= int(endY))
 

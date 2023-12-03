@@ -24,8 +24,6 @@ function SellSidePanel:new(x, y, width, height, mainPanel)
     setmetatable(o, self)
     self.__index = self
 
-    o.draggedItems = {}
-
     ---@cast o SellSidePanel
     return o
 end
@@ -43,7 +41,7 @@ end
 
 ---Runs after clicking the SELL button
 ---@param btn ISButton
-function SellSidePanel:onClickSell(btn)
+function SellSidePanel:onClick(btn)
     debugPrint("Sell function")
     self.confirmationPanel = ConfirmationPanel.Open("Are you sure you want to sell these items?", self.mainPanel:getX(),
     self.mainPanel:getY() + self.mainPanel:getHeight() + 20, self, self.onConfirmSell)
@@ -60,7 +58,7 @@ function SellSidePanel:calculateSellPrice()
     --debugPrint(#self.sellList.items)
     local price = 0
 
-    for i=1, #self.sellList.items do
+    for i=1, #self.mainPanel.items.items do
         price = price + i + ZombRand(0, 10)
     end
 
@@ -69,33 +67,24 @@ end
 
 ---Triggered when the user drags a item into the scrollingList
 function SellSidePanel:updateInfoPanel()
-    -- TODO Update text with info about the transaction
 
-    --local price = self:calculateSellPrice()
-    --debugPrint(price)
-    self.textPanel:setText("test sell side panel")
+    -- TODO URGENT! This is a placeholder for now!
 
+    local price = self:calculateSellPrice()
+    self.textPanel:setText("You will receive: " .. tostring(price) .. "$")
+    self.textPanel.textDirty = true
     --self.infoPanel:setText("Money that you will receive: 10000$")
     --self.infoPanel.textDirty = true
 
     -- Count amount of items
-    self.bottomBtn:setEnable(#self.sellList.items > 0)
+    local itemsAmount = #self.mainPanel.items.items
+    self.bottomBtn:setEnable(itemsAmount > 0)
 end
 
 function SellSidePanel:render()
     RightSidePanel.render(self)
 
 end
-----------------------------------
-
-function SellSidePanel:addToDraggedItems(id)
-    if self.draggedItems == nil then
-        self.draggedItems = {}
-    end
-
-    self.draggedItems[id] = id
-end
-
 
 
 return SellSidePanel
