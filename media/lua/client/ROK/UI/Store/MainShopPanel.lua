@@ -103,8 +103,11 @@ function MainShopPanel:createChildren()
     local th = self:titleBarHeight()
     local rh = self.resizable and self:resizeWidgetHeight() or 0
 
+    -- This only contains the tabs, not the entire thing.
+    local mainPanelHeight = self.height - th - rh
+
     --* MAIN PANEL *--
-    self.panel = CustomTabPanel:new(0, th, self.width, self.height - th - rh)
+    self.panel = CustomTabPanel:new(0, th, self.width, mainPanelHeight)
     self.panel:initialise()
     self.panel:setAnchorRight(true)
     self.panel:setAnchorBottom(true)
@@ -133,6 +136,7 @@ function MainShopPanel:createChildren()
     local addedHeight = self.balancePanel.height
     local catHeight = self.height - th - rh - addedHeight - 50
 
+    -- TODO Make another wrapper 
 
     --* ESSENTIAL ITEMS *--
     self.essentialItemsCat = BuyCategory:new(0, 0, self.width, catHeight, self)
@@ -183,9 +187,15 @@ end
 function MainShopPanel:render()
     ISCollapsableWindow.render(self)
     if self.accountBalance == nil then return end
+    local balanceText
 
-    local balanceText = getText("IGUI_Shop_CurrentBalance")
-    if isClient() then balanceText = balanceText .. self.accountBalance end
+    -- SP Workaround
+    if isClient then
+        balanceText = getText("IGUI_Shop_CurrentBalance", self.accountBalance)
+    else
+        balanceText = getText("IGUI_Shop_CurrentBalance", 1000)
+    end
+ 
     self.balancePanel:setText(balanceText)
     self.balancePanel:paginate()
 end

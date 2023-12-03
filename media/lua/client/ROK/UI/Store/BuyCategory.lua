@@ -12,7 +12,7 @@ local BuyCategory = StoreScrollingListBox:derive("BuyCategory")
 ---@param y number
 ---@param width number
 ---@param height number
----@param shopPanel any
+---@param shopPanel MainShopPanel
 ---@return BuyCategory
 function BuyCategory:new(x, y, width, height, shopPanel)
     local o = StoreScrollingListBox:new(x, y, width, height)
@@ -29,17 +29,12 @@ end
 function BuyCategory:createChildren()
     StoreScrollingListBox.createChildren(self)
 
-    local fontHgtSmall = GenericUI.SMALL_FONT_HGT
-    local entryHgt = fontHgtSmall + 2 * 2
-    local buyPanelWidth = self.width / 2 - 20
-    local buyPanelHeight = self.height - entryHgt
-    local buyPanelX = self.width - buyPanelWidth - 10
-    local buyPanelY = entryHgt
-
-
     self.items.doDrawItem = self.doDrawItem
 
-    self.buySidePanel = BuySidePanel:new(buyPanelX, buyPanelY, buyPanelWidth, buyPanelHeight, self)
+    local buyPanelWidth = self.width / 2 - 20
+    local buyPanelX = self.width - buyPanelWidth - 10
+
+    self.buySidePanel = BuySidePanel:new(buyPanelX, self.panelYPadding, buyPanelWidth, self.panelHeight, self)
     self.buySidePanel:initialise()
     self:addChild(self.buySidePanel)
 end
@@ -71,7 +66,6 @@ function BuyCategory:doDrawItem(y, item, alt)
 
     return y + item.height
 end
-
 
 ----------------------------------
 

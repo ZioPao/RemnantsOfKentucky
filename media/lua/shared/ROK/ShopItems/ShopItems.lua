@@ -3,6 +3,8 @@ PZ_EFT_ShopItems_Config.data = {}
 
 ---@alias shopTags table  [JUNK, ESSENTIALS, HIGHVALUE, LOWVALUE]
 
+---@alias shopItemElement {fullType : string, tags : shopTags, basePrice : number, multiplier : number, sellMultiplier : number }
+
 --- Add shop item
 ---@param fullType itemFullType
 ---@param tags shopTags

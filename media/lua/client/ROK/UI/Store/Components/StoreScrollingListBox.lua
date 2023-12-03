@@ -17,6 +17,9 @@ end
 
 function StoreScrollingListBox:initalise()
     ISPanelJoypad.initialise(self)
+
+    self.panelYPadding = GenericUI.SMALL_FONT_HGT + 2 * 2
+    self.panelHeight = self.height - self.panelYPadding - 10
 end
 
 ---@param itemsTable any
@@ -37,10 +40,8 @@ function StoreScrollingListBox:initialiseList(itemsTable)
 end
 
 function StoreScrollingListBox:createChildren()
-    local fontHgtSmall = GenericUI.SMALL_FONT_HGT
-    local entryHgt = fontHgtSmall + 2 * 2
 
-    self.items = ISScrollingListBox:new(10, entryHgt, self.width / 2, self.height - entryHgt)
+    self.items = ISScrollingListBox:new(10, self.panelYPadding, self.width / 2, self.panelHeight)
     self.items:initialise()
     self.items:instantiate()
     self.items:setAnchorRight(false) -- resize in update()

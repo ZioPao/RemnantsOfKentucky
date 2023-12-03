@@ -1,5 +1,9 @@
 require "ISUI/ISTabPanel"
 
+
+-- TODO Fix alignment
+
+
 --- A simple modification of the original ISTabPanel
 ---@class CustomTabPanel : ISTabPanel
 local CustomTabPanel = ISTabPanel:derive("CustomTabPanel")
@@ -187,10 +191,10 @@ function CustomTabPanel:close()
 end
 
 ---comment
----@param x any
----@param y any
----@param width any
----@param height any
+---@param x number
+---@param y number
+---@param width number
+---@param height number
 ---@return CustomTabPanel
 function CustomTabPanel:new(x, y, width, height)
     local o = ISTabPanel:new(x, y, width, height)

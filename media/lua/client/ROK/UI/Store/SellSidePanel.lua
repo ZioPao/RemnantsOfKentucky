@@ -60,6 +60,19 @@ function SellSidePanel:calculateSellPrice()
 
     for i=1, #self.mainPanel.items.items do
         price = price + i + ZombRand(0, 10)
+        local fullType = "test" --self.mainPanel.items.items
+        -- TODO Use FullType
+
+        ---@type shopItemElement
+        local itemData = PZ_EFT_ShopItems_Config.data[fullType]
+
+        if itemData == nil then
+            itemData = {basePrice = 1000}
+        end
+
+        local itemPrice = itemData.basePrice * 0.5
+        price = price + itemPrice
+
     end
 
     return price
@@ -71,7 +84,7 @@ function SellSidePanel:updateInfoPanel()
     -- TODO URGENT! This is a placeholder for now!
 
     local price = self:calculateSellPrice()
-    self.textPanel:setText("You will receive: " .. tostring(price) .. "$")
+    self.textPanel:setText("<CENTRE> You will receive: " .. tostring(price) .. "$")
     self.textPanel.textDirty = true
     --self.infoPanel:setText("Money that you will receive: 10000$")
     --self.infoPanel.textDirty = true

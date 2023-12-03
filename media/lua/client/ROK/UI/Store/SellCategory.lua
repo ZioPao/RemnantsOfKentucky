@@ -33,15 +33,10 @@ function SellCategory:createChildren()
     self.items.onMouseUp = self.onDragItem
     self.selected = 0
 
-    local fontHgtSmall = GenericUI.SMALL_FONT_HGT
-    local entryHgt = fontHgtSmall + 2 * 2
-
     local sellPanelWidth = self.width / 2 - 20
-    local sellPanelHeight = self.height - entryHgt
     local sellPanelX = self.width - sellPanelWidth - 10
-    local sellPanelY = entryHgt
 
-    self.sellSidePanel = SellSidePanel:new(sellPanelX, sellPanelY, sellPanelWidth, sellPanelHeight, self)
+    self.sellSidePanel = SellSidePanel:new(sellPanelX, self.panelYPadding, sellPanelWidth, self.panelHeight, self)
     self.sellSidePanel:initialise()
     self:addChild(self.sellSidePanel)
 end
@@ -67,7 +62,7 @@ end
 ---@param y any
 function SellCategory:onDragItem(x, y)
     -- TODO Should remove item from player!
-    debugPrint("on drag item")
+    --debugPrint("on drag item")
 
     if self.vscroll then
         self.vscroll.scrolling = false
@@ -75,6 +70,7 @@ function SellCategory:onDragItem(x, y)
 
     local count = 1
     if ISMouseDrag.dragging then
+        local test = ISMouseDrag.dragging
         for i = 1, #ISMouseDrag.dragging do
             count = 1
             if instanceof(ISMouseDrag.dragging[i], "InventoryItem") then
@@ -82,6 +78,8 @@ function SellCategory:onDragItem(x, y)
                 local itemID = item:getID()
                 if not self.parent:checkDraggedItemsList(itemID) then
                     self.parent:addToDraggedItems(itemID)
+
+                    -- TODO addItem with FullType, not count
                     self:addItem(count, ISMouseDrag.dragging[i])
                 end
             else
