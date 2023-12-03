@@ -61,7 +61,7 @@ function ServerShopManager.LoadShopPrices()
     end
 
     -- TODO This doesn't work, we should transmit it on a OnConnect
-    ServerData.Shop.TransmitShopItems()
+    --ServerData.Shop.TransmitShopItems()
 end
 
 Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
@@ -72,10 +72,10 @@ Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
 
 local ShopCommands = {}
 
---- Receive updated shop item list from admin client and transmit it back to all clients
----@param data any
-function ShopCommands.TransmitShopItems(_, data)
-    ServerData.Shop.SetShopItems(data)
+--- Send data to clients
+---@param playerObj IsoPlayer
+function ShopCommands.TransmitShopItems(playerObj)
+    debugPrint(playerObj:getUsername() .. " asked for a retransmission of Shop Items")
     ServerData.Shop.TransmitShopItems()
 end
 

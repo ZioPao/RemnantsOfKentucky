@@ -8,7 +8,7 @@ local AdminShopManager = {}
 --- Transmit prices to server, which then will be transmitted back to clients
 function AdminShopManager.TransmitShopItems()
     local shopItems = ClientData.Shop.GetShopItems()
-    sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', shopItems)
+    --sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', shopItems)
 end
 
 --- Adjust an item's price multiplier
@@ -74,13 +74,13 @@ function AdminShopManager.RefreshDailyItems()
         end
     end
 
-    sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', shopItems)
+    --sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', shopItems)
 end
 
 -------------------------------------------------------------------
 
 -- TODO This is just a workaround for the proof of concept build
-Events.OnCreatePlayer.Add(AdminShopManager.RefreshDailyItems)
+--Events.OnCreatePlayer.Add(AdminShopManager.RefreshDailyItems)
 
 
 return AdminShopManager

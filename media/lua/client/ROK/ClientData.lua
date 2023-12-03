@@ -18,13 +18,11 @@ end
 Events.PZEFT_ClientModDataReady.Add(ClientData.RequestData)
 
 function ClientData.OnReceiveGlobalModData(key, modData)
-	if key == KEY_SHOP_ITEMS then
-        ModData.add(key, modData)
-    elseif key == KEY_PVP_CURRENTINSTANCE then
-        ModData.add(key, modData)
-    elseif key == KEY_PVP_INSTANCES then
+    if key == KEY_SHOP_ITEMS or key == KEY_PVP_CURRENTINSTANCE or key == KEY_PVP_INSTANCES then
+        debugPrint("Received modData for " .. key)
         ModData.add(key, modData)
     end
+
 end
 
 Events.OnReceiveGlobalModData.Add(ClientData.OnReceiveGlobalModData)

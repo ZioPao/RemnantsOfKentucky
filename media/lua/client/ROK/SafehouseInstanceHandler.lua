@@ -107,7 +107,7 @@ end
 --- On player initialise, request safehouse allocation of player from server
 ---@param player IsoPlayer
 function SafehouseInstanceHandler.OnPlayerInit(player)
-    debugPrint("Running onplayerinit")
+    debugPrint("Running safehouse instance handler onplayerinit")
     if player and player == getPlayer() then
         local md = PZEFT_UTILS.GetPlayerModData()
         if not md.safehouse then

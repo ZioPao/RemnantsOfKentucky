@@ -57,6 +57,15 @@ Events.OnPlayerDeath.Add(OnPlayerExit)
 Events.OnDisconnect.Add(OnPlayerExit)
 
 
+
+local function OnLoadAskServerData()
+    debugPrint("Sending TransmitShopItems now that player is in")
+    sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', {})
+end
+
+
+Events.OnLoad.Add(OnLoadAskServerData)
+
 -- local function OnLoad()
 --     if not SafehouseInstanceHandler.IsInSafehouse() then
 --         local BlackScreen = require("ROK/UI/BeforeMatch/BlackScreen")
