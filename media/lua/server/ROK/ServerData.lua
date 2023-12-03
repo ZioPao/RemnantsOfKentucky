@@ -17,29 +17,23 @@ ServerData = ServerData or {}
 
 ServerData.Data = {}
 
-ServerData.GlobalModDataInit = function(isNewGame)
+---We can't use isNewGame parameter since it's client only, from what I understand
+function ServerData.GlobalModDataInit()
+    debugPrint("Starting Global Mod Data Init")
     ModData.getOrCreate(KEY_PVP_INSTANCES)
     ModData.getOrCreate(KEY_PVP_USEDINSTANCES)
     ModData.getOrCreate(KEY_PVP_CURRENTINSTANCE)
     ModData.getOrCreate(KEY_SAFEHOUSE_INSTANCES)
     ModData.getOrCreate(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
     ModData.getOrCreate(KEY_BANK_ACCOUNTS)
+    ModData.getOrCreate(KEY_SHOP_ITEMS)
 
-    local doInitShopItems = true
-
-    if ModData.exists(KEY_SHOP_ITEMS) then
-        doInitShopItems = false
-    end
-
-    local data = ModData.getOrCreate(KEY_SHOP_ITEMS)
-    data.doInitShopItems = doInitShopItems
-
-    if not isNewGame then triggerEvent("PZEFT_ServerModDataReady") end
+    triggerEvent("PZEFT_ServerModDataReady")
 end
 
 Events.OnInitGlobalModData.Add(ServerData.GlobalModDataInit)
 
-ServerData.ClearAllData = function(state)
+function ServerData.ClearAllData()
     ModData.remove(KEY_PVP_INSTANCES)
     ModData.remove(KEY_PVP_USEDINSTANCES)
     ModData.remove(KEY_PVP_CURRENTINSTANCE)
@@ -48,7 +42,7 @@ ServerData.ClearAllData = function(state)
     ModData.remove(KEY_BANK_ACCOUNTS)
     ModData.remove(KEY_SHOP_ITEMS)
 
-    ServerData.GlobalModDataInit(state)
+    ServerData.GlobalModDataInit()
 end
 
 ------------------------------------------------
@@ -207,10 +201,3 @@ ServerData.debug.print_shopitems = function()
     PZEFT_UTILS.PrintTable(data)
 end
 
-------------------------------------------------
-
-local function OnServerModDataReady()
-    sendServerCommand("PZEFT-Data", "SeverModDataReady", {})
-end
-
-Events.PZEFT_ServerModDataReady.Add(OnServerModDataReady)

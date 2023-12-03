@@ -1,7 +1,6 @@
 local GenericUI = require("ROK/UI/GenericUI")
 -----------------------
 
-
 ---@class StoreScrollingListBox : ISPanelJoypad
 local StoreScrollingListBox = ISPanelJoypad:derive("StoreScrollingListBox")
 

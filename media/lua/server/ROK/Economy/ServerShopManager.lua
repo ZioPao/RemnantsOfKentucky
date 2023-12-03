@@ -39,6 +39,7 @@ end
 
 
 function ServerShopManager.LoadShopPrices()
+    debugPrint("Loading Shop Prices")
     -- TODO Refactor this as a whole
     local shopItems = ServerData.Shop.GetShopItems()
     shopItems.items = shopItems.items or {}
@@ -59,6 +60,7 @@ function ServerShopManager.LoadShopPrices()
         end
     end
 
+    -- TODO This doesn't work, we should transmit it on a OnConnect
     ServerData.Shop.TransmitShopItems()
 end
 

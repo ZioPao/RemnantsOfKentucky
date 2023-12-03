@@ -1,5 +1,4 @@
 local StoreScrollingListBox = require("ROK/UI/Store/Components/StoreScrollingListBox")
-local GenericUI = require("ROK/UI/GenericUI")
 local SellSidePanel = require("ROK/UI/Store/SellSidePanel")
 -----------------------
 
