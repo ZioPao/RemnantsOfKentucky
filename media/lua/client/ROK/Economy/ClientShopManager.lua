@@ -110,7 +110,6 @@ function ClientShopManager.GetEssentialItems()
         return {}
     end
 end
-
 ------------------------------------------------------------------------
 --* COMMANDS FROM SERVER *--
 ------------------------------------------------------------------------
@@ -120,11 +119,15 @@ local ShopCommands = {}
 
 ---@param items any
 function ShopCommands.GetShopItems(items)
+    debugPrint("Receiving shop items")
     if items then
         local KEY_SHOP_ITEMS = "PZ-EFT-SHOP-ITEMS"
         ModData.add(KEY_SHOP_ITEMS, items)
     end
 
+    -- TODO Handle daily items better
+    local AdminShopManager = require("ROK/Economy/AdminShopManager")
+    AdminShopManager.RefreshDailyItems()
 end
 
 ---@param args {item : any, quantity : number}

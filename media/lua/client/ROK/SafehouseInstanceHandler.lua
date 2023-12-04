@@ -104,6 +104,11 @@ function SafehouseInstanceHandler.WipeCrates()
     end
 end
 
+
+--* Events handling
+
+
+
 --- On player initialise, request safehouse allocation of player from server
 ---@param player IsoPlayer
 function SafehouseInstanceHandler.OnPlayerInit(player)

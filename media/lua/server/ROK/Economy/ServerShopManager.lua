@@ -59,17 +59,16 @@ function ServerShopManager.LoadShopPrices()
             --PZEFT_UTILS.PrintTable(shopItems.items[i])
         end
     end
-
-    -- TODO This doesn't work, we should transmit it on a OnConnect
-    --ServerData.Shop.TransmitShopItems()
 end
+
+Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
+
 
 function ServerShopManager.GetItems()
     local items = ServerData.Shop.GetShopItems()
     return items
 end
 
-Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
 
 ------------------------------------------------------------------------
 --* COMMANDS FROM CLIENTS *--
@@ -80,6 +79,7 @@ local ShopCommands = {}
 --- Send data to clients
 ---@param playerObj IsoPlayer
 function ShopCommands.TransmitShopItems(playerObj)
+    debugPrint("Transmit Shop Items")
     local items = ServerShopManager.GetItems()
     sendServerCommand(playerObj, EFT_MODULES.Shop, "GetShopItems", items)
     --debugPrint(playerObj:getUsername() .. " asked for a retransmission of Shop Items")

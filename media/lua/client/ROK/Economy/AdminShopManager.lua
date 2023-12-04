@@ -35,7 +35,7 @@ end
 function AdminShopManager.RefreshDailyItems()
     debugPrint("Refreshing daily items")
     -- TODO THIS IS JUST HERE AS A WORKAROUND! This stuff should run automatically on the server and not get triggered here
-    ServerData_client_debug.loadShopPrices()
+    --ServerData_client_debug.loadShopPrices()
 
     local shopItems = ClientData.Shop.GetShopItems()
     shopItems.dailyInventory = shopItems.dailyInventory or {}

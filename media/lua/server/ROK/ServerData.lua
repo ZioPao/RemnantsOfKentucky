@@ -19,6 +19,8 @@ ServerData.Data = {}
 
 ---We can't use isNewGame parameter since it's client only, from what I understand
 function ServerData.GlobalModDataInit()
+
+    -- TODO On a first load this doesn't get triggered for some reason
     debugPrint("Starting Global Mod Data Init")
     ModData.getOrCreate(KEY_PVP_INSTANCES)
     ModData.getOrCreate(KEY_PVP_USEDINSTANCES)

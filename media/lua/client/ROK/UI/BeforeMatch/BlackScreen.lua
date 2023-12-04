@@ -6,12 +6,15 @@ local BlackScreen = ISPanel:derive("BlackScreen")
 
 
 -- TODO This piece of shit is still broken
-
+---comment
+---@return BlackScreen
 function BlackScreen:new()
     local o = ISPanel:new(0, 0, getCore():getScreenWidth(), getCore():getScreenHeight())
     setmetatable(o, self)
     self.__index = self
     o.backgroundColor = { r = 0, g = 0, b = 0, a = 1 }
+
+    ---@cast o BlackScreen
 
     BlackScreen.instance = o
     return o
@@ -42,26 +45,26 @@ end
 -- TODO Re-enable black screen 
 
 function BlackScreen.Open()
-    --if not isClient() then return end       -- SP workaround
---     debugPrint("Opening black screen")
---     local blackScreen = BlackScreen:new()
---     blackScreen:initialise()
---     blackScreen:addToUIManager()
+    if not isClient() then return end       -- SP workaround
+    debugPrint("Opening black screen")
+    local blackScreen = BlackScreen:new()
+    blackScreen:initialise()
+    blackScreen:addToUIManager()
 end
 
 function BlackScreen.Close()
-    --debugPrint("Closing black screen")
-    -- if BlackScreen.instance then
-    --     debugPrint("black screen instance available, closing")
-    --     BlackScreen.instance:close()
-    -- end
+    debugPrint("Closing black screen")
+    if BlackScreen.instance then
+        debugPrint("black screen instance available, closing")
+        BlackScreen.instance:close()
+    end
 end
 
 function BlackScreen.HandleResolutionChange(oldW, oldH, w, h)
-    -- if BlackScreen.instance then
-    --     BlackScreen.instance:setWidth(w)
-    --     BlackScreen.instance:setHeight(h)
-    -- end
+    if BlackScreen.instance then
+        BlackScreen.instance:setWidth(w)
+        BlackScreen.instance:setHeight(h)
+    end
 end
 
 Events.OnResolutionChange.Add(BlackScreen.HandleResolutionChange)
