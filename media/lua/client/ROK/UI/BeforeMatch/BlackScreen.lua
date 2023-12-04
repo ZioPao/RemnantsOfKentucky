@@ -45,11 +45,12 @@ end
 -- TODO Re-enable black screen 
 
 function BlackScreen.Open()
-    if not isClient() then return end       -- SP workaround
-    debugPrint("Opening black screen")
-    local blackScreen = BlackScreen:new()
-    blackScreen:initialise()
-    blackScreen:addToUIManager()
+    -- if not isClient() then return end       -- SP workaround
+    -- if getPlayer():isDead() then return end -- Workaround to prevent issues when player is dead
+    -- debugPrint("Opening black screen")
+    -- local blackScreen = BlackScreen:new()
+    -- blackScreen:initialise()
+    -- blackScreen:addToUIManager()
 end
 
 function BlackScreen.Close()

@@ -3,6 +3,7 @@ if not isServer() then return end
 require("ROK/DebugTools")
 local Countdown = require("ROK/Time/Countdown")
 local PvpInstanceManager = require("ROK/PvpInstanceManager")
+local SafehouseInstanceManager = require("ROK/SafehouseInstanceManager")
 
 ---------------------------------------------------
 
@@ -111,6 +112,10 @@ end
 
 --- Stop the match and teleport back everyone
 function MatchController:stopMatch()
+    -- TODO Won't work for dead players
+    Countdown.Stop()
+
+    -- TODO Won't close TimePanel when players die
     SafehouseInstanceManager.SendPlayersToSafehouse()
     MatchController.instance = nil
 end
@@ -150,7 +155,9 @@ function MatchController.HandleZombieSpawns(loops)
                 local zombiesAmount = math.floor(math.log(loops, MatchController.GetAmountAlivePlayers()) * MatchController.instance.zombieSpawnMultiplier)
                 debugPrint("spawning " .. zombiesAmount .. " near " .. player:getUsername())
                 addZombiesInOutfit(sq:getX(), sq:getY(), 0, zombiesAmount, "", 50, false, false, false, false, 1)
-                addSound(player, math.floor(x), math.floor(y), 0, 300, 100)
+
+                -- TODO Send it to client, not everyone, by chance
+                addSound(player, math.floor(x), math.floor(y), 0, 300, 100) -- TODO Not working anymore?
             else
                 debugPrint("player was nil")
             end
@@ -163,9 +170,13 @@ end
 ---Checks if there are players still alive in a match. When it gets to 0, stop the match
 ---@param loops any
 function MatchController.CheckAlivePlayers(loops)
+    debugPrint("checking alive players")
     local instance = MatchController.GetHandler()
     if instance == nil then return end
+    debugPrint("Instance available, checking now players")
+    debugPrint(MatchController.GetAmountAlivePlayers())
     if MatchController.GetAmountAlivePlayers() == 0 then
+        debugPrint("no alive players in match, stopping it")
         MatchController.instance:stopMatch()
     end
 end
@@ -229,6 +240,7 @@ function MatchCommands.RemovePlayer(playerObj)
     local instance = MatchController.GetHandler()
     if instance == nil then return end
     instance:removePlayerFromMatchList(playerObj:getOnlineID())
+    sendServerCommand(playerObj, EFT_MODULES.State, "SetClientStateIsInRaid", {value = false})
 end
 
 ---@param playerObj IsoPlayer

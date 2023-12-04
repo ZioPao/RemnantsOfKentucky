@@ -55,7 +55,10 @@ local function OnPlayerExit()
     if ClientState.isInRaid == false then return end
 
     sendClientCommand(EFT_MODULES.Match, "RemovePlayer", {})
-    ClientState.isInRaid = false
+    
+
+    -- Reset buttons 
+    ButtonManager.firstInit = true
 end
 
 Events.OnPlayerDeath.Add(OnPlayerExit)
@@ -84,7 +87,8 @@ local function OnPlayerInit(player)
     sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', {})
 
     --* Opens black screen
-    BlackScreen.Open()
+    -- TODO Still broken when outside of a safehouse at startup
+    --BlackScreen.Open()
 
 
     Events.OnPlayerUpdate.Remove(OnPlayerInit)
@@ -97,7 +101,7 @@ Events.OnPlayerUpdate.Add(OnPlayerInit)
 
 ---@param playerObj IsoPlayer
 local function GiveStarterKit(playerObj)
-    ClientCommon.GiveStarterKit(playerObj, false)
+    ClientCommon.GiveStarterKit(playerObj, true)
 end
 
 

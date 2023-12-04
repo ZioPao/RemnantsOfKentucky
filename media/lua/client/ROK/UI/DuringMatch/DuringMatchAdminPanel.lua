@@ -57,7 +57,32 @@ end
 function DuringMatchAdminPanel:createChildren()
     BaseAdminPanel.createChildren(self)
 
-    self.panelInfo = ISPanel:new(0, 20, self:getWidth(), self:getHeight() / 1.5)
+    
+    local xPadding = 20
+    local yPadding = 20
+
+    local btnWidth = self:getWidth() - xPadding * 2
+    local btnHeight = 25
+
+    local y = self:getHeight() - btnHeight - yPadding
+
+    self.btnStop = ISButton:new(xPadding, y, btnWidth, btnHeight,
+        getText("IGUI_EFT_AdminPanel_Stop"), self, self.onClick)
+    self.btnStop.internal = "STOP"
+    self.btnStop:initialise()
+    self:addChild(self.btnStop)
+
+    y = y - btnHeight - yPadding * 1.5      -- More padding from this
+    self.btnMatchOptions = ISButton:new(xPadding, y, btnWidth, btnHeight,
+    getText("IGUI_EFT_AdminPanel_MatchOptions"), self, self.onClick)
+    self.btnMatchOptions.internal = "MATCH_OPTIONS"
+    self.btnMatchOptions:initialise()
+    self.btnMatchOptions:setEnable(not self:getIsMatchEnded())
+    self:addChild(self.btnMatchOptions)
+    
+    -----------------------
+
+    self.panelInfo = ISPanel:new(0, 20, self:getWidth(), self:getHeight() - y)
     self.panelInfo.background = true
     self.panelInfo.backgroundColor = { r = 0, g = 0, b = 0, a = 0.5 }
     self.panelInfo.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 1 }
@@ -79,29 +104,8 @@ function DuringMatchAdminPanel:createChildren()
     self.labelAlivePlayers:paginate()
     self.panelInfo:addChild(self.labelAlivePlayers)
 
-    -----------------------
+    
 
-    local xPadding = 20
-    local yPadding = 20
-
-    local btnWidth = self:getWidth() - xPadding * 2
-    local btnHeight = 25
-
-    local y = self:getHeight() - btnHeight - yPadding
-
-    self.btnStop = ISButton:new(xPadding, y, btnWidth, btnHeight,
-        getText("IGUI_EFT_AdminPanel_Stop"), self, self.onClick)
-    self.btnStop.internal = "STOP"
-    self.btnStop:initialise()
-    self:addChild(self.btnStop)
-
-    y = y - btnHeight - yPadding*2      -- More padding from this
-    self.btnMatchOptions = ISButton:new(xPadding, y, btnWidth, btnHeight,
-    getText("IGUI_EFT_AdminPanel_MatchOptions"), self, self.onClick)
-    self.btnMatchOptions.internal = "MATCH_OPTIONS"
-    self.btnMatchOptions:initialise()
-    self.btnMatchOptions:setEnable(not self:getIsMatchEnded())
-    self:addChild(self.btnMatchOptions)
 end
 
 function DuringMatchAdminPanel:onConfirmStop()

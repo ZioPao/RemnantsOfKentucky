@@ -19,8 +19,10 @@ local MODULE = EFT_MODULES.State
 function ClientStateCommands.SetClientStateIsInRaid(args)
 
     ClientState.isInRaid = args.value
+
     if args.value == false then
         ClientState.extractionStatus = {}
+        ClientState.isStartingMatch = false -- Reset this to prevent issues
     end
 
     triggerEvent("PZEFT_UpdateClientStatus", ClientState.isInRaid)

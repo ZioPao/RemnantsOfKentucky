@@ -1,6 +1,7 @@
 if not isServer() then return end
 local ServerShopManager = require("ROK/Economy/ServerShopManager")
 local PvpInstanceManager = require("ROK/PvpInstanceManager")
+
 -----------------
 
 local MODULE = 'SERVER_DEBUG'

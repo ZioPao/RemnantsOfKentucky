@@ -24,10 +24,11 @@ local ASSIGNED_SAFEHOUSES_STR = getText("IGUI_EFT_AdminPanel_SafehousesAssigned"
 ---@param height number
 ---@return BeforeMatchAdminPanel
 function BeforeMatchAdminPanel:new(x, y, width, height)
-    ---@type BeforeMatchAdminPanel
     local o = BaseAdminPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
+
+    ---@cast o BeforeMatchAdminPanel
 
     BeforeMatchAdminPanel.instance = o
     return o
@@ -48,7 +49,7 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnToggleMatch:initialise()
     self:addChild(self.btnToggleMatch)
 
-    y = y - btnHeight - yPadding*2      -- More padding from this
+    y = y - btnHeight - yPadding * 1.5      -- More padding from this
     self.btnManagePlayers = ISButton:new(xPadding, y, btnWidth, btnHeight,
         getText("IGUI_EFT_AdminPanel_ManagePlayers"), self, self.onClick)
     self.btnManagePlayers.internal = "MANAGE_PLAYERS"
