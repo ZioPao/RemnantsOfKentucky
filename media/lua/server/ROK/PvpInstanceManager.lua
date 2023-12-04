@@ -174,7 +174,6 @@ function PvpInstanceManager.GetRandomExtractionPoints(cellX, cellY, count)
         local size = #extractionPoints
         local randIndex = ZombRand(size)+1
         local extractionPoint = extractionPoints[randIndex]
-        extractionPoint.isRandom = true
 
         table.insert(activeExtractionPoints, extractionPoint)
         table.remove(extractionPoints, randIndex)
