@@ -11,13 +11,14 @@ local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
 
 ---@class SellSidePanel : RightSidePanel
 ---@field infoPanel ISPanel
+---@field mainPanel SellCategory
 local SellSidePanel = RightSidePanel:derive("SellSidePanel")
 
 ---@param x number
 ---@param y number
 ---@param width number
 ---@param height number
----@param mainPanel any
+---@param mainPanel SellCategory
 ---@return SellSidePanel
 function SellSidePanel:new(x, y, width, height, mainPanel)
     local o = RightSidePanel:new(x, y, width, height, mainPanel)
@@ -43,15 +44,23 @@ end
 ---@param btn ISButton
 function SellSidePanel:onClick(btn)
     debugPrint("Sell function")
-    self.confirmationPanel = ConfirmationPanel.Open("Are you sure you want to sell these items?", self.mainPanel:getX(),
-    self.mainPanel:getY() + self.mainPanel:getHeight() + 20, self, self.onConfirmSell)
+
+    -- TODO Doesn't work with Mainpanel
+    local text = "Are you sure you want to sell these items?"
+    local x = self.parent.parent:getX()
+    local y = self.parent.parent:getY() + self.parent.parent:getHeight() + 20
+
+    self.confirmationPanel = ConfirmationPanel.Open(text, x, y, self, self.onConfirmSell)
 end
 
 ---Runs after you confirm that you want to sell
 function SellSidePanel:onConfirmSell()
+    -- TODO Finish this
     debugPrint("OnConfirmSell")
 
-    self.sellList.items = {}        -- Clean it
+    -- This is from the Btn context, so we need to go one parent out
+    -- These names suck ass
+    self.parent.items.items = {}        -- Clean it
 end
 
 function SellSidePanel:calculateSellPrice()

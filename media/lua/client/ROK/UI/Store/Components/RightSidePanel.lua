@@ -1,4 +1,3 @@
-local GenericUI = require("ROK/UI/GenericUI")
 local CommonStore = require("ROK/UI/Store/Components/CommonStore")
 ------------------------
 
