@@ -28,6 +28,14 @@ function ServerBankManager.GetOrCreateAccount(username)
     return bankAccounts[username]
 end
 
+--- Get Bank accounts and reset the user specific one
+---@param username string
+function ServerBankManager.ResetBankAccount(username)
+    local bankAccounts = ServerData.Bank.GetBankAccounts()
+    bankAccounts[username] = CreateAccountTable(username)
+    ServerData.Bank.SetBankAccounts(bankAccounts)
+end
+
 --- Add or decreases an amount to a bank account if possible
 ---@param username string
 ---@param amount integer
@@ -60,11 +68,7 @@ local BankCommands = {}
 ---@param playerObj IsoPlayer
 function BankCommands.SetBankAccount(playerObj)
     local username = playerObj:getUsername()
-
-    -- Get Bank accounts and re-set them
-    local bankAccounts = ServerData.Bank.GetBankAccounts()
-    bankAccounts[username] = CreateAccountTable(username)
-    ServerData.Bank.SetBankAccounts(bankAccounts)
+    ServerBankManager.ResetBankAccount(username)
 end
 
 --- Sends command to client to set the player's safehouse

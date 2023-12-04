@@ -6,7 +6,7 @@ local safehouseSettings = PZ_EFT_CONFIG.SafehouseInstanceSettings
 ----------------------
 
 ---@class SafehouseInstanceManager
-SafehouseInstanceManager = SafehouseInstanceManager or {}
+local SafehouseInstanceManager = {}
 
 --- Get coordinate key string by world X, world Y, worldZ
 ---@param wx number
@@ -151,6 +151,24 @@ function SafehouseInstanceManager.SendPlayersToSafehouse()
     end
 end
 
+---@param pl IsoPlayer
+function SafehouseInstanceManager.ResetPlayerSafehouse(pl)
+
+    debugPrint("ResetSafehouseAllocation")
+    local key = SafehouseInstanceManager.GetPlayerSafehouseKey(pl:getUsername())
+    sendServerCommand(pl, EFT_MODULES.Safehouse, 'CleanStorage', {})
+
+    if key == nil then error("key is nil while trying to reset safehouse instance") end
+
+    SafehouseInstanceManager.UnassignSafehouseInstance(key)
+    local safehouseKey = SafehouseInstanceManager.GetOrAssignSafehouse(pl)
+    local safehouseCoords = SafehouseInstanceManager.GetSafehouseInstanceByKey(safehouseKey)
+    sendServerCommand(pl, EFT_MODULES.Safehouse, 'SetSafehouse', safehouseCoords)
+    sendServerCommand(pl, EFT_MODULES.Common, "Teleport", safehouseCoords)
+    sendServerCommand(pl, EFT_MODULES.State, "SetClientStateIsInRaid", {value = false})
+
+end
+
 local function OnLoad()
     for i, v in ipairs(PZ_EFT_CONFIG.SafehouseCells) do
         SafehouseInstanceManager.LoadSafehouseInstances(v.x, v.y)
@@ -238,3 +256,5 @@ local OnSafehouseInstanceManagerCommand = function(module, command, playerObj, a
 end
 
 Events.OnClientCommand.Add(OnSafehouseInstanceManagerCommand)
+
+return SafehouseInstanceManager
