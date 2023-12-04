@@ -39,8 +39,6 @@ function SafehouseInstanceHandler.HandlePlayerInSafehouse()
         })
     else
         BlackScreen.Close()
-
-        -- TODO Test this
         for _,v in ipairs(PZ_EFT_CONFIG.SafehouseCells)do
             zpopClearZombies(v.x,v.y)
         end

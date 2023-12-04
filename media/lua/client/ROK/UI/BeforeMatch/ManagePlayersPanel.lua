@@ -260,7 +260,7 @@ function ManagePlayersPanel:onClick(button)
             debugPrint("Wipe everything")
             -- TODO Implement wiping everything
         end
-        local text = " <CENTRE> Are you sure you want to wipe out everything for the entire server? <LINE> You can't come back from this."
+        local text = getText("IGUI_EFT_AdminPanel_Confirmation_WipeEverything")
         self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, self, OnConfirmWipeEverything)
     else
         ---@type IsoPlayer

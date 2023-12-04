@@ -119,10 +119,10 @@ function PvpInstanceManager.SendClearCurrentInstance()
 end
 
 ---Consumes a spawnpoint.
----@return {name : string, x : number, y : number, z : number}
+---@return {name : string, x : number, y : number, z : number}?
 function PvpInstanceManager.PopRandomSpawnPoint()
     local currentInstance = PvpInstanceManager.GetCurrentInstance()
-
+    if currentInstance == nil then return nil end
     local size = #currentInstance.spawnPoints
 
     if size <= 0 then

@@ -1,3 +1,6 @@
+local backgroundTexture = getTexture("media/textures/ROK_LoadingScreen.png")
+
+
 ---@class BlackScreen : ISPanel
 ---@field text string
 ---@field textX number
@@ -30,7 +33,8 @@ function BlackScreen:initialise()
 end
 
 function BlackScreen:prerender()
-    self:drawRect(0, 0, self:getWidth(), self.height, self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g, self.backgroundColor.b)
+    self:drawTextureScaled(backgroundTexture, 0, 0, getCore():getScreenWidth(), getCore():getScreenHeight(), 1, 1, 1, 1)
+    --self:drawRect(0, 0, self:getWidth(), self.height, self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g, self.backgroundColor.b)
     self:drawText(self.text, self.textX, self.textY, 1, 1, 1, 1, UIFont.Massive)
 end
 
@@ -42,15 +46,14 @@ end
 
 -------------------
 
--- TODO Re-enable black screen 
-
 function BlackScreen.Open()
-    -- if not isClient() then return end       -- SP workaround
-    -- if getPlayer():isDead() then return end -- Workaround to prevent issues when player is dead
-    -- debugPrint("Opening black screen")
-    -- local blackScreen = BlackScreen:new()
-    -- blackScreen:initialise()
-    -- blackScreen:addToUIManager()
+    if not isClient() then return end       -- SP workaround
+    if getPlayer():isDead() then return end -- Workaround to prevent issues when player is dead
+    if BlackScreen.instance ~= nil then return end
+    debugPrint("Opening black screen")
+    local blackScreen = BlackScreen:new()
+    blackScreen:initialise()
+    blackScreen:addToUIManager()
 end
 
 function BlackScreen.Close()
@@ -58,6 +61,7 @@ function BlackScreen.Close()
     if BlackScreen.instance then
         debugPrint("black screen instance available, closing")
         BlackScreen.instance:close()
+        BlackScreen.instance = nil
     end
 end
 
