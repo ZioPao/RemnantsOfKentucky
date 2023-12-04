@@ -372,3 +372,23 @@ table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
     time = 10,
     isRandom = true
 })
+
+
+
+--* Starter kit setup
+
+---@alias starterKitType {fullType : string, amount : number}
+
+PZ_EFT_CONFIG.StarterKit = {}
+table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.Pistol", amount = 4})
+table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.9mmClip", amount = 8})
+table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.Bullets9mmBox", amount = 4})
+table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.DoubleBarrelShotgun", amount = 4})
+table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.ShotgunShellsBox", amount = 2})
+table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.Hat_Army", amount = 4})
+table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.Shoes_ArmyBoots", amount = 4})
+table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.Vest_BulletPolice", amount = 4})
+table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.Bag_DuffelBag", amount = 4})
+table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.WaterBottleFull", amount = 8})
+table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.Cereal", amount = 4})
+table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.Crisps", amount = 4})

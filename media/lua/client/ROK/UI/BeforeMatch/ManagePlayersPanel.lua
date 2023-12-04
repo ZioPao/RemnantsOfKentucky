@@ -168,18 +168,20 @@ end
 
 function ManagePlayersPanel:onClick(button)
     if button.internal == 'UNASSIGN' then
-
+        -- TODO Implement!
     elseif button.internal == 'CLEAN_STORAGE' then
         SafehouseInstanceHandler.WipeCrates()
+        getPlayer():Say("Wiping crates for the selected player")
     elseif button.internal == 'STARTER_KIT' then
-        -- TODO Give Starter kit to selected player
+        sendClientCommand(EFT_MODULES.Common, "RelayStarterKit", {})
+        getPlayer():Say("Sent starter kit to the selected player")
     elseif button.internal == 'WIPE_EVERYTHING' then
         local function onConfirmWipe()
+            -- TODO Implement!
             print("Wipe")
         end
 
-
-        local text = " <CENTRE> Are you sure you want to wipe out everything? <LINE> You can't come back from this."
+        local text = " <CENTRE> Are you sure you want to wipe out everything for this player? <LINE> You can't come back from this."
         self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, self,
             onConfirmWipe)
     end

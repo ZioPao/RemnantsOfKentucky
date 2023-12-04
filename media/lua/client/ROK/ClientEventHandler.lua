@@ -1,5 +1,6 @@
 local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 local ClientState = require("ROK/ClientState")
+local ClientCommon = require("ROK/ClientCommon")
 local BlackScreen = require("ROK/UI/BeforeMatch/BlackScreen")
 -----------------------------
 
@@ -115,6 +116,15 @@ local function OnPlayerInit(player)
 end
 
 Events.OnPlayerUpdate.Add(OnPlayerInit)
+
+
+---@param playerObj IsoPlayer
+local function GiveStarterKit(playerObj)
+    ClientCommon.GiveStarterKit(playerObj)
+end
+
+
+Events.OnNewGame.Add(GiveStarterKit)
 
 
 --end

@@ -1,5 +1,4 @@
 require "PZEFT_debugtools"
-local ClientState = require("ROK/ClientState")
 -----------------------------
 
 local MODULE = EFT_MODULES.Common
@@ -16,6 +15,13 @@ function CommonCommands.Teleport(args)
     player:setLy(args.y)
     player:setLz(args.z)
 end
+
+
+function CommonCommands.ReceiveStarterKit()
+    local ClientCommon = require("ROK/ClientCommon")
+    ClientCommon.GiveStarterKit(getPlayer())
+end
+
 ------------------------------------
 local OnCommonCommand = function(module, command, args)
     if (module == MODULE or module == MODULE) and CommonCommands[command] then

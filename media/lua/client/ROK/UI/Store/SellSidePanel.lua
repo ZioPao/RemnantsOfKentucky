@@ -5,9 +5,6 @@ local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
 ------------------------
 
 -- TODO ADD remove Item from list
--- TODO This is broken now for some reason
-
-
 
 ---@class SellSidePanel : RightSidePanel
 ---@field infoPanel ISPanel
