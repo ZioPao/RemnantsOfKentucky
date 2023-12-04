@@ -307,40 +307,18 @@ PZ_EFT_CONFIG.PermanentExtractionPoints = {}
 
 
 table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
-    name = "Extract 1",
-    x1 = 42,
-    y1 = 525,
+    name = "Helipad",
+    x1 = 423,
+    y1 = 542,
     z1 = 0,
-    x2 = 64,
-    y2 = 550,
+    x2 = 444,
+    y2 = 565,
     z2 = 0,
     time = 10,
     isRandom = false
 })
 
-table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
-    name = "Extract 2",
-    x1 = 812,
-    y1 = 223,
-    z1 = 0,
-    x2 = 848,
-    y2 = 237,
-    z2 = 0,
-    time = 10,
-    isRandom = false
-})
 
-table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
-    name = "Extract 3",
-    x1 = 794,
-    y1 = 508,
-    z1 = 0,
-    x2 = 801,
-    y2 = 525,
-    z2 = 0,
-    time = 10,
-    isRandom = false
-})
 
 ------------------------------------------
 ---* Random Extraction Points *-- 
@@ -351,7 +329,44 @@ PZ_EFT_CONFIG.RandomExtractionPoints = {}
 
 
 table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
-    name = "Dock Top",
+    name = "South West Dock",
+    x1 = 42,
+    y1 = 525,
+    z1 = 0,
+    x2 = 64,
+    y2 = 550,
+    z2 = 0,
+    time = 10,
+    isRandom = true
+})
+
+table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
+    name = "North East Dock",
+    x1 = 812,
+    y1 = 223,
+    z1 = 0,
+    x2 = 848,
+    y2 = 237,
+    z2 = 0,
+    time = 10,
+    isRandom = true
+})
+
+table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
+    name = "South East Dock",
+    x1 = 794,
+    y1 = 508,
+    z1 = 0,
+    x2 = 801,
+    y2 = 525,
+    z2 = 0,
+    time = 10,
+    isRandom = true
+})
+
+
+table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
+    name = "North West Dock",
     x1 = 212,
     y1 = 85,
     z1 = 0,
@@ -361,21 +376,6 @@ table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
     time = 10,
     isRandom = true
 })
-
-
--- TODO Placeholder, delete me
-table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
-    name = "Heliport",
-    x1 = 423,
-    y1 = 542,
-    z1 = 0,
-    x2 = 444,
-    y2 = 565,
-    z2 = 0,
-    time = 10,
-    isRandom = true
-})
-
 
 
 --* Starter kit setup
