@@ -315,6 +315,7 @@ table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
     y2 = 550,
     z2 = 0,
     time = 10,
+    isRandom = false
 })
 
 table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
@@ -326,6 +327,7 @@ table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
     y2 = 237,
     z2 = 0,
     time = 10,
+    isRandom = false
 })
 
 table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
@@ -337,6 +339,7 @@ table.insert(PZ_EFT_CONFIG.PermanentExtractionPoints, {
     y2 = 525,
     z2 = 0,
     time = 10,
+    isRandom = false
 })
 
 ------------------------------------------
