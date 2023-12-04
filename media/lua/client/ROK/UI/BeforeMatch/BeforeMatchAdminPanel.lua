@@ -57,7 +57,13 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnManagePlayers:setEnable(false)
     self:addChild(self.btnManagePlayers)
 
-    y = y - btnHeight
+    y = y - btnHeight - yPadding
+
+    self.btnSetTime = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
+    self.btnSetTime.internal = "SET_TIME"
+    self.btnSetTime:initialise()
+    self.btnSetTime:setEnable(false)
+    self:addChild(self.btnSetTime)
 
     --------------------
     -- INFO PANEL, TOP ONE
@@ -108,6 +114,10 @@ function BeforeMatchAdminPanel:onClick(btn)
         else
             self.openedPanel = ManagePlayersPanel.Open(self:getRight(), self:getBottom() - self:getHeight())
         end
+    elseif btn.internal == 'SET_TIME_DAY' then
+        sendClientCommand(EFT_MODULES.Time, "SetDayTime", {})
+    elseif btn.internal == 'SET_TIME_NIGHT' then
+        sendClientCommand(EFT_MODULES.Time, "SetNightTime", {})
     end
 end
 
@@ -116,6 +126,19 @@ function BeforeMatchAdminPanel:update()
     -- When starting the match, we'll disable the default close button
     self.closeButton:setEnable(not ClientState.isStartingMatch)
     self.btnManagePlayers:setEnable(not ClientState.isStartingMatch)
+    self.btnSetTime:setEnable(not ClientState.isStartingMatch)
+
+    -- Check hour 
+    local time = getGameTime():getTimeOfDay()
+    --debugPrint(time)
+    if time > 9 and time < 21 then
+        self.btnSetTime.internal = "SET_TIME_NIGHT"
+        self.btnSetTime.title = getText("IGUI_EFT_AdminPanel_SetNightTime")
+
+    else
+        self.btnSetTime.internal = "SET_TIME_DAY"
+        self.btnSetTime.title = getText("IGUI_EFT_AdminPanel_SetDayTime")
+    end
 
     local valAssignedSafehousesText = " <CENTRE> -1"     -- TODO This is a placeholder!
     self.labelValAssignedSafehouses:setText(valAssignedSafehousesText)

@@ -26,6 +26,10 @@ IG_UI_EN = {
     IGUI_EFT_AdminPanel_Confirmation_WipeEverything = " <CENTRE> Are you sure you want to wipe out everything for the entire server? <LINE> You can't come back from this."
     IGUI_EFT_AdminPanel_Tooltip_WipeEverything = "Wipe everything about the selected player",
 
+
+    IGUI_EFT_AdminPanel_SetDayTime = "Set Time - Day",
+    IGUI_EFT_AdminPanel_SetNightTime = "Set Time - Night",
+    
     // ADMIN PANEL - DURING MATCH
 
     IGUI_EFT_AdminPanel_MatchTime = "Match time: %1"

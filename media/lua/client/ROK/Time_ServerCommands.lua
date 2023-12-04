@@ -18,6 +18,14 @@ function TimeCommands.ReceiveTimeUpdate(args)
     -- Locally, 1 player, about 4-5 ms of delay.
 end
 
+function TimeCommands.SetDayTime()
+    getGameTime():setTimeOfDay(9)
+end
+
+function TimeCommands.SetNightTime()
+    getGameTime():setTimeOfDay(23)
+end
+
 ---------------------
 local OnTimeCommand = function(module, command, args)
 
