@@ -112,8 +112,8 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
     -- how many times instances repeat in a y direction
     yRepeat = 10,
 
-    -- number of random extraction points for each instance
-    randomExtractionPointCount = 3      -- TODO Make it customizable or random
+    -- -- number of random extraction points for each instance
+    -- randomExtractionPointCount = 3      -- TODO Make it customizable or random
 }
 
 

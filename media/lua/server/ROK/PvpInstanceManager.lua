@@ -33,7 +33,9 @@ PvpInstanceManager.refreshPvpInstancesExtractions = function()
     for _, value in pairs(pvpInstances) do
         local permanentExtractions = PvpInstanceManager.GetPermanentExtractionPoints(value.x, value.y)
         permanentExtractions = permanentExtractions or {}
-        local randomExtractions = PvpInstanceManager.GetRandomExtractionPoints(value.x, value.y, pvpInstanceSettings.randomExtractionPointCount)
+
+
+        local randomExtractions = PvpInstanceManager.GetRandomExtractionPoints(value.x, value.y)
         randomExtractions = randomExtractions or {}
 
         value.extractionPoints = PZEFT_UTILS.MergeIPairs(randomExtractions, permanentExtractions)
@@ -54,7 +56,7 @@ function PvpInstanceManager.LoadPvpInstances()
             local id = PvpInstanceManager.getInstanceID(iX, iY)
 
             local permanentExtractions = PvpInstanceManager.GetPermanentExtractionPoints(iX, iY) or {}
-            local randomExtractions = PvpInstanceManager.GetRandomExtractionPoints(iX, iY, settings.randomExtractionPointCount) or {}
+            local randomExtractions = PvpInstanceManager.GetRandomExtractionPoints(iX, iY) or {}
 
             pvpInstances[id] = {
                 id = id,
@@ -142,14 +144,18 @@ end
 --- Gets a random set of extraction points for given an instance
 ---@param cellX number
 ---@param cellY number
----@param count number
 ---@return areaCoords?
-function PvpInstanceManager.GetRandomExtractionPoints(cellX, cellY, count)
+function PvpInstanceManager.GetRandomExtractionPoints(cellX, cellY)
     --debugPrint("GetRandomExtractionsPoints")
     --debugPrint("cellX=" .. tostring(cellX))
     --debugPrint("cellY=" .. tostring(cellY))
     --debugPrint("count=" .. tostring(count))
-    if not count then
+
+    local amount = #PZ_EFT_CONFIG.RandomExtractionPoints
+    local count = 0
+    if amount > 0 then
+        count = ZombRand(0, amount) + 1
+    else
         return {}
     end
 
@@ -174,6 +180,7 @@ function PvpInstanceManager.GetRandomExtractionPoints(cellX, cellY, count)
         local size = #extractionPoints
         local randIndex = ZombRand(size)+1
         local extractionPoint = extractionPoints[randIndex]
+        extractionPoint.isRandom = true
 
         table.insert(activeExtractionPoints, extractionPoint)
         table.remove(extractionPoints, randIndex)
