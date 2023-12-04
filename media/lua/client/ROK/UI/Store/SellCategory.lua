@@ -25,11 +25,21 @@ function SellCategory:new(x, y, width, height, shopPanel)
     return o
 end
 
+local function PrerenderItems(element)
+
+    if #element.items == 0 then
+        element:drawText("Drag items in here to sell them", 10, 100, 1, 1, 1, 1, UIFont.Medium)
+    end
+
+    ISScrollingListBox.prerender(element)
+end
+
 function SellCategory:createChildren()
     StoreScrollingListBox.createChildren(self)
 
     self.items.doDrawItem = self.onDrawItem
     self.items.onMouseUp = self.onDragItem
+    self.items.prerender = PrerenderItems
     self.selected = 0
 
     local sellPanelWidth = self.width / 2 - 20
@@ -40,7 +50,17 @@ function SellCategory:createChildren()
     self:addChild(self.sellSidePanel)
 end
 
----comment
+
+
+-- function SellCategory:render()
+--     StoreScrollingListBox.render(self)
+--     self.items:drawText("1212321312321312321312321312312313", 0, self.height /2, 1, 1, 1, 1, UIFont.Medium)
+--     -- if #self.items.items == 0 then
+--     --     self:drawText("123", self.width / 2, self.height /2, 1, 1, 1, 1, UIFont.Medium)
+--     -- end
+-- end
+
+
 ---@param id any
 function SellCategory:addToDraggedItems(id)
     if self.draggedItems == nil then

@@ -92,8 +92,7 @@ function SellSidePanel:updateInfoPanel()
     local price = self:calculateSellPrice()
     self.textPanel:setText("<CENTRE> You will receive: " .. tostring(price) .. "$")
     self.textPanel.textDirty = true
-    --self.infoPanel:setText("Money that you will receive: 10000$")
-    --self.infoPanel.textDirty = true
+
 
     -- Count amount of items
     local itemsAmount = #self.mainPanel.items.items
@@ -102,6 +101,7 @@ end
 
 function SellSidePanel:render()
     RightSidePanel.render(self)
+    --self:drawText("SELL_CATEGORYSELL_CATEGORYSELL_CATEGORYSELL_CATEGORYSELL_CATEGORYSELL_CATEGORYSELL_CATEGORYSELL_CATEGORY", -200, self.height /2, 1, 1, 1, 1, UIFont.Medium)
 
 end
 

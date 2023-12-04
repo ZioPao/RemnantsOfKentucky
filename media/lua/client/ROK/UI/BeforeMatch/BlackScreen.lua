@@ -9,7 +9,7 @@ local BlackScreen = ISPanel:derive("BlackScreen")
 
 
 -- TODO This piece of shit is still broken
----comment
+
 ---@return BlackScreen
 function BlackScreen:new()
     local o = ISPanel:new(0, 0, getCore():getScreenWidth(), getCore():getScreenHeight())
@@ -33,7 +33,7 @@ function BlackScreen:initialise()
 end
 
 function BlackScreen:prerender()
-    self:drawTextureScaled(backgroundTexture, 0, 0, getCore():getScreenWidth(), getCore():getScreenHeight(), 1, 1, 1, 1)
+    self:drawTextureScaled(backgroundTexture, 0, 0, self.width, self.height, 1, 1, 1, 1)
     --self:drawRect(0, 0, self:getWidth(), self.height, self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g, self.backgroundColor.b)
     self:drawText(self.text, self.textX, self.textY, 1, 1, 1, 1, UIFont.Massive)
 end

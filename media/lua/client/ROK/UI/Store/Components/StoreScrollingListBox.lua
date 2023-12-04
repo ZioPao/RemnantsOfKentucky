@@ -63,9 +63,8 @@ end
 
 function StoreScrollingListBox:prerender()
     ISPanelJoypad.prerender(self)
-    self.items.backgroundColor.a = 0.8
-end
 
+end
 
 ---This is run on the the ScrollingBoxList!
 ---@param x number
@@ -106,9 +105,6 @@ function StoreScrollingListBox:getSelectedItem()
 end
 
 function StoreScrollingListBox:close()
-    --debugPrint("Closing StoreCategory")
-    --self.buyPanel:removeFromUIManager()
-    --self.buyPanel:close()
     ISPanelJoypad.close(self)
 end
 
