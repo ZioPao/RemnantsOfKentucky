@@ -18,6 +18,7 @@ end
 
 
 function CommonCommands.ReceiveStarterKit()
+    debugPrint("ReceiveStarterKit")
     local ClientCommon = require("ROK/ClientCommon")
     ClientCommon.GiveStarterKit(getPlayer(), true)
 end

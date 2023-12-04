@@ -5,16 +5,20 @@ local MODULE = EFT_MODULES.Common
 
 local PlayersCommands = {}
 
-function PlayersCommands.RelayStarterKit(playerObj, args)
-    sendServerCommand(playerObj, MODULE, "ReceiveStarterKit", {})
+---comment
+---@param args {playerID : number}
+function PlayersCommands.RelayStarterKit(_, args)
+    local playerToRelay = getPlayerByOnlineID(args.playerID)
+    debugPrint("Relaying starter kit to " .. playerToRelay:getUsername())
+    sendServerCommand(playerToRelay, EFT_MODULES.Common, "ReceiveStarterKit", {})
 end
 
 
-local OnPvpInstanceCommands = function(module, command, playerObj, args)
+local OnPlayersCommands = function(module, command, playerObj, args)
     if module == MODULE and PlayersCommands[command] then
         -- debugPrint("Client Command - " .. MODULE .. "." .. command)
         PlayersCommands[command](playerObj, args)
     end
 end
 
-Events.OnClientCommand.Add(OnPvpInstanceCommands)
+Events.OnClientCommand.Add(OnPlayersCommands)

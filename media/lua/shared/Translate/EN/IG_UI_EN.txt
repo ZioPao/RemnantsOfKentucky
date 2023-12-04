@@ -8,13 +8,14 @@ IG_UI_EN = {
     IGUI_EFT_AdminPanel_InstancesAvailable = " <CENTRE> Instances Available",
     IGUI_EFT_AdminPanel_SafehousesAssigned = " <CENTRE> Assigned Safehouses",
     IGUI_EFT_AdminPanel_StartMatch = "Start Match",
-    IGUI_EFT_AdminPanel_ManagePlayers = "Manage Players",
     IGUI_EFT_AdminPanel_Stop = "Stop",
-    IGUI_EFT_AdminPanel_Unassign = "Unassign",
-    IGUI_EFT_AdminPanel_Tooltip_Unassign = "Unassign",
 
-    IGUI_EFT_AdminPanel_CleanStorage = "Clean Storage",
-    IGUI_EFT_AdminPanel_Tooltip_CleanStorage = "Wipes the content of the crates for that specific player",
+    IGUI_EFT_AdminPanel_ManagePlayers = "Manage Players",
+    IGUI_EFT_AdminPanel_Refresh = "Refresh",
+    IGUI_EFT_AdminPanel_Tooltip_Refresh = "Refresh the players list",
+
+    IGUI_EFT_AdminPanel_WipePlayer = "Wipe Player",
+    IGUI_EFT_AdminPanel_Tooltip_WipePlayer = "Wipes everything about this player",
     
     IGUI_AdminPanelBeforeMatch_StarterKit = "Give Starter Kit",
     IGUI_AdminPanelBeforeMatch_Tooltip_StarterKit = "Give Starter Kit",

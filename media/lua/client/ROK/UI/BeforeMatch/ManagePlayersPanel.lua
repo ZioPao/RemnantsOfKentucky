@@ -14,6 +14,90 @@ local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
 local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 -------------------------------
 
+---@class ManagePlayersScrollingTable : ISPanel
+---@field datas ISScrollingListBox
+local ManagePlayersScrollingTable = ISPanel:derive("ManagePlayersScrollingTable")
+
+---comment
+---@param x any
+---@param y any
+---@param width any
+---@param height any
+---@param viewer any
+---@return ManagePlayersScrollingTable
+function ManagePlayersScrollingTable:new(x, y, width, height, viewer)
+    local o = ISPanel:new(x, y, width, height)
+    setmetatable(o, self)
+
+    o.listHeaderColor = { r = 0.4, g = 0.4, b = 0.4, a = 0.3 }
+    o.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 0 }
+    o.backgroundColor = { r = 0, g = 0, b = 0, a = 0.0 }
+    o.buttonBorderColor = { r = 0.7, g = 0.7, b = 0.7, a = 0.5 }
+    o.totalResult = 0
+    o.viewer = viewer
+    ---@cast o ManagePlayersScrollingTable
+    ManagePlayersScrollingTable.instance = o
+    return o
+end
+
+function ManagePlayersScrollingTable:createChildren()
+    local btnHgt = math.max(25, FONT_HGT_SMALL + 3 * 2)
+    local bottomHgt = 5 + FONT_HGT_SMALL * 2 + 5 + btnHgt + 20 + FONT_HGT_LARGE + HEADER_HGT + ENTRY_HGT
+
+    self.datas = ISScrollingListBox:new(0, HEADER_HGT, self.width, self.height - bottomHgt + 10)
+    self.datas:initialise()
+    self.datas:instantiate()
+    self.datas.itemheight = FONT_HGT_SMALL + 4 * 2
+    self.datas.selected = 0
+    self.datas.joypadParent = self
+    self.datas.font = UIFont.NewSmall
+    self.datas.doDrawItem = self.drawDatas
+    self.datas.drawBorder = true
+    self.datas:addColumn("", 0)
+    self:addChild(self.datas)
+end
+
+function ManagePlayersScrollingTable:initList(module)
+    self.datas:clear()
+    for i = 0, module:size() - 1 do
+        local pl = module:get(i)
+        local username = pl:getUsername()
+
+        if self.viewer.filterEntry:getInternalText() ~= "" and string.trim(self.viewer.filterEntry:getInternalText()) == nil or string.contains(string.lower(username), string.lower(string.trim(self.viewer.filterEntry:getInternalText()))) then
+            self.datas:addItem(username, pl)
+        end
+    end
+end
+
+function ManagePlayersScrollingTable:update()
+    self.datas.doDrawItem = self.drawDatas
+end
+
+function ManagePlayersScrollingTable:drawDatas(y, item, alt)
+    if y + self:getYScroll() + self.itemheight < 0 or y + self:getYScroll() >= self.height then
+        return y + self.itemheight
+    end
+    local a = 0.9
+
+    if self.selected == item.index then
+        self:drawRect(0, (y), self:getWidth(), self.itemheight, 0.3, 0.7, 0.35, 0.15)
+    end
+
+    if alt then
+        self:drawRect(0, (y), self:getWidth(), self.itemheight, 0.3, 0.6, 0.5, 0.5)
+    end
+
+    self:drawRectBorder(0, (y), self:getWidth(), self.itemheight, a, self.borderColor.r, self.borderColor.g,
+        self.borderColor.b)
+
+    local xOffset = 10
+    self:drawText(item.text, xOffset, y + 4, 1, 1, 1, a, self.font)
+    return y + self.itemheight
+end
+
+
+--************************************************************************--
+
 ---@class ManagePlayersPanel : ISCollapsableWindow
 local ManagePlayersPanel = ISCollapsableWindow:derive("ManagePlayersPanel")
 
@@ -81,31 +165,31 @@ function ManagePlayersPanel:initialise()
     local deleteDataIco = getTexture("media/ui/deleteDataIcon.png") -- www.flaticon.com/free-icons/delete Delete icons created by Kiranshastry - Flaticon
 
     -- Middle button
-    self.btnCleanStorage = ISButton:new(btnX, btnY, btnSize, btnSize / 1.5,
-        getText("IGUI_EFT_AdminPanel_CleanStorage"), self, ManagePlayersPanel.onClick)
-    self.btnCleanStorage.internal = "CLEAN_STORAGE"
-    self.btnCleanStorage:setTooltip(getText("IGUI_EFT_AdminPanel_Tooltip_CleanStorage"))
-    self.btnCleanStorage:setImage(openIco)
-    self.btnCleanStorage.anchorTop = false
-    self.btnCleanStorage.anchorBottom = true
-    self.btnCleanStorage:initialise()
-    self.btnCleanStorage:instantiate()
-    self.btnCleanStorage.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
-    self:addChild(self.btnCleanStorage)
+    self.btnWipePlayer = ISButton:new(btnX, btnY, btnSize, btnSize / 1.5,
+        getText("IGUI_EFT_AdminPanel_WipePlayer"), self, ManagePlayersPanel.onClick)
+    self.btnWipePlayer.internal = "WIPE_PLAYER"
+    self.btnWipePlayer:setTooltip(getText("IGUI_EFT_AdminPanel_Tooltip_WipePlayer"))
+    self.btnWipePlayer:setImage(openIco)
+    self.btnWipePlayer.anchorTop = false
+    self.btnWipePlayer.anchorBottom = true
+    self.btnWipePlayer:initialise()
+    self.btnWipePlayer:instantiate()
+    self.btnWipePlayer.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
+    self:addChild(self.btnWipePlayer)
 
-    self.btnUnassign = ISButton:new(btnX, btnY - self.btnCleanStorage:getHeight() - 10, btnSize, btnSize / 1.5,
-        getText("IGUI_EFT_AdminPanel_Unassign"), self, ManagePlayersPanel.onClick)
-    self.btnUnassign.internal = "UNASSIGN"
-    self.btnUnassign:setTooltip(getText("IGUI_EFT_AdminPanel_Unassign"))
-    self.btnUnassign:setImage(refreshListIco)
-    self.btnUnassign.anchorTop = false
-    self.btnUnassign.anchorBottom = true
-    self.btnUnassign:initialise()
-    self.btnUnassign:instantiate()
-    self.btnUnassign.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
-    self:addChild(self.btnUnassign)
+    self.btnRefresh = ISButton:new(btnX, btnY - self.btnWipePlayer:getHeight() - 10, btnSize, btnSize / 1.5,
+        getText("IGUI_EFT_AdminPanel_Refresh"), self, ManagePlayersPanel.onClick)
+    self.btnRefresh.internal = "REFRESH"
+    self.btnRefresh:setTooltip(getText("IGUI_EFT_AdminPanel_Refresh"))
+    self.btnRefresh:setImage(refreshListIco)
+    self.btnRefresh.anchorTop = false
+    self.btnRefresh.anchorBottom = true
+    self.btnRefresh:initialise()
+    self.btnRefresh:instantiate()
+    self.btnRefresh.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
+    self:addChild(self.btnRefresh)
 
-    self.btnStarterKit = ISButton:new(btnX, btnY + self.btnCleanStorage:getHeight() + 10, btnSize, btnSize / 1.5,
+    self.btnStarterKit = ISButton:new(btnX, btnY + self.btnWipePlayer:getHeight() + 10, btnSize, btnSize / 1.5,
         getText("IGUI_AdminPanelBeforeMatch_StarterKit"), self, ManagePlayersPanel.onClick)
     self.btnStarterKit.internal = "STARTER_KIT"
     self.btnStarterKit:setTooltip(getText("IGUI_AdminPanelBeforeMatch_Tooltip_StarterKit"))
@@ -118,7 +202,6 @@ function ManagePlayersPanel:initialise()
     self.btnStarterKit:instantiate()
     self.btnStarterKit.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
     self:addChild(self.btnStarterKit)
-
 
 
     local xPadding = 20
@@ -167,24 +250,48 @@ function ManagePlayersPanel:prerender()
 end
 
 function ManagePlayersPanel:onClick(button)
-    if button.internal == 'UNASSIGN' then
-        -- TODO Implement!
-    elseif button.internal == 'CLEAN_STORAGE' then
-        SafehouseInstanceHandler.WipeCrates()
-        getPlayer():Say("Wiping crates for the selected player")
-    elseif button.internal == 'STARTER_KIT' then
-        sendClientCommand(EFT_MODULES.Common, "RelayStarterKit", {})
-        getPlayer():Say("Sent starter kit to the selected player")
-    elseif button.internal == 'WIPE_EVERYTHING' then
-        local function onConfirmWipe()
-            -- TODO Implement!
-            print("Wipe")
-        end
 
-        local text = " <CENTRE> Are you sure you want to wipe out everything for this player? <LINE> You can't come back from this."
-        self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, self,
-            onConfirmWipe)
+    -- TODO Get Player data from here
+
+    if button.internal == 'REFRESH' then
+        -- TODO refresh list
+    elseif button.internal == 'WIPE_EVERYTHING' then
+        -- TODO Implement wiping everything
+    else
+        ---@type IsoPlayer
+        local selectedPlayer = self.mainCategory.datas.items[self.mainCategory.datas.selected].item
+        local plID = selectedPlayer:getOnlineID()
+        local plUsername = selectedPlayer:getUsername()
+        if button.internal == 'STARTER_KIT' then
+            sendClientCommand(EFT_MODULES.Common, "RelayStarterKit", {playerID = plID})
+            getPlayer():Say("Sent starter kit to " .. plUsername)
+        elseif button.internal == 'WIPE_PLAYER' then
+            sendClientCommand(EFT_MODULES.Safehouse, "ResetSafehouseAllocation", {playerID = plID})
+            getPlayer():Say("Wiping safehouse and assigning a new one to " .. plUsername)
+        end
     end
+
+
+
+    -- if button.internal == 'REFRESH' then
+
+    -- elseif button.internal == 'WIPE_PLAYER' then
+    --     -- TODO Get player info
+
+
+    -- elseif button.internal == 'STARTER_KIT' then
+    --     sendClientCommand(EFT_MODULES.Common, "RelayStarterKit", {})
+    --     getPlayer():Say("Sent starter kit to the selected player")
+    -- elseif button.internal == 'WIPE_EVERYTHING' then
+    --     local function onConfirmWipe()
+    --         -- TODO Implement!
+    --         print("Wipe")
+    --     end
+
+    --     local text = " <CENTRE> Are you sure you want to wipe out everything for the entire server? <LINE> You can't come back from this."
+    --     self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, self,
+    --         onConfirmWipe)
+    -- end
 end
 
 function ManagePlayersPanel:setKeyboardFocus()
@@ -198,8 +305,7 @@ function ManagePlayersPanel:update()
     ISCollapsableWindow.update(self)
     local selection = self.mainCategory.datas.selected
 
-    self.btnUnassign:setEnable(selection ~= 0)
-    self.btnCleanStorage:setEnable(selection ~= 0)
+    self.btnWipePlayer:setEnable(selection ~= 0)
     self.btnStarterKit:setEnable(selection ~= 0)
 end
 
@@ -210,79 +316,8 @@ function ManagePlayersPanel:close()
     ISCollapsableWindow.close(self)
 end
 
---************************************************************************--
 
 
-ManagePlayersScrollingTable = ISPanel:derive("ManagePlayersScrollingTable")
 
-function ManagePlayersScrollingTable:new(x, y, width, height, viewer)
-    local o = ISPanel:new(x, y, width, height)
-    setmetatable(o, self)
-
-    o.listHeaderColor = { r = 0.4, g = 0.4, b = 0.4, a = 0.3 }
-    o.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 0 }
-    o.backgroundColor = { r = 0, g = 0, b = 0, a = 0.0 }
-    o.buttonBorderColor = { r = 0.7, g = 0.7, b = 0.7, a = 0.5 }
-    o.totalResult = 0
-    o.viewer = viewer
-
-    ManagePlayersScrollingTable.instance = o
-    return o
-end
-
-function ManagePlayersScrollingTable:createChildren()
-    local btnHgt = math.max(25, FONT_HGT_SMALL + 3 * 2)
-    local bottomHgt = 5 + FONT_HGT_SMALL * 2 + 5 + btnHgt + 20 + FONT_HGT_LARGE + HEADER_HGT + ENTRY_HGT
-
-    self.datas = ISScrollingListBox:new(0, HEADER_HGT, self.width, self.height - bottomHgt + 10)
-    self.datas:initialise()
-    self.datas:instantiate()
-    self.datas.itemheight = FONT_HGT_SMALL + 4 * 2
-    self.datas.selected = 0
-    self.datas.joypadParent = self
-    self.datas.font = UIFont.NewSmall
-    self.datas.doDrawItem = self.drawDatas
-    self.datas.drawBorder = true
-    self.datas:addColumn("", 0)
-    self:addChild(self.datas)
-end
-
-function ManagePlayersScrollingTable:initList(module)
-    self.datas:clear()
-    for i = 0, module:size() - 1 do
-        local pl = module:get(i)
-        local username = pl:getUsername()
-
-        if self.viewer.filterEntry:getInternalText() ~= "" and string.trim(self.viewer.filterEntry:getInternalText()) == nil or string.contains(string.lower(username), string.lower(string.trim(self.viewer.filterEntry:getInternalText()))) then
-            self.datas:addItem(username, pl)
-        end
-    end
-end
-
-function ManagePlayersScrollingTable:update()
-    self.datas.doDrawItem = self.drawDatas
-end
-
-function ManagePlayersScrollingTable:drawDatas(y, item, alt)
-    if y + self:getYScroll() + self.itemheight < 0 or y + self:getYScroll() >= self.height then
-        return y + self.itemheight
-    end
-    local a = 0.9
-
-    if self.selected == item.index then
-        self:drawRect(0, (y), self:getWidth(), self.itemheight, 0.3, 0.7, 0.35, 0.15)
-    end
-
-    if alt then
-        self:drawRect(0, (y), self:getWidth(), self.itemheight, 0.3, 0.6, 0.5, 0.5)
-    end
-
-    self:drawRectBorder(0, (y), self:getWidth(), self.itemheight, a, self.borderColor.r, self.borderColor.g,
-        self.borderColor.b)
-
-    local xOffset = 10
-    self:drawText(item.text, xOffset, y + 4, 1, 1, 1, a, self.font)
-    return y + self.itemheight
-end
 
 return ManagePlayersPanel

@@ -85,29 +85,18 @@ function SafehouseInstanceHandler.GetCrates()
     return cratesTable
 end
 
----Wipes all the items in the crates of a player safehouse
+---Wipes all the items in the crates of the current player safehouse
 function SafehouseInstanceHandler.WipeCrates()
-    for _, group in pairs(PZ_EFT_CONFIG.SafehouseInstanceSettings.safehouseStorage) do
-        local sq = getCell():getGridSquare(group.x, group.y, 0)
-        local objects = sq:getObjects()
-        local inventoryContainer
-        for i = 1, objects:size() do
-            if instanceof(objects:get(i), "InventoryItem") then
-                inventoryContainer = objects:get(i):getContainer()
-                if inventoryContainer then
-                    inventoryContainer:clear()
-                else
-                    error("Crate found, but no InventoryContainer")
-                end
-            end
-        end
+    local cratesTable = SafehouseInstanceHandler.GetCrates()
+    if cratesTable == nil then debugPrint("No crates to wipe") return end
+
+    for i=1, #cratesTable do
+        local crate = cratesTable[i]
+        crate:clear()
     end
 end
 
-
 --* Events handling
-
-
 
 --- On player initialise, request safehouse allocation of player from server
 ---@param player IsoPlayer
@@ -150,23 +139,12 @@ end
 
 ---Receive a Clean Storage from an Admin
 function SafehouseInstanceCommands.CleanStorage()
-    -- TODO Test this
-    for _, group in pairs(PZ_EFT_CONFIG.SafehouseInstanceSettings.safehouseStorage) do
-        local sq = getCell():getGridSquare(group.x, group.y, 0)
-        local objects = sq:getObjects()
-        local inventoryContainer
-        for i=1, objects:size() do
-            if instanceof(objects:get(i), "InventoryItem") then
-                inventoryContainer = objects:get(i):getContainer()
-                if inventoryContainer then
-                    inventoryContainer:clear()
-                else
-                    error("Crate found, but no InventoryContainer")
-                end
-            end
-        end
-    end
+    SafehouseInstanceHandler.WipeCrates()
+end
 
+---Reset instance, wipe crates, and reassign another instance
+function SafehouseInstanceCommands.ResetSafehouse()
+    SafehouseInstanceHandler.WipeCrates()
 end
 
 ------------------------

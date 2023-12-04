@@ -190,7 +190,7 @@ local SafehouseInstanceManagerCommands = {}
 
 --- Sends command to client to set the player's safehouse
 ---@param playerObj IsoPlayer
----@param args table {teleport=true/false}
+---@param args {teleport : boolean, cleanStorage : boolean}
 function SafehouseInstanceManagerCommands.RequestSafehouseAllocation(playerObj, args)
     local safehouseKey = SafehouseInstanceManager.GetOrAssignSafehouse(playerObj)
     local safehouseCoords = SafehouseInstanceManager.GetSafehouseInstanceByKey(safehouseKey)
@@ -207,6 +207,27 @@ function SafehouseInstanceManagerCommands.RequestSafehouseAllocation(playerObj, 
     if args.cleanStorage then
         sendServerCommand(playerObj, MODULE, 'CleanStorage', safehouseCoords)
     end
+end
+
+
+---Clean current safehouse from a specific player and reassign a new one
+---@param args {playerID : number}
+function SafehouseInstanceManagerCommands.ResetSafehouseAllocation(_, args)
+
+    local pl = getPlayerByOnlineID(args.playerID)
+
+    debugPrint("ResetSafehouseAllocation")
+    local key = SafehouseInstanceManager.GetPlayerSafehouseKey(pl:getUsername())
+    sendServerCommand(pl, MODULE, 'CleanStorage', {})
+
+    if key == nil then error("key is nil while trying to reset safehouse instance") end
+
+    SafehouseInstanceManager.UnassignSafehouseInstance(key)
+    local safehouseKey = SafehouseInstanceManager.GetOrAssignSafehouse(pl)
+    local safehouseCoords = SafehouseInstanceManager.GetSafehouseInstanceByKey(safehouseKey)
+    sendServerCommand(pl, MODULE, 'SetSafehouse', safehouseCoords)
+    sendServerCommand(pl, EFT_MODULES.Common, "Teleport", safehouseCoords)
+
 end
 
 local OnSafehouseInstanceManagerCommand = function(module, command, playerObj, args)
