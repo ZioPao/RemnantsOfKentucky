@@ -4,54 +4,30 @@ local ClientCommon = require("ROK/ClientCommon")
 local BlackScreen = require("ROK/UI/BeforeMatch/BlackScreen")
 -----------------------------
 
-local isInSafehouseUpdateActive = false
-local isRefreshSafehouseAllocationUpdateActive = false
-
---TODO: Maybe handle other event subscriptions to remove unnecessary overhead
-
-
-
-
 local ClientEvents = {}
 
--- ClientEvents.list = {
---     "isSafehouseUpdate", "safehouseAllocationUpdate"
--- }
-
--- ClientEvents.tab = {
---     inSafehouseUpdate = {check = false, func = SafehouseInstanceHandler.HandlePlayerInSafehouse},
---     safehouseAllocationUpdate = { check = false, func = SafehouseInstanceHandler.RefreshSafehouseAllocation},
--- }
+ClientEvents.inSafehouseUpdate = false
+ClientEvents.refreshSafehouseAllocationUpdate = false
 
 
 function ClientEvents.WhileInRaid()
-
-    -- for i=1, #ClientEvents.list do
-    --     local event = ClientEvents.list[i]
-    --     if ClientEvents.tab[event].check then
-    --         ClientEvents.tab[event].check = true
-    --         Events.EveryOneMinute.Remove(ClientEvents.tab[event].func)
-    --     end
-    -- end
-
-
-    if isInSafehouseUpdateActive then
-        isInSafehouseUpdateActive = false
+    if ClientEvents.inSafehouseUpdate then
+        ClientEvents.inSafehouseUpdate = false
         Events.EveryOneMinute.Remove(SafehouseInstanceHandler.HandlePlayerInSafehouse)
     end
-    if isRefreshSafehouseAllocationUpdateActive then
-        isRefreshSafehouseAllocationUpdateActive = false
+    if ClientEvents.refreshSafehouseAllocationUpdate then
+        ClientEvents.refreshSafehouseAllocationUpdate = false
         Events.EveryOneMinute.Remove(SafehouseInstanceHandler.RefreshSafehouseAllocation)
     end
 end
 
 function ClientEvents.WhileInSafehouse()
-    if not isInSafehouseUpdateActive then
-        isInSafehouseUpdateActive = true
+    if not ClientEvents.inSafehouseUpdate then
+        ClientEvents.inSafehouseUpdate = true
         Events.EveryOneMinute.Add(SafehouseInstanceHandler.HandlePlayerInSafehouse)
     end
-    if not isRefreshSafehouseAllocationUpdateActive then
-        isRefreshSafehouseAllocationUpdateActive = true
+    if not ClientEvents.refreshSafehouseAllocationUpdate then
+        ClientEvents.refreshSafehouseAllocationUpdate = true
         Events.EveryOneMinute.Add(SafehouseInstanceHandler.RefreshSafehouseAllocation)
     end
 
@@ -71,9 +47,9 @@ end
 Events.EveryOneMinute.Add(ClientEvents.UpdateEvents)
 
 
-
-
+-----------------------------------
 --* Raid handling
+
 -- If player in raid, set that they're not in it anymore
 local function OnPlayerExit()
     if ClientState.isInRaid == false then return end
@@ -85,8 +61,7 @@ end
 Events.OnPlayerDeath.Add(OnPlayerExit)
 Events.OnDisconnect.Add(OnPlayerExit)
 
-
-
+-----------------------------------
 --* Startup handling
 
 --- On player initialise, request safehouse allocation of player from server
@@ -117,6 +92,8 @@ end
 
 Events.OnPlayerUpdate.Add(OnPlayerInit)
 
+-----------------------------------
+--* Player setup handling, first time they log in
 
 ---@param playerObj IsoPlayer
 local function GiveStarterKit(playerObj)
@@ -125,20 +102,3 @@ end
 
 
 Events.OnNewGame.Add(GiveStarterKit)
-
-
---end
-
-
---Events.OnLoad.Add(OnLoadAskServerData)
-
--- local function OnLoad()
---     if not SafehouseInstanceHandler.IsInSafehouse() then
---         local BlackScreen = require("ROK/UI/BeforeMatch/BlackScreen")
---         -- TODO This is so early that it overrides the reference, fuck sake
---         BlackScreen.Open()
---     end
-
--- end
-
--- Events.OnLoad.Add(OnLoad)
