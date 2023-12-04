@@ -15,13 +15,16 @@ IG_UI_EN = {
     IGUI_EFT_AdminPanel_Tooltip_Refresh = "Refresh the players list",
 
     IGUI_EFT_AdminPanel_WipePlayer = "Wipe Player",
+    IGUI_EFT_AdminPanel_Confirmation_WipePlayer = "Are you sure you want to wipe %1 data?"
     IGUI_EFT_AdminPanel_Tooltip_WipePlayer = "Wipes everything about this player",
     
-    IGUI_AdminPanelBeforeMatch_StarterKit = "Give Starter Kit",
-    IGUI_AdminPanelBeforeMatch_Tooltip_StarterKit = "Give Starter Kit",
+    IGUI_EFT_AdminPanel_StarterKit = "Give Starter Kit",
+    IGUI_EFT_AdminPanel_Confirmation_StarterKit = "Are you sure you want to wipe %1 data?"
+    IGUI_EFT_AdminPanel_Tooltip_StarterKit = "Give Starter Kit",
     
-    IGUI_AdminPanelBeforeMatch_WipeEverything = "WIPE EVERYTHING",
-    IGUI_AdminPanelBeforeMatch_Tooltip_WipeEverything = "Wipe everything about the selected player",
+    IGUI_EFT_AdminPanel_WipeEverything = "WIPE EVERYTHING",
+    IGUI_EFT_AdminPanel_Confirmation_WipeEverything = " <CENTRE> Are you sure you want to wipe out everything for the entire server? <LINE> You can't come back from this."
+    IGUI_EFT_AdminPanel_Tooltip_WipeEverything = "Wipe everything about the selected player",
 
     // ADMIN PANEL - DURING MATCH
 

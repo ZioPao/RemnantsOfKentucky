@@ -190,9 +190,9 @@ function ManagePlayersPanel:initialise()
     self:addChild(self.btnRefresh)
 
     self.btnStarterKit = ISButton:new(btnX, btnY + self.btnWipePlayer:getHeight() + 10, btnSize, btnSize / 1.5,
-        getText("IGUI_AdminPanelBeforeMatch_StarterKit"), self, ManagePlayersPanel.onClick)
+        getText("IGUI_EFT_AdminPanel_StarterKit"), self, ManagePlayersPanel.onClick)
     self.btnStarterKit.internal = "STARTER_KIT"
-    self.btnStarterKit:setTooltip(getText("IGUI_AdminPanelBeforeMatch_Tooltip_StarterKit"))
+    self.btnStarterKit:setTooltip(getText("IGUI_EFT_AdminPanel_Tooltip_StarterKit"))
     self.btnStarterKit:setImage(deleteDataIco)
     self.btnStarterKit:setBorderRGBA(1, 1, 1, 1)
     self.btnStarterKit:setTextureRGBA(1, 1, 1, 1)
@@ -209,9 +209,9 @@ function ManagePlayersPanel:initialise()
     local normalBtnHeight = 25
 
     self.btnWipeEverything = ISButton:new(xPadding, self:getHeight() - normalBtnHeight - 10, normalBtnWidth,
-        normalBtnHeight / 1.5, getText("IGUI_AdminPanelBeforeMatch_WipeEverything"), self, ManagePlayersPanel.onClick)
+        normalBtnHeight / 1.5, getText("IGUI_EFT_AdminPanel_WipeEverything"), self, ManagePlayersPanel.onClick)
     self.btnWipeEverything.internal = "WIPE_EVERYTHING"
-    self.btnWipeEverything:setTooltip(getText("IGUI_AdminPanelBeforeMatch_Tooltip_WipeEverything"))
+    self.btnWipeEverything:setTooltip(getText("IGUI_EFT_AdminPanel_Tooltip_WipeEverything"))
     self.btnWipeEverything:setImage(deleteDataIco)
     self.btnWipeEverything:setBorderRGBA(1, 1, 1, 1)
     self.btnWipeEverything:setTextureRGBA(1, 1, 1, 1)
@@ -251,47 +251,41 @@ end
 
 function ManagePlayersPanel:onClick(button)
 
-    -- TODO Get Player data from here
+    local confY = self:getY() + self:getHeight() + 20
 
     if button.internal == 'REFRESH' then
         -- TODO refresh list
     elseif button.internal == 'WIPE_EVERYTHING' then
-        -- TODO Implement wiping everything
+        local function OnConfirmWipeEverything()
+            debugPrint("Wipe everything")
+            -- TODO Implement wiping everything
+        end
+        local text = " <CENTRE> Are you sure you want to wipe out everything for the entire server? <LINE> You can't come back from this."
+        self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, self, OnConfirmWipeEverything)
     else
         ---@type IsoPlayer
         local selectedPlayer = self.mainCategory.datas.items[self.mainCategory.datas.selected].item
         local plID = selectedPlayer:getOnlineID()
         local plUsername = selectedPlayer:getUsername()
+
         if button.internal == 'STARTER_KIT' then
-            sendClientCommand(EFT_MODULES.Common, "RelayStarterKit", {playerID = plID})
-            getPlayer():Say("Sent starter kit to " .. plUsername)
+            local function OnConfirmGiveStarterKit()
+                sendClientCommand(EFT_MODULES.Common, "RelayStarterKit", {playerID = plID})
+                getPlayer():Say("Sent starter kit to " .. plUsername)
+            end
+
+            local text = getText("IGUI_EFT_AdminPanel_Confirmation_StarterKit", plUsername)
+            self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, self, OnConfirmGiveStarterKit)
         elseif button.internal == 'WIPE_PLAYER' then
-            sendClientCommand(EFT_MODULES.Safehouse, "ResetSafehouseAllocation", {playerID = plID})
-            getPlayer():Say("Wiping safehouse and assigning a new one to " .. plUsername)
+            local function OnConfirmWipePlayer()
+                sendClientCommand(EFT_MODULES.Safehouse, "ResetSafehouseAllocation", {playerID = plID})
+                getPlayer():Say("Wiping safehouse and assigning a new one to " .. plUsername)
+            end
+
+            local text = getText("IGUI_EFT_AdminPanel_Confirmation_WipePlayer", plUsername)
+            self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, self, OnConfirmWipePlayer)
         end
     end
-
-
-
-    -- if button.internal == 'REFRESH' then
-
-    -- elseif button.internal == 'WIPE_PLAYER' then
-    --     -- TODO Get player info
-
-
-    -- elseif button.internal == 'STARTER_KIT' then
-    --     sendClientCommand(EFT_MODULES.Common, "RelayStarterKit", {})
-    --     getPlayer():Say("Sent starter kit to the selected player")
-    -- elseif button.internal == 'WIPE_EVERYTHING' then
-    --     local function onConfirmWipe()
-    --         -- TODO Implement!
-    --         print("Wipe")
-    --     end
-
-    --     local text = " <CENTRE> Are you sure you want to wipe out everything for the entire server? <LINE> You can't come back from this."
-    --     self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, self,
-    --         onConfirmWipe)
-    -- end
 end
 
 function ManagePlayersPanel:setKeyboardFocus()
