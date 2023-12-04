@@ -379,6 +379,7 @@ table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
 
 ---@alias starterKitType {fullType : string, amount : number}
 
+---@type starterKitType
 PZ_EFT_CONFIG.StarterKit = {}
 table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.Pistol", amount = 4})
 table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.9mmClip", amount = 8})

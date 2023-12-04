@@ -97,7 +97,7 @@ Events.OnPlayerUpdate.Add(OnPlayerInit)
 
 ---@param playerObj IsoPlayer
 local function GiveStarterKit(playerObj)
-    ClientCommon.GiveStarterKit(playerObj)
+    ClientCommon.GiveStarterKit(playerObj, false)
 end
 
 
