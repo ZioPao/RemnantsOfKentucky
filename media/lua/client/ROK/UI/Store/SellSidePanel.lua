@@ -43,7 +43,6 @@ end
 function SellSidePanel:onClick(btn)
     debugPrint("Sell function")
 
-    -- TODO Doesn't work with Mainpanel
     local text = "Are you sure you want to sell these items?"
     local x = self.parent.parent:getX()
     local y = self.parent.parent:getY() + self.parent.parent:getHeight() + 20
@@ -53,7 +52,7 @@ end
 
 ---Runs after you confirm that you want to sell
 function SellSidePanel:onConfirmSell()
-    -- TODO Finish this
+    -- TODO Rewrite this
     debugPrint("OnConfirmSell")
 
     local itemsTosell = {}
@@ -71,6 +70,7 @@ function SellSidePanel:onConfirmSell()
 
         local itemTable = {
             item = {
+                fullType = fullType,
                 basePrice = itemData.basePrice,
                 multiplier = 1,
                 sellMultiplier = itemData.sellMultiplier,
@@ -81,10 +81,21 @@ function SellSidePanel:onConfirmSell()
         table.insert(itemsTosell, itemTable)
     end
 
-    ClientShopManager.TrySell(itemsTosell)
-
+    -- Try to sell it and removes item on the client
+    if ClientShopManager.TrySell(itemsTosell) then
+        local plInv = getPlayer():getInventory()
+        for i=1, #self.mainPanel.items.items do
+            ---@type InventoryItem
+            local item = self.mainPanel.items.items[i].item
+            ISRemoveItemTool.removeItem(item, getPlayer())
+        end
+    end
     -- This is from the Btn context, so we need to go one parent out
     -- These names suck ass
+
+    self.textPanel:setText("")
+    self.textPanel.textDirty = true
+    self.parent.draggedItems = {}
     self.parent.items.items = {}        -- Clean it
 end
 

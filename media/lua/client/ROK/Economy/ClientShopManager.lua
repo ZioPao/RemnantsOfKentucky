@@ -1,6 +1,5 @@
 require "ROK/ClientData"
 local BankManager = require("ROK/Economy/ClientBankManager")
-local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 local ClientCommon = require("ROK/ClientCommon")
 ------------------
 
@@ -29,7 +28,8 @@ end
 
 --- Try sell items for quantity
 --- See PZ_EFT_ShopItems_Config.addItem for item value
----@param sellData table {{item = {}, quantity = 0}...}
+---@param sellData {quantity : number, item : shopItemElement}
+---@return boolean
 function ClientShopManager.TrySell(sellData)
 
 
@@ -50,15 +50,19 @@ function ClientShopManager.TrySell(sellData)
             hasData = true
         else
             debugPrint("ERROR: ClientShopManager.TrySell - Invalid sellData")
-            return
+            return false
         end
     end
 
     if not hasData or not ClientShopManager.CanSell(data.items) then
-        return
+        return false
     end
 
+    -- Remove items from the client
+
+    -- Process transaction
     BankManager.TryProcessTransaction(totalPrice, EFT_MODULES.Shop, "SellItems", data, EFT_MODULES.Shop, "SellFailed", data)
+    return true
 end
 
 ---@param totalPrice number
@@ -74,14 +78,14 @@ function ClientShopManager.CanBuy(totalPrice)
     return false
 end
 
----@param items any
+---@param items {quantity : number, item : shopItemElement}
 ---@return boolean
 function ClientShopManager.CanSell(items)
     local player = getPlayer()
     local inventory = player:getInventory()
 
     for _, itemData in ipairs(items) do
-        if inventory:getItemCountRecurse(itemData.item) < itemData.quantity then
+        if inventory:getItemCountRecurse(itemData.item.fullType) < itemData.quantity then
             return false
         end
     end

@@ -120,15 +120,15 @@ end
 function SellCategory:onDrawItem(y, item)
     self:drawRectBorder(0, (y), self:getWidth(), self.itemheight - 1, 0.9, self.borderColor.r, self.borderColor.g,
         self.borderColor.b)
-    if self.selected == item.index then         -- TODO Is this right? Check this again
-        self:drawRect(0, (y), self:getWidth(), self.itemheight - 1, 0.3, 0.7, 0.35, 0.15)
-    end
+    -- if self.selected == item.index then         -- TODO Is this right? Check this again
+    --     self:drawRect(0, (y), self:getWidth(), self.itemheight - 1, 0.3, 0.7, 0.35, 0.15)
+    -- end
 
     local itemName = item.item:getName()
     self:drawText(itemName, 30, y + 2, 1, 1, 1, 0.9, self.font)
 
-    self:drawTextureScaledAspect(item.item:getTex(), 5, y - 10, 18, 18, 1, item.item:getR(), item.item:getG(),
-        item.item:getB())
+    -- self:drawTextureScaledAspect(item.item:getTex(), 5, y - 10, 18, 18, 1, item.item:getR(), item.item:getG(),
+    --     item.item:getB())
 
     -- Add price
     local itemFullType = item.item:getFullType()
