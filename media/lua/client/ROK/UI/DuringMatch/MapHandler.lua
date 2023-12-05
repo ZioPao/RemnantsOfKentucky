@@ -19,8 +19,6 @@ function MapHandler:write()
     local instance = getPlayer():getModData().currentInstance
     local extractionPoints = instance.extractionPoints
 
-    -- TODO Add separate icon for the random extraction points 
-
     --Loop through extraction points and add the note on the map
     for i = 1, #extractionPoints do
         local singleExtractionPoint = extractionPoints[i]
@@ -31,15 +29,15 @@ function MapHandler:write()
 
         if singleExtractionPoint.isRandom then
             --debugPrint("Found random extraction point, adding it to the map")
-            iconSymbol:setRGBA(0, 0.66, 0, 1.0)
+            iconSymbol:setRGBA(0, 0.25, 0, 1.0)
         else
             --debugPrint("Found permanent extraction point, adding it to the map")
-            iconSymbol:setRGBA(0.66, 0, 0, 1.0)
+            iconSymbol:setRGBA(0.25, 0, 0, 1.0)
         end
 
 
         iconSymbol:setAnchor(0.0, 0.0)
-        iconSymbol:setScale(ISMap.SCALE/6)
+        --iconSymbol:setScale(ISMap.SCALE/6)
 
     end
 end

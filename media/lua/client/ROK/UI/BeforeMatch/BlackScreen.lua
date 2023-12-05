@@ -5,10 +5,9 @@ local backgroundTexture = getTexture("media/textures/ROK_LoadingScreen.png")
 ---@field text string
 ---@field textX number
 ---@field textY number
+---@field isClosing boolean
+---@field closingTime number
 local BlackScreen = ISPanel:derive("BlackScreen")
-
-
--- TODO This piece of shit is still broken
 
 ---@return BlackScreen
 function BlackScreen:new()
@@ -16,6 +15,8 @@ function BlackScreen:new()
     setmetatable(o, self)
     self.__index = self
     o.backgroundColor = { r = 0, g = 0, b = 0, a = 1 }
+    o.isClosing = false
+    o.closingTime = 0
 
     ---@cast o BlackScreen
 
@@ -33,9 +34,26 @@ function BlackScreen:initialise()
 end
 
 function BlackScreen:prerender()
-    self:drawTextureScaled(backgroundTexture, 0, 0, self.width, self.height, 1, 1, 1, 1)
-    --self:drawRect(0, 0, self:getWidth(), self.height, self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g, self.backgroundColor.b)
-    self:drawText(self.text, self.textX, self.textY, 1, 1, 1, 1, UIFont.Massive)
+
+    local alpha = 1
+    if self.isClosing then
+        self.closingTime = self.closingTime + ((1.0 / 60)*getGameTime():getMultiplier())
+    end
+    alpha = 1 - self.closingTime
+
+    self:drawTextureScaled(backgroundTexture, 0, 0, self.width, self.height, alpha, 1, 1, 1)
+    self:drawText(self.text, self.textX, self.textY, 1, 1, 1, alpha, UIFont.Massive)
+
+    if alpha <= 0 then
+        self:close()
+    end
+end
+
+function BlackScreen:startFade()
+    if self.isClosing == false then
+        self.isClosing = true
+        self.closingTime = 0
+    end
 end
 
 function BlackScreen:close()
@@ -60,8 +78,7 @@ function BlackScreen.Close()
     --debugPrint("Closing black screen")
     if BlackScreen.instance then
         debugPrint("black screen instance available, closing")
-        BlackScreen.instance:close()
-        BlackScreen.instance = nil
+        BlackScreen.instance:startFade()
     end
 end
 

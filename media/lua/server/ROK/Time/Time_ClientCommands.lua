@@ -43,6 +43,19 @@ function ClientCommands.StartMatchEndCountdown(playerObj, args)
     --sendServerCommand(EFT_MODULES.UI, 'SetTimePanelDescription', {index = 2})       -- 2 = The match has ended
 end
 
+---* Setting time from client
+function ClientCommands.SetDayTime()
+    debugPrint("Setting time to 9")
+    getGameTime():setTimeOfDay(9)
+end
+
+function ClientCommands.SetNightTime()
+    debugPrint("Setting time to 23")
+    getGameTime():setTimeOfDay(23)
+end
+
+
+
 -----------------------------
 
 local OnClientCommand = function(module, command, playerObj, args)

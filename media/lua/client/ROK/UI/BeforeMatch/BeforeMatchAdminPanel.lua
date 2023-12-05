@@ -115,8 +115,10 @@ function BeforeMatchAdminPanel:onClick(btn)
             self.openedPanel = ManagePlayersPanel.Open(self:getRight(), self:getBottom() - self:getHeight())
         end
     elseif btn.internal == 'SET_TIME_DAY' then
+        debugPrint("Setting Day Time")
         sendClientCommand(EFT_MODULES.Time, "SetDayTime", {})
     elseif btn.internal == 'SET_TIME_NIGHT' then
+        debugPrint("Setting Night Time")
         sendClientCommand(EFT_MODULES.Time, "SetNightTime", {})
     end
 end

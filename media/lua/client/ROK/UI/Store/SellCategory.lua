@@ -28,7 +28,7 @@ end
 local function PrerenderItems(element)
 
     if #element.items == 0 then
-        element:drawText("Drag items in here to sell them", 10, 100, 1, 1, 1, 1, UIFont.Medium)
+        element:drawText(getText("IGUI_Shop_Sell_Tooltip"), 10, 100, 1, 1, 1, 1, UIFont.Medium)
     end
 
     ISScrollingListBox.prerender(element)
@@ -50,18 +50,7 @@ function SellCategory:createChildren()
     self:addChild(self.sellSidePanel)
 end
 
-
-
--- function SellCategory:render()
---     StoreScrollingListBox.render(self)
---     self.items:drawText("1212321312321312321312321312312313", 0, self.height /2, 1, 1, 1, 1, UIFont.Medium)
---     -- if #self.items.items == 0 then
---     --     self:drawText("123", self.width / 2, self.height /2, 1, 1, 1, 1, UIFont.Medium)
---     -- end
--- end
-
-
----@param id any
+---@param id number
 function SellCategory:addToDraggedItems(id)
     if self.draggedItems == nil then
         self.draggedItems = {}
@@ -125,11 +114,10 @@ function SellCategory:onDragItem(x, y)
 end
 
 ---Override for sellList
----@param y any
+---@param y number
 ---@param item any
----@param alt any
----@return unknown
-function SellCategory:onDrawItem(y, item, alt)
+---@return number
+function SellCategory:onDrawItem(y, item)
     self:drawRectBorder(0, (y), self:getWidth(), self.itemheight - 1, 0.9, self.borderColor.r, self.borderColor.g,
         self.borderColor.b)
     if self.selected == item.index then
@@ -137,7 +125,7 @@ function SellCategory:onDrawItem(y, item, alt)
     end
 
     local itemName = item.item:getName()
-    self:drawText(itemName, 25, y + 2, 1, 1, 1, 0.9, self.font)
+    self:drawText(itemName, 30, y + 2, 1, 1, 1, 0.9, self.font)
 
     self:drawTextureScaledAspect(item.item:getTex(), 5, y + 2, 18, 18, 1, item.item:getR(), item.item:getG(),
         item.item:getB())
@@ -149,8 +137,6 @@ end
 ----------------------------------
 
 function SellCategory:close()
-    -- self.sellSidePanel:removeFromUIManager()
-    -- self.sellSidePanel:close()
     StoreScrollingListBox.close(self)
 end
 
