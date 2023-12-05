@@ -14,7 +14,7 @@ function ClientShopManager.TryBuy(item, quantity)
     local totalPrice = item.basePrice * item.multiplier * quantity
 
     if not ClientShopManager.CanBuy(totalPrice) then
-        print("WARN: ClientShopManager.CanBuy - Player tried to buy with insufficient balance")
+        debugPrint("WARN: ClientShopManager.CanBuy - Player tried to buy with insufficient balance")
         return false
     end
 
@@ -45,8 +45,8 @@ function ClientShopManager.TrySell(sellData)
             table.insert(data.items, itemData)
             hasData = true
         else
-            print("ERROR: ClientShopManager.TrySell - Invalid sellData")
-            return;
+            debugPrint("ERROR: ClientShopManager.TrySell - Invalid sellData")
+            return
         end
     end
 
@@ -64,7 +64,7 @@ function ClientShopManager.CanBuy(totalPrice)
     if md.bankAccount and type(md.bankAccount.balance) == 'number' then
         return md.bankAccount.balance >= totalPrice
     else
-        print("ERROR: Account balance hasn't been initialized or something else is wrong")
+        debugPrint("ERROR: Account balance hasn't been initialized or something else is wrong")
     end
 
     return false

@@ -44,7 +44,7 @@ function ServerBankManager.ProcessTransaction (username, amount)
     local bankAccounts = ServerData.Bank.GetBankAccounts()
 
     if not bankAccounts[username] then
-        print("ServerBankManager.addAmountToAccount: Account " .. username .. " doesn't exist!")
+        debugPrint("ServerBankManager.addAmountToAccount: Account " .. username .. " doesn't exist!")
         return {success = false, account = nil}
     end
 
@@ -90,12 +90,12 @@ function BankCommands.ProcessTransaction(playerObj, args)
     local result = ServerBankManager.ProcessTransaction(playerObj:getUsername(), args.amount)
     --print("Result from ProcessTransaction " .. tostring(result))
     if result.success then
-        print("Transaction success")
+        debugPrint("Transaction success")
         if args.onSuccess and args.onSuccess.callbackModule and args.onSuccess.callbackCommand then
             sendServerCommand(playerObj, args.onSuccess.callbackModule, args.onSuccess.callbackCommand, args.onSuccess.callbackArgs)
         end
     else
-        print("Transaction fail")
+        debugPrint("Transaction fail")
         if args.onFail and args.onFail.callbackModule and args.onFail.callbackCommand then
             sendServerCommand(playerObj, args.onFail.callbackModule, args.onFail.callbackCommand, args.onFail.callbackArgs)
         end

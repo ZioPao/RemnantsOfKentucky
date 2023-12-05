@@ -122,7 +122,7 @@ function SafehouseInstanceManager.GetOrAssignSafehouse(player)
         playerSafehouseKey = SafehouseInstanceManager.GetNextFreeSafehouseKey()
 
         if not playerSafehouseKey then
-            print("SafehouseInstanceManager.getOrAssignSafehouse: No free safehouses found for player.")
+            debugPrint("SafehouseInstanceManager.getOrAssignSafehouse: No free safehouses found for player.")
             return
         end
 

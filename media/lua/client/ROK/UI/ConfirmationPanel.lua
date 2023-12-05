@@ -67,11 +67,11 @@ end
 
 function ConfirmationPanel:onClick(btn)
     if btn.internal == 'YES' then
-        print("YES")
+        debugPrint("YES")
         self.onConfirmFunc(self.parentPanel)
         self:close()
     elseif btn.internal == 'NO' then
-        print("NO")
+        debugPrint("NO")
         self:close()
     end
 end

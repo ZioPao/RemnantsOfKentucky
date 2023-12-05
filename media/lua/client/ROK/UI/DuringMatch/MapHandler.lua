@@ -62,11 +62,11 @@ ISWorldMap.HandleEFTExits = function(playerNum, cleanOnly)
     ISWorldMap.ShowWorldMap(playerNum)
 
     local function TryHandleMapSymbols()
-        print("Trying to set the symbols and closing the map")
+        debugPrint("Trying to set the symbols and closing the map")
         if ISWorldMap_instance == nil then return end
-        print("Found ISWorldMap_instance")
+        debugPrint("Found ISWorldMap_instance")
         if ISWorldMap_instance.mapAPI == nil then return end
-        print("Found ISWorldMap_instance map API")
+        debugPrint("Found ISWorldMap_instance map API")
 
         local symbolsApi = ISWorldMap_instance.mapAPI:getSymbolsAPI()
         local mapHandler = MapHandler:new(symbolsApi)

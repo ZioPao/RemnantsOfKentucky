@@ -25,7 +25,7 @@ function debug_getPosition()
                   " WorldY: " .. y
 
     Clipboard.setClipboard(s)
-    print(s)
+    debugPrint(s)
 end
 
 function debug_getZeroPosition(rootx, rooty)
