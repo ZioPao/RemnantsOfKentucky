@@ -1,8 +1,7 @@
-
+-- Resolution changes are handled in TimePanel since this is directly connected to it
 
 ---@class ExtractionPanel : ISPanel
 local ExtractionPanel = ISPanel:derive("ExtractionPanel")
---TODO Add OnResolutionChange event
 
 ---Starts a new Extraction panel
 ---@param x number

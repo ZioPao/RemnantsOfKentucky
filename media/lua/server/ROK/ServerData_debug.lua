@@ -53,7 +53,7 @@ ClientCommands.TeleportPlayersToInstance = function()
 end
 
 ClientCommands.sendPlayersToSafehouse = function()
-    SafehouseInstanceManager.SendPlayersToSafehouse()
+    --SafehouseInstanceManager.SendPlayersToSafehouse()
 end
 
 ClientCommands.loadShopPrices = function()

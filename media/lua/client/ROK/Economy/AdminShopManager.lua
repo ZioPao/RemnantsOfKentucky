@@ -76,8 +76,6 @@ end
 
 -------------------------------------------------------------------
 
--- TODO This is just a workaround for the proof of concept build
---Events.OnCreatePlayer.Add(AdminShopManager.RefreshDailyItems)
 
 
 return AdminShopManager

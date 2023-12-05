@@ -132,8 +132,6 @@ function MainShopPanel:createChildren()
     local addedHeight = self.balancePanel.height
     local catHeight = self.height - th - rh - addedHeight - 50
 
-    -- TODO Make another wrapper 
-
     --* ESSENTIAL ITEMS *--
     self.essentialItemsCat = BuyCategory:new(0, 0, self.width, catHeight, self)
     self.essentialItemsCat:initialise()

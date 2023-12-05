@@ -31,8 +31,10 @@ function ClientEvents.WhileInSafehouse()
         Events.EveryOneMinute.Add(SafehouseInstanceHandler.RefreshSafehouseAllocation)
     end
 
-    -- TODO Move this away, just for test
-    sendClientCommand(EFT_MODULES.PvpInstances, "GetAmountAvailableInstances", {})
+    -- Updates available instances. Not really optimal placing it here, but it'll work.
+    if isAdmin() then
+        sendClientCommand(EFT_MODULES.PvpInstances, "GetAmountAvailableInstances", {})
+    end
 
 end
 
@@ -85,11 +87,6 @@ local function OnPlayerInit(player)
     --* Shop Items
     debugPrint("Sending TransmitShopItems now that player is in")
     sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', {})
-
-    --* Opens black screen
-    -- TODO Still broken when outside of a safehouse at startup
-    --BlackScreen.Open()
-
 
     Events.OnPlayerUpdate.Remove(OnPlayerInit)
 end

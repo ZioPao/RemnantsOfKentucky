@@ -5,6 +5,12 @@ local GenericUI = {}
 
 GenericUI.SMALL_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Small):getLineHeight()
 GenericUI.MEDIUM_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Medium):getLineHeight()
+GenericUI.LARGE_FONT_HGT = getTextManager():getFontHeight(UIFont.Large)
+
+GenericUI.FONT_SCALE = GenericUI.MEDIUM_FONT_HGT / 14
+GenericUI.HEADER_HGT = GenericUI.MEDIUM_FONT_HGT + 2 * 2
+GenericUI.ENTRY_HGT = GenericUI.HEADER_HGT
+
 
 ---Returns a string with the formatted time in minutes:seconds
 ---@param time number?

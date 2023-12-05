@@ -148,8 +148,6 @@ PZ_EFT_CONFIG.Default = {
 ---@type table<integer, spawnPointsType> 
 PZ_EFT_CONFIG.Spawnpoints = {}
 
--- FIXME Some spawn points are broken!
-
 table.insert(PZ_EFT_CONFIG.Spawnpoints, {
     name = "SOUTHERN SHORE SPAWN #1",
     x = 525,
@@ -185,7 +183,7 @@ table.insert(PZ_EFT_CONFIG.Spawnpoints, {
     z = 0
 })
 
--- FIXME This is broken! 
+-- FIXME This spawnpoint is broken! 
 -- table.insert(PZ_EFT_CONFIG.Spawnpoints, {
 --     name = "WESTERN SHORE SPAWN #2",
 --     x = 854,
