@@ -149,8 +149,8 @@ function MatchController.HandleZombieSpawns(loops)
                     local randomX = ZombRand(20, 60) * (ZombRand(0, 100) > 50 and -1 or 1)
                     local randomY = ZombRand(20, 60) * (ZombRand(0, 100) > 50 and -1 or 1)
                     sq = getSquare(x + randomX, y + randomY, 0)
+                    ---@diagnostic disable-next-line: param-type-mismatch
                 until sq and not sq:getFloor():getSprite():getProperties():Is(IsoFlagType.water)
-                
                 -- Amount of zombies should scale based on players amount too, to prevent from killing the server
                 local zombiesAmount = math.floor(math.log(loops, MatchController.GetAmountAlivePlayers()) * MatchController.instance.zombieSpawnMultiplier)
                 debugPrint("spawning " .. zombiesAmount .. " near " .. player:getUsername())

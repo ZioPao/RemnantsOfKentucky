@@ -6,19 +6,18 @@ local MODULE = EFT_MODULES.UI
 
 ------------------------------------------
 
+local InterfaceCommandss = {}
 
-local ServerCommands = {}
-
-function ServerCommands.OpenBlackScreen()
+function InterfaceCommandss.OpenBlackScreen()
     BlackScreen.Open()
 end
 
-function ServerCommands.CloseBlackScreen()
+function InterfaceCommandss.CloseBlackScreen()
     BlackScreen.Close()
 end
 
 ---@param args {startingState : string}
-function ServerCommands.SwitchMatchAdminUI(args)
+function InterfaceCommandss.SwitchMatchAdminUI(args)
     -- Check if admin UI is already open. If it is, closes it and opens the during match one
     local startingState = args.startingState
 
@@ -35,24 +34,24 @@ end
 
 --- Sets the amount of available instances to the client state
 ---@param args {amount : integer}
-function ServerCommands.ReceiveAmountAvailableInstances(args)
+function InterfaceCommandss.ReceiveAmountAvailableInstances(args)
     if BeforeMatchAdminPanel.instance == nil then return end
     BeforeMatchAdminPanel.instance:setAvailableInstancesText(tostring(args.amount))
 end
 
 ---@param args {amount : number}
-function ServerCommands.ReceiveAlivePlayersAmount(args)
+function InterfaceCommandss.ReceiveAlivePlayersAmount(args)
     if DuringMatchAdminPanel.instance == nil then return end
     DuringMatchAdminPanel.instance:setAlivePlayersText(tostring(args.amount))
 
 end
 
 ------------------------------------------
-local OnServerCommand = function(module, command, args)
-    if module == MODULE and ServerCommands[command] then
+local function OnInterfaceCommands(module, command, args)
+    if module == MODULE and InterfaceCommandss[command] then
         --debugPrint("Server Command - " .. MODULE .. "." .. command)
-        ServerCommands[command](args)
+        InterfaceCommandss[command](args)
     end
 end
 
-Events.OnServerCommand.Add(OnServerCommand)
+Events.OnInterfaceCommands.Add(OnInterfaceCommands)

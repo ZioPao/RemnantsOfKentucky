@@ -1,3 +1,6 @@
+local TimePanel = require("ROK/UI/TimePanel")
+----------------------------------
+
 -- Resolution changes are handled in TimePanel since this is directly connected to it
 
 ---@class ExtractionPanel : ISPanel
