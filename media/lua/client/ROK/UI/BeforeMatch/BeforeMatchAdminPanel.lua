@@ -65,6 +65,13 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnSetTime:setEnable(false)
     self:addChild(self.btnSetTime)
 
+
+    -- Additional handling for the btnSetTime
+    self.btnSetTimeTab = {
+        prevInt = "",
+        isChanging = false
+    }
+
     --------------------
     -- INFO PANEL, TOP ONE
 
@@ -117,9 +124,15 @@ function BeforeMatchAdminPanel:onClick(btn)
     elseif btn.internal == 'SET_TIME_DAY' then
         debugPrint("Setting Day Time")
         sendClientCommand(EFT_MODULES.Time, "SetDayTime", {})
+        btn:setEnable(false)
+        self.btnSetTimeTab.isChanging = true
+        self.btnSetTimeTab.prevInt = 'SET_TIME_DAY'
     elseif btn.internal == 'SET_TIME_NIGHT' then
         debugPrint("Setting Night Time")
         sendClientCommand(EFT_MODULES.Time, "SetNightTime", {})
+        btn:setEnable(false)
+        self.btnSetTimeTab.isChanging = true
+        self.btnSetTimeTab.prevInt = 'SET_TIME_NIGHT'
     end
 end
 
@@ -128,7 +141,7 @@ function BeforeMatchAdminPanel:update()
     -- When starting the match, we'll disable the default close button
     self.closeButton:setEnable(not ClientState.isStartingMatch)
     self.btnManagePlayers:setEnable(not ClientState.isStartingMatch)
-    self.btnSetTime:setEnable(not ClientState.isStartingMatch)
+
 
     -- Check hour 
     local time = getGameTime():getTimeOfDay()
@@ -141,6 +154,23 @@ function BeforeMatchAdminPanel:update()
         self.btnSetTime.internal = "SET_TIME_DAY"
         self.btnSetTime.title = getText("IGUI_EFT_AdminPanel_SetDayTime")
     end
+
+    -- Reactivates the btnSetTime only when the internal has changed
+    if self.btnSetTimeTab.isChanging then
+        if self.btnSetTimeTab.prevInt ~= self.btnSetTime.internal then
+            self.btnSetTime:setEnable(not ClientState.isStartingMatch)
+
+            -- Reset the table
+            self.btnSetTimeTab.prevInt = ""
+            self.btnSetTimeTab.isChanging = false
+        else
+            self.btnSetTime:setEnable(false)
+        end
+    else
+        self.btnSetTime:setEnable(not ClientState.isStartingMatch)
+
+    end
+
 
     local valAssignedSafehousesText = " <CENTRE> -1"     -- TODO This is a placeholder!
     self.labelValAssignedSafehouses:setText(valAssignedSafehousesText)

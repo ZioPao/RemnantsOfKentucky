@@ -37,7 +37,7 @@ function BlackScreen:prerender()
 
     local alpha = 1
     if self.isClosing then
-        self.closingTime = self.closingTime + ((1.0 / 60)*getGameTime():getMultiplier())
+        self.closingTime = self.closingTime + ((2.0 / 60)*getGameTime():getMultiplier())
     end
     alpha = 1 - self.closingTime
 
