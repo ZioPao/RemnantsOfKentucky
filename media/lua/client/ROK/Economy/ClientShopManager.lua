@@ -43,7 +43,7 @@ function ClientShopManager.TrySell(sellData)
 
     for _, itemData in ipairs(sellData) do
         if itemData and itemData.item and itemData.quantity then
-            totalPrice = itemData.item.basePrice * itemData.itm.multiplier * itemData.item.sellMultiplier *
+            totalPrice = itemData.item.basePrice * itemData.item.multiplier * itemData.item.sellMultiplier *
                              itemData.quantity
             data.totalPrice = data.totalPrice + totalPrice
             table.insert(data.items, itemData)

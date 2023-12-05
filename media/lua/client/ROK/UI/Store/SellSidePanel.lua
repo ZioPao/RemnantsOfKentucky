@@ -70,10 +70,11 @@ function SellSidePanel:onConfirmSell()
         end
 
         local itemTable = {
-            fullType = fullType,
-            basePrice = itemData.basePrice,
-            multiplier = 1,
-            sellMultiplier = itemData.sellMultiplier,
+            item = {
+                basePrice = itemData.basePrice,
+                multiplier = 1,
+                sellMultiplier = itemData.sellMultiplier,
+            },
             quantity = 1,
         }
 

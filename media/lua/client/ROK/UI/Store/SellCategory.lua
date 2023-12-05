@@ -127,7 +127,7 @@ function SellCategory:onDrawItem(y, item)
     local itemName = item.item:getName()
     self:drawText(itemName, 30, y + 2, 1, 1, 1, 0.9, self.font)
 
-    self:drawTextureScaledAspect(item.item:getTex(), 5, y - 4, 18, 18, 1, item.item:getR(), item.item:getG(),
+    self:drawTextureScaledAspect(item.item:getTex(), 5, y - 10, 18, 18, 1, item.item:getR(), item.item:getG(),
         item.item:getB())
 
     -- Add price
