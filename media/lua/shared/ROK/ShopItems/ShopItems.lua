@@ -17,3 +17,4 @@ end
 
 
 
+-- TODO Automatically loop through EVERY ITEM and add a cost based on something

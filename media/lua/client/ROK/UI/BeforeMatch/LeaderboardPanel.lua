@@ -142,13 +142,13 @@ function LeaderboardPanel:createChildren()
     self.labelLeaderboard.background = false
     self.labelLeaderboard.backgroundColor = { r = 0, g = 0, b = 0, a = 0 }
     self.labelLeaderboard.borderColor = { r = 0.4, g = 0.4, b = 0.4, a = 1 }
-    self.labelLeaderboard:setText(" <CENTRE> <H1> Leaderboard")
+    self.labelLeaderboard:setText(" <CENTRE> <H1> " .. getText("IGUI_EFT_Leaderboard_Title"))
     self.labelLeaderboard:paginate()
     self:addChild(self.labelLeaderboard)
 
     yOffset = yOffset + self.labelLeaderboard:getHeight() + yMargin
 
-    self.filterEntry = ISTextEntryBox:new("Players", xOffset, yOffset, self:getWidth() - 10 * 2, entryHgt)
+    self.filterEntry = ISTextEntryBox:new(getText("IGUI_EFT_Leaderboard_Players"), xOffset, yOffset, self:getWidth() - 10 * 2, entryHgt)
     self.filterEntry:initialise()
     self.filterEntry:instantiate()
     self.filterEntry:setClearButton(true)

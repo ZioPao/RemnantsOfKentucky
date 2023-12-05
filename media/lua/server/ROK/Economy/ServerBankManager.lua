@@ -5,16 +5,12 @@ require "ROK/ServerData"
 ---@class ServerBankManager
 local ServerBankManager =  {}
 
----comment
 ---@param username string
 ---@return bankPlayerTable
 local function CreateAccountTable(username)
-    return {
-        username = username,
-        balance = PZ_EFT_CONFIG.Default.balance
-    }
+    local tab = {username = username, balance = PZ_EFT_CONFIG.Default.balance, cratesValue = 0}
+    return tab
 end
-
 
 --- Get account information by username
 ---@param username string

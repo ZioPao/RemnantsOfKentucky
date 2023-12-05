@@ -136,7 +136,8 @@ PZ_EFT_CONFIG.MatchSettings = {
 }
 
 PZ_EFT_CONFIG.Default = {
-    balance = 10000
+    balance = 10000,
+    cratesValue = 0,
 }
 
 ------------------------------------------

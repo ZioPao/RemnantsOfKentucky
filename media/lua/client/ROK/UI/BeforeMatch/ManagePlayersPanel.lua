@@ -254,7 +254,7 @@ function ManagePlayersPanel:onClick(button)
     local confY = self:getY() + self:getHeight() + 20
 
     if button.internal == 'REFRESH' then
-        -- TODO refresh list
+        self:fillList()
     elseif button.internal == 'WIPE_EVERYTHING' then
         local function OnConfirmWipeEverything()
             debugPrint("Wipe everything")
