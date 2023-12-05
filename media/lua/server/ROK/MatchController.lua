@@ -7,8 +7,6 @@ local SafehouseInstanceManager = require("ROK/SafehouseInstanceManager")
 
 ---------------------------------------------------
 
--- TODO Add Overtime
-
 ---@class MatchController
 ---@field pvpInstance pvpInstanceTable
 ---@field playersInMatch table<number,number>        Table of player ids
@@ -38,8 +36,10 @@ function MatchController:initialise()
         return
     end
 
-    PvpInstanceManager.TeleportPlayersToInstance()  -- TODO this is kinda shaky, we should integrate it here in MatchController
+    -- Teleport everyone in the match
+    PvpInstanceManager.TeleportPlayersToInstance()
 
+    -- Add them to the list to keep track of them
     local temp = getOnlinePlayers()
     for i = 0, temp:size() - 1 do
         local player = temp:get(i)
@@ -49,7 +49,6 @@ function MatchController:initialise()
 
     -- Default value for the zombie multiplier
     self:setZombieSpawnMultiplier(PZ_EFT_CONFIG.MatchSettings.zombieSpawnMultiplier)
-    --self:start()
 end
 
 ---Wait 5 seconds before starting the match

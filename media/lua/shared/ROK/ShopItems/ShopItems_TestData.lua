@@ -7,20 +7,20 @@ would want to have a multiplier to decrease their cost by some
 amount compared to the normal
 --]]
 
-PZ_EFT_ShopItems_Config.addItem("Base.Apple", {["ESSENTIALS"] = true}, 20, 1, 0.5)
-PZ_EFT_ShopItems_Config.addItem("Base.Bandage", {["ESSENTIALS"] = true}, 20, 1, 0.5)
-PZ_EFT_ShopItems_Config.addItem("Base.WaterBottleFull", {["ESSENTIALS"] = true}, 20, 1, 0.5)
+PZ_EFT_ShopItems_Config.AddItem("Base.Apple", {["ESSENTIALS"] = true}, 20, 1, 0.5)
+PZ_EFT_ShopItems_Config.AddItem("Base.Bandage", {["ESSENTIALS"] = true}, 20, 1, 0.5)
+PZ_EFT_ShopItems_Config.AddItem("Base.WaterBottleFull", {["ESSENTIALS"] = true}, 20, 1, 0.5)
 
 
+-------------------------
 
 
-
-PZ_EFT_ShopItems_Config.addItem("Base.Shovel", {["JUNK"] = true}, 100, 0.5, 0.7)
-PZ_EFT_ShopItems_Config.addItem("Base.Acorn", {["HIGHVALUE"] = true}, 100, 0.5, 0.7)
-PZ_EFT_ShopItems_Config.addItem("Base.GuitarAcoustic", {["HIGHVALUE"] = true}, 100, 0.5, 0.7)
-PZ_EFT_ShopItems_Config.addItem("Base.Bullets9mm", {["HIGHVALUE"] = true}, 100, 0.5, 0.7)
-PZ_EFT_ShopItems_Config.addItem("Base.Allsorts", {["HIGHVALUE"] = true}, 100, 0.5, 0.7)
-PZ_EFT_ShopItems_Config.addItem("Base.Bandaid", {["LOWVALUE"] = true}, 100, 0.5, 0.7)
-PZ_EFT_ShopItems_Config.addItem("Base.Amplifier", {["LOWVALUE"] = true}, 100, 0.5, 0.7)
-PZ_EFT_ShopItems_Config.addItem("Base.Antibiotics", {["LOWVALUE"] = true}, 100, 0.5, 0.7)
-PZ_EFT_ShopItems_Config.addItem("Base.Avocado", {["LOWVALUE"] = true}, 100, 0.5, 0.7)
+PZ_EFT_ShopItems_Config.AddItem("Base.Shovel", {["JUNK"] = true}, 100, 0.5, 0.7)
+PZ_EFT_ShopItems_Config.AddItem("Base.Acorn", {["HIGHVALUE"] = true}, 100, 0.5, 0.7)
+PZ_EFT_ShopItems_Config.AddItem("Base.GuitarAcoustic", {["HIGHVALUE"] = true}, 100, 0.5, 0.7)
+PZ_EFT_ShopItems_Config.AddItem("Base.Bullets9mm", {["HIGHVALUE"] = true}, 100, 0.5, 0.7)
+PZ_EFT_ShopItems_Config.AddItem("Base.Allsorts", {["HIGHVALUE"] = true}, 100, 0.5, 0.7)
+PZ_EFT_ShopItems_Config.AddItem("Base.Bandaid", {["LOWVALUE"] = true}, 100, 0.5, 0.7)
+PZ_EFT_ShopItems_Config.AddItem("Base.Amplifier", {["LOWVALUE"] = true}, 100, 0.5, 0.7)
+PZ_EFT_ShopItems_Config.AddItem("Base.Antibiotics", {["LOWVALUE"] = true}, 100, 0.5, 0.7)
+PZ_EFT_ShopItems_Config.AddItem("Base.Avocado", {["LOWVALUE"] = true}, 100, 0.5, 0.7)
