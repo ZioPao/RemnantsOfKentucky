@@ -54,4 +54,4 @@ local function OnInterfaceCommands(module, command, args)
     end
 end
 
-Events.OnInterfaceCommands.Add(OnInterfaceCommands)
+Events.OnServerCommand.Add(OnInterfaceCommands)

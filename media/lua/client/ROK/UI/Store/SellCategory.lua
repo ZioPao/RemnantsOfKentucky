@@ -115,20 +115,35 @@ end
 
 ---Override for sellList
 ---@param y number
----@param item any
+---@param item {item : InventoryItem}
 ---@return number
 function SellCategory:onDrawItem(y, item)
     self:drawRectBorder(0, (y), self:getWidth(), self.itemheight - 1, 0.9, self.borderColor.r, self.borderColor.g,
         self.borderColor.b)
-    if self.selected == item.index then
+    if self.selected == item.index then         -- TODO Is this right? Check this again
         self:drawRect(0, (y), self:getWidth(), self.itemheight - 1, 0.3, 0.7, 0.35, 0.15)
     end
 
     local itemName = item.item:getName()
     self:drawText(itemName, 30, y + 2, 1, 1, 1, 0.9, self.font)
 
-    self:drawTextureScaledAspect(item.item:getTex(), 5, y + 2, 18, 18, 1, item.item:getR(), item.item:getG(),
+    self:drawTextureScaledAspect(item.item:getTex(), 5, y - 4, 18, 18, 1, item.item:getR(), item.item:getG(),
         item.item:getB())
+
+    -- Add price
+    local itemFullType = item.item:getFullType()
+    local itemData = PZ_EFT_ShopItems_Config.data[itemFullType]
+
+    if itemData == nil then
+        itemData = {basePrice = 100, sellMultiplier = 0.5}
+    end
+
+    local sellPrice = itemData.basePrice * itemData.sellMultiplier
+    local sellpriceStr = tostring(sellPrice) .. " $"
+    local sellPriceX = self:getWidth() - getTextManager():MeasureStringX(self.font, sellpriceStr)
+
+    self:drawText(sellpriceStr, sellPriceX - 5, y + 2, 1, 1, 1, 0.9, self.font)
+
 
     return y + self.itemheight
 end

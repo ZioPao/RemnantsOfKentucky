@@ -31,6 +31,10 @@ end
 --- See PZ_EFT_ShopItems_Config.addItem for item value
 ---@param sellData table {{item = {}, quantity = 0}...}
 function ClientShopManager.TrySell(sellData)
+
+
+    -- TODO Simplify this, we don't need all of this to handle a simple sell
+
     local hasData = false
     local data = {}
     data.items = {}

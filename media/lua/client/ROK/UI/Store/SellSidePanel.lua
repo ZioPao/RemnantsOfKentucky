@@ -1,6 +1,7 @@
 -- Users should be able to drag n drop items in this panel to sell them.
 -- Opens confirmation panel when you select "Sell". Compatible with Tarkov UI
 local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
+local ClientShopManager = require("ROK/Economy/ClientShopManager")
 local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
 ------------------------
 
@@ -55,6 +56,32 @@ function SellSidePanel:onConfirmSell()
     -- TODO Finish this
     debugPrint("OnConfirmSell")
 
+    local itemsTosell = {}
+
+    for i=1, #self.mainPanel.items.items do
+        ---@type InventoryItem
+        local item = self.mainPanel.items.items[i].item
+        local fullType = item:getFullType()
+
+        ---@type shopItemElement
+        local itemData = PZ_EFT_ShopItems_Config.data[fullType]
+        if itemData == nil then
+            itemData = {basePrice = 100, sellMultiplier = 0.5}
+        end
+
+        local itemTable = {
+            fullType = fullType,
+            basePrice = itemData.basePrice,
+            multiplier = 1,
+            sellMultiplier = itemData.sellMultiplier,
+            quantity = 1,
+        }
+
+        table.insert(itemsTosell, itemTable)
+    end
+
+    ClientShopManager.TrySell(itemsTosell)
+
     -- This is from the Btn context, so we need to go one parent out
     -- These names suck ass
     self.parent.items.items = {}        -- Clean it
@@ -65,18 +92,18 @@ function SellSidePanel:calculateSellPrice()
     local price = 0
 
     for i=1, #self.mainPanel.items.items do
-        price = price + i + ZombRand(0, 10)
-        local fullType = "test" --self.mainPanel.items.items
-        -- TODO Use FullType
+        ---@type InventoryItem
+        local item = self.mainPanel.items.items[i].item
+        local fullType = item:getFullType()
 
         ---@type shopItemElement
         local itemData = PZ_EFT_ShopItems_Config.data[fullType]
 
         if itemData == nil then
-            itemData = {basePrice = 1000}
+            itemData = {basePrice = 100, sellMultiplier = 0.5}
         end
 
-        local itemPrice = itemData.basePrice * 0.5
+        local itemPrice = itemData.basePrice * itemData.sellMultiplier
         price = price + itemPrice
 
     end
