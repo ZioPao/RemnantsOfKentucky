@@ -159,7 +159,7 @@ function PvpInstanceManager.GetRandomExtractionPoints(cellX, cellY)
         return {}
     end
 
-    local extractionPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.RandomExtractionPoints, cellX, cellY, {"name", "time"})
+    local extractionPoints = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.RandomExtractionPoints, cellX, cellY, {"name", "time", "isRandom"})
 
     if extractionPoints == nil then
         debugPrint("ERROR: no extraction points")
@@ -196,7 +196,7 @@ end
 ---@param cellY number
 ---@return areaCoords?
 function PvpInstanceManager.GetPermanentExtractionPoints(cellX, cellY)
-    local points = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.PermanentExtractionPoints, cellX, cellY, {"name", "time"})
+    local points = PZEFT_UTILS.MapWorldCoordinatesToCell(PZ_EFT_CONFIG.PermanentExtractionPoints, cellX, cellY, {"name", "time", "isRandom"})
     return points
 end
 

@@ -109,7 +109,7 @@ function BeforeMatchAdminPanel:onClick(btn)
         btn:setTitle(MATCH_STOP_TEXT)
         -- Start timer. Show it on screen
         sendClientCommand(EFT_MODULES.Time, "StartMatchCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.startMatchTime })
-        TimePanel.Open("Starting match in...")      -- TODO This gets overriden easily
+        TimePanel.Open("Starting match in...")
     elseif btn.internal == "STOP" then
         ClientState.isStartingMatch = false
         btn.internal = "START"
