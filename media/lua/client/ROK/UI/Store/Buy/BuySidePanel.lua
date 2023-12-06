@@ -111,20 +111,22 @@ function BuySidePanel:onStartBuy()
 
     -- Starts separate confirmation panel
     local text = getText("IGUI_Shop_Buy_Confirmation", self.entryAmount:getInternalText(), selectedItem["actualItem"]:getName(), tostring(cost))
-    self.parent:openConfirmationPanel(text, self.onConfirmBuy)
+    self.parent:openConfirmationPanel(text, self.OnConfirmBuy)
 
 end
 
-function BuySidePanel:onConfirmBuy()
+---This runs from the parent panel!
+---@param parent BuyMainPanel
+function BuySidePanel.OnConfirmBuy(parent)
     debugPrint("Confirm buy")
-    local selectedItem = self.parent.scrollPanel:getSelectedItem()
+    local selectedItem = parent.scrollPanel:getSelectedItem()
     local itemTable = {
         fullType = selectedItem["fullType"],
         basePrice = selectedItem["basePrice"],
         multiplier = 1 -- FIXME This should be with the selectedItem, but it's not there for some reason
     }
 
-    local quantity = tonumber(self.entryAmount:getInternalText())
+    local quantity = tonumber(parent.sidePanel.entryAmount:getInternalText())
     ClientShopManager.TryBuy(itemTable, quantity)
 end
 
