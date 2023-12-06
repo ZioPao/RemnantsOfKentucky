@@ -17,7 +17,6 @@ function ClientData.RequestData()
     ModData.request(KEY_PVP_CURRENTINSTANCE)
     ModData.request(KEY_PVP_INSTANCES)
 end
---Events.PZEFT_ClientModDataReady.Add(ClientData.RequestData)
 
 function ClientData.OnReceiveGlobalModData(key, modData)
     if key == KEY_SHOP_ITEMS or key == KEY_PVP_CURRENTINSTANCE or key == KEY_PVP_INSTANCES then
@@ -56,10 +55,9 @@ end
 local ClientDataCommands = {}
 local MODULE = "PZEFT-Data"
 
----Triggers PZEFT_ClientModDataReady to initialize Global Mod Data on the client
+---Starts when Server Mod Data is ready, initialize Global Mod Data on the client
 function ClientDataCommands.SeverModDataReady()
     ClientData.RequestData()
-    --triggerEvent("PZEFT_ClientModDataReady")        -- TODO Name is wrong.
 end
 
 --- Sets pvpInstanceTable

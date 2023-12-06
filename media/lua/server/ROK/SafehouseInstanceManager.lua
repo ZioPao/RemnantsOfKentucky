@@ -228,6 +228,7 @@ function SafehouseInstanceManagerCommands.RequestSafehouseAllocation(playerObj, 
     end
 
     if args.cleanStorage then
+        -- TODO Probably won't work since... You know, Inventory are client only and we'd need to wait until the player is there
         sendServerCommand(playerObj, MODULE, 'CleanStorage', safehouseCoords)
     end
 end

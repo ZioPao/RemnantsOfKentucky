@@ -1,6 +1,7 @@
 require("ROK/DebugTools")
 local BlackScreen = require("ROK/UI/BeforeMatch/BlackScreen")
 local ClientState = require("ROK/ClientState")
+local ClientCommon = require("ROK/ClientCommon")
 --------------------------
 
 ---@class SafehouseInstanceHandler
@@ -83,15 +84,17 @@ function SafehouseInstanceHandler.GetCrates()
     return cratesTable
 end
 
----Wipes all the items in the crates of the current player safehouse
+---Wipes all the items in the crates of the current player safehouse. Run from the admin panel
 function SafehouseInstanceHandler.WipeCrates()
-    local cratesTable = SafehouseInstanceHandler.GetCrates()
-    if cratesTable == nil then debugPrint("No crates to wipe") return end
+    ClientCommon.WaitForSafehouseAndRun(function()
+        local cratesTable = SafehouseInstanceHandler.GetCrates()
+        if cratesTable == nil then debugPrint("No crates to wipe") return end
 
-    for i=1, #cratesTable do
-        local crate = cratesTable[i]
-        crate:clear()
-    end
+        for i=1, #cratesTable do
+            local crate = cratesTable[i]
+            crate:clear()
+        end
+    end, {})
 end
 
 --* Events handling
@@ -137,6 +140,8 @@ end
 
 ---Receive a Clean Storage from an Admin
 function SafehouseInstanceCommands.CleanStorage()
+
+    -- TODO Wait until player is in safehouse!
     SafehouseInstanceHandler.WipeCrates()
 end
 

@@ -3,19 +3,29 @@ local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 
 local ClientCommon = {}
 
-
----@param playerObj IsoPlayer
----@param sendToCrates boolean
-function ClientCommon.GiveStarterKit(playerObj, sendToCrates)
-    local function WaitForSafehouse(player)
+---Wait until the safehouse is ready and run a specific function
+---@param funcToRun function
+---@param args {}
+function ClientCommon.WaitForSafehouseAndRun(funcToRun, args)
+    local function WaitAndRun(player)
         local safehouse = SafehouseInstanceHandler.GetSafehouse()
         if safehouse == nil then return end
         if player == nil or player ~= getPlayer() then return end
         if player:getInventory() == nil then return end
 
-        -- We need to wait a bunch of time before the player has been initialized 100%
+        funcToRun(unpack(args))
 
-        debugPrint("Safehouse is ready! Giving starter kit")
+        Events.OnPlayerUpdate.Remove(WaitAndRun)
+    end
+
+    Events.OnPlayerUpdate.Add(WaitAndRun)
+end
+
+
+---@param playerObj IsoPlayer
+---@param sendToCrates boolean
+function ClientCommon.GiveStarterKit(playerObj, sendToCrates)
+    ClientCommon.WaitForSafehouseAndRun(function()
         for i=1, #PZ_EFT_CONFIG.StarterKit do
             ---@type starterKitType
             local element = PZ_EFT_CONFIG.StarterKit[i]
@@ -27,13 +37,8 @@ function ClientCommon.GiveStarterKit(playerObj, sendToCrates)
                 playerObj:getInventory():AddItems(element.fullType, element.amount)
             end
         end
-        Events.OnPlayerUpdate.Remove(WaitForSafehouse)
-    end
-    Events.OnPlayerUpdate.Add(WaitForSafehouse)
+    end, {})
 end
-
-
-
 
 ---@param fullType string
 function ClientCommon.AddToCrate(fullType)
