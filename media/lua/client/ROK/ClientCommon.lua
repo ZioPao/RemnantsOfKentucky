@@ -5,13 +5,13 @@ local ClientCommon = {}
 
 ---Wait until the safehouse is ready and run a specific function
 ---@param funcToRun function
----@param args {}
+---@param args {} args for the function
 function ClientCommon.WaitForSafehouseAndRun(funcToRun, args)
     local function WaitAndRun(player)
-        local safehouse = SafehouseInstanceHandler.GetSafehouse()
-        if safehouse == nil then return end
-        if player == nil or player ~= getPlayer() then return end
-        if player:getInventory() == nil then return end
+
+
+        local crates = SafehouseInstanceHandler.GetCrates()
+        if crates == nil or #crates ~= PZ_EFT_CONFIG.SafehouseInstanceSettings.cratesAmount then return end
 
         funcToRun(unpack(args))
 
@@ -43,12 +43,14 @@ end
 ---@param fullType string
 function ClientCommon.AddToCrate(fullType)
     local cratesTable = SafehouseInstanceHandler.GetCrates()
-    if cratesTable == nil then debugPrint("Crates are nil!") return end
+    if cratesTable == nil or #cratesTable == 0 then debugPrint("Crates are nil or empty!") return end
 
     -- Find the first crate which has available space
     local crateCounter = 1
     local switchedToPlayer = false
     local inv = cratesTable[crateCounter]
+
+
     local item = InventoryItemFactory.CreateItem(fullType)
     ---@diagnostic disable-next-line: param-type-mismatch
     if not inv:hasRoomFor(getPlayer(), item) and not switchedToPlayer then

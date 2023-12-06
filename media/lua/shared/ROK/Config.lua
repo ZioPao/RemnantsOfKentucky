@@ -90,7 +90,9 @@ PZ_EFT_CONFIG.SafehouseInstanceSettings = {
         s = 1,
         e = 4,
         w = 6
-    }
+    },
+
+    cratesAmount = 6
 }
 
 PZ_EFT_CONFIG.PVPInstanceSettings = {

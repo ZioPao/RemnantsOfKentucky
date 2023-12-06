@@ -148,6 +148,11 @@ function DuringMatchAdminPanel:update()
 
     self.labelTime:setText(firstLabelText)
     self.labelTime.textDirty = true
+
+    -- Close the panel automatically if the client is not in a raid anymore
+    if not ClientState.isInRaid then
+        self:close()        -- TODO test this
+    end
 end
 
 function DuringMatchAdminPanel:setAlivePlayersText(text)

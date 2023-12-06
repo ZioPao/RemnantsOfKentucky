@@ -174,11 +174,6 @@ function BeforeMatchAdminPanel:update()
     local valAssignedSafehousesText = " <CENTRE> -1"     -- TODO This is a placeholder!
     self.labelValAssignedSafehouses:setText(valAssignedSafehousesText)
     self.labelValAssignedSafehouses.textDirty = true
-
-    -- Check here again if the client is actually in a raid. If they are, close this. Could cause some issues with the automatic switch to the During Match panel
-    if ClientState.isInRaid then
-        self:close()        -- TODO test this
-    end
 end
 
 function BeforeMatchAdminPanel:setAvailableInstancesText(text)
