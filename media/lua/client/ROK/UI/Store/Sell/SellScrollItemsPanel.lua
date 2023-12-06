@@ -25,9 +25,10 @@ end
 local function SellDoDrawItem(self, y, item, alt)
     self:drawRectBorder(0, (y), self:getWidth(), self.itemheight - 1, 0.9, self.borderColor.r, self.borderColor.g, self.borderColor.b)
 
+    local a = 0.9
     --* Item name
     local itemName = item.item:getName()
-    self:drawText(itemName, 30, y + 2, 1, 1, 1, 0.9, self.font)
+    self:drawText(itemName, 6, y + 2, 1, 1, 1, a, UIFont.Medium)
 
     --* Price
     local itemFullType = item.item:getFullType()
@@ -39,9 +40,9 @@ local function SellDoDrawItem(self, y, item, alt)
 
     local sellPrice = itemData.basePrice * itemData.sellMultiplier
     local sellpriceStr = tostring(sellPrice) .. " $"
-    local sellPriceX = self:getWidth() - getTextManager():MeasureStringX(self.font, sellpriceStr)
+    local sellPriceX = self:getWidth() - getTextManager():MeasureStringX(UIFont.Medium, sellpriceStr)
 
-    self:drawText(sellpriceStr, sellPriceX - 5, y + 2, 1, 1, 1, 0.9, self.font)
+    self:drawText(sellpriceStr, sellPriceX - 5, y + 2, 1, 1, 1, a, UIFont.Medium)
 
 
     return y + self.itemheight
@@ -52,9 +53,6 @@ end
 ---@param x number
 ---@param y number
 local function SellOnDragItem(self, x, y)
-      -- TODO Should remove item from player!
-    --debugPrint("on drag item")
-
     -- This is ok, this happens because we're overriding OnMouseUp
     ---@type SellScrollItemsPanel
     local parent = self.parent
@@ -76,7 +74,7 @@ local function SellOnDragItem(self, x, y)
                     parent:addToDraggedItems(itemID)
 
                     -- TODO addItem with FullType, not count
-                    self:addItem(count, ISMouseDrag.dragging[i])
+                    self:addItem(itemID, ISMouseDrag.dragging[i])
                 end
             else
                 if ISMouseDrag.dragging[i].invPanel.collapsed[ISMouseDrag.dragging[i].name] then
@@ -88,7 +86,7 @@ local function SellOnDragItem(self, x, y)
                             local itemID = item:getID()
                             if not parent:isItemAlreadyDraggedIn(itemID) then
                                 parent:addToDraggedItems(itemID)
-                                self:addItem(count, item)
+                                self:addItem(itemID, item)
                             end
                         end
                         count = count + 1
@@ -118,15 +116,27 @@ function SellScrollItemsPanel:createChildren()
     self.scrollingListBox.prerender = SellPrender
 end
 
+--- Check player inv and compare it to the alreadyDragged items. If an item is not in their inventory anymore, delete it from the list
 function SellScrollItemsPanel:update()
     BaseScrollItemsPanel.update(self)
 
-    -- TODO Check player inv and compare it to the alreadyDragged items. If an item is not in their inventory anymore, delete it from the list
+    local plInv = getPlayer():getInventory()
+    for _, v in pairs(self.draggedItems) do
+        if v ~= nil and plInv:getItemById(v) == nil then
+            self:removeDraggedItem(v)
+            self.scrollingListBox:removeItem(v)
+        end
+    end
 end
 
 ---@param id number
 function SellScrollItemsPanel:addToDraggedItems(id)
     self.draggedItems[id] = id
+end
+
+---@param id number
+function SellScrollItemsPanel:removeDraggedItem(id)
+    self.draggedItems[id] = nil
 end
 
 ---@param id number
