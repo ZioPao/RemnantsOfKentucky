@@ -23,7 +23,7 @@ end
 function SellSidePanel:createChildren()
     RightSidePanel.createChildren(self)
 
-    self.bottomBtn:setTitle("Sell")      -- TODO GetText
+    self.bottomBtn:setTitle(getText("IGUI_Shop_Sell_Btn"))
     self.bottomBtn.internal = "SELL"
     self.bottomBtn:initialise()
     self.bottomBtn:setEnable(false)
@@ -53,7 +53,7 @@ function SellSidePanel:onClick(btn)
 end
 
 function SellSidePanel:onStartSell()
-    local text = "Are you sure you want to sell these items?"
+    local text = getText("IGUI_Shop_Sell_Confirmation")
     self.parent:openConfirmationPanel(text, function()
         self:onConfirmSell()
     end)
