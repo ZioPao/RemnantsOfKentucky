@@ -138,16 +138,15 @@ function SafehouseInstanceCommands.SetSafehouse(safehouseCoords)
     md.safehouse = safehouseCoords
 end
 
----Receive a Clean Storage from an Admin
+---Receive a Clean Storage from the server
 function SafehouseInstanceCommands.CleanStorage()
-
-    -- TODO Wait until player is in safehouse!
     SafehouseInstanceHandler.WipeCrates()
 end
 
----Reset instance, wipe crates, and reassign another instance
-function SafehouseInstanceCommands.ResetSafehouse()
+---Wipes the crates of the new instanced safehouse and give the starter kit to the player
+function SafehouseInstanceCommands.PrepareNewSafehouse()
     SafehouseInstanceHandler.WipeCrates()
+    ClientCommon.GiveStarterKit(getPlayer(), true)
 end
 
 ------------------------

@@ -130,6 +130,12 @@ function SafehouseInstanceManager.GetOrAssignSafehouse(player)
 
         SafehouseInstanceManager.AssignSafehouseInstanceToPlayer(playerSafehouseKey, id)
 
+
+        sendServerCommand(player, EFT_MODULES.Safehouse, 'PrepareNewSafehouse', {})
+
+        -- Clean crates, send starter kit 
+        sendServerCommand(player, EFT_MODULES.Safehouse, 'CleanStorage', {})
+        
         -- New safehouse, new starter kit
         sendServerCommand(player, EFT_MODULES.Common, "ReceiveStarterKit", {})
     end
@@ -225,11 +231,6 @@ function SafehouseInstanceManagerCommands.RequestSafehouseAllocation(playerObj, 
     if args.teleport then
         debugPrint("Teleporting to instance from request safehouse allocation")
         sendServerCommand(playerObj, EFT_MODULES.Common, "Teleport", safehouseCoords)
-    end
-
-    if args.cleanStorage then
-        -- TODO Probably won't work since... You know, Inventory are client only and we'd need to wait until the player is there
-        sendServerCommand(playerObj, MODULE, 'CleanStorage', safehouseCoords)
     end
 end
 
