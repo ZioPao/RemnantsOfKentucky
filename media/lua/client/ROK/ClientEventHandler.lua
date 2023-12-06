@@ -57,10 +57,21 @@ local function OnPlayerExit()
     if ClientState.isInRaid == false then return end
 
     sendClientCommand(EFT_MODULES.Match, "RemovePlayer", {})
-    
+
+    if isAdmin() then
+        --Forcefully close Admin Panel
+        local BeforeMatchAdminPanel = require("ROK/UI/BeforeMatch/BeforeMatchAdminPanel")
+        local DuringMatchAdminPanel = require("ROK/UI/DuringMatch/DuringMatchAdminPanel")
+        BeforeMatchAdminPanel.OnClosePanel()
+        DuringMatchAdminPanel.OnClosePanel()
+    end
+
+    -- Close Time Panel
+    local TimePanel = require("ROK/UI/TimePanel")
+    TimePanel.Close()
 
     -- Reset buttons 
-    ButtonManager.firstInit = true
+    ButtonManager.Reset()
 end
 
 Events.OnPlayerDeath.Add(OnPlayerExit)

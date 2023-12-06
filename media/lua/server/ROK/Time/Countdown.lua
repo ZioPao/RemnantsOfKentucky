@@ -57,6 +57,7 @@ function Countdown.AddIntervalFunc(interval, fun)
 end
 
 function Countdown.Update()
+	-- This can throw an error when we use Stop. It's only on the server and it shouldn't really matter though
 	local currTime = os_time()
 	local currSeconds = Countdown.stopTime - currTime
 
@@ -87,11 +88,14 @@ end
 ---Stop the countdown
 function Countdown.Stop()
 
-	Countdown.stopTime = nil
+	Countdown.stopTime = -1		-- use -1 to prevent issues when looping
 	Countdown.fun = nil
+	Countdown.intervals = {}
 
-	Countdown.interval = nil
-
+	if Countdown.displayOnClient and Countdown.displayOnClient == true then
+		-- Close forcefully TimePanel on the clients
+		sendServerCommand(EFT_MODULES.Time, "ReceiveTimeUpdate", { time = 0 })
+	end
 
 	Events.OnTickEvenPaused.Remove(Countdown.Update)
 end

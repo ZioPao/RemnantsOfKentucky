@@ -169,11 +169,11 @@ end
 ---Checks if there are players still alive in a match. When it gets to 0, stop the match
 ---@param loops any
 function MatchController.CheckAlivePlayers(loops)
-    debugPrint("checking alive players")
+    --debugPrint("checking alive players")
     local instance = MatchController.GetHandler()
     if instance == nil then return end
-    debugPrint("Instance available, checking now players")
-    debugPrint(MatchController.GetAmountAlivePlayers())
+    --debugPrint("Instance available, checking now players")
+    --debugPrint(MatchController.GetAmountAlivePlayers())
     if MatchController.GetAmountAlivePlayers() == 0 then
         debugPrint("no alive players in match, stopping it")
         MatchController.instance:stopMatch()

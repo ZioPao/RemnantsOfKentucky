@@ -95,5 +95,12 @@ function ButtonManager.CreateButtons(isInRaid)
     end
 end
 
+function ButtonManager.Reset()
+    ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() - 50)
+    ButtonManager.RemoveButton("Leaderboard")
+    ButtonManager.RemoveButton("AdminPanel")
+    ButtonManager.firstInit = true
+end
+
 Events.PZEFT_UpdateClientStatus.Add(ButtonManager.CreateButtons)
 Events.OnCreatePlayer.Add(ButtonManager.CreateButtons)
