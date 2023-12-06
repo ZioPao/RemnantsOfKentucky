@@ -5,6 +5,7 @@ local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
 ---@class StoreContainerPanel : ISPanelJoypad
 ---@field scrollPanel BaseScrollItemsPanel
 ---@field sidePanel RightSidePanel
+---@field parent MainShopPanel
 local StoreContainerPanel = ISPanelJoypad:derive("StoreContainerPanel")
 
 ---@param x any
@@ -55,12 +56,9 @@ end
 
 ---@param text string
 function StoreContainerPanel:openConfirmationPanel(text, onConfirm)
-    local confX = self.parent:getX()
-    local confY = self.parent:getY() + self.parent:getHeight() + 20
-
-    self.confirmationPanel = ConfirmationPanel.Open(text, confX, confY, self, function()
-        self:onConfirmBuy()
-    end)
+    local confX = self.parent:getAbsoluteX() + (self.parent:getWidth()/2)
+    local confY = self.parent:getAbsoluteY() + self.parent:getHeight() + 20
+    self.confirmationPanel = ConfirmationPanel.Open(text, confX, confY, self, onConfirm)
 end
 
 function StoreContainerPanel:close()

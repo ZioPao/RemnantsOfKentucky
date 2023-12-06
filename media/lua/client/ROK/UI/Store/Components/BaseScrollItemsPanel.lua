@@ -68,9 +68,6 @@ local function ScrollingListBoxOnMouseDown(self, x, y)
     self.parent:setSelectedItem(self.items[self.selected].item)
 end
 
-
-
-
 function BaseScrollItemsPanel:createChildren()
     self.panelYPadding = GenericUI.SMALL_FONT_HGT + 2 * 2
     self.panelHeight = self.height - self.panelYPadding - 10

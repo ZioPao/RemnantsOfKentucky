@@ -60,7 +60,7 @@ function RightSidePanel:createChildren()
 end
 
 function RightSidePanel:getCostForSelectedItem()
-    local selectedItem = self.mainPanel:getSelectedItem()
+    local selectedItem = self.parent.scrollPanel:getSelectedItem()
     if selectedItem == nil then return end
     local itemCost = selectedItem.basePrice
 
