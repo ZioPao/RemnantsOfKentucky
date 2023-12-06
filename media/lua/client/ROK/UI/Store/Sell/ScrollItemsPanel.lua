@@ -134,3 +134,5 @@ function SellScrollItemsPanel:isItemAlreadyDraggedIn(id)
     if self.draggedItems == nil then return false end
     if self.draggedItems[id] == id then return true else return false end
 end
+
+return SellScrollItemsPanel

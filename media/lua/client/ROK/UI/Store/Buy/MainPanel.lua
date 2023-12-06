@@ -1,5 +1,4 @@
 local BuyScrollItemsPanel = require("ROK/UI/Store/Buy/ScrollItemsPanel")
-local ClientShopManager = require("ROK/Economy/ClientShopManager")
 local BuySidePanel = require("ROK/UI/Store/Buy/RightSidePanel")
 local StoreContainerPanel = require("ROK/UI/Store/Components/StoreContainerPanel")
 ----------------
