@@ -38,6 +38,9 @@ function ClientCommon.GiveStarterKit(playerObj, sendToCrates)
                 playerObj:getInventory():AddItems(element.fullType, element.amount)
             end
         end
+
+        -- Notify the player
+        playerObj:Say(getText("UI_EFT_Say_ReceivedStartedKit"))
     end, {})
 end
 

@@ -128,6 +128,8 @@ function BuySidePanel.OnConfirmBuy(parent)
 
     local quantity = tonumber(parent.sidePanel.entryAmount:getInternalText())
     ClientShopManager.TryBuy(itemTable, quantity)
+
+    -- TODO add notification for player when buy is successful
 end
 
 
