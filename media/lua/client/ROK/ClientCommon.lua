@@ -13,6 +13,7 @@ function ClientCommon.WaitForSafehouseAndRun(funcToRun, args)
         local crates = SafehouseInstanceHandler.GetCrates()
         if crates == nil or #crates ~= PZ_EFT_CONFIG.SafehouseInstanceSettings.cratesAmount then return end
 
+        debugPrint("Running function, safehouse is valid!")
         funcToRun(unpack(args))
 
         Events.OnPlayerUpdate.Remove(WaitAndRun)

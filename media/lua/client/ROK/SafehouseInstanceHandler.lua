@@ -79,7 +79,7 @@ function SafehouseInstanceHandler.GetCrates()
         end
     end
 
-    debugPrint("Found " .. #cratesTable .. " crates")
+    --debugPrint("Found " .. #cratesTable .. " crates")
 
     return cratesTable
 end
