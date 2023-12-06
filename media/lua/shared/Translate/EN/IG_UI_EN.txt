@@ -51,6 +51,7 @@ IG_UI_EN = {
     IGUI_Shop_TabDaily = "Daily Items",
     IGUI_Shop_TabSell = "Sell Items",
     IGUI_Shop_Sell_Tooltip = "Drag items in here to sell them",
+    IGUI_Shop_Buy_Confirmation = " <CENTRE> Are you sure you want to sell %1 of %2 for %3$?
 
     //LEADERBOARD
     

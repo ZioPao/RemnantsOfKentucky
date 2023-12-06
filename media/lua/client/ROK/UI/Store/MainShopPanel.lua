@@ -25,8 +25,10 @@ local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 local ClientShopManager = require("ROK/Economy/ClientShopManager")
 local ClientBankManager = require("ROK/Economy/ClientBankManager")
 local CustomTabPanel = require("ROK/UI/Store/Components/CustomTabPanel")
-local BuyCategory = require("ROK/UI/Store/BuyCategory")
-local SellCategory = require("ROK/UI/Store/SellCategory")
+
+
+local BuyPanel = require("ROK/UI/Store/Buy/MainPanel")
+local SellPanel = require("ROK/UI/Store/Sell/MainPanel")
 ------------------------------
 
 ---@class MainShopPanel : ISCollapsableWindow
@@ -133,34 +135,23 @@ function MainShopPanel:createChildren()
     local catHeight = self.height - th - rh - addedHeight - 50
 
     --* ESSENTIAL ITEMS *--
-    self.essentialItemsCat = BuyCategory:new(0, 0, self.width, catHeight, self)
+    self.essentialItemsCat = BuyPanel:new(0, 0, self.width, catHeight, ClientShopManager.GetEssentialItems())
     self.essentialItemsCat:initialise()
-    self.essentialItemsCat:setAnchorRight(true)
-    self.essentialItemsCat:setAnchorBottom(true)
     self.panel:addView(getText("IGUI_Shop_TabEssential"), self.essentialItemsCat, self.width / 3 - 2, addedHeight)
-    self.essentialItemsCat:initialiseList(ClientShopManager.GetEssentialItems())
-    self.essentialItemsCat.parent = self
     self.essentialItemsCat.category = 1
     table.insert(self.categories, self.essentialItemsCat)
 
     --* DAILY ITEMS *--
-    self.dailyItemsCat = BuyCategory:new(0, 0, self.width, catHeight, self)
+    self.dailyItemsCat = BuyPanel:new(0, 0, self.width, catHeight, ClientShopManager.GetDailyItems())
     self.dailyItemsCat:initialise()
-    self.dailyItemsCat:setAnchorRight(true)
-    self.dailyItemsCat:setAnchorBottom(true)
     self.panel:addView(getText("IGUI_Shop_TabDaily"), self.dailyItemsCat, self.width / 3 - 2, addedHeight)
-    self.dailyItemsCat:initialiseList(ClientShopManager.GetDailyItems())
-    self.dailyItemsCat.parent = self
     self.dailyItemsCat.category = 2
     table.insert(self.categories, self.dailyItemsCat)
 
     --* SELL MENU *--
-    self.sellCat = SellCategory:new(0, 0, self.width, catHeight)
+    self.sellCat = SellPanel:new(0, 0, self.width, catHeight)
     self.sellCat:initialise()
-    self.sellCat:setAnchorRight(true)
-    self.sellCat:setAnchorBottom(true)
     self.panel:addView(getText("IGUI_Shop_TabSell"), self.sellCat, self.width / 3 - 2, addedHeight)
-    self.sellCat.parent = self
     self.sellCat.category = 3
     table.insert(self.categories, self.sellCat)
 

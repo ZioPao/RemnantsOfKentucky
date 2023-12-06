@@ -88,6 +88,8 @@ function ConfirmationPanel.Open(alertText, x, y, parentPanel, onConfirmFunc)
     local width = 500
     local height = 120
 
+    -- TODO Arg for function
+
     local panel = ConfirmationPanel:new(x, y, width, height, alertText, parentPanel, onConfirmFunc)
     panel:initialise()
     panel:addToUIManager()

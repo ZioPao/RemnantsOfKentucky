@@ -3,7 +3,7 @@ local CommonStore = require("ROK/UI/Store/Components/CommonStore")
 
 
 ---@class RightSidePanel : ISPanel
----@field mainPanel StoreScrollingListBox
+---@field parent StoreContainerPanel
 local RightSidePanel = ISPanel:derive("RightSidePanel")
 
 ---Starts a new quantity panel
@@ -11,15 +11,13 @@ local RightSidePanel = ISPanel:derive("RightSidePanel")
 ---@param y number
 ---@param width number
 ---@param height number
----@param mainPanel StoreScrollingListBox
 ---@return RightSidePanel
-function RightSidePanel:new(x, y, width, height, mainPanel)
+function RightSidePanel:new(x, y, width, height)
     local o = ISPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
 
     o:initialise()
-    o.mainPanel = mainPanel
     o.backgroundColor = { r = 0, g = 0, b = 0, a = 0.7 }
 
 
@@ -72,6 +70,11 @@ end
 
 function RightSidePanel:render()
     ISPanel.render(self)
+end
+
+function RightSidePanel:update()
+    ISPanel.update(self)
+    self.bottomBtn:setEnable(self.parent.scrollPanel:getSelectedItem() ~= nil)
 end
 
 function RightSidePanel:close()
