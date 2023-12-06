@@ -232,7 +232,7 @@ function LeaderboardPanel.SetBankAccounts(accounts)
     end
 
     local function SortByBalance(a,b)
-        return a.balance < b.balance
+        return a.balance > b.balance
     end
 
     table.sort(sortedAccounts, SortByBalance)

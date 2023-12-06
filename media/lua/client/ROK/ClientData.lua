@@ -1,3 +1,5 @@
+-- TODO Move them somewhere, maybe Modules
+
 local KEY_SHOP_ITEMS = "PZ-EFT-SHOP-ITEMS"
 local KEY_PVP_INSTANCES = "PZ-EFT-PVP-INSTANCES"
 local KEY_PVP_CURRENTINSTANCE = "PZ-EFT-PVP-CURRENTINSTANCE"
@@ -15,7 +17,7 @@ function ClientData.RequestData()
     ModData.request(KEY_PVP_CURRENTINSTANCE)
     ModData.request(KEY_PVP_INSTANCES)
 end
-Events.PZEFT_ClientModDataReady.Add(ClientData.RequestData)
+--Events.PZEFT_ClientModDataReady.Add(ClientData.RequestData)
 
 function ClientData.OnReceiveGlobalModData(key, modData)
     if key == KEY_SHOP_ITEMS or key == KEY_PVP_CURRENTINSTANCE or key == KEY_PVP_INSTANCES then
@@ -23,6 +25,8 @@ function ClientData.OnReceiveGlobalModData(key, modData)
         ModData.add(key, modData)
     end
 
+    -- The client has collected the mod data from the server
+    triggerEvent("PZEFT_ClientModDataReady", key)
 end
 
 Events.OnReceiveGlobalModData.Add(ClientData.OnReceiveGlobalModData)
@@ -54,7 +58,8 @@ local MODULE = "PZEFT-Data"
 
 ---Triggers PZEFT_ClientModDataReady to initialize Global Mod Data on the client
 function ClientDataCommands.SeverModDataReady()
-    triggerEvent("PZEFT_ClientModDataReady")
+    ClientData.RequestData()
+    --triggerEvent("PZEFT_ClientModDataReady")        -- TODO Name is wrong.
 end
 
 --- Sets pvpInstanceTable

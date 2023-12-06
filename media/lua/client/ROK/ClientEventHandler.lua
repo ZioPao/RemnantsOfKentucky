@@ -98,7 +98,22 @@ Events.OnPlayerUpdate.Add(OnPlayerInit)
 
 ---@param playerObj IsoPlayer
 local function GiveStarterKit(playerObj)
-    ClientCommon.GiveStarterKit(playerObj, true)
+    debugPrint("Providing player with a starter kit")
+
+
+    local function WaitAndGiveStarterKit(key)
+        if key ~= "PZ-EFT-PVP-CURRENTINSTANCE" then return end
+
+        ClientCommon.GiveStarterKit(playerObj, true)
+        Events.PZEFT_ClientModDataReady.Remove(WaitAndGiveStarterKit)
+
+    end
+
+    Events.PZEFT_ClientModDataReady.Add(WaitAndGiveStarterKit)
+
+
+    -- TODO Check if player has already a safehouse. If they do, then don't give them the starter kit!
+
 end
 
 

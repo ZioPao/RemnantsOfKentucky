@@ -5,4 +5,8 @@ UI_EN = {
 
 
     UI_EFT_Wait = "Please Wait",
+    
+    UI_EFT_SentStarterKit = "Sent starter kit to %1",
+    UI_EFT_WipePlayer = "Wiping safehouse and assigning a new one to %1",
+
 }

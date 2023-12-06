@@ -271,7 +271,8 @@ function ManagePlayersPanel:onClick(button)
         if button.internal == 'STARTER_KIT' then
             local function OnConfirmGiveStarterKit()
                 sendClientCommand(EFT_MODULES.Common, "RelayStarterKit", {playerID = plID})
-                getPlayer():Say("Sent starter kit to " .. plUsername)
+                local text = getText("UI_EFT_SentStarterKit", plUsername)
+                getPlayer():Say(text)
             end
 
             local text = getText("IGUI_EFT_AdminPanel_Confirmation_StarterKit", plUsername)
@@ -279,7 +280,8 @@ function ManagePlayersPanel:onClick(button)
         elseif button.internal == 'WIPE_PLAYER' then
             local function OnConfirmWipePlayer()
                 sendClientCommand(EFT_MODULES.Safehouse, "ResetSafehouseAllocation", {playerID = plID})
-                getPlayer():Say("Wiping safehouse and assigning a new one to " .. plUsername)
+                local text = getText("UI_EFT_WipePlayer", plUsername)
+                getPlayer():Say(text)
             end
 
             local text = getText("IGUI_EFT_AdminPanel_Confirmation_WipePlayer", plUsername)
