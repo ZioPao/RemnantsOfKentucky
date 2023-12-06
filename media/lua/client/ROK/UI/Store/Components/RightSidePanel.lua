@@ -74,7 +74,6 @@ end
 
 function RightSidePanel:update()
     ISPanel.update(self)
-    self.bottomBtn:setEnable(self.parent.scrollPanel:getSelectedItem() ~= nil)
 end
 
 function RightSidePanel:close()

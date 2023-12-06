@@ -59,7 +59,7 @@ local function SellOnDragItem(self, x, y)
     ---@type SellScrollItemsPanel
     local parent = self.parent
 
-    ---@cast parent +SellScrollItemsPanel
+    ---@cast parent SellScrollItemsPanel
 
     if self.vscroll then
         self.vscroll.scrolling = false
@@ -86,7 +86,7 @@ local function SellOnDragItem(self, x, y)
                             ---@type InventoryItem
                             local item = ISMouseDrag.dragging[i].items[j]
                             local itemID = item:getID()
-                            if not parent:checkDraggedItemsList(itemID) then
+                            if not parent:isItemAlreadyDraggedIn(itemID) then
                                 parent:addToDraggedItems(itemID)
                                 self:addItem(count, item)
                             end

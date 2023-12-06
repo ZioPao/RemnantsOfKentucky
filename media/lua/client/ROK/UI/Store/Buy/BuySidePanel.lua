@@ -55,6 +55,7 @@ function BuySidePanel:update()
     --debugPrint("BuySidePanel update")
     -- TODO Check balance before doing it
     RightSidePanel.update(self)
+    self.bottomBtn:setEnable(self.parent.scrollPanel:getSelectedItem() ~= nil)
 end
 
 function BuySidePanel:render()
