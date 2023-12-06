@@ -1,5 +1,5 @@
-local BuyScrollItemsPanel = require("ROK/UI/Store/Buy/ScrollItemsPanel")
-local BuySidePanel = require("ROK/UI/Store/Buy/RightSidePanel")
+local BuyScrollItemsPanel = require("ROK/UI/Store/Buy/BuyScrollItemsPanel")
+local BuySidePanel = require("ROK/UI/Store/Buy/BuySidePanel")
 local StoreContainerPanel = require("ROK/UI/Store/Components/StoreContainerPanel")
 ----------------
 

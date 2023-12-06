@@ -15,20 +15,18 @@
     be placed should have a limit of weight
 ]]
 
--- TODO Add filtering
--- TODO add visible player balance
 require "ISUI/ISCollapsableWindow"
--- TODO Add sellMultiplier
 
+-- TODO Add sellMultiplier
+-- TODO Add filtering
 local GenericUI = require("ROK/UI/GenericUI")
-local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 local ClientShopManager = require("ROK/Economy/ClientShopManager")
 local ClientBankManager = require("ROK/Economy/ClientBankManager")
 local CustomTabPanel = require("ROK/UI/Store/Components/CustomTabPanel")
 
 
-local BuyPanel = require("ROK/UI/Store/Buy/MainPanel")
-local SellPanel = require("ROK/UI/Store/Sell/MainPanel")
+local BuyPanel = require("ROK/UI/Store/Buy/BuyMainPanel")
+local SellPanel = require("ROK/UI/Store/Sell/SellMainPanel")
 ------------------------------
 
 ---@class MainShopPanel : ISCollapsableWindow
@@ -36,7 +34,6 @@ local SellPanel = require("ROK/UI/Store/Sell/MainPanel")
 MainShopPanel = ISCollapsableWindow:derive("MainShopPanel")
 MainShopPanel.bottomInfoHeight = GenericUI.SMALL_FONT_HGT * 4
 
----comment
 ---@param x any
 ---@param y any
 ---@param width any

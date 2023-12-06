@@ -8,8 +8,7 @@ local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
 local CommonStore = require("ROK/UI/Store/Components/CommonStore")
 ------------------------
 
----@class BuySidePanel : RightSidePanel
----@field mainPanel BuyCategory     -- TODO We don't need these
+
 local BuySidePanel = RightSidePanel:derive("BuyQuantityPanel")
 
 ---Starts a new quantity panel

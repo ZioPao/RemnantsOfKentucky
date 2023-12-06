@@ -7,9 +7,7 @@ local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
 
 -- TODO ADD remove Item from list
 
----@class SellSidePanel : RightSidePanel
----@field infoPanel ISPanel
----@field mainPanel SellCategory
+
 local SellSidePanel = RightSidePanel:derive("SellSidePanel")
 
 ---@param x number

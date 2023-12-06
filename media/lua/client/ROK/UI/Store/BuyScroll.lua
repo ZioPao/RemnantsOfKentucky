@@ -2,9 +2,6 @@ local StoreScrollingListBox = require("ROK/UI/Store/Components/StoreScrollingLis
 local BuySidePanel = require("ROK/UI/Store/BuySidePanel")
 -----------------------
 
----@class BuyCategory : StoreScrollingListBox
----@field buySidePanel BuySidePanel
----@field shopPanel MainShopPanel
 local BuyCategory = StoreScrollingListBox:derive("BuyCategory")
 
 ---@param x number

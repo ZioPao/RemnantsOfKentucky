@@ -59,7 +59,7 @@ end
 
 function BuySidePanel:render()
     RightSidePanel.render(self)
-    local selectedItem = self.mainPanel:getSelectedItem()
+    local selectedItem = self.parent.scrollPanel:getSelectedItem()
 
     if selectedItem == nil then return end
 
@@ -116,7 +116,7 @@ end
 
 function BuySidePanel:onConfirmBuy()
     debugPrint("Confirm buy")
-    local selectedItem = self.mainPanel:getSelectedItem()
+    local selectedItem = self.parent.scrollPanel:getSelectedItem()
     local itemTable = {
         fullType = selectedItem["fullType"],
         basePrice = selectedItem["basePrice"],

@@ -41,7 +41,7 @@ function SellSidePanel:render()
 
 
     -- Count amount of items
-    local itemsAmount = #self.mainPanel.items.items
+    local itemsAmount = #self.parent.scrollPanel.scrollingListBox.items
     self.bottomBtn:setEnable(itemsAmount > 0)
 end
 

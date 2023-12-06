@@ -62,6 +62,7 @@ function StoreContainerPanel:openConfirmationPanel(text, onConfirm)
         self:onConfirmBuy()
     end)
 end
+
 function StoreContainerPanel:close()
     StoreContainerPanel.close(self)
 end

@@ -2,9 +2,6 @@ local StoreScrollingListBox = require("ROK/UI/Store/Components/StoreScrollingLis
 local SellSidePanel = require("ROK/UI/Store/SellSidePanel")
 -----------------------
 
----@class SellCategory : StoreScrollingListBox
----@field shopPanel MainShopPanel
----@field sellSidePanel SellSidePanel
 local SellCategory = StoreScrollingListBox:derive("SellCategory")
 
 ---@param x number

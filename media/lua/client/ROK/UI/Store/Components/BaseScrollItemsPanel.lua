@@ -44,18 +44,45 @@ function BaseScrollItemsPanel:initialiseList(itemsTable)
     end
 end
 
+
+---This is run on the the ScrollingBoxList!
+---@param x number
+---@param y number
+local function ScrollingListBoxOnMouseDown(self, x, y)
+    if #self.items == 0 then return end
+    local row = self:rowAt(x, y)
+
+    if row > #self.items then
+        row = #self.items
+    end
+    if row < 1 then
+        row = 1
+    end
+
+    getSoundManager():playUISound("UISelectListItem")
+    self.selected = row
+    if self.onmousedown then
+        self.onmousedown(self.target, self.items[self.selected].item)
+    end
+
+    self.parent:setSelectedItem(self.items[self.selected].item)
+end
+
+
+
+
 function BaseScrollItemsPanel:createChildren()
     self.panelYPadding = GenericUI.SMALL_FONT_HGT + 2 * 2
     self.panelHeight = self.height - self.panelYPadding - 10
 
-    self.scrollingListBox = ISScrollingListBox:new(10, self.panelYPadding, self.width / 2, self.panelHeight)
+    self.scrollingListBox = ISScrollingListBox:new(0, 0, self.width, self.height)
     self.scrollingListBox:initialise()
     self.scrollingListBox:instantiate()
     self.scrollingListBox:setAnchorRight(false) -- resize in update()
     self.scrollingListBox:setAnchorBottom(true)
     self.scrollingListBox.itemHeight = 2 + GenericUI.MEDIUM_FONT_HGT + 32 + 4
     self.scrollingListBox.selected = 0
-    self.scrollingListBox.onMouseDown = BaseScrollItemsPanel.onMouseDownItems
+    self.scrollingListBox.onMouseDown = ScrollingListBoxOnMouseDown
     self.scrollingListBox.joypadParent = self
     self.scrollingListBox.drawBorder = true
     self:addChild(self.scrollingListBox)
@@ -73,31 +100,6 @@ end
 function BaseScrollItemsPanel:prerender()
     ISPanelJoypad.prerender(self)
 
-end
-
----This is run on the the ScrollingBoxList!
----@param x number
----@param y number
-function BaseScrollItemsPanel:onMouseDownItems(x, y)
-    if #self.scrollingListBox == 0 then return end
-    local row = self:rowAt(x, y)
-
-    if row > #self.scrollingListBox then
-        row = #self.scrollingListBox
-    end
-    if row < 1 then
-        row = 1
-    end
-
-    getSoundManager():playUISound("UISelectListItem")
-    self.selected = row
-    if self.onmousedown then
-        self.onmousedown(self.target, self.scrollingListBox[self.selected].item)
-    end
-
-    -- TODO Send data to the BuyQuantityPanel
-
-    self.parent:setSelectedItem(self.scrollingListBox[self.selected].item)
 end
 
 ---Set the item that's been selected from the list
