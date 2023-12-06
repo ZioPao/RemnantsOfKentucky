@@ -61,7 +61,7 @@ function SafehouseInstanceHandler.GetCrates()
     local cratesTable = {}
     local safehouse = SafehouseInstanceHandler.GetSafehouse()
     if safehouse == nil then
-        error("ERROR: can't find safehouse!")
+        debugPrint("ERROR: can't find safehouse! Maybe too soon?")
         return
     end
     for _, group in pairs(PZ_EFT_CONFIG.SafehouseInstanceSettings.safehouseStorage) do

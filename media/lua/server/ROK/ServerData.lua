@@ -93,6 +93,7 @@ end
 
 ------------------------------------------------
 ---@alias worldStringCoords string worldx-worldy-worldz
+---@alias assignedSafehousesTable table<worldStringCoords, string>      value is username
 ---@alias safehouseInstancesTable table<worldStringCoords, coords>
 
 ServerData.SafehouseInstances = ServerData.SafehouseInstances or {}
@@ -110,7 +111,7 @@ ServerData.SafehouseInstances.SetSafehouseInstances = function(data)
 end
 
 --- Get table fo assigned instances
----@return safehouseInstancesTable
+---@return assignedSafehousesTable
 ServerData.SafehouseInstances.GetSafehouseAssignedInstances = function()
     return ModData.getOrCreate(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
 end

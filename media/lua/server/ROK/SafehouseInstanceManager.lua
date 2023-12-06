@@ -3,6 +3,7 @@ if not isServer() then return end
 require("ROK/DebugTools")
 require("ROK/Config")
 local safehouseSettings = PZ_EFT_CONFIG.SafehouseInstanceSettings
+local PlayersManager = require("ROK/PlayersManager")
 ----------------------
 
 ---@class SafehouseInstanceManager
@@ -62,9 +63,10 @@ end
 ---@param key string
 ---@param username string
 ---@return string "wx-wy-wz" Key of assigned safehouse
- function SafehouseInstanceManager.AssignSafehouseInstanceToPlayer(key, username)
+function SafehouseInstanceManager.AssignSafehouseInstanceToPlayer(key, username)
     local assignedSafehouses = ServerData.SafehouseInstances.GetSafehouseAssignedInstances()
     assignedSafehouses[key] = username
+
     return key
 end
 
@@ -127,6 +129,9 @@ function SafehouseInstanceManager.GetOrAssignSafehouse(player)
         end
 
         SafehouseInstanceManager.AssignSafehouseInstanceToPlayer(playerSafehouseKey, id)
+
+        -- New safehouse, new starter kit
+        sendServerCommand(player, EFT_MODULES.Common, "ReceiveStarterKit", {})
     end
 
     return playerSafehouseKey
@@ -143,7 +148,7 @@ function SafehouseInstanceManager.SendPlayerToSafehouse(player)
 end
 
 ---Send all the players to their respective safehouse
-function SafehouseInstanceManager.SendPlayersToSafehouse()
+function SafehouseInstanceManager.SendAllPlayersToSafehouses()
     local playersArray = getOnlinePlayers()
     for i = 0, playersArray:size() - 1 do
         local player = playersArray:get(i)

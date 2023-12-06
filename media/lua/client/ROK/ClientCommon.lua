@@ -7,19 +7,28 @@ local ClientCommon = {}
 ---@param playerObj IsoPlayer
 ---@param sendToCrates boolean
 function ClientCommon.GiveStarterKit(playerObj, sendToCrates)
-    for i=1, #PZ_EFT_CONFIG.StarterKit do
-        ---@type starterKitType
-        local element = PZ_EFT_CONFIG.StarterKit[i]
-
-        if sendToCrates then
-            for _=1, element.amount do
-                ClientCommon.AddToCrate(element.fullType)
+    local function WaitForSafehouse()
+        local safehouse = SafehouseInstanceHandler.GetSafehouse()
+        if safehouse == nil then return end
+        debugPrint("Safehouse is ready! Giving starter kit")
+        for i=1, #PZ_EFT_CONFIG.StarterKit do
+            ---@type starterKitType
+            local element = PZ_EFT_CONFIG.StarterKit[i]
+            if sendToCrates then
+                for _=1, element.amount do
+                    ClientCommon.AddToCrate(element.fullType)
+                end
+            else
+                playerObj:getInventory():AddItems(element.fullType, element.amount)
             end
-        else
-            playerObj:getInventory():AddItems(element.fullType, element.amount)
         end
+        Events.OnPlayerUpdate.Remove(WaitForSafehouse)
     end
+    Events.OnPlayerUpdate.Add(WaitForSafehouse)
 end
+
+
+
 
 ---@param fullType string
 function ClientCommon.AddToCrate(fullType)

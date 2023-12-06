@@ -115,7 +115,7 @@ function MatchController:stopMatch()
     Countdown.Stop()
 
     -- TODO Won't close TimePanel when players die
-    SafehouseInstanceManager.SendPlayersToSafehouse()
+    SafehouseInstanceManager.SendAllPlayersToSafehouses()
     MatchController.instance = nil
 end
 
