@@ -67,7 +67,7 @@ function SafehouseInstanceHandler.GetCrates()
     for _, group in pairs(PZ_EFT_CONFIG.SafehouseInstanceSettings.safehouseStorage) do
         local sq = getCell():getGridSquare(safehouse.x + group.x, safehouse.y + group.y, 0)
         if sq == nil then
-            error("ERROR: Square not found while searching for crates")
+            debugPrint("ERROR: Square not found while searching for crate. Maybe too soon?")
             break
         end
         local objects = sq:getObjects()

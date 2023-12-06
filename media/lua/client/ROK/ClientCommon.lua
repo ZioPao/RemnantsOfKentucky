@@ -7,9 +7,14 @@ local ClientCommon = {}
 ---@param playerObj IsoPlayer
 ---@param sendToCrates boolean
 function ClientCommon.GiveStarterKit(playerObj, sendToCrates)
-    local function WaitForSafehouse()
+    local function WaitForSafehouse(player)
         local safehouse = SafehouseInstanceHandler.GetSafehouse()
         if safehouse == nil then return end
+        if player == nil or player ~= getPlayer() then return end
+        if player:getInventory() == nil then return end
+
+        -- We need to wait a bunch of time before the player has been initialized 100%
+
         debugPrint("Safehouse is ready! Giving starter kit")
         for i=1, #PZ_EFT_CONFIG.StarterKit do
             ---@type starterKitType
