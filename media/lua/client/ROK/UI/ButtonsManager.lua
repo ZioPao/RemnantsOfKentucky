@@ -4,6 +4,21 @@ local DuringMatchAdminPanel = require("ROK/UI/DuringMatch/DuringMatchAdminPanel"
 local LeaderboardPanel = require("ROK/UI/BeforeMatch/LeaderboardPanel")
 ----------------
 
+
+LuaEventManager.AddEvent("PZEFT_PostISEquippedItemInitialization")
+
+local og_ISEquippedItem_initialise = ISEquippedItem.initialise
+
+function ISEquippedItem:initialise()
+    og_ISEquippedItem_initialise(self)
+    debugPrint("initializing ISEquippedItem")
+
+    -- Separator
+    self:setHeight(self:getHeight() + 50)
+    triggerEvent("PZEFT_PostISEquippedItemInitialization")
+end
+
+
 -- Override ISSafetyUI to have a instance of that so we can reference it later
 local og_ISSafetyUI = ISSafetyUI.new
 
@@ -38,22 +53,34 @@ ButtonManager.additionalY = 10
 ---Based on Community Debug Tools
 ---@param buttonModule string
 ---@param onClick function
-function ButtonManager.AddNewButton(buttonModule, onClick)
-    local xMax = ISEquippedItem.instance.x - 5
-    local yMax = ISEquippedItem.instance:getBottom() + ButtonManager.additionalY
+function ButtonManager.AddNewButton(buttonModule, y, onClick)
+
+    ---@type ISEquippedItem
+    local inst = ISEquippedItem.instance
+
+    y = y + ButtonManager.additionalY
+    --local y = inst:getHeight() + ButtonManager.additionalY
+    debugPrint("Adding " .. buttonModule)
+    debugPrint("y = " .. tostring(y))
+    local x = inst.x - 5
 
     ---@type Texture
     local texture = BUTTONS_DATA_TEXTURES[buttonModule].OFF
-    local textureW, textureH = texture:getWidth(), texture:getHeight()
-    ButtonManager[buttonModule] = ISButton:new(xMax, yMax, textureW, textureH, "", nil, onClick)
+    local textureW, textureH = texture:getWidthOrig(), texture:getHeightOrig()
+    ButtonManager[buttonModule] = ISButton:new(x, y, textureW, textureH, "", nil, onClick)
     ButtonManager[buttonModule]:forceImageSize(textureW, textureH)
     ButtonManager[buttonModule]:setImage(texture)
+    ButtonManager[buttonModule]:initialise()
+    ButtonManager[buttonModule]:instantiate()
     ButtonManager[buttonModule]:setDisplayBackground(false)
     ButtonManager[buttonModule].borderColor = { r = 1, g = 1, b = 1, a = 0.1 }
+    ButtonManager[buttonModule]:ignoreWidthChange()
+    ButtonManager[buttonModule]:ignoreHeightChange()
 
-    ISEquippedItem.instance:addChild(ButtonManager[buttonModule])
-    ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() + ButtonManager[buttonModule]:getHeight() +
-    ButtonManager.additionalY)
+    inst:addChild(ButtonManager[buttonModule])
+    inst:setHeight(ButtonManager[buttonModule]:getBottom())
+
+    return y + textureH
 end
 
 function ButtonManager.RemoveButton(buttonModule)
@@ -79,32 +106,30 @@ end
 function ButtonManager.CreateButtons(isInRaid)
     debugPrint("Creating ROK buttons")
     debugPrint("ISEquippedItem height: " .. tostring(ISEquippedItem.instance:getHeight()))
-    if ButtonManager.firstInit then
-        ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() + 50)
-        ButtonManager.firstInit = false
-    end
+
+    local y = ISEquippedItem.instance:getHeight()
 
     -- Cleans up the buttons before resetting them
-    ButtonManager.RemoveButton("Leaderboard")           -- TODO Leaadboeard doesn't work so great, we need to click more in the upper portion to have it working
+    ButtonManager.RemoveButton("Leaderboard")
     ButtonManager.RemoveButton("AdminPanel")
 
     if isAdmin() then
-        ButtonManager.AddNewButton("AdminPanel", function() OpenAdminMenu() end)
+        y = ButtonManager.AddNewButton("AdminPanel", y, function() OpenAdminMenu() end)
     end
 
     if type(isInRaid) ~= "boolean" or not isInRaid then
-        ButtonManager.AddNewButton("Leaderboard", function() LeaderboardPanel.Open(100, 100) end)
+        y = ButtonManager.AddNewButton("Leaderboard", y, function() LeaderboardPanel.Open(100, 100) end)
     end
+
+    ISEquippedItem.instance:shrinkWrap()
 end
 
 function ButtonManager.Reset()
     debugPrint("Resetting ROK buttons")
     debugPrint("ISEquippedItem height: " .. tostring(ISEquippedItem.instance:getHeight()))
-    ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() - 50)
     ButtonManager.RemoveButton("Leaderboard")
     ButtonManager.RemoveButton("AdminPanel")
-    ButtonManager.firstInit = true
 end
 
 Events.PZEFT_UpdateClientStatus.Add(ButtonManager.CreateButtons)
-Events.OnCreatePlayer.Add(ButtonManager.CreateButtons)
+Events.PZEFT_PostISEquippedItemInitialization.Add(ButtonManager.CreateButtons)

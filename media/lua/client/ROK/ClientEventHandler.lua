@@ -70,8 +70,8 @@ local function OnPlayerExit()
     local TimePanel = require("ROK/UI/TimePanel")
     TimePanel.Close()
 
-    -- Reset buttons 
-    ButtonManager.Reset()
+    -- -- Reset buttons 
+    -- ButtonManager.Reset()
 end
 
 Events.OnPlayerDeath.Add(OnPlayerExit)
