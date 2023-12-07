@@ -13,7 +13,7 @@ local PlayersCommands = {}
 function PlayersCommands.RelayStarterKit(_, args)
     local playerToRelay = getPlayerByOnlineID(args.playerID)
     debugPrint("Relaying starter kit to " .. playerToRelay:getUsername())
-    sendServerCommand(playerToRelay, EFT_MODULES.Common, "ReceiveStarterKit", {})
+    sendServerCommand(playerToRelay, EFT_MODULES.Safehouse, "ReceiveStarterKit", {})
 end
 
 function PlayersCommands.ResetPlayer(_, args)

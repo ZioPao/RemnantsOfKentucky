@@ -3,7 +3,6 @@ if not isServer() then return end
 require("ROK/DebugTools")
 require("ROK/Config")
 local safehouseSettings = PZ_EFT_CONFIG.SafehouseInstanceSettings
-local PlayersManager = require("ROK/PlayersManager")
 ----------------------
 
 ---@class SafehouseInstanceManager
@@ -25,8 +24,6 @@ function SafehouseInstanceManager.Reset()
     for i, v in ipairs(PZ_EFT_CONFIG.SafehouseCells) do
         SafehouseInstanceManager.LoadSafehouseInstances(v.x, v.y)
     end
-
-    -- TODO Wipe crates?
 end
 
 --- Load safehouse instances using relative cell coordinates.

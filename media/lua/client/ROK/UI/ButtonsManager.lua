@@ -77,6 +77,8 @@ end
 ---Creates the buttons. Triggered from an event that starts when player gets teleported in or outside a safehouse
 ---@param isInRaid boolean
 function ButtonManager.CreateButtons(isInRaid)
+    debugPrint("Creating ROK buttons")
+    debugPrint("ISEquippedItem height: " .. tostring(ISEquippedItem.instance:getHeight()))
     if ButtonManager.firstInit then
         ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() + 50)
         ButtonManager.firstInit = false
@@ -96,6 +98,8 @@ function ButtonManager.CreateButtons(isInRaid)
 end
 
 function ButtonManager.Reset()
+    debugPrint("Resetting ROK buttons")
+    debugPrint("ISEquippedItem height: " .. tostring(ISEquippedItem.instance:getHeight()))
     ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() - 50)
     ButtonManager.RemoveButton("Leaderboard")
     ButtonManager.RemoveButton("AdminPanel")

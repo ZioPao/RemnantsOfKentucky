@@ -1,6 +1,6 @@
 require "ROK/ClientData"
 local BankManager = require("ROK/Economy/ClientBankManager")
-local ClientCommon = require("ROK/ClientCommon")
+local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 ------------------
 
 ---@class ClientShopManager
@@ -149,7 +149,7 @@ function ShopCommands.BuyItem(args)
     end
 
     for i=1, args.quantity do
-        ClientCommon.AddToCrate(args.item.fullType)
+        SafehouseInstanceHandler.AddToCrate(args.item.fullType)
     end
 end
 

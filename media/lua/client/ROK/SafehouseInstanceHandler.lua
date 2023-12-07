@@ -1,7 +1,6 @@
 require("ROK/DebugTools")
 local BlackScreen = require("ROK/UI/BeforeMatch/BlackScreen")
 local ClientState = require("ROK/ClientState")
-local ClientCommon = require("ROK/ClientCommon")
 --------------------------
 
 ---@class SafehouseInstanceHandler
@@ -57,6 +56,49 @@ function SafehouseInstanceHandler.GetSafehouse()
     return md.safehouse
 end
 
+
+---Wait until the safehouse is ready and run a specific function
+---@param funcToRun function
+---@param args {} args for the function
+function SafehouseInstanceHandler.WaitForSafehouseAndRun(funcToRun, args)
+    local function WaitAndRun()
+        local crates = SafehouseInstanceHandler.GetCrates()
+        if crates == nil or #crates ~= PZ_EFT_CONFIG.SafehouseInstanceSettings.cratesAmount then return end
+
+        debugPrint("Running function, safehouse is valid!")
+        funcToRun(unpack(args))
+
+        Events.OnPlayerUpdate.Remove(WaitAndRun)
+    end
+
+    Events.OnPlayerUpdate.Add(WaitAndRun)
+end
+
+--* Starter kit 
+
+---@param playerObj IsoPlayer
+---@param sendToCrates boolean
+function SafehouseInstanceHandler.GiveStarterKit(playerObj, sendToCrates)
+    function RunGiveStarterKit()
+        for i=1, #PZ_EFT_CONFIG.StarterKit do
+            ---@type starterKitType
+            local element = PZ_EFT_CONFIG.StarterKit[i]
+            if sendToCrates then
+                for _=1, element.amount do
+                    SafehouseInstanceHandler.AddToCrate(element.fullType)
+                end
+            else
+                playerObj:getInventory():AddItems(element.fullType, element.amount)
+            end
+        end
+
+        -- Notify the player
+        playerObj:Say(getText("UI_EFT_Say_ReceivedStartedKit"))
+    end
+    SafehouseInstanceHandler.WaitForSafehouseAndRun(RunGiveStarterKit, {})
+end
+
+--* Crates handling
 ---@return table<integer, ItemContainer>?
 function SafehouseInstanceHandler.GetCrates()
     local cratesTable = {}
@@ -86,7 +128,7 @@ end
 
 ---Wipes all the items in the crates of the current player safehouse. Run from the admin panel
 function SafehouseInstanceHandler.WipeCrates()
-    ClientCommon.WaitForSafehouseAndRun(function()
+    local function RunWipe()
         local cratesTable = SafehouseInstanceHandler.GetCrates()
         if cratesTable == nil then debugPrint("No crates to wipe") return end
 
@@ -94,7 +136,38 @@ function SafehouseInstanceHandler.WipeCrates()
             local crate = cratesTable[i]
             crate:clear()
         end
-    end, {})
+    end
+    SafehouseInstanceHandler.WaitForSafehouseAndRun(RunWipe, {})
+end
+
+---@param fullType string
+function SafehouseInstanceHandler.AddToCrate(fullType)
+    local cratesTable = SafehouseInstanceHandler.GetCrates()
+    if cratesTable == nil or #cratesTable == 0 then debugPrint("Crates are nil or empty!") return end
+
+    -- Find the first crate which has available space
+    local crateCounter = 1
+    local switchedToPlayer = false
+    local inv = cratesTable[crateCounter]
+
+
+    local item = InventoryItemFactory.CreateItem(fullType)
+    ---@diagnostic disable-next-line: param-type-mismatch
+    if not inv:hasRoomFor(getPlayer(), item) and not switchedToPlayer then
+        debugPrint("Switching to next crate")
+        crateCounter = crateCounter + 1
+        if crateCounter < #cratesTable then
+            inv = cratesTable[crateCounter]
+        else
+            debugPrint("No more space in the crates, switching to dropping stuff in the player's inventory")
+            inv = getPlayer():getInventory()
+            switchedToPlayer = true
+        end
+    end
+    inv:addItemOnServer(item)
+    inv:addItem(item)
+    inv:setDrawDirty(true)
+    ISInventoryPage.renderDirty = true
 end
 
 --* Events handling
@@ -145,11 +218,14 @@ end
 
 ---Wipes the crates of the new instanced safehouse and give the starter kit to the player
 function SafehouseInstanceCommands.PrepareNewSafehouse()
-    -- TODO Could be triggered a bit too early and create errors. Shouldn't really matter though
     SafehouseInstanceHandler.WipeCrates()
-    ClientCommon.GiveStarterKit(getPlayer(), true)
+    SafehouseInstanceHandler.GiveStarterKit(getPlayer(), true)
 end
 
+function SafehouseInstanceCommands.ReceiveStarterKit()
+    debugPrint("ReceiveStarterKit")
+    SafehouseInstanceHandler.GiveStarterKit(getPlayer(), true)
+end
 ------------------------
 
 local OnSafehouseInstanceCommand = function(module, command, args)

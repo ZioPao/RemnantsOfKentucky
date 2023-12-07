@@ -4,9 +4,6 @@ local TimePanel = require("ROK/UI/TimePanel")
 local ClientState = require("ROK/ClientState")
 --------------------------------
 
-
--- TODO Add option to change day time
-
 ---@class BeforeMatchAdminPanel : BaseAdminPanel
 local BeforeMatchAdminPanel = BaseAdminPanel:derive("BeforeMatchAdminPanel")
 BeforeMatchAdminPanel.instance = nil
