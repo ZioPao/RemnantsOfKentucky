@@ -107,6 +107,9 @@ function ButtonManager.CreateButtons(isInRaid)
     debugPrint("Creating ROK buttons")
     debugPrint("ISEquippedItem height: " .. tostring(ISEquippedItem.instance:getHeight()))
 
+    -- We need to get the height here to prevent issues. I've got no clue why, but if I try to get it from inside
+    -- the AddNewButton function I will get a different result after the player die, and it will never "fix" itself.
+    -- So fuck it, just get it here one time and be done with it
     local y = ISEquippedItem.instance:getHeight()
 
     -- Cleans up the buttons before resetting them
