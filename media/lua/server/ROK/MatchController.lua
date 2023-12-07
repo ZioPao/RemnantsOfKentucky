@@ -151,12 +151,15 @@ function MatchController.HandleZombieSpawns(loops)
                     sq = getSquare(x + randomX, y + randomY, 0)
                     ---@diagnostic disable-next-line: param-type-mismatch
                 until sq and not sq:getFloor():getSprite():getProperties():Is(IsoFlagType.water)
+
                 -- Amount of zombies should scale based on players amount too, to prevent from killing the server
-                local zombiesAmount = math.ceil(math.log(loops, MatchController.GetAmountAlivePlayers()) * MatchController.instance.zombieSpawnMultiplier)
+                -- The more players there are, the more zombies will spawn in total, but less per player
+                -- (Base amount * loop) / players in match 
+                local zombiesAmount = math.ceil((PZ_EFT_CONFIG.MatchSettings.zombiesAmountBase * loops * MatchController.instance:getZombieSpawnMultiplier())/MatchController:GetAmountAlivePlayers())
                 debugPrint("spawning " .. zombiesAmount .. " near " .. player:getUsername())
                 addZombiesInOutfit(sq:getX(), sq:getY(), 0, zombiesAmount, "", 50, false, false, false, false, 1)
 
-                -- TODO Send it to client, not everyone, by chance
+                -- Get random players to send audio to
                 if ZombRand(0, 100) > 50 then
                     table.insert(randomPlayers, {player = player, x = x, y = y})
                 end

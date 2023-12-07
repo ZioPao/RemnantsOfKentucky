@@ -132,9 +132,14 @@ PZ_EFT_CONFIG.MatchSettings = {
     -- Server only
     roundTime = 1200,       -- 20 minutes
     roundOvertime = 300,    -- 5 minutes
-    zombieIncreaseTime = 60,     -- todo 2 minutes
-    zombieSpawnMultiplier = 5,       -- 4 as default
-    checkAlivePlayersTime = 10      -- Every 10 seconds, we check if there are players alive in the match
+    zombieIncreaseTime = 60,
+    zombieSpawnMultiplier = 1,       -- 1, this could get really ugly.
+    checkAlivePlayersTime = 10,      -- Every 10 seconds, we check if there are players alive in the match
+
+    zombiesAmountBase = 2           -- Base value for zombie spawn
+
+
+    -- As of now, zombies spawned should be around 600/700 in total per instance, at the highest.
 }
 
 PZ_EFT_CONFIG.Default = {
