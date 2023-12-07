@@ -111,10 +111,7 @@ end
 
 --- Stop the match and teleport back everyone
 function MatchController:stopMatch()
-    -- TODO Won't work for dead players
     Countdown.Stop()
-
-    -- TODO Won't close TimePanel when players die
     SafehouseInstanceManager.SendAllPlayersToSafehouses()
     MatchController.instance = nil
 end
@@ -135,6 +132,10 @@ end
 ---@param loops number amount of time that this function has been called by Countdown
 function MatchController.HandleZombieSpawns(loops)
     if MatchController.instance == nil then return end
+
+    local randomPlayers = {}
+
+    -- Spawn Zombies
     for k, plId in pairs(MatchController.instance.playersInMatch) do
         if plId ~= nil then
             local player = getPlayerByOnlineID(plId)
@@ -151,12 +152,14 @@ function MatchController.HandleZombieSpawns(loops)
                     ---@diagnostic disable-next-line: param-type-mismatch
                 until sq and not sq:getFloor():getSprite():getProperties():Is(IsoFlagType.water)
                 -- Amount of zombies should scale based on players amount too, to prevent from killing the server
-                local zombiesAmount = math.floor(math.log(loops, MatchController.GetAmountAlivePlayers()) * MatchController.instance.zombieSpawnMultiplier)
+                local zombiesAmount = math.ceil(math.log(loops, MatchController.GetAmountAlivePlayers()) * MatchController.instance.zombieSpawnMultiplier)
                 debugPrint("spawning " .. zombiesAmount .. " near " .. player:getUsername())
                 addZombiesInOutfit(sq:getX(), sq:getY(), 0, zombiesAmount, "", 50, false, false, false, false, 1)
 
                 -- TODO Send it to client, not everyone, by chance
-                addSound(player, math.floor(x), math.floor(y), 0, 300, 100) -- TODO Not working anymore?
+                if ZombRand(0, 100) > 50 then
+                    table.insert(randomPlayers, {player = player, x = x, y = y})
+                end
             else
                 debugPrint("player was nil")
             end
@@ -164,6 +167,26 @@ function MatchController.HandleZombieSpawns(loops)
             debugPrint("plid was nil")
         end
     end
+
+    -- Handle sound
+    -- We need to delay this a bit to be sure that it works correctly
+    local os_time = os.time
+    local eTime = os_time() + 2
+
+
+    local function WaitAndSendSound()
+        local cTime = os_time()
+        if cTime < eTime then return end
+        for i=1, #randomPlayers do
+            ---@type {player : IsoPlayer, x : number, y : number}
+            local playerTab = randomPlayers[i]
+            debugPrint("Sending sound near player: " .. playerTab.player:getUsername())
+            addSound(playerTab.player, math.floor(playerTab.x), math.floor(playerTab.y), 0, 300, 100)
+        end
+
+        Events.OnTick.Remove(WaitAndSendSound)
+    end
+    Events.OnTick.Add(WaitAndSendSound)
 end
 
 ---Checks if there are players still alive in a match. When it gets to 0, stop the match
