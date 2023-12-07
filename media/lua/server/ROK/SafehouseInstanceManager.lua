@@ -130,14 +130,13 @@ function SafehouseInstanceManager.GetOrAssignSafehouse(player)
 
         SafehouseInstanceManager.AssignSafehouseInstanceToPlayer(playerSafehouseKey, id)
 
-
+        -- Clean crates, send starter kit 
         sendServerCommand(player, EFT_MODULES.Safehouse, 'PrepareNewSafehouse', {})
 
-        -- Clean crates, send starter kit 
-        sendServerCommand(player, EFT_MODULES.Safehouse, 'CleanStorage', {})
+        -- sendServerCommand(player, EFT_MODULES.Safehouse, 'CleanStorage', {})
         
-        -- New safehouse, new starter kit
-        sendServerCommand(player, EFT_MODULES.Common, "ReceiveStarterKit", {})
+        -- -- New safehouse, new starter kit
+        -- sendServerCommand(player, EFT_MODULES.Common, "ReceiveStarterKit", {})
     end
 
     return playerSafehouseKey

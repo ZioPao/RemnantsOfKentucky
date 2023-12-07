@@ -145,6 +145,7 @@ end
 
 ---Wipes the crates of the new instanced safehouse and give the starter kit to the player
 function SafehouseInstanceCommands.PrepareNewSafehouse()
+    -- TODO Could be triggered a bit too early and create errors. Shouldn't really matter though
     SafehouseInstanceHandler.WipeCrates()
     ClientCommon.GiveStarterKit(getPlayer(), true)
 end

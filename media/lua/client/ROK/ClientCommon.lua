@@ -7,9 +7,7 @@ local ClientCommon = {}
 ---@param funcToRun function
 ---@param args {} args for the function
 function ClientCommon.WaitForSafehouseAndRun(funcToRun, args)
-    local function WaitAndRun(player)
-
-
+    local function WaitAndRun()
         local crates = SafehouseInstanceHandler.GetCrates()
         if crates == nil or #crates ~= PZ_EFT_CONFIG.SafehouseInstanceSettings.cratesAmount then return end
 
