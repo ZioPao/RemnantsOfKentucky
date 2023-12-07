@@ -160,7 +160,7 @@ function MatchController.HandleZombieSpawns(loops)
                 addZombiesInOutfit(sq:getX(), sq:getY(), 0, zombiesAmount, "", 50, false, false, false, false, 1)
 
                 -- Get random players to send audio to
-                if ZombRand(0, 100) > 50 then
+                if ZombRand(0, 100) > PZ_EFT_CONFIG.MatchSettings.chanceRandomSoundOnZombieSpawn then
                     table.insert(randomPlayers, {player = player, x = x, y = y})
                 end
             else
