@@ -40,7 +40,7 @@ local function SellDoDrawItem(self, y, item, alt)
 
     local sellPrice = itemData.basePrice * itemData.sellMultiplier
     local sellpriceStr = "$" .. tostring(sellPrice)
-    local sellPriceX = self:getWidth() - getTextManager():MeasureStringX(self.font, sellpriceStr)
+    local sellPriceX = self:getWidth() - getTextManager():MeasureStringX(self.font, sellpriceStr) - 6
 
     self:drawText(sellpriceStr, sellPriceX - 5, y + 2, 1, 1, 1, a, self.font)
 
