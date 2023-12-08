@@ -97,7 +97,7 @@ function LeaderboardScrollingTable:drawDatas(y, item, alt)
     self:clearStencilRect()
 
     -- Balance
-    self:drawText(tostring(item.item.balance) .. " $", self.columns[3].size + xOffset, y + 4, 1, 1, 1, a, self.font)
+    self:drawText("$" .. tostring(item.item.balance), self.columns[3].size + xOffset, y + 4, 1, 1, 1, a, self.font)
 
     return y + self.itemheight
 end

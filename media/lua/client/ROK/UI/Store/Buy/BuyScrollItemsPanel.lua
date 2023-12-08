@@ -36,7 +36,7 @@ local function BuyDoDrawItem(self, y, item, alt)
     self:drawText(itemDisplayName, 6, y + 2, 1, 1, 1, a, UIFont.Medium)
 
     --* ITEM COST *--
-    self:drawText(itemCost .. " $", self:getWidth() - 100, y + 2, 1, 1, 1, a, UIFont.Medium)
+    self:drawText("$" .. itemCost, self:getWidth() - 100, y + 2, 1, 1, 1, a, UIFont.Medium)
 
     return y + item.height
 end

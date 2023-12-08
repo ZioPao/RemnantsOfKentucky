@@ -36,7 +36,7 @@ function SellSidePanel:render()
     local text = ""
 
     local price = self:calculateSellPrice()
-    self.textPanel:setText("<CENTRE> You will receive: " .. tostring(price) .. "$")
+    self.textPanel:setText("<CENTRE> You will receive: $" .. tostring(price))
     self.textPanel.textDirty = true
 end
 

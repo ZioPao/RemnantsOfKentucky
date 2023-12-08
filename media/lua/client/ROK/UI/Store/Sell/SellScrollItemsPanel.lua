@@ -39,7 +39,7 @@ local function SellDoDrawItem(self, y, item, alt)
     end
 
     local sellPrice = itemData.basePrice * itemData.sellMultiplier
-    local sellpriceStr = tostring(sellPrice) .. " $"
+    local sellpriceStr = "$" .. tostring(sellPrice)
     local sellPriceX = self:getWidth() - getTextManager():MeasureStringX(UIFont.Medium, sellpriceStr)
 
     self:drawText(sellpriceStr, sellPriceX - 5, y + 2, 1, 1, 1, a, UIFont.Medium)

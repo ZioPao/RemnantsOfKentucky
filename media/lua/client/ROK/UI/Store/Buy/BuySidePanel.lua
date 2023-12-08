@@ -87,9 +87,7 @@ function BuySidePanel:render()
     local finalCost = tonumber(self.entryAmount:getInternalText()) * itemCost
 
     local itemNameStr = " <CENTRE> " .. actualItem:getDisplayName()
-    local itemFinalCostStr = " <CENTRE> " ..
-        itemCost .. "$ x " .. tostring(self.entryAmount:getInternalText()) .. "$ = " .. tostring(finalCost) .. "$"
-
+    local itemFinalCostStr = " <CENTRE> $" .. itemCost .. " x " .. tostring(self.entryAmount:getInternalText()) .. " = $" .. tostring(finalCost)
     local finalStr = itemNameStr .. " <LINE> " .. itemFinalCostStr
 
     -- Updates the text in the panel
