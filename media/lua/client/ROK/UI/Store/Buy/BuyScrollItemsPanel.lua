@@ -33,10 +33,10 @@ local function BuyDoDrawItem(self, y, item, alt)
     local itemCost = item.item.basePrice
 
     --* ITEM NAME *--
-    self:drawText(itemDisplayName, 6, y + 2, 1, 1, 1, a, UIFont.Medium)
+    self:drawText(itemDisplayName, 6, y + 2, 1, 1, 1, a, self.font)
 
     --* ITEM COST *--
-    self:drawText("$" .. itemCost, self:getWidth() - 100, y + 2, 1, 1, 1, a, UIFont.Medium)
+    self:drawText("$" .. itemCost, self:getWidth() - 100, y + 2, 1, 1, 1, a, self.font)
 
     return y + item.height
 end

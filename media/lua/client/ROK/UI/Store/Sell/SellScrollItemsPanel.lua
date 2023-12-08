@@ -28,7 +28,7 @@ local function SellDoDrawItem(self, y, item, alt)
     local a = 0.9
     --* Item name
     local itemName = item.item:getName()
-    self:drawText(itemName, 6, y + 2, 1, 1, 1, a, UIFont.Medium)
+    self:drawText(itemName, 6, y + 2, 1, 1, 1, a, self.font)
 
     --* Price
     local itemFullType = item.item:getFullType()
@@ -40,9 +40,9 @@ local function SellDoDrawItem(self, y, item, alt)
 
     local sellPrice = itemData.basePrice * itemData.sellMultiplier
     local sellpriceStr = "$" .. tostring(sellPrice)
-    local sellPriceX = self:getWidth() - getTextManager():MeasureStringX(UIFont.Medium, sellpriceStr)
+    local sellPriceX = self:getWidth() - getTextManager():MeasureStringX(self.font, sellpriceStr)
 
-    self:drawText(sellpriceStr, sellPriceX - 5, y + 2, 1, 1, 1, a, UIFont.Medium)
+    self:drawText(sellpriceStr, sellPriceX - 5, y + 2, 1, 1, 1, a, self.font)
 
 
     return y + self.itemheight
