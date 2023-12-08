@@ -30,10 +30,25 @@ end
 ---@param itemsTable any
 function BaseScrollItemsPanel:initialiseList(itemsTable)
     if itemsTable == nil then return end
+    local sortedItems = {}
 
-    for tableName, data in pairs(itemsTable) do
-        data.actualItem = getScriptManager():getItem(tableName)
-        self.scrollingListBox:addItem(tableName, data)
+    -- TODO workaroundy
+    for k,v in pairs(itemsTable) do
+        table.insert(sortedItems, v)
+    end
+    local function SortByName(a,b)
+        return a.fullType > b.fullType
+    end
+
+    table.sort(sortedItems, SortByName)
+
+    -- Sorting
+
+    for i=1, #sortedItems do
+        local data = sortedItems[i]
+        data.actualItem = getScriptManager():getItem(data.fullType)
+        self.scrollingListBox:addItem(data.fullType, data)
+
     end
 
     -- Select first item in the list automatically
