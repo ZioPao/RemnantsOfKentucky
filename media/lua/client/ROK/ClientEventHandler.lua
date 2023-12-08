@@ -1,7 +1,5 @@
 local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 local ClientState = require("ROK/ClientState")
-local ClientCommon = require("ROK/ClientCommon")
-local BlackScreen = require("ROK/UI/BeforeMatch/BlackScreen")
 -----------------------------
 
 local ClientEvents = {}
@@ -103,3 +101,9 @@ local function OnPlayerInit(player)
 end
 
 Events.OnPlayerUpdate.Add(OnPlayerInit)
+
+
+
+--* Shop update
+
+

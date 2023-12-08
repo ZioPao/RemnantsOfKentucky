@@ -1,5 +1,5 @@
 require "ROK/ShopItems/ShopItems"
-
+if not isServer() then return end
 
 PZ_EFT_ShopItems_Config.AddItem("Base.GranolaBar", {["ESSENTIALS"] = true}, 20, 1, 0.5)
 PZ_EFT_ShopItems_Config.AddItem("Base.WaterBottleFull", {["ESSENTIALS"] = true}, 50, 1, 0.5)
@@ -13,19 +13,8 @@ PZ_EFT_ShopItems_Config.AddItem("Base.Pistol", {["ESSENTIALS"] = true}, 750, 1, 
 PZ_EFT_ShopItems_Config.AddItem("Base.9mmClip", {["ESSENTIALS"] = true}, 250, 1, 0.5)
 PZ_EFT_ShopItems_Config.AddItem("Base.Bullets9mmBox", {["ESSENTIALS"] = true}, 250, 1, 0.5)
 PZ_EFT_ShopItems_Config.AddItem("Base.Bandage", {["ESSENTIALS"] = true}, 100, 1, 0.5)
--- TODO Add Auto Heal object
+PZ_EFT_ShopItems_Config.AddItem("ROK.AutoHeal", {["ESSENTIALS"] = true}, 2500, 1, 0.5)
 
 -------------------------
 
-if isServer() then
-    PZ_EFT_ShopItems_Config.GenerateDailyItems()
-end
-
---PZ_EFT_ShopItems_Config.AddItem("Base.Acorn", {["HIGHVALUE"] = true}, 100, 0.5, 0.7)
--- PZ_EFT_ShopItems_Config.AddItem("Base.GuitarAcoustic", {["HIGHVALUE"] = true}, 100, 0.5, 0.7)
--- PZ_EFT_ShopItems_Config.AddItem("Base.Bullets9mm", {["HIGHVALUE"] = true}, 100, 0.5, 0.7)
--- PZ_EFT_ShopItems_Config.AddItem("Base.Allsorts", {["HIGHVALUE"] = true}, 100, 0.5, 0.7)
--- PZ_EFT_ShopItems_Config.AddItem("Base.Bandaid", {["LOWVALUE"] = true}, 100, 0.5, 0.7)
--- PZ_EFT_ShopItems_Config.AddItem("Base.Amplifier", {["LOWVALUE"] = true}, 100, 0.5, 0.7)
--- PZ_EFT_ShopItems_Config.AddItem("Base.Antibiotics", {["LOWVALUE"] = true}, 100, 0.5, 0.7)
--- PZ_EFT_ShopItems_Config.AddItem("Base.Avocado", {["LOWVALUE"] = true}, 100, 0.5, 0.7)
+PZ_EFT_ShopItems_Config.GenerateDailyItems()

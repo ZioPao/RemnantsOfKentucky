@@ -76,7 +76,7 @@ end
 
 local ShopCommands = {}
 
---- Send data to clients
+--- Send shop data to a specific client
 ---@param playerObj IsoPlayer
 function ShopCommands.TransmitShopItems(playerObj)
     debugPrint("Transmit Shop Items")

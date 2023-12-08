@@ -48,6 +48,10 @@ function PZ_EFT_ShopItems_Config.GenerateDailyItems()
             local itemName = item:getFullName()
             debugPrint("Adding to daily items " .. itemName)
 
+            if itemName == "Base.Katana" then
+                price = 20000
+            end
+
             if PZ_EFT_ShopItems_Config.data[itemName] == nil then
                 PZ_EFT_ShopItems_Config.AddItem(itemName, {["HIGHVALUE"]=true}, price, 1, 0.5 )
             end
@@ -57,8 +61,14 @@ function PZ_EFT_ShopItems_Config.GenerateDailyItems()
 end
 
 
+if isServer() then
+    Events.EveryDays.Add(function()
+        PZ_EFT_ShopItems_Config.GenerateDailyItems()
+        local ServerShopManager = require("ROK/Economy/ServerShopManager")
+        local items = ServerShopManager.GetItems()
+        sendServerCommand(EFT_MODULES.Shop, "GetShopItems", items)
+    end)
+end
 
-Events.EveryDays.Add(PZ_EFT_ShopItems_Config.GenerateDailyItems)
--- TODO At startup
 
--- TODO Automatically loop through EVERY ITEM and add a cost based on something
+    

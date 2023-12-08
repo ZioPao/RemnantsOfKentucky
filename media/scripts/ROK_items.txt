@@ -1,0 +1,17 @@
+module ROK
+{
+	imports
+	{
+		Base
+	}
+
+    item AutoHeal
+	{
+	    DisplayCategory = Tool,
+		Weight	=	0.1,
+		Type	=	Normal,
+		DisplayName	= Auto Heal,
+		Icon	=	Paper,
+		WorldStaticModel = SheetOfPaper,
+	}
+}
