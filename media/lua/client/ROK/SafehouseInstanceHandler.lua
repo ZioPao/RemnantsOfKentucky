@@ -150,24 +150,29 @@ function SafehouseInstanceHandler.AddToCrate(fullType)
     local switchedToPlayer = false
     local inv = cratesTable[crateCounter]
 
-
-    local item = InventoryItemFactory.CreateItem(fullType)
-    ---@diagnostic disable-next-line: param-type-mismatch
-    if not inv:hasRoomFor(getPlayer(), item) and not switchedToPlayer then
-        debugPrint("Switching to next crate")
-        crateCounter = crateCounter + 1
-        if crateCounter < #cratesTable then
-            inv = cratesTable[crateCounter]
-        else
-            debugPrint("No more space in the crates, switching to dropping stuff in the player's inventory")
-            inv = getPlayer():getInventory()
-            switchedToPlayer = true
+    -- TODO Workaround for play test!
+    if fullType == "ROK.AutoHeal" then
+        local ClientCommon = require("ROK/ClientCommon")
+        ClientCommon.AutoHeal()
+    else
+        local item = InventoryItemFactory.CreateItem(fullType)
+        ---@diagnostic disable-next-line: param-type-mismatch
+        if not inv:hasRoomFor(getPlayer(), item) and not switchedToPlayer then
+            debugPrint("Switching to next crate")
+            crateCounter = crateCounter + 1
+            if crateCounter < #cratesTable then
+                inv = cratesTable[crateCounter]
+            else
+                debugPrint("No more space in the crates, switching to dropping stuff in the player's inventory")
+                inv = getPlayer():getInventory()
+                switchedToPlayer = true
+            end
         end
+        inv:addItemOnServer(item)
+        inv:addItem(item)
+        inv:setDrawDirty(true)
+        ISInventoryPage.renderDirty = true
     end
-    inv:addItemOnServer(item)
-    inv:addItem(item)
-    inv:setDrawDirty(true)
-    ISInventoryPage.renderDirty = true
 end
 
 --* Events handling
