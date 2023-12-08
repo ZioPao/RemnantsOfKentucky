@@ -38,6 +38,7 @@ function PZ_EFT_ShopItems_Config.GenerateDailyItems()
 
     }
     local allItems = getScriptManager():getAllItems()
+    local counter = 0
 	for i=1,allItems:size() do
         ---@type Item
 		local item = allItems:get(i-1)
@@ -54,8 +55,14 @@ function PZ_EFT_ShopItems_Config.GenerateDailyItems()
 
             if PZ_EFT_ShopItems_Config.data[itemName] == nil then
                 PZ_EFT_ShopItems_Config.AddItem(itemName, {["HIGHVALUE"]=true}, price, 1, 0.5 )
+                counter = counter + 1
             end
         end
+
+        if counter > PZ_EFT_CONFIG.Shop.dailyItemsAmount then
+            return
+        end
+
 
     end
 end

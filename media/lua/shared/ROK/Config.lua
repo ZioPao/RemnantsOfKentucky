@@ -147,6 +147,11 @@ PZ_EFT_CONFIG.Default = {
     cratesValue = 0,
 }
 
+
+PZ_EFT_CONFIG.Shop = {
+    dailyItemsAmount = 20
+}
+
 ------------------------------------------
 ---* Spawn points *-- 
 -- World coordinates if PVP instance starts at cell 0,0
