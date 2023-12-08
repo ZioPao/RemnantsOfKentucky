@@ -95,13 +95,28 @@ end
 
 ---@return table
 function ClientShopManager.GetDailyItems()
+    -- TODO Temp for playtest
     local shopItems = ClientData.Shop.GetShopItems()
-    if shopItems and shopItems.dailyInventory then
-        return shopItems.dailyInventory
-    end
+    if shopItems and shopItems.tags and shopItems.tags['HIGHVALUE'] then
+        local essentialsList = {}
+        for itemType, _ in pairs(shopItems.tags['HIGHVALUE']) do
+            essentialsList[itemType] = nil
+            essentialsList[itemType] = shopItems.items[itemType]
+        end
+        --PZEFT_UTILS.PrintTable(essentialsList)
 
-    return {}
+        return essentialsList
+    else
+        return {}
+    end
 end
+--     local shopItems = ClientData.Shop.GetShopItems()
+--     if shopItems and shopItems.dailyInventory then
+--         return shopItems.dailyInventory
+--     end
+
+--     return {}
+-- end
 
 ---@return table
 function ClientShopManager.GetEssentialItems()
@@ -129,14 +144,11 @@ local ShopCommands = {}
 ---@param items any
 function ShopCommands.GetShopItems(items)
     debugPrint("Receiving shop items")
+    --PZEFT_UTILS.PrintTable(items)
     if items then
         local KEY_SHOP_ITEMS = "PZ-EFT-SHOP-ITEMS"
         ModData.add(KEY_SHOP_ITEMS, items)
     end
-
-    -- TODO Handle daily items better
-    local AdminShopManager = require("ROK/Economy/AdminShopManager")
-    AdminShopManager.RefreshDailyItems()
 end
 
 ---@param args {item : any, quantity : number}

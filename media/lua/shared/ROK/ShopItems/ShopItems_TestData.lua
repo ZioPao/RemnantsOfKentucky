@@ -1,5 +1,6 @@
 require "ROK/ShopItems/ShopItems"
 
+
 PZ_EFT_ShopItems_Config.AddItem("Base.GranolaBar", {["ESSENTIALS"] = true}, 20, 1, 0.5)
 PZ_EFT_ShopItems_Config.AddItem("Base.WaterBottleFull", {["ESSENTIALS"] = true}, 50, 1, 0.5)
 PZ_EFT_ShopItems_Config.AddItem("Base.Cereal", {["ESSENTIALS"] = true}, 20, 1, 0.5)
@@ -16,9 +17,11 @@ PZ_EFT_ShopItems_Config.AddItem("Base.Bandage", {["ESSENTIALS"] = true}, 100, 1,
 
 -------------------------
 
+if isServer() then
+    PZ_EFT_ShopItems_Config.GenerateDailyItems()
+end
 
-PZ_EFT_ShopItems_Config.AddItem("Base.Shovel", {["JUNK"] = true}, 100, 0.5, 0.7)
--- PZ_EFT_ShopItems_Config.AddItem("Base.Acorn", {["HIGHVALUE"] = true}, 100, 0.5, 0.7)
+--PZ_EFT_ShopItems_Config.AddItem("Base.Acorn", {["HIGHVALUE"] = true}, 100, 0.5, 0.7)
 -- PZ_EFT_ShopItems_Config.AddItem("Base.GuitarAcoustic", {["HIGHVALUE"] = true}, 100, 0.5, 0.7)
 -- PZ_EFT_ShopItems_Config.AddItem("Base.Bullets9mm", {["HIGHVALUE"] = true}, 100, 0.5, 0.7)
 -- PZ_EFT_ShopItems_Config.AddItem("Base.Allsorts", {["HIGHVALUE"] = true}, 100, 0.5, 0.7)
