@@ -27,17 +27,22 @@ function BaseScrollItemsPanel:initalise()
     ISPanelJoypad.initialise(self)
 end
 
----@param itemsTable any
+---@param itemsTable table<string, {actualItem : Item, fullType : string}>
 function BaseScrollItemsPanel:initialiseList(itemsTable)
     if itemsTable == nil then return end
     local sortedItems = {}
 
     -- TODO workaroundy
     for k,v in pairs(itemsTable) do
+        v.actualItem = getScriptManager():getItem(v.fullType)
         table.insert(sortedItems, v)
     end
+
+    ---@param a {actualItem : Item}
+    ---@param b {actualItem : Item}
+    ---@return boolean
     local function SortByName(a,b)
-        return a.fullType > b.fullType
+        return a.actualItem:getDisplayName() < b.actualItem:getDisplayName()
     end
 
     table.sort(sortedItems, SortByName)

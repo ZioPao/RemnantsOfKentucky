@@ -1,4 +1,4 @@
----@alias clientStateType {isInRaid : boolean, isStartingMatch : boolean, extractionStatus : table, currentTime : number, availableInstances : number, availableSafehouses : number}
+---@alias clientStateType {isInRaid : boolean, isStartingMatch : boolean, extractionStatus : table, currentTime : number, availableInstances : number, availableSafehouses : number, isAdminMode : boolean}
 
 ---@type clientStateType
 local ClientState = {
@@ -6,6 +6,10 @@ local ClientState = {
     isStartingMatch = false,
     currentTime = -1,
     extractionStatus = {},
+
+
+    --* ADMIN ONLY
+    isAdminMode = false
 }
 
 -----------------------------------

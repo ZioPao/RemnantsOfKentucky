@@ -13,7 +13,7 @@ PZ_EFT_ShopItems_Config.AddItem("Base.Pistol", {["ESSENTIALS"] = true}, 750, 1, 
 PZ_EFT_ShopItems_Config.AddItem("Base.9mmClip", {["ESSENTIALS"] = true}, 250, 1, 0.5)
 PZ_EFT_ShopItems_Config.AddItem("Base.Bullets9mmBox", {["ESSENTIALS"] = true}, 250, 1, 0.5)
 PZ_EFT_ShopItems_Config.AddItem("Base.Bandage", {["ESSENTIALS"] = true}, 100, 1, 0.5)
-PZ_EFT_ShopItems_Config.AddItem("ROK.AutoHeal", {["ESSENTIALS"] = true}, 2500, 1, 0.5)
+--PZ_EFT_ShopItems_Config.AddItem("ROK.AutoHeal", {["ESSENTIALS"] = true}, 2500, 1, 0.5)
 
 -------------------------
 

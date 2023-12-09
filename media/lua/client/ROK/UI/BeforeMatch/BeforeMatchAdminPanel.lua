@@ -57,23 +57,34 @@ function BeforeMatchAdminPanel:createChildren()
 
     y = y - btnHeight - yPadding
 
-    self.btnSetTime = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
-    self.btnSetTime.internal = "SET_TIME"
-    self.btnSetTime:initialise()
-    self.btnSetTime:setEnable(false)
-    self:addChild(self.btnSetTime)
-
-
     -- Additional handling for the btnSetTime
     self.btnSetTimeTab = {
         prevInt = "",
         isChanging = false
     }
 
+    self.btnSetTime = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
+    self.btnSetTime.internal = "SET_TIME"
+    self.btnSetTime:initialise()
+    self.btnSetTime:setEnable(false)
+    self:addChild(self.btnSetTime)
+
+    y = y - btnHeight - yPadding
+
+    self.btnAdminMode = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
+    self.btnAdminMode.internal = "ADMIN_MODE"
+    self.btnAdminMode:initialise()
+    self.btnAdminMode:setEnable(false)
+    self:addChild(self.btnAdminMode)
+
     --------------------
     -- INFO PANEL, TOP ONE
 
-    self.panelInfo = ISRichTextPanel:new(0, 20, self:getWidth(), self:getHeight() - y)
+    local panelInfoHeight = self:getHeight() - y
+    debugPrint(self:getHeight())
+    debugPrint(y)
+
+    self.panelInfo = ISRichTextPanel:new(0, 20, self:getWidth(), panelInfoHeight)
     self.panelInfo.autosetheight = false
     self.panelInfo.background = true
     self.panelInfo.backgroundColor = { r = 0, g = 0, b = 0, a = 0.5 }
@@ -131,6 +142,9 @@ function BeforeMatchAdminPanel:onClick(btn)
         btn:setEnable(false)
         self.btnSetTimeTab.isChanging = true
         self.btnSetTimeTab.prevInt = 'SET_TIME_NIGHT'
+    elseif btn.internal == 'ADMIN_MODE' then
+        debugPrint("Admin Mode")
+        ClientState.isAdminMode = not ClientState.isAdminMode
     end
 end
 
@@ -139,7 +153,16 @@ function BeforeMatchAdminPanel:update()
     -- When starting the match, we'll disable the default close button
     self.closeButton:setEnable(not ClientState.isStartingMatch)
     self.btnManagePlayers:setEnable(not ClientState.isStartingMatch)
+    self.btnAdminMode:setEnable(not ClientState.isStartingMatch)
 
+
+    -- Change title to btnAdminMode
+    if ClientState.isAdminMode then
+        self.btnAdminMode.title = getText("IGUI_EFT_AdminPanel_AdminModeOn")
+    else
+        self.btnAdminMode.title = getText("IGUI_EFT_AdminPanel_AdminModeOff")
+
+    end
 
     -- Check hour 
     local time = getGameTime():getTimeOfDay()

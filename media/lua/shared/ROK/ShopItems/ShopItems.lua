@@ -45,7 +45,7 @@ function PZ_EFT_ShopItems_Config.GenerateDailyItems()
         local chance = ZombRand(0,100) > 90
         local price = ZombRand(100, 1000)
 
-        if chance and item ~= nil and ignoredCat[item:getDisplayCategory()] == nil then
+        if chance and item ~= nil and item:getFullName() ~= "ROK.AutoHeal" and ignoredCat[item:getDisplayCategory()] == nil then
             local itemName = item:getFullName()
             debugPrint("Adding to daily items " .. itemName)
 

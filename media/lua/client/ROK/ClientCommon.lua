@@ -4,31 +4,21 @@ function ClientCommon.AutoHeal()
     local function WaitForGodMode()
         local pl = getPlayer()
         if pl:isGodMod() == false then return end
-        pl:setGodMod(true)
+        pl:setGodMod(false)
         pl:Say("I feel better now!")
         Events.OnTick.Remove(WaitForGodMode)
     end
 
     local pl = getPlayer()
-    --local plInv = pl:getInventory()
-    --local item = plInv:FindAndReturn("AutoHeal")
-    --if item == nil then
-    --    pl:Say("I need to have the AutoHeal in my inventory")
-    --else
-
     pl:setGodMod(true)
     Events.OnTick.Add(WaitForGodMode)
-    --plInv:Remove(item)
-    --end
-
 end
-
 
 local function OnFillInventoryObjectContextMenu(playerIndex, context, items)
     if items[1] then
         local item = items[1]
         if item.name == 'Auto Heal' then
-            context:addOption("Heal yourself", playerIndex, HandleAutoHeal)
+            context:addOption("Heal yourself", playerIndex, ClientCommon.AutoHeal)
         end
     end
 end
