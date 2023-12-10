@@ -80,6 +80,7 @@ function BeforeMatchAdminPanel:createChildren()
     --------------------
     -- INFO PANEL, TOP ONE
 
+    -- TODO This is temporary, kinda broken
     local panelInfoHeight = self:getHeight() - y
     debugPrint(self:getHeight())
     debugPrint(y)

@@ -1,33 +1,21 @@
 local ClientCommon = {}
 
-function ClientCommon.AutoHeal()
-    local function WaitForGodMode()
-        local pl = getPlayer()
-        if pl:isGodMod() == false then return end
-        pl:setGodMod(false)
-        pl:Say("I feel better now!")
-        Events.OnTick.Remove(WaitForGodMode)
-    end
-
+function ClientCommon.InstaHeal()
     local pl = getPlayer()
-    pl:setGodMod(true)
-    Events.OnTick.Add(WaitForGodMode)
+    pl:getBodyDamage():RestoreToFullHealth()
 end
 
 local function OnFillInventoryObjectContextMenu(playerIndex, context, items)
     if items[1] then
         local item = items[1]
-        if item.name == 'Auto Heal' then
-            context:addOption("Heal yourself", playerIndex, ClientCommon.AutoHeal)
+        if item.name == 'Insta Heal' then
+            context:addOption("Heal yourself", playerIndex, ClientCommon.InstaHeal)
         end
     end
 end
 
 
 Events.OnFillInventoryObjectContextMenu.Add(OnFillInventoryObjectContextMenu)
-
-
-
 
 
 

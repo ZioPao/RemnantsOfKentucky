@@ -5,12 +5,12 @@ module ROK
 		Base
 	}
 
-    item AutoHeal
+    item InstaHeal
 	{
 	    DisplayCategory = Tool,
 		Weight	=	0.1,
 		Type	=	Normal,
-		DisplayName	= Auto Heal,
+		DisplayName	= Insta Heal,
 		Icon	=	Paper,
 		WorldStaticModel = SheetOfPaper,
 	}
