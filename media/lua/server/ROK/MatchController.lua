@@ -65,7 +65,6 @@ function MatchController:start()
 
     -- Start timer and the event handling zombie spawning
     Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.roundTime, function()
-
         debugPrint("Overtime!")
         self:startOvertime()
     end, true)
@@ -83,16 +82,19 @@ end
 function MatchController:startOvertime()
     Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.roundOvertime, function()
         debugPrint("End match")
+        MatchController:killAlivePlayers()
         self:stopMatch()
     end, true, "Overtime")
 end
 
 --- Kill players that are still in the pvp instance and didn't manage to escape in time
 function MatchController:killAlivePlayers()
-    local temp = getOnlinePlayers()
-    for i = 0, temp:size() - 1 do
-        local player = temp:get(i)
-        sendServerCommand(player, "PZEFT-State", "CommitDieIfInRaid", {})
+    for k, plID in pairs(self.playersInMatch) do
+        if plID ~= nil then
+            local pl = getPlayerByOnlineID(plID)
+            sendServerCommand(pl, EFT_MODULES.State, "CommitDieIfInRaid", {})
+
+        end
     end
 end
 

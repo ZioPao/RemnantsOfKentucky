@@ -63,6 +63,9 @@ function BeforeMatchAdminPanel:createChildren()
         isChanging = false
     }
 
+
+    -- TODO Make a separate panel to handle btns like setTime or admin mode
+
     self.btnSetTime = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
     self.btnSetTime.internal = "SET_TIME"
     self.btnSetTime:initialise()
