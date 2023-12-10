@@ -153,9 +153,9 @@ function SafehouseInstanceHandler.AddToCrate(fullType)
     local inv = cratesTable[crateCounter]
 
     -- TODO Workaround for play test!
-    if fullType == "ROK.AutoHeal" then
+    if fullType == "ROK.InstaHeal" then
         local ClientCommon = require("ROK/ClientCommon")
-        ClientCommon.AutoHeal()
+        ClientCommon.InstaHeal()
     else
         local item = InventoryItemFactory.CreateItem(fullType)
         ---@diagnostic disable-next-line: param-type-mismatch

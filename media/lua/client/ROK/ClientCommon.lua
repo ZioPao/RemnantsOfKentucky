@@ -1,3 +1,4 @@
+---@class ClientCommon
 local ClientCommon = {}
 
 function ClientCommon.InstaHeal()
@@ -5,20 +6,6 @@ function ClientCommon.InstaHeal()
     pl:getBodyDamage():RestoreToFullHealth()
     pl:Say("I feel better now!")
 end
-
-local function OnFillInventoryObjectContextMenu(playerIndex, context, items)
-    if items[1] then
-        local item = items[1]
-        if item.name == 'Insta Heal' then
-            context:addOption("Heal yourself", playerIndex, ClientCommon.InstaHeal)
-        end
-    end
-end
-
-
-Events.OnFillInventoryObjectContextMenu.Add(OnFillInventoryObjectContextMenu)
-
-
 
 ------------------------------------------------------------------------
 --* COMMANDS FROM SERVER *--
