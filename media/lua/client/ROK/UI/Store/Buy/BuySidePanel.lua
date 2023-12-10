@@ -55,7 +55,6 @@ end
 
 function BuySidePanel:update()
     --debugPrint("BuySidePanel update")
-    -- TODO Check balance before doing it
     RightSidePanel.update(self)
 
     -- Calculate cost here
@@ -102,16 +101,8 @@ function BuySidePanel:render()
     end
 
     -- Handle Text
-    local itemCost = selectedItem.basePrice
-    local entryAmountText = self.entryAmount:getInternalText()
-    if entryAmountText == nil or entryAmountText == "" or entryAmountText == "0" then
-        self.entryAmount:setText("1")
-    end
-
-    local finalCost = tonumber(self.entryAmount:getInternalText()) * itemCost
-
     local itemNameStr = " <CENTRE> " .. actualItem:getDisplayName()
-    local itemFinalCostStr = " <CENTRE> $" .. itemCost .. " x " .. tostring(self.entryAmount:getInternalText()) .. " = $" .. tostring(finalCost)
+    local itemFinalCostStr = " <CENTRE> $" .. self.cost .. " x " .. tostring(self.entryAmount:getInternalText()) .. " = $" .. tostring(self.cost)
     local finalStr = itemNameStr .. " <LINE> " .. itemFinalCostStr
 
     -- Updates the text in the panel
