@@ -1,10 +1,12 @@
 local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
 local ClientShopManager = require("ROK/Economy/ClientShopManager")
+local ClientBankManager = require("ROK/Economy/ClientBankManager")
 local CommonStore = require("ROK/UI/Store/Components/CommonStore")
 ------------------------
 
 ---@class BuySidePanel : RightSidePanel
 ---@field parent BuyMainPanel
+---@field currentCost number?
 local BuySidePanel = RightSidePanel:derive("BuySidePanel")
 
 ---Starts a new quantity panel
@@ -55,7 +57,29 @@ function BuySidePanel:update()
     --debugPrint("BuySidePanel update")
     -- TODO Check balance before doing it
     RightSidePanel.update(self)
-    self.bottomBtn:setEnable(self.parent.scrollPanel:getSelectedItem() ~= nil)
+
+    -- Calculate cost here
+    local selectedItem = self.parent.scrollPanel:getSelectedItem()
+    if selectedItem then
+        local itemCost = selectedItem.basePrice
+        local entryAmountText = self.entryAmount:getInternalText()
+        if entryAmountText == nil or entryAmountText == "" or entryAmountText == "0" then
+            self.entryAmount:setText("1")
+        end
+        self.currentCost = tonumber(self.entryAmount:getInternalText()) * itemCost
+
+        -- We've already requested the bank account from the Main Shop panel
+        local balance = ClientBankManager.GetPlayerBankAccountBalance()
+        if balance < self.currentCost then
+            self.bottomBtn:setEnable(false)
+            self.bottomBtn:setTooltip("Not enough cash, stranger")
+        else
+            self.bottomBtn:setEnable(true)
+            self.bottomBtn:setTooltip(nil)
+        end
+    else
+        self.bottomBtn:setEnable(false)
+    end
 end
 
 function BuySidePanel:render()
