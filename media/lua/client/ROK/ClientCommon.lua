@@ -1,6 +1,19 @@
 ---@class ClientCommon
 local ClientCommon = {}
 
+
+-- function ClientCommon.WaitAndRunAfterPlayerInitialization(func, args)
+--     local function RunFunction(player)
+--         if player == nil or player ~= getPlayer() then return end
+--         func(unpack(args))
+--         Events.OnPlayerUpdate.Remove(RunFunction)
+
+--     end
+--     Events.OnPlayerUpdate.Add(RunFunction)
+
+-- end
+
+
 function ClientCommon.InstaHeal()
     local pl = getPlayer()
     pl:getBodyDamage():RestoreToFullHealth()

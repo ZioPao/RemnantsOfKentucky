@@ -1,6 +1,6 @@
 local BeforeMatchAdminPanel = require("ROK/UI/BeforeMatch/BeforeMatchAdminPanel")
 local DuringMatchAdminPanel = require("ROK/UI/DuringMatch/DuringMatchAdminPanel")
-local BlackScreen = require("ROK/UI/BeforeMatch/BlackScreen")
+local LoadingScreen = require("ROK/UI/LoadingScreen")
 
 local MODULE = EFT_MODULES.UI
 
@@ -8,12 +8,12 @@ local MODULE = EFT_MODULES.UI
 
 local InterfaceCommandss = {}
 
-function InterfaceCommandss.OpenBlackScreen()
-    BlackScreen.Open()
+function InterfaceCommandss.OpenLoadingScreen()
+    LoadingScreen.Open()
 end
 
-function InterfaceCommandss.CloseBlackScreen()
-    BlackScreen.Close()
+function InterfaceCommandss.CloseLoadingScreen()
+    LoadingScreen.Close()
 end
 
 ---@param args {startingState : string}

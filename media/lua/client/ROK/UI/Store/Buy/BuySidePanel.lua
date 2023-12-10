@@ -101,9 +101,15 @@ function BuySidePanel:render()
     end
 
     -- Handle Text
-    local itemNameStr = " <CENTRE> " .. actualItem:getDisplayName()
-    local itemFinalCostStr = " <CENTRE> $" .. self.currentCost .. " x " .. tostring(self.entryAmount:getInternalText()) .. " = $" .. tostring(self.currentCost)
-    local finalStr = itemNameStr .. " <LINE> " .. itemFinalCostStr
+    local finalStr
+    if self.currentCost == nil then
+        finalStr = " <CENTRE> Loading..."
+    else
+        local itemNameStr = " <CENTRE> " .. actualItem:getDisplayName()
+        local itemFinalCostStr = " <CENTRE> $" .. self.currentCost .. " x " .. tostring(self.entryAmount:getInternalText()) .. " = $" .. tostring(self.currentCost)
+        finalStr = itemNameStr .. " <LINE> " .. itemFinalCostStr
+    end
+
 
     -- Updates the text in the panel
     self.textPanel:setText(finalStr)

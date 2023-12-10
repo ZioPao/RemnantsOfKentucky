@@ -1,5 +1,5 @@
 require("ROK/DebugTools")
-local BlackScreen = require("ROK/UI/BeforeMatch/BlackScreen")
+local LoadingScreen = require("ROK/UI/LoadingScreen")
 local ClientState = require("ROK/ClientState")
 --------------------------
 
@@ -33,12 +33,12 @@ function SafehouseInstanceHandler.HandlePlayerInSafehouse()
 
     -- TODO Check Admin Mode
     if not SafehouseInstanceHandler.IsInSafehouse() then
-        BlackScreen.Open()
+        LoadingScreen.Open()
         sendClientCommand(EFT_MODULES.Safehouse, "RequestSafehouseAllocation", {
             teleport = true
         })
     else
-        BlackScreen.Close()
+        LoadingScreen.Close()
 
         -- -- TODO Not working
         -- for _,v in ipairs(PZ_EFT_CONFIG.SafehouseCells)do
@@ -177,27 +177,6 @@ function SafehouseInstanceHandler.AddToCrate(fullType)
     end
 end
 
---* Events handling
-
---- On player initialise, request safehouse allocation of player from server
----@param player IsoPlayer
-function SafehouseInstanceHandler.OnPlayerInit(player)
-    debugPrint("Running safehouse instance handler onplayerinit")
-    if player and player == getPlayer() then
-        local md = PZEFT_UTILS.GetPlayerModData()
-        if not md.safehouse then
-            -- Request safe house allocation, which in turn will teleport the player to the assigned safehouse
-            sendClientCommand(EFT_MODULES.Safehouse, "RequestSafehouseAllocation", {
-                teleport = true
-            })
-        end
-    end
-
-    -- TODO This probably needs to be moved somewhere else
-    Events.OnPlayerUpdate.Remove(SafehouseInstanceHandler.OnPlayerInit)
-end
-
-Events.OnPlayerUpdate.Add(SafehouseInstanceHandler.OnPlayerInit)
 
 ------------------------------------------------------------------------
 --* COMMANDS FROM SERVER *--

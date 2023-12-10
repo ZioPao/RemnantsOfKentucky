@@ -1,53 +1,37 @@
-local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 local ClientState = require("ROK/ClientState")
+local LoadingScreen = require("ROK/UI/LoadingScreen")
+local Delay = require("ROK/Delay")
 -----------------------------
 
-local ClientEvents = {}
+--* Startup handling
 
-ClientEvents.inSafehouseUpdate = false
-ClientEvents.refreshSafehouseAllocationUpdate = false
+--- On player initialise, request safehouse allocation of player from server
+local function OnPlayerInit()
+    debugPrint("Initializing player")
+    LoadingScreen.Open()
 
+    Delay.Initialize()
 
-function ClientEvents.WhileInRaid()
-    if ClientEvents.inSafehouseUpdate then
-        ClientEvents.inSafehouseUpdate = false
-        Events.EveryOneMinute.Remove(SafehouseInstanceHandler.HandlePlayerInSafehouse)
-    end
-    if ClientEvents.refreshSafehouseAllocationUpdate then
-        ClientEvents.refreshSafehouseAllocationUpdate = false
-        Events.EveryOneMinute.Remove(SafehouseInstanceHandler.RefreshSafehouseAllocation)
-    end
+    -- Zomboid is a huge piece of shit. We can't use sendClientCommand right after player init since the player isn't actually in game.
+    -- Huge workaround, but just delay this function to run 2 seconds after the player  has been "created".
+    Delay:set(2, function()
+        --* Safehouse handling
+        -- Request safe house allocation (or just teleport, if it was already done), which in turn will teleport the player to the assigned safehouse
+        sendClientCommand(EFT_MODULES.Safehouse, "RequestSafehouseAllocation", {teleport = true})
+        --* Shop Items
+        debugPrint("Requesting TransmitShopItems to the client now that player is in")
+        sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', {})
+        LoadingScreen.Close()
+    end)
+
+    Events.OnPlayerUpdate.Remove(OnPlayerInit)
 end
 
-function ClientEvents.WhileInSafehouse()
-    if not ClientEvents.inSafehouseUpdate then
-        ClientEvents.inSafehouseUpdate = true
-        Events.EveryOneMinute.Add(SafehouseInstanceHandler.HandlePlayerInSafehouse)
-    end
-    if not ClientEvents.refreshSafehouseAllocationUpdate then
-        ClientEvents.refreshSafehouseAllocationUpdate = true
-        Events.EveryOneMinute.Add(SafehouseInstanceHandler.RefreshSafehouseAllocation)
-    end
 
-    -- Updates available instances. Not really optimal placing it here, but it'll work.
-    if isAdmin() then
-        sendClientCommand(EFT_MODULES.PvpInstances, "GetAmountAvailableInstances", {})
-    end
-
-end
-
---- Update event subscription
-function ClientEvents.UpdateEvents()
-    if ClientState.isInRaid then
-        ClientEvents.WhileInRaid()
-    else
-        ClientEvents.WhileInSafehouse()
-    end
-end
-Events.EveryOneMinute.Add(ClientEvents.UpdateEvents)
+--Events.OnCreateLivingCharacter.Add(OnPlayerInit)
+Events.OnPlayerUpdate.Add(OnPlayerInit)
 
 
------------------------------------
 --* Raid handling
 
 -- If player in raid, set that they're not in it anymore
@@ -74,36 +58,4 @@ end
 
 Events.OnPlayerDeath.Add(OnPlayerExit)
 Events.OnDisconnect.Add(OnPlayerExit)
-
------------------------------------
---* Startup handling
-
---- On player initialise, request safehouse allocation of player from server
----@param player IsoPlayer
-local function OnPlayerInit(player)
-    debugPrint("Running safehouse instance handler onplayerinit")
-    if player == nil or player ~= getPlayer() then return end
-
-    --* Safehouse handling
-    local md = PZEFT_UTILS.GetPlayerModData()
-    if not md.safehouse then
-        -- Request safe house allocation, which in turn will teleport the player to the assigned safehouse
-        sendClientCommand(EFT_MODULES.Safehouse, "RequestSafehouseAllocation", {
-            teleport = true
-        })
-    end
-
-    --* Shop Items
-    debugPrint("Sending TransmitShopItems now that player is in")
-    sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', {})
-
-    Events.OnPlayerUpdate.Remove(OnPlayerInit)
-end
-
-Events.OnPlayerUpdate.Add(OnPlayerInit)
-
-
-
---* Shop update
-
 

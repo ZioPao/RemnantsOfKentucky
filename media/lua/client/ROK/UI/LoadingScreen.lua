@@ -1,16 +1,16 @@
 local backgroundTexture = getTexture("media/textures/ROK_LoadingScreen.png")
 
 
----@class BlackScreen : ISPanel
+---@class LoadingScreen : ISPanel
 ---@field text string
 ---@field textX number
 ---@field textY number
 ---@field isClosing boolean
 ---@field closingTime number
-local BlackScreen = ISPanel:derive("BlackScreen")
+local LoadingScreen = ISPanel:derive("LoadingScreen")
 
----@return BlackScreen
-function BlackScreen:new()
+---@return LoadingScreen
+function LoadingScreen:new()
     local o = ISPanel:new(0, 0, getCore():getScreenWidth(), getCore():getScreenHeight())
     setmetatable(o, self)
     self.__index = self
@@ -18,13 +18,13 @@ function BlackScreen:new()
     o.isClosing = false
     o.closingTime = 0
 
-    ---@cast o BlackScreen
+    ---@cast o LoadingScreen
 
-    BlackScreen.instance = o
+    LoadingScreen.instance = o
     return o
 end
 
-function BlackScreen:initialise()
+function LoadingScreen:initialise()
     ISPanel.initialise(self)
 
     self.text = getText("UI_EFT_Wait")
@@ -33,7 +33,7 @@ function BlackScreen:initialise()
 
 end
 
-function BlackScreen:prerender()
+function LoadingScreen:prerender()
 
     local alpha = 1
     if self.isClosing then
@@ -49,46 +49,46 @@ function BlackScreen:prerender()
     end
 end
 
-function BlackScreen:startFade()
+function LoadingScreen:startFade()
     if self.isClosing == false then
         self.isClosing = true
         self.closingTime = 0
     end
 end
 
-function BlackScreen:close()
+function LoadingScreen:close()
     self:setVisible(false)
     self:removeFromUIManager()
-    BlackScreen.instance = nil
+    LoadingScreen.instance = nil
 end
 
 -------------------
 
-function BlackScreen.Open()
+function LoadingScreen.Open()
     if not isClient() then return end       -- SP workaround
     if getPlayer():isDead() then return end -- Workaround to prevent issues when player is dead
-    if BlackScreen.instance ~= nil then return end
+    if LoadingScreen.instance ~= nil then return end
     debugPrint("Opening black screen")
-    local blackScreen = BlackScreen:new()
-    blackScreen:initialise()
-    blackScreen:addToUIManager()
+    local LoadingScreen = LoadingScreen:new()
+    LoadingScreen:initialise()
+    LoadingScreen:addToUIManager()
 end
 
-function BlackScreen.Close()
+function LoadingScreen.Close()
     --debugPrint("Closing black screen")
-    if BlackScreen.instance then
+    if LoadingScreen.instance then
         debugPrint("black screen instance available, closing")
-        BlackScreen.instance:startFade()
+        LoadingScreen.instance:startFade()
     end
 end
 
-function BlackScreen.HandleResolutionChange(oldW, oldH, w, h)
-    if BlackScreen.instance then
-        BlackScreen.instance:setWidth(w)
-        BlackScreen.instance:setHeight(h)
+function LoadingScreen.HandleResolutionChange(oldW, oldH, w, h)
+    if LoadingScreen.instance then
+        LoadingScreen.instance:setWidth(w)
+        LoadingScreen.instance:setHeight(h)
     end
 end
 
-Events.OnResolutionChange.Add(BlackScreen.HandleResolutionChange)
+Events.OnResolutionChange.Add(LoadingScreen.HandleResolutionChange)
 
-return BlackScreen
+return LoadingScreen

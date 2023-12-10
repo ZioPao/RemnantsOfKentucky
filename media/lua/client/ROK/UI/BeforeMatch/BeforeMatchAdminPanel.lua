@@ -154,6 +154,9 @@ end
 
 function BeforeMatchAdminPanel:update()
     BaseAdminPanel.update(self)
+
+    sendClientCommand(EFT_MODULES.PvpInstances, "GetAmountAvailableInstances", {})
+
     -- When starting the match, we'll disable the default close button
     self.closeButton:setEnable(not ClientState.isStartingMatch)
     self.btnManagePlayers:setEnable(not ClientState.isStartingMatch)

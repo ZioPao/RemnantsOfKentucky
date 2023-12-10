@@ -54,7 +54,7 @@ end
 ---Wait 5 seconds before starting the match
 function MatchController:waitForStart()
     Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.loadWaitTime, function () self:start() end, false)
-    sendServerCommand(EFT_MODULES.UI, "OpenBlackScreen", {})
+    sendServerCommand(EFT_MODULES.UI, "OpenLoadingScreen", {})
 end
 
 
@@ -75,7 +75,7 @@ function MatchController:start()
     -- Setup checking alive players to stop the match and such things
     Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.checkAlivePlayersTime, MatchController.CheckAlivePlayers)
 
-    sendServerCommand(EFT_MODULES.UI, "CloseBlackScreen", {})
+    sendServerCommand(EFT_MODULES.UI, "CloseLoadingScreen", {})
 
 end
 
