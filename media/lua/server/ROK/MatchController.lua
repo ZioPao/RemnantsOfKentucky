@@ -1,7 +1,7 @@
 if not isServer() then return end
 
 require("ROK/DebugTools")
-local Countdown = require("ROK/Time/Countdown")
+local Countdown = require("ROK/Countdown")
 local PvpInstanceManager = require("ROK/PvpInstanceManager")
 local SafehouseInstanceManager = require("ROK/SafehouseInstanceManager")
 

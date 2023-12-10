@@ -11,7 +11,7 @@ local BuyMainPanel = StoreContainerPanel:derive("BuyMainPanel")
 ---@param y any
 ---@param width any
 ---@param height any
----@param itemsTable {}
+---@param itemsTable table<string, {actualItem : Item, fullType : string}>
 ---@return BuyMainPanel
 function BuyMainPanel:new(x, y, width, height, itemsTable)
     local o = StoreContainerPanel:new(x, y, width, height, BuyScrollItemsPanel, BuySidePanel)
