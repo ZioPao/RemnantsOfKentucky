@@ -71,7 +71,7 @@ function BuySidePanel:update()
         local balance = ClientBankManager.GetPlayerBankAccountBalance()
         if balance < self.currentCost then
             self.bottomBtn:setEnable(false)
-            self.bottomBtn:setTooltip("Not enough cash, stranger")
+            self.bottomBtn:setTooltip(getText("IGUI_Shop_Buy_Btn_NoCash_Tooltip"))
         else
             self.bottomBtn:setEnable(true)
             self.bottomBtn:setTooltip(nil)

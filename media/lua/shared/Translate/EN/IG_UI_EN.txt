@@ -56,6 +56,7 @@ IG_UI_EN = {
     IGUI_Shop_Sell_Tooltip = "Drag items in here to sell them",
 
     IGUI_Shop_Buy_Btn = "Buy",
+    IGUI_Shop_Buy_Btn_NoCash_Tooltip = "Not enough cash, stranger!",
     IGUI_Shop_Sell_Btn = "Sell",
 
     IGUI_Shop_Sell_Confirmation = " <CENTRE> Are you sure you want to sell these items?",
