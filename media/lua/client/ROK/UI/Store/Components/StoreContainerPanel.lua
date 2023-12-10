@@ -54,6 +54,17 @@ function StoreContainerPanel:createChildren()
 
 end
 
+function StoreContainerPanel:render()
+    ISPanelJoypad.render(self)
+
+    if self.confirmationPanel then
+        local confX = self.parent:getAbsoluteX() + (self.parent:getWidth()/2)
+        local confY = self.parent:getAbsoluteY() + self.parent:getHeight() + 20
+        self.confirmationPanel:setX(confX)
+        self.confirmationPanel:setY(confY)
+    end
+end
+
 ---@param text string
 function StoreContainerPanel:openConfirmationPanel(text, onConfirm)
     local confX = self.parent:getAbsoluteX() + (self.parent:getWidth()/2)

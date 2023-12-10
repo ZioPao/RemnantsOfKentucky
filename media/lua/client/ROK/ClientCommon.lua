@@ -3,6 +3,7 @@ local ClientCommon = {}
 function ClientCommon.InstaHeal()
     local pl = getPlayer()
     pl:getBodyDamage():RestoreToFullHealth()
+    pl:Say("I feel better now!")
 end
 
 local function OnFillInventoryObjectContextMenu(playerIndex, context, items)

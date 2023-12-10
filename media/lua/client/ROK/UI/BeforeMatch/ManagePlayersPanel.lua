@@ -11,14 +11,12 @@ end
 -------------------------------
 
 local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
-local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 -------------------------------
 
 ---@class ManagePlayersScrollingTable : ISPanel
 ---@field datas ISScrollingListBox
 local ManagePlayersScrollingTable = ISPanel:derive("ManagePlayersScrollingTable")
 
----comment
 ---@param x any
 ---@param y any
 ---@param width any
@@ -303,6 +301,17 @@ function ManagePlayersPanel:update()
 
     self.btnWipePlayer:setEnable(selection ~= 0)
     self.btnStarterKit:setEnable(selection ~= 0)
+end
+
+function ManagePlayersPanel:render()
+    ISCollapsableWindow.render(self)
+
+    if self.confirmationPanel then
+        local confY = self:getY() + self:getHeight() + 20
+        local confX = self:getX()
+        self.confirmationPanel:setX(confX)
+        self.confirmationPanel:setY(confY)
+    end
 end
 
 function ManagePlayersPanel:close()
