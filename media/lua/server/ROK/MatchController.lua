@@ -48,12 +48,16 @@ function MatchController:initialise()
         self.playersInMatch[plId] = plId
     end
 
+    -- Recalculate the amount of players once at startup
+    MatchController.UpdateAlivePlayers()
+
     -- Default value for the zombie multiplier
     self:setZombieSpawnMultiplier(PZ_EFT_CONFIG.MatchSettings.zombieSpawnMultiplier)
 end
 
 ---Wait 5 seconds before starting the match
 function MatchController:waitForStart()
+    debugPrint("Start wait")
     Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.loadWaitTime, function () self:start() end, false)
     sendServerCommand(EFT_MODULES.UI, "OpenLoadingScreen", {})
 end
@@ -74,9 +78,6 @@ function MatchController:start()
 
     -- Setup checking alive players to stop the match and such things
     Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.checkAlivePlayersTime, MatchController.UpdateAlivePlayers)
-
-    -- Recalculate the amount of players once at startup
-    MatchController.UpdateAlivePlayers()
 
     sendServerCommand(EFT_MODULES.UI, "CloseLoadingScreen", {})
 
@@ -248,6 +249,43 @@ end
 
 local MODULE = EFT_MODULES.Match
 local MatchCommands = {}
+
+---@param playerObj IsoPlayer
+---@param args {stopTime : number}
+function MatchCommands.StartCountdown(playerObj, args)
+    local function StartMatch()
+        debugPrint("Initialize match")
+        local handler = MatchController:new()
+        handler:initialise()
+        handler:waitForStart()
+
+        -- Closes automatically the admin panel\switch it to the during match one
+        sendServerCommand(playerObj, EFT_MODULES.UI, 'SwitchMatchAdminUI', {startingState='BEFORE'})
+    end
+
+    -- TODO Can't load getText from here for some reason. Workaround
+    local matchStartingText = "The match is starting"
+    Countdown.Setup(args.stopTime, StartMatch, true, matchStartingText)
+end
+
+function MatchCommands.StopCountdown()
+    Countdown.Stop()
+end
+
+---@param playerObj IsoPlayer
+---@param args {stopTime : number}
+function MatchCommands.StartMatchEndCountdown(playerObj, args)
+
+    local function StopMatch()
+        local handler = MatchController.GetHandler()
+        if handler then handler:stopMatch() end
+
+        sendServerCommand(playerObj, EFT_MODULES.UI, 'SwitchMatchAdminUI', {startingState='DURING'})
+    end
+
+    local text = "The match has ended"
+    Countdown.Setup(args.stopTime, StopMatch, true, text)
+end
 
 ---@param args {val : number}
 function MatchCommands.SetZombieSpawnMultiplier(_, args)

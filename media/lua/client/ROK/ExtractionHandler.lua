@@ -14,6 +14,8 @@ function ExtractionHandler.ToggleEvent(isInRaid)
     if isInRaid == true then
         Events.OnTick.Add(ExtractionHandler.RunEvent)
     else
+        -- CLose it forcefully here
+        ExtractionPanel.Close()
         Events.OnTick.Remove(ExtractionHandler.RunEvent)
     end
 

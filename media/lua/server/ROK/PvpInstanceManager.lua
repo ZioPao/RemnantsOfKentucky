@@ -201,6 +201,7 @@ function PvpInstanceManager.GetPermanentExtractionPoints(cellX, cellY)
 end
 
 function PvpInstanceManager.TeleportPlayersToInstance()
+    debugPrint("Teleporting players")
     local playersArray = getOnlinePlayers()
     for i = 0, playersArray:size() - 1 do
         ---@type IsoPlayer
