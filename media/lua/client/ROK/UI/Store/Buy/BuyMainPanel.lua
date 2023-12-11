@@ -6,7 +6,7 @@ local StoreContainerPanel = require("ROK/UI/Store/Components/StoreContainerPanel
 ---@class BuyMainPanel : StoreContainerPanel
 local BuyMainPanel = StoreContainerPanel:derive("BuyMainPanel")
 
----comment
+
 ---@param x any
 ---@param y any
 ---@param width any

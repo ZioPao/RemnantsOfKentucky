@@ -54,7 +54,6 @@ PZEFT_UTILS.MapWorldCoordinatesToCell = function(coordinateList, cellX, cellY, o
     return mappedCoordinates
 end
 
----comment
 ---@param square coords
 ---@return string 
 PZEFT_UTILS.getSquareStringCoords = function(square)
@@ -158,7 +157,6 @@ PZEFT_UTILS.IsPointWithinDimensions = function(rootX, rootY, north, south, east,
     return posX >= minX and posX <= maxX and posY >= minY and posY <= maxY
 end
 
----comment
 ---@param player IsoPlayer
 ---@return coords?
 PZEFT_UTILS.GetCellOfPlayer = function(player)
@@ -237,7 +235,6 @@ PZEFT_UTILS.GetObjectModData = function(obj)
     return md.PZEFT
 end
 
----comment
 ---@return EFTModData
 PZEFT_UTILS.GetPlayerModData = function()
     return PZEFT_UTILS.GetObjectModData(getPlayer())
@@ -264,7 +261,6 @@ PZEFT_UTILS.IsInRectangle = function(pos, area)
 end
 
 
----comment
 ---@param p1 coords2d
 ---@param p2 coords2d
 ---@param p3 coords2d
@@ -272,7 +268,6 @@ function PZEFT_UTILS.Sign(p1, p2, p3)
     return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y)
 end
 
----comment
 ---@param point coords2d
 ---@param trP1 coords2d Triangle coords 1
 ---@param trP2 coords2d Triangle coords 2

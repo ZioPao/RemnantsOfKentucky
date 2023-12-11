@@ -8,7 +8,6 @@ local MODULE = EFT_MODULES.Common
 
 local PlayersCommands = {}
 
----comment
 ---@param args {playerID : number}
 function PlayersCommands.RelayStarterKit(_, args)
     local playerToRelay = getPlayerByOnlineID(args.playerID)

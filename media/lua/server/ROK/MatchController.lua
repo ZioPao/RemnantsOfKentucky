@@ -105,7 +105,6 @@ function MatchController:extractPlayer(playerObj)
     self:removePlayerFromMatchList(playerObj:getOnlineID())
 end
 
----comment
 ---@param playerId number
 function MatchController:removePlayerFromMatchList(playerId)
     self.playersInMatch[playerId] = nil

@@ -5,7 +5,6 @@ local GenericUI = require("ROK/UI/GenericUI")
 ---@field parent StoreContainerPanel
 local BaseScrollItemsPanel = ISPanelJoypad:derive("BaseScrollItemsPanel")
 
----comment
 ---@param x any
 ---@param y any
 ---@param width any
@@ -126,7 +125,7 @@ function BaseScrollItemsPanel:setSelectedItem(item)
     self.selectedItem = item
 end
 
----comment
+
 ---@return selectedItemType
 function BaseScrollItemsPanel:getSelectedItem()
     return self.selectedItem

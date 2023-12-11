@@ -37,7 +37,6 @@ function CratesValueCalculator.GetValue(item)
     -- TODO Based on Config
 end
 
----comment
 ---@param username string
 ---@return number
 function CratesValueCalculator.CalculateValueAllItems(username)

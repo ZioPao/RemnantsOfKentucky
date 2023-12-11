@@ -4,9 +4,14 @@ local ClientBankManager = require("ROK/Economy/ClientBankManager")
 local CommonStore = require("ROK/UI/Store/Components/CommonStore")
 ------------------------
 
+
+-- TODO Use functions in CLientShopManager, not here
+
 ---@class BuySidePanel : RightSidePanel
 ---@field parent BuyMainPanel
 ---@field currentCost number?
+---@field showBuyConfirmation boolean
+---@field timeShowBuyConfirmation number
 local BuySidePanel = RightSidePanel:derive("BuySidePanel")
 
 ---Starts a new quantity panel
@@ -21,6 +26,9 @@ function BuySidePanel:new(x, y, width, height)
     self.__index = self
 
     o:initialise()
+    o.showBuyConfirmation = false
+    o.timeShowBuyConfirmation = 0
+
     BuySidePanel.instance = o
 
     ---@cast o BuySidePanel
@@ -51,6 +59,11 @@ function BuySidePanel:createChildren()
     self.entryAmount:setOnlyNumbers(true)
     self.entryAmount:setMaxTextLength(2)
     self:addChild(self.entryAmount)
+end
+
+function BuySidePanel:setSuccessfulBuyConfirmation(val)
+    self.showBuyConfirmation = val
+    self.timeShowBuyConfirmation = os.time() + 5
 end
 
 function BuySidePanel:update()
@@ -110,6 +123,15 @@ function BuySidePanel:render()
         finalStr = itemNameStr .. " <LINE> " .. itemFinalCostStr
     end
 
+    if self.showBuyConfirmation then
+        finalStr = finalStr .. " <LINE> " .. getText("IGUI_Shop_Buy_Confirmation_Success")
+
+        local showTime = os.time()
+        if showTime > self.timeShowBuyConfirmation then
+            self.showBuyConfirmation = false
+        end
+    end
+
 
     -- Updates the text in the panel
     self.textPanel:setText(finalStr)
@@ -121,6 +143,7 @@ function BuySidePanel:onClick(btn)
         self:onStartBuy()
     end
 end
+
 function BuySidePanel:onStartBuy()
     debugPrint("Buy")
     local selectedItem = self.parent.scrollPanel:getSelectedItem()
@@ -146,9 +169,10 @@ function BuySidePanel.OnConfirmBuy(parent)
     }
 
     local quantity = tonumber(parent.sidePanel.entryAmount:getInternalText())
-    ClientShopManager.TryBuy(itemTable, quantity)
+    local isSuccessful = ClientShopManager.TryBuy(itemTable, quantity)
+    parent.sidePanel:setSuccessfulBuyConfirmation(isSuccessful)
 
-    -- TODO add notification for player when buy is successful
+    -- TODO add notification for player when buy is successful, maybe an additional panel?
 end
 
 

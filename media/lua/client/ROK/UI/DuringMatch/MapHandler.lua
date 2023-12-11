@@ -3,7 +3,7 @@
 ---@field symbolsAPI WorldMapSymbols
 local MapHandler = {}
 
----comment
+
 ---@param symbolsAPI WorldMapSymbols
 ---@return table
 function MapHandler:new(symbolsAPI)

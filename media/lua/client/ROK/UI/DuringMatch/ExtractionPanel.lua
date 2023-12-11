@@ -52,7 +52,7 @@ function ExtractionPanel:setExtractButtonTitle(title)
 end
 
 
----comment
+
 ---@return {x : number, y : number}
 function ExtractionPanel.GetPosition()
     local x = TimePanel.instance:getAbsoluteX()

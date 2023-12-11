@@ -190,7 +190,6 @@ function CustomTabPanel:close()
 	ISTabPanel.close(self)
 end
 
----comment
 ---@param x number
 ---@param y number
 ---@param width number

@@ -6,9 +6,10 @@ local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 ---@class ClientShopManager
 local ClientShopManager = {}
 
---- Try buy an item for quantity
+--- Try buy an item for quantity. Let's assume that it's valid if we process the transaction
 ---@param item table
 ---@param quantity number?
+---@return boolean
 function ClientShopManager.TryBuy(item, quantity)
     local totalPrice = item.basePrice * item.multiplier * quantity
 
@@ -24,6 +25,7 @@ function ClientShopManager.TryBuy(item, quantity)
     }
 
     BankManager.TryProcessTransaction(-totalPrice, "PZEFT-Shop", "BuyItem", data, "PZEFT-Shop", "BuyFailed", data)
+    return true
 end
 
 --- Try sell items for quantity

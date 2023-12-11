@@ -33,7 +33,7 @@ function BaseAdminPanel:new(x, y, width, height)
     return o
 end
 
----comment
+
 ---@param name string
 ---@param parentName string
 ---@param x number
