@@ -10,6 +10,7 @@ local SafehouseInstanceManager = require("ROK/SafehouseInstanceManager")
 ---@class MatchController
 ---@field pvpInstance pvpInstanceTable
 ---@field playersInMatch table<number,number>        Table of player ids
+---@field amountPlayersInMatch number
 ---@field zombieSpawnMultiplier number
 local MatchController = {}
 
@@ -57,7 +58,6 @@ function MatchController:waitForStart()
     sendServerCommand(EFT_MODULES.UI, "OpenLoadingScreen", {})
 end
 
-
 ---Setup teleporting players to their spawn points
 function MatchController:start()
     debugPrint("Starting match!")
@@ -73,7 +73,10 @@ function MatchController:start()
     Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.zombieIncreaseTime, MatchController.HandleZombieSpawns)
 
     -- Setup checking alive players to stop the match and such things
-    Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.checkAlivePlayersTime, MatchController.CheckAlivePlayers)
+    Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.checkAlivePlayersTime, MatchController.UpdateAlivePlayers)
+
+    -- Recalculate the amount of players once at startup
+    MatchController.UpdateAlivePlayers()
 
     sendServerCommand(EFT_MODULES.UI, "CloseLoadingScreen", {})
 
@@ -117,8 +120,8 @@ function MatchController:stopMatch()
     MatchController.instance = nil
 end
 
+--* Getter/Setters
 
---* Options/Configurations mid game
 ---@param val number
 function MatchController:setZombieSpawnMultiplier(val)
     self.zombieSpawnMultiplier = val
@@ -128,16 +131,22 @@ function MatchController:getZombieSpawnMultiplier()
     return self.zombieSpawnMultiplier
 end
 
+function MatchController:getAmountAlivePlayers()
+    return self.amountPlayersInMatch
+end
+
+--* Events/Checks
 
 ---Run it every once, depending on the Config, spawns zombies for each player
 ---@param loops number amount of time that this function has been called by Countdown
 function MatchController.HandleZombieSpawns(loops)
-    if MatchController.instance == nil then return end
+    local instance = MatchController.GetHandler()
+    if instance == nil then return end
 
     local randomPlayers = {}
 
     -- Spawn Zombies
-    for k, plId in pairs(MatchController.instance.playersInMatch) do
+    for k, plId in pairs(instance.playersInMatch) do
         if plId ~= nil then
             local player = getPlayerByOnlineID(plId)
             if player ~= nil then
@@ -156,7 +165,7 @@ function MatchController.HandleZombieSpawns(loops)
                 -- Amount of zombies should scale based on players amount too, to prevent from killing the server
                 -- The more players there are, the more zombies will spawn in total, but less per player
                 -- (Base amount * loop) / players in match 
-                local zombiesAmount = math.ceil((PZ_EFT_CONFIG.MatchSettings.zombiesAmountBase * loops * MatchController.instance:getZombieSpawnMultiplier())/MatchController:GetAmountAlivePlayers())
+                local zombiesAmount = math.ceil((PZ_EFT_CONFIG.MatchSettings.zombiesAmountBase * loops * instance:getZombieSpawnMultiplier())/instance:getAmountAlivePlayers())
                 debugPrint("spawning " .. zombiesAmount .. " near " .. player:getUsername())
                 addZombiesInOutfit(sq:getX(), sq:getY(), 0, zombiesAmount, "", 50, false, false, false, false, 1)
 
@@ -194,31 +203,36 @@ function MatchController.HandleZombieSpawns(loops)
 end
 
 ---Checks if there are players still alive in a match. When it gets to 0, stop the match
----@param loops any
-function MatchController.CheckAlivePlayers(loops)
+function MatchController.UpdateAlivePlayers()
     --debugPrint("checking alive players")
     local instance = MatchController.GetHandler()
     if instance == nil then return end
     --debugPrint("Instance available, checking now players")
     --debugPrint(MatchController.GetAmountAlivePlayers())
-    if MatchController.GetAmountAlivePlayers() == 0 then
+
+    local counter = 0
+    for k, v in pairs(instance.playersInMatch) do
+
+        if v then
+            local testPl = getPlayerByOnlineID(v)
+            -- ping player
+            if testPl == nil then
+                instance:removePlayerFromMatchList(v)
+            else
+                counter = counter + 1
+            end
+        end
+
+    end
+
+    instance.amountPlayersInMatch = counter
+
+    if instance.amountPlayersInMatch == 0 then
         debugPrint("no alive players in match, stopping it")
         MatchController.instance:stopMatch()
     end
 end
 
----Returns the amount of alive players in a match
----@return integer
-function MatchController.GetAmountAlivePlayers()
-    local counter = 0
-    for k,v in pairs(MatchController.instance.playersInMatch) do
-        if v then
-            counter = counter + 1
-        end
-    end
-
-    return counter
-end
 
 --------------------------------------------------
 --- Get the instance of MatchController
@@ -251,7 +265,6 @@ function MatchCommands.SendZombieSpawnMultiplier(playerObj)
 
 end
 
-
 ---A client has sent an extraction request
 ---@param playerObj IsoPlayer player requesting extraction
 function MatchCommands.RequestExtraction(playerObj)
@@ -274,7 +287,7 @@ function MatchCommands.SendAlivePlayersAmount(playerObj)
     local instance = MatchController.GetHandler()
 
     if instance == nil then return end
-    local counter = MatchController.GetAmountAlivePlayers()
+    local counter = instance:getAmountAlivePlayers()
     --debugPrint("Alive players in match: " .. tostring(counter))
     sendServerCommand(playerObj, EFT_MODULES.UI, "ReceiveAlivePlayersAmount", {amount = counter})
 

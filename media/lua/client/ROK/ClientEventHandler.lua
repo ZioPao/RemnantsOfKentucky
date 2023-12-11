@@ -18,9 +18,14 @@ local function OnPlayerInit()
         --* Safehouse handling
         -- Request safe house allocation (or just teleport, if it was already done), which in turn will teleport the player to the assigned safehouse
         sendClientCommand(EFT_MODULES.Safehouse, "RequestSafehouseAllocation", {teleport = true})
+
         --* Shop Items
         debugPrint("Requesting TransmitShopItems to the client now that player is in")
         sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', {})
+
+        --* Clean map
+        ISWorldMap.HandleEFTExits(getPlayer():getPlayerNum(), true)
+
         LoadingScreen.Close()
     end)
 
