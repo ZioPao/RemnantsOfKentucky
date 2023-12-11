@@ -9,6 +9,7 @@ local CommonStore = require("ROK/UI/Store/Components/CommonStore")
 
 ---@class BuySidePanel : RightSidePanel
 ---@field parent BuyMainPanel
+---@field selectedAmount number
 ---@field currentCost number?
 ---@field showBuyConfirmation boolean
 ---@field timeShowBuyConfirmation number
@@ -27,6 +28,7 @@ function BuySidePanel:new(x, y, width, height)
 
     o:initialise()
     o.showBuyConfirmation = false
+    o.selectedAmount = 1
     o.timeShowBuyConfirmation = 0
 
     BuySidePanel.instance = o
@@ -38,27 +40,50 @@ end
 function BuySidePanel:createChildren()
     RightSidePanel.createChildren(self)
 
-    local xMargin = CommonStore.MARGIN_X
     local yMargin = CommonStore.MARGIN_Y
-    local elementX = xMargin
-    local elementY = self:getBottom() - CommonStore.BIG_BTN_HEIGHT -  CommonStore.MARGIN_Y
-    local elementWidth = self.width - xMargin * 2
-    local elementHeight = CommonStore.BIG_BTN_HEIGHT
 
     self.bottomBtn:setTitle(getText("IGUI_Shop_Buy_Btn"))
     self.bottomBtn.internal = "BUY"
     self.bottomBtn:initialise()
     self.bottomBtn:setEnable(false)
 
-    elementY = self.bottomBtn:getY() - elementHeight - yMargin
 
-    self.entryAmount = ISTextEntryBox:new("1", elementX, elementY, elementWidth, elementHeight)
-    self.entryAmount:initialise()
-    self.entryAmount:instantiate()
-    self.entryAmount:setClearButton(true)
-    self.entryAmount:setOnlyNumbers(true)
-    self.entryAmount:setMaxTextLength(2)
-    self:addChild(self.entryAmount)
+    --* Amount
+    local amountPanelWidth = self.width/2
+    local elementAmountHeight = 50
+    local amountPanelX = (self.width - amountPanelWidth)/2
+    local elementAmountY = self.bottomBtn:getY() - yMargin
+
+    self.amountPanel = ISRichTextPanel:new(amountPanelX, elementAmountY, amountPanelWidth, elementAmountHeight)
+    self.amountPanel:initialise()
+    self:addChild(self.amountPanel)
+    self.amountPanel.backgroundColor = { r = 0, g = 0, b = 0, a = 0 }
+    self.amountPanel.borderColor = { r = 1, g = 1, b = 1, a = 1 }
+    self.amountPanel.anchorTop = false
+    self.amountPanel.anchorLeft = false
+    self.amountPanel.anchorBottom = false
+    self.amountPanel.anchorRight = false
+    self.amountPanel.autosetheight = false
+    self.amountPanel.marginLeft = 0
+    self.amountPanel.marginTop = (self.amountPanel.height - getTextManager():MeasureStringY(self.amountPanel.font, "1"))/4
+    self.amountPanel.marginRight = 0
+    self.amountPanel.marginBottom = 0
+    self.amountPanel:setText(" <CENTRE> 1")
+    self.amountPanel:paginate()
+
+    local btnWidth = self.width - self.amountPanel:getRight() - CommonStore.MARGIN_X
+
+    self.amountMinusBtn = ISButton:new(CommonStore.MARGIN_X, elementAmountY, btnWidth, elementAmountHeight, "<", self, self.onClick)
+    self.amountMinusBtn.internal = 'MINUS'
+    self.amountMinusBtn:initialise()
+    self.amountMinusBtn:instantiate()
+    self:addChild(self.amountMinusBtn)
+
+    self.amountPlusBtn = ISButton:new(self.amountPanel:getRight() + CommonStore.MARGIN_X, elementAmountY, btnWidth, elementAmountHeight, ">", self, self.onClick)
+    self.amountPlusBtn.internal = 'PLUS'
+    self.amountPlusBtn:initialise()
+    self.amountPlusBtn:instantiate()
+    self:addChild(self.amountPlusBtn)
 end
 
 function BuySidePanel:setSuccessfulBuyConfirmation(val)
@@ -73,12 +98,12 @@ function BuySidePanel:update()
     -- Calculate cost here
     local selectedItem = self.parent.scrollPanel:getSelectedItem()
     if selectedItem then
+
+        self.amountMinusBtn:setEnable(self.selectedAmount > 1)
+        self.amountPlusBtn:setEnable(self.selectedAmount < 99)
+
         local itemCost = selectedItem.basePrice
-        local entryAmountText = self.entryAmount:getInternalText()
-        if entryAmountText == nil or entryAmountText == "" or entryAmountText == "0" then
-            self.entryAmount:setText("1")
-        end
-        self.currentCost = tonumber(self.entryAmount:getInternalText()) * itemCost
+        self.currentCost = tonumber(self.selectedAmount) * itemCost
 
         -- We've already requested the bank account from the Main Shop panel
         local balance = ClientBankManager.GetPlayerBankAccountBalance()
@@ -91,8 +116,17 @@ function BuySidePanel:update()
         end
     else
         self.bottomBtn:setEnable(false)
+        self.amountPlusBtn:setEnable(false)
+        self.amountMinusBtn:setEnable(false)
     end
 end
+
+---Reset the Selected Amount when we change selectedItem
+function BuySidePanel:resetSelectedAmount()
+    debugPrint("Running ResetSelectedAmount")
+    self.selectedAmount = 1
+end
+Events.PZEFT_OnChangeSelectedItem.Add(BuySidePanel.resetSelectedAmount)
 
 function BuySidePanel:render()
     RightSidePanel.render(self)
@@ -119,7 +153,7 @@ function BuySidePanel:render()
         finalStr = " <CENTRE> Loading..."
     else
         local itemNameStr = " <CENTRE> " .. actualItem:getDisplayName()
-        local itemFinalCostStr = " <CENTRE> $" .. self.currentCost .. " x " .. tostring(self.entryAmount:getInternalText()) .. " = $" .. tostring(self.currentCost)
+        local itemFinalCostStr = " <CENTRE> $" .. self.currentCost .. " x " .. tostring(self.selectedAmount) .. " = $" .. tostring(self.currentCost)
         finalStr = itemNameStr .. " <LINE> " .. itemFinalCostStr
     end
 
@@ -133,6 +167,14 @@ function BuySidePanel:render()
     end
 
 
+    if self.selectedAmount then
+        local amountStr = tostring(self.selectedAmount)
+        self.amountPanel:setText(" <CENTRE> " ..  amountStr)
+        self.amountPanel.marginTop = (self.amountPanel.height - getTextManager():MeasureStringY(self.amountPanel.font, amountStr))/4
+        self.amountPanel.textDirty = true
+    end
+
+
     -- Updates the text in the panel
     self.textPanel:setText(finalStr)
     self.textPanel:paginate()
@@ -141,6 +183,12 @@ end
 function BuySidePanel:onClick(btn)
     if btn.internal == 'BUY' then
         self:onStartBuy()
+    elseif btn.internal == 'PLUS' then
+        --debugPrint(">")
+        self.selectedAmount = self.selectedAmount + 1
+    elseif btn.internal == 'MINUS' then
+        --debugPrint("<")
+        self.selectedAmount = self.selectedAmount - 1
     end
 end
 
@@ -149,10 +197,8 @@ function BuySidePanel:onStartBuy()
     local selectedItem = self.parent.scrollPanel:getSelectedItem()
     local cost = self:getCostForSelectedItem()      -- TODO We're getting selectedItem again here, optimize it
 
-    -- TODO Disable text entry for the amount of items from here
-
     -- Starts separate confirmation panel
-    local text = getText("IGUI_Shop_Buy_Confirmation", self.entryAmount:getInternalText(), selectedItem["actualItem"]:getName(), tostring(cost))
+    local text = getText("IGUI_Shop_Buy_Confirmation", self.selectedAmount, selectedItem["actualItem"]:getName(), tostring(cost))
     self.parent:openConfirmationPanel(text, self.OnConfirmBuy)
 
 end
@@ -168,7 +214,7 @@ function BuySidePanel.OnConfirmBuy(parent)
         multiplier = 1 -- FIXME This should be with the selectedItem, but it's not there for some reason
     }
 
-    local quantity = tonumber(parent.sidePanel.entryAmount:getInternalText())
+    local quantity = tonumber(parent.sidePanel.selectedAmount)
     local isSuccessful = ClientShopManager.TryBuy(itemTable, quantity)
     parent.sidePanel:setSuccessfulBuyConfirmation(isSuccessful)
 

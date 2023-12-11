@@ -3,7 +3,6 @@ if not isServer() then return end
 require("ROK/DebugTools")
 ------------------------
 
-LuaEventManager.AddEvent("PZEFT_ServerModDataReady")
 
 local KEY_PVP_INSTANCES = "PZ-EFT-PVP-INSTANCES"
 local KEY_PVP_USEDINSTANCES = "PZ-EFT-PVP-USEDINSTANCES"

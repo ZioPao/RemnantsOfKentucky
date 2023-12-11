@@ -142,6 +142,7 @@ function SafehouseInstanceHandler.WaitForSafehouseAndRun(funcToRun, args)
         if crates == nil or #crates ~= PZ_EFT_CONFIG.SafehouseInstanceSettings.cratesAmount then return end
 
         debugPrint("Running function, safehouse is valid!")
+        ---@diagnostic disable-next-line: deprecated
         funcToRun(unpack(args))
 
         Events.OnPlayerUpdate.Remove(WaitAndRun)

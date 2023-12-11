@@ -1,11 +1,6 @@
--- TODO Move them somewhere, maybe Modules
-
 local KEY_SHOP_ITEMS = "PZ-EFT-SHOP-ITEMS"
 local KEY_PVP_INSTANCES = "PZ-EFT-PVP-INSTANCES"
 local KEY_PVP_CURRENTINSTANCE = "PZ-EFT-PVP-CURRENTINSTANCE"
-
-LuaEventManager.AddEvent("PZEFT_ClientModDataReady")
-LuaEventManager.AddEvent("PZEFT_UpdateClientStatus")
 
 ----------------------------------------------------------------------------
 

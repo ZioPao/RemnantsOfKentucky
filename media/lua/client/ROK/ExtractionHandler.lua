@@ -1,7 +1,6 @@
 require "ROK/ClientData"
 local ExtractionPanel = require("ROK/UI/DuringMatch/ExtractionPanel")
 local ClientState = require("ROK/ClientState")
-LuaEventManager.AddEvent("PZEFT_UpdateExtractionZoneState")
 local os_time = os.time
 ------------------
 

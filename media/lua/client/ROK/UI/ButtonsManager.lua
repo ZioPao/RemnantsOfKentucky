@@ -5,7 +5,6 @@ local LeaderboardPanel = require("ROK/UI/BeforeMatch/LeaderboardPanel")
 ----------------
 
 
-LuaEventManager.AddEvent("PZEFT_PostISEquippedItemInitialization")
 
 local og_ISEquippedItem_initialise = ISEquippedItem.initialise
 

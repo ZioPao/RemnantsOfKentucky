@@ -1,6 +1,7 @@
 local GenericUI = require("ROK/UI/GenericUI")
 -----------------------
 
+
 ---@class BaseScrollItemsPanel : ISPanelJoypad
 ---@field parent StoreContainerPanel
 local BaseScrollItemsPanel = ISPanelJoypad:derive("BaseScrollItemsPanel")
@@ -121,8 +122,13 @@ end
 ---Set the item that's been selected from the list
 ---@param item selectedItemType
 function BaseScrollItemsPanel:setSelectedItem(item)
-    debugPrint(item)
-    self.selectedItem = item
+    --debugPrint(item)
+    if self.selectedItem ~= item then
+        self.selectedItem = item
+        -- Notify change
+        debugPrint("Triggering PZEFT_OnChangeSelectedItem")
+        triggerEvent("PZEFT_OnChangeSelectedItem", self.parent.sidePanel)
+    end
 end
 
 

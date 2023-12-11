@@ -31,7 +31,6 @@ function ClientStateCommands.SetClientStateIsInRaid(args)
 
     triggerEvent("PZEFT_UpdateClientStatus", ClientState.isInRaid)
 
-    -- TODO If someone quits the game while in a raid, the symbols are gonna stay until they join a new raid
     -- If we're in a raid, we need to reset the correct symbols. If we're not, we're gonna just clean them off the map
     ISWorldMap.HandleEFTExits(getPlayer():getPlayerNum(), not args.value)
 
