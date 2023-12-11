@@ -1,107 +1,7 @@
-require("ROK/DebugTools")
-local LoadingScreen = require("ROK/UI/LoadingScreen")
-local ClientState = require("ROK/ClientState")
---------------------------
-
 ---@class SafehouseInstanceHandler
 local SafehouseInstanceHandler = {}
 
-function SafehouseInstanceHandler.RefreshSafehouseAllocation()
-    sendClientCommand(EFT_MODULES.Safehouse, "RequestSafehouseAllocation", {teleport = false})
-end
-
---- Check if the player is in their safehouse
----@return boolean
-function SafehouseInstanceHandler.IsInSafehouse()
-    local md = PZEFT_UTILS.GetPlayerModData()
-    if not md.safehouse then return false end
-
-    local sq = getPlayer():getSquare()
-    if not sq or sq:getZ() ~= 0 then return false end
-
-    local dim = PZ_EFT_CONFIG.SafehouseInstanceSettings.dimensions
-    if getPlayer():isOutside() or not PZEFT_UTILS.IsPointWithinDimensions(md.safehouse.x, md.safehouse.y, dim.n, dim.s, dim.e, dim.w, sq:getX(), sq:getY()) then return false end
-
-    return true
-end
-
----Used in a Loop, check if the player is in the safehouse and if not teleports them forcefully. Opens a Black screen if they're not in the safehouse too
-function SafehouseInstanceHandler.HandlePlayerInSafehouse()
-
-    -- Prevent this from running if we're starting a match
-    if ClientState.isStartingMatch or ClientState.isAdminMode then return end
-
-    -- TODO Check Admin Mode
-    if not SafehouseInstanceHandler.IsInSafehouse() then
-        LoadingScreen.Open()
-        sendClientCommand(EFT_MODULES.Safehouse, "RequestSafehouseAllocation", {
-            teleport = true
-        })
-    else
-        LoadingScreen.Close()
-
-        -- -- TODO Not working
-        -- for _,v in ipairs(PZ_EFT_CONFIG.SafehouseCells)do
-        --     zpopClearZombies(v.x,v.y)
-        -- end
-    end
-end
-
----Return safehouse coords for the current player
----@return coords?
-function SafehouseInstanceHandler.GetSafehouse()
-    local md = PZEFT_UTILS.GetPlayerModData()
-    if not md.safehouse then
-        return nil
-    end
-
-    return md.safehouse
-end
-
-
----Wait until the safehouse is ready and run a specific function
----@param funcToRun function
----@param args {} args for the function
-function SafehouseInstanceHandler.WaitForSafehouseAndRun(funcToRun, args)
-    local function WaitAndRun()
-        local crates = SafehouseInstanceHandler.GetCrates()
-        if crates == nil or #crates ~= PZ_EFT_CONFIG.SafehouseInstanceSettings.cratesAmount then return end
-
-        debugPrint("Running function, safehouse is valid!")
-        funcToRun(unpack(args))
-
-        Events.OnPlayerUpdate.Remove(WaitAndRun)
-    end
-
-    Events.OnPlayerUpdate.Add(WaitAndRun)
-end
-
---* Starter kit 
-
----@param playerObj IsoPlayer
----@param sendToCrates boolean
-function SafehouseInstanceHandler.GiveStarterKit(playerObj, sendToCrates)
-    function RunGiveStarterKit()
-        for i=1, #PZ_EFT_CONFIG.StarterKit do
-            ---@type starterKitType
-            local element = PZ_EFT_CONFIG.StarterKit[i]
-            if sendToCrates then
-                for _=1, element.amount do
-                    SafehouseInstanceHandler.AddToCrate(element.fullType)
-                end
-            else
-                playerObj:getInventory():AddItems(element.fullType, element.amount)
-            end
-        end
-
-        -- Notify the player
-        playerObj:Say(getText("UI_EFT_Say_ReceivedStartedKit"))
-    end
-    SafehouseInstanceHandler.WaitForSafehouseAndRun(RunGiveStarterKit, {})
-end
-
---* Crates handling
----@return table<integer, ItemContainer>?
+--* Crates Handling
 function SafehouseInstanceHandler.GetCrates()
     local cratesTable = {}
     local safehouse = SafehouseInstanceHandler.GetSafehouse()
@@ -175,6 +75,79 @@ function SafehouseInstanceHandler.AddToCrate(fullType)
         inv:setDrawDirty(true)
         ISInventoryPage.renderDirty = true
     end
+end
+
+
+--* Starter kit 
+
+---@param playerObj IsoPlayer
+---@param sendToCrates boolean
+function SafehouseInstanceHandler.GiveStarterKit(playerObj, sendToCrates)
+    function RunGiveStarterKit()
+        for i=1, #PZ_EFT_CONFIG.StarterKit do
+            ---@type starterKitType
+            local element = PZ_EFT_CONFIG.StarterKit[i]
+            if sendToCrates then
+                for _=1, element.amount do
+                    SafehouseInstanceHandler.AddToCrate(element.fullType)
+                end
+            else
+                playerObj:getInventory():AddItems(element.fullType, element.amount)
+            end
+        end
+
+        -- Notify the player
+        playerObj:Say(getText("UI_EFT_Say_ReceivedStartedKit"))
+    end
+    SafehouseInstanceHandler.WaitForSafehouseAndRun(RunGiveStarterKit, {})
+end
+
+
+--* Safehouse Checks
+
+--- Check if the player is in their safehouse
+---@return boolean
+function SafehouseInstanceHandler.IsInSafehouse()
+    local md = PZEFT_UTILS.GetPlayerModData()
+    if not md.safehouse then return false end
+
+    local sq = getPlayer():getSquare()
+    if not sq or sq:getZ() ~= 0 then return false end
+
+    local dim = PZ_EFT_CONFIG.SafehouseInstanceSettings.dimensions
+    if getPlayer():isOutside() or not PZEFT_UTILS.IsPointWithinDimensions(md.safehouse.x, md.safehouse.y, dim.n, dim.s, dim.e, dim.w, sq:getX(), sq:getY()) then return false end
+
+    return true
+end
+
+---Return safehouse coords for the current player
+---@return coords?
+function SafehouseInstanceHandler.GetSafehouse()
+    local md = PZEFT_UTILS.GetPlayerModData()
+    if not md.safehouse then
+        return nil
+    end
+
+    return md.safehouse
+end
+
+--* Utilities
+
+---Wait until the safehouse is ready and run a specific function
+---@param funcToRun function
+---@param args {} args for the function
+function SafehouseInstanceHandler.WaitForSafehouseAndRun(funcToRun, args)
+    local function WaitAndRun()
+        local crates = SafehouseInstanceHandler.GetCrates()
+        if crates == nil or #crates ~= PZ_EFT_CONFIG.SafehouseInstanceSettings.cratesAmount then return end
+
+        debugPrint("Running function, safehouse is valid!")
+        funcToRun(unpack(args))
+
+        Events.OnPlayerUpdate.Remove(WaitAndRun)
+    end
+
+    Events.OnPlayerUpdate.Add(WaitAndRun)
 end
 
 

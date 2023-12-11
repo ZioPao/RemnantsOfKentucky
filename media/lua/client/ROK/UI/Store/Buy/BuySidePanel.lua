@@ -63,7 +63,7 @@ end
 
 function BuySidePanel:setSuccessfulBuyConfirmation(val)
     self.showBuyConfirmation = val
-    self.timeShowBuyConfirmation = os.time() + 5
+    self.timeShowBuyConfirmation = os.time() + 3
 end
 
 function BuySidePanel:update()
@@ -172,7 +172,6 @@ function BuySidePanel.OnConfirmBuy(parent)
     local isSuccessful = ClientShopManager.TryBuy(itemTable, quantity)
     parent.sidePanel:setSuccessfulBuyConfirmation(isSuccessful)
 
-    -- TODO add notification for player when buy is successful, maybe an additional panel?
 end
 
 
