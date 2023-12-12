@@ -11,6 +11,11 @@ if isClient() then
 
     --* ButtonsManager.lua
     LuaEventManager.AddEvent("PZEFT_PostISEquippedItemInitialization")
+
+
+    --* BuySidePanel
+    LuaEventManager.AddEvent("PZEFT_OnSuccessfulBuy")
+
 elseif isServer() then
 
     --* ServerData.lua    

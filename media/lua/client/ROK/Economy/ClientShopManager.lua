@@ -9,23 +9,23 @@ local ClientShopManager = {}
 --- Try buy an item for quantity. Let's assume that it's valid if we process the transaction
 ---@param item table
 ---@param quantity number?
----@return boolean
-function ClientShopManager.TryBuy(item, quantity)
+---@param shopCat string
+function ClientShopManager.TryBuy(item, quantity, shopCat)
     local totalPrice = item.basePrice * item.multiplier * quantity
 
     if not ClientShopManager.CanBuy(totalPrice) then
         debugPrint("WARN: ClientShopManager.CanBuy - Player tried to buy with insufficient balance")
-        return false
+        return
     end
 
     local data = {
         item = item,
         quantity = quantity or 1,
-        totalPrice = totalPrice
+        totalPrice = totalPrice,
+        shopCat = shopCat
     }
 
-    BankManager.TryProcessTransaction(-totalPrice, "PZEFT-Shop", "BuyItem", data, "PZEFT-Shop", "BuyFailed", data)
-    return true
+    BankManager.TryProcessTransaction(-totalPrice, EFT_MODULES.Shop, "BuyItem", data, EFT_MODULES.Shop, "BuyFailed", data)
 end
 
 --- Try sell items for quantity
@@ -153,9 +153,10 @@ function ShopCommands.GetShopItems(items)
     end
 end
 
----@param args {item : any, quantity : number}
+---@param args {item : any, quantity : number, shopCat : string}
 function ShopCommands.BuyItem(args)
     debugPrint("BuyItem")
+    debugPrint(args.shopCat)
 
     if args == nil or args.item == nil or args.quantity == nil then
         debugPrint("ERROR: ServerCommands.BuyItem - Invalid buyData (args)")
@@ -165,6 +166,8 @@ function ShopCommands.BuyItem(args)
     for i=1, args.quantity do
         SafehouseInstanceHandler.AddToCrate(args.item.fullType)
     end
+
+    triggerEvent("PZEFT_OnSuccessfulBuy", args.shopCat)
 end
 
 ---@param args table

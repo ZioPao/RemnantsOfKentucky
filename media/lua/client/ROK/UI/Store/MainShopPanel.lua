@@ -132,14 +132,14 @@ function MainShopPanel:createChildren()
     local catHeight = self.height - th - rh - addedHeight - 50
 
     --* ESSENTIAL ITEMS *--
-    self.essentialItemsCat = BuyPanel:new(0, 0, self.width, catHeight, ClientShopManager.GetEssentialItems())
+    self.essentialItemsCat = BuyPanel:new(0, 0, self.width, catHeight, ClientShopManager.GetEssentialItems(), "ESSENTIAL")
     self.essentialItemsCat:initialise()
     self.panel:addView(getText("IGUI_Shop_TabEssential"), self.essentialItemsCat, self.width / 3 - 2, addedHeight)
     self.essentialItemsCat.category = 1
     table.insert(self.categories, self.essentialItemsCat)
 
     --* DAILY ITEMS *--
-    self.dailyItemsCat = BuyPanel:new(0, 0, self.width, catHeight, ClientShopManager.GetDailyItems())
+    self.dailyItemsCat = BuyPanel:new(0, 0, self.width, catHeight, ClientShopManager.GetDailyItems(), "DAILY")
     self.dailyItemsCat:initialise()
     self.panel:addView(getText("IGUI_Shop_TabDaily"), self.dailyItemsCat, self.width / 3 - 2, addedHeight)
     self.dailyItemsCat.category = 2

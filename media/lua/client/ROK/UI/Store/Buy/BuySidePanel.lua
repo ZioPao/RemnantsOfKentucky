@@ -4,13 +4,11 @@ local ClientBankManager = require("ROK/Economy/ClientBankManager")
 local CommonStore = require("ROK/UI/Store/Components/CommonStore")
 ------------------------
 
-
--- TODO Use functions in CLientShopManager, not here
-
 ---@class BuySidePanel : RightSidePanel
 ---@field parent BuyMainPanel
 ---@field selectedAmount number
 ---@field currentCost number?
+---@field shopCat string
 ---@field showBuyConfirmation boolean
 ---@field timeShowBuyConfirmation number
 local BuySidePanel = RightSidePanel:derive("BuySidePanel")
@@ -30,8 +28,6 @@ function BuySidePanel:new(x, y, width, height)
     o.showBuyConfirmation = false
     o.selectedAmount = 1
     o.timeShowBuyConfirmation = 0
-
-    BuySidePanel.instance = o
 
     ---@cast o BuySidePanel
     return o
@@ -84,11 +80,6 @@ function BuySidePanel:createChildren()
     self.amountPlusBtn:initialise()
     self.amountPlusBtn:instantiate()
     self:addChild(self.amountPlusBtn)
-end
-
-function BuySidePanel:setSuccessfulBuyConfirmation(val)
-    self.showBuyConfirmation = val
-    self.timeShowBuyConfirmation = os.time() + 3
 end
 
 function BuySidePanel:update()
@@ -195,10 +186,9 @@ end
 function BuySidePanel:onStartBuy()
     debugPrint("Buy")
     local selectedItem = self.parent.scrollPanel:getSelectedItem()
-    local cost = self:getCostForSelectedItem()      -- TODO We're getting selectedItem again here, optimize it
 
     -- Starts separate confirmation panel
-    local text = getText("IGUI_Shop_Buy_Confirmation", self.selectedAmount, selectedItem["actualItem"]:getName(), tostring(cost))
+    local text = getText("IGUI_Shop_Buy_Confirmation", self.selectedAmount, selectedItem["actualItem"]:getName(), tostring(self.currentCost))
     self.parent:openConfirmationPanel(text, self.OnConfirmBuy)
 
 end
@@ -215,8 +205,7 @@ function BuySidePanel.OnConfirmBuy(parent)
     }
 
     local quantity = tonumber(parent.sidePanel.selectedAmount)
-    local isSuccessful = ClientShopManager.TryBuy(itemTable, quantity)
-    parent.sidePanel:setSuccessfulBuyConfirmation(isSuccessful)
+    ClientShopManager.TryBuy(itemTable, quantity, parent.shopCat)
 
 end
 

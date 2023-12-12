@@ -64,8 +64,7 @@ function RightSidePanel:getCostForSelectedItem()
     if selectedItem == nil then return end
     local itemCost = selectedItem.basePrice
 
-    local finalCost = tonumber(self.entryAmount:getInternalText()) * itemCost
-    return finalCost
+    return itemCost
 end
 
 function RightSidePanel:render()
