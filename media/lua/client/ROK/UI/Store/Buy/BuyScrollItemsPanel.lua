@@ -15,17 +15,29 @@ function BuyScrollItemsPanel:new(x, y, width, height)
     return o
 end
 
-local function BuyDoDrawItem(self, y, item, alt)
+---@param y any
+---@param item any
+---@param rowElementNumber number
+---@return number
+local function BuyDoDrawItem(self, y, item, rowElementNumber)
+
+    -- Multi item same line
+
     if y + self:getYScroll() >= self.height then return y + item.height end
     if y + item.height + self:getYScroll() <= 0 then return y + item.height end
 
     local a = 0.9
 
+    local width = self:getWidth()/self.elementsPerRow
+    local x = width * rowElementNumber
+
     -- Border of single item
-    self:drawRectBorder(0, (y), self:getWidth(), item.height - 1, a, self.borderColor.r, self.borderColor.g,
-        self.borderColor.b)
+
+    self:drawRectBorder(x, y, width, item.height - 1, a, self.borderColor.r, self.borderColor.g, self.borderColor.b)
+
+
     if self.selected == item.index then
-        self:drawRect(0, (y), self:getWidth(), item.height - 1, 0.3, 0.7, 0.35, 0.15)
+        self:drawRect(x, y, width, item.height - 1, 0.3, 0.7, 0.35, 0.15)
     end
 
     -- Items are stored in a table that works as a container, let's unpack them here to make it more readable
@@ -33,15 +45,16 @@ local function BuyDoDrawItem(self, y, item, alt)
     local itemCost = item.item.basePrice
 
     --* ITEM NAME *--
-    self:drawText(itemDisplayName, 6, y + 2, 1, 1, 1, a, self.font)
+    self:drawText(itemDisplayName, x + 6, y + 2, 1, 1, 1, a, self.font)
 
-    --* ITEM COST *--
+    -- --* ITEM COST *--
     local priceStr = "$" .. itemCost
-    local priceX = self:getWidth() - getTextManager():MeasureStringX(self.font, priceStr) - 25
-    self:drawText("$" .. itemCost, priceX, y + 2, 1, 1, 1, a, self.font)
+    local priceStrY = getTextManager():MeasureStringY(self.font, priceStr)
+    self:drawText(priceStr, x + 6, y + priceStrY + 2, 1, 1, 1, a, self.font)
 
     return y + item.height
 end
+
 
 function BuyScrollItemsPanel:createChildren()
     BaseScrollItemsPanel.createChildren(self)

@@ -34,21 +34,25 @@ function StoreContainerPanel:initialise()
 end
 
 function StoreContainerPanel:createChildren()
-    local paneWidth = self.width / 2 - 20
+
+    -- TODO Left panel should be bigger compared to the right one
+
+    local scrollPanelWidth = self.width*0.65 - 20
     local paneY = GenericUI.SMALL_FONT_HGT + 2 * 2
     local paneHeight = self.height - paneY - 10
 
     local scrollX = 10
 
-    self.scrollPanel = self.scrollModal:new(scrollX, paneY, paneWidth, paneHeight)
+    self.scrollPanel = self.scrollModal:new(scrollX, paneY, scrollPanelWidth, paneHeight)
     self.scrollPanel:initialise()
     self.scrollPanel:setAnchorRight(true)
     self.scrollPanel:setAnchorBottom(true)
     self:addChild(self.scrollPanel)
 
-    local sideX = self.width - paneWidth - 10
+    local sidePanelWidth = self.width - scrollPanelWidth - 20
+    local sidePanelX = scrollPanelWidth + 10
 
-    self.sidePanel = self.sideModal:new(sideX, paneY, paneWidth, paneHeight)
+    self.sidePanel = self.sideModal:new(sidePanelX, paneY, sidePanelWidth, paneHeight)
     self.sidePanel:initialise()
     self:addChild(self.sidePanel)
 

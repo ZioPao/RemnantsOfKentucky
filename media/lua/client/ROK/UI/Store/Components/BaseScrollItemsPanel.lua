@@ -1,4 +1,5 @@
 local GenericUI = require("ROK/UI/GenericUI")
+local TilesScrollingListBox = require("ROK/UI/Store/Components/TilesScrollingListBox")
 -----------------------
 
 
@@ -92,7 +93,7 @@ function BaseScrollItemsPanel:createChildren()
     self.panelYPadding = GenericUI.SMALL_FONT_HGT + 2 * 2
     self.panelHeight = self.height - self.panelYPadding - 10
 
-    self.scrollingListBox = ISScrollingListBox:new(0, 0, self.width, self.height)
+    self.scrollingListBox = TilesScrollingListBox:new(0, 0, self.width, self.height, 3)
     self.scrollingListBox:initialise()
     self.scrollingListBox:instantiate()
     self.scrollingListBox:setAnchorRight(false) -- resize in update()

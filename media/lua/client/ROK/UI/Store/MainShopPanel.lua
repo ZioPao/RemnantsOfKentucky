@@ -51,6 +51,7 @@ function MainShopPanel:new(x, y, width, height, character, pcPosition)
     o.minimumWidth = 800
     o.minimumHeight = 600
     setmetatable(o, self)
+    self.__index = self
 
     o.title = getText("IGUI_Shop_Title")
     self.__index = self
@@ -72,7 +73,7 @@ end
 ---@param player IsoPlayer
 ---@param pcPos coords
 function MainShopPanel.Open(player, pcPos)
-    MainShopPanel.instance = MainShopPanel:new(0, 0, 800, 600, player, pcPos)
+    MainShopPanel.instance = MainShopPanel:new(0, 0, 1200, 600, player, pcPos)
     MainShopPanel.instance:initialise()
     MainShopPanel.instance:addToUIManager()
     MainShopPanel.instance:setVisible(true)
