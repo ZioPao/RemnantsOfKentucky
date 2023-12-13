@@ -33,6 +33,4 @@ function GenericUI.FormatTime(time)
     return finalString
 end
 
-
-
 return GenericUI

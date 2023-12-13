@@ -191,7 +191,6 @@ end
 ---@param test any
 ---@return boolean
 local function AddShopMenu(playerNum, context, worldObjects, test)
-
     if test then return true end
 
     -- -- SP DEBUG THING
@@ -212,6 +211,8 @@ local function AddShopMenu(playerNum, context, worldObjects, test)
         local isNear = IsoUtils.DistanceTo(coords.x, coords.y, playerObj:getX(), playerObj:getY()) < 2
         if isNear then
             context:addOption(getText("ContextMenu_EFT_OpenShop"), playerObj, MainShopPanel.Open, coords)
+
+            context:addOption("InstaHeal ($2500)", playerObj, InstaHeal.Execute, coords)
         end
     end
     return false

@@ -41,6 +41,33 @@ function TilesScrollingListBox:rowAt(x,y)
 	return -1
 end
 
+function TilesScrollingListBox:onMouseWheel(del)
+	local yScroll = self.smoothScrollTargetY or self:getYScroll()
+    self:setYScroll(self:getYScroll() - (del*24))       -- TODO Workaroundy
+    return true
+
+	-- local topRow = self:rowAt(0, -yScroll)
+	-- if self.items[topRow] then
+	-- 	if not self.smoothScrollTargetY then self.smoothScrollY = self:getYScroll() end
+	-- 	local y = self:topOfItem(topRow)
+    --     debugPrint(del)
+
+	-- 	if del < 0 then
+
+    --         -- TODO Something here is wrong!
+	-- 		if yScroll == -y and topRow > 1 then
+	-- 			local prev = self:prevVisibleIndex(topRow)
+	-- 			y = self:topOfItem(prev)
+	-- 		end
+	-- 		self.smoothScrollTargetY = -y
+	-- 	else
+	-- 		self.smoothScrollTargetY = -(y + self.items[topRow].height)
+	-- 	end
+	-- else
+	-- 	self:setYScroll(self:getYScroll() - (del*18))
+	-- end
+    -- return true
+end
 
 function TilesScrollingListBox:prerender()
     if self.items == nil then
@@ -127,13 +154,13 @@ function TilesScrollingListBox:prerender()
 
     if #self.columns > 0 then
 --		print(self:getScrollHeight())
-        self:drawRectBorderStatic(0, 0 - self.itemheight, self.width, self.itemheight - 1, 1, self.borderColor.r, self.borderColor.g, self.borderColor.b);
-        self:drawRectStatic(0, 0 - self.itemheight - 1, self.width, self.itemheight-2,self.listHeaderColor.a,self.listHeaderColor.r, self.listHeaderColor.g, self.listHeaderColor.b);
+        self:drawRectBorderStatic(0, 0 - self.itemheight, self.width, self.itemheight - 1, 1, self.borderColor.r, self.borderColor.g, self.borderColor.b)
+        self:drawRectStatic(0, 0 - self.itemheight - 1, self.width, self.itemheight-2,self.listHeaderColor.a,self.listHeaderColor.r, self.listHeaderColor.g, self.listHeaderColor.b)
         local dyText = (self.itemheight - FONT_HGT_SMALL) / 2
         for i,v in ipairs(self.columns) do
-            self:drawRectStatic(v.size, 0 - self.itemheight, 1, self.itemheight + math.min(self.height, self.itemheight * #self.items - 1), 1, self.borderColor.r, self.borderColor.g, self.borderColor.b);
+            self:drawRectStatic(v.size, 0 - self.itemheight, 1, self.itemheight + math.min(self.height, self.itemheight * #self.items - 1), 1, self.borderColor.r, self.borderColor.g, self.borderColor.b)
             if v.name then
-                self:drawText(v.name, v.size + 10, 0 - self.itemheight - 1 + dyText - self:getYScroll(), 1,1,1,1,UIFont.Small);
+                self:drawText(v.name, v.size + 10, 0 - self.itemheight - 1 + dyText - self:getYScroll(), 1,1,1,1,UIFont.Small)
             end
         end
     end

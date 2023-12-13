@@ -142,11 +142,12 @@ function SellScrollItemsPanel:update()
     BaseScrollItemsPanel.update(self)
 
     -- Check if added items are still in players'inv
-    local plInv = getPlayer():getInventory()
+    local pl = getPlayer()
+    local plInv = pl:getInventory()
     for i = 1, #self.scrollingListBox.items do
         ---@type InventoryItem
         local item = self.scrollingListBox.items[i].item
-        if plInv:getItemById(item:getID()) == nil then
+        if plInv:getItemById(item:getID()) == nil or luautils.haveToBeTransfered(pl, item) or pl:isEquipped(item) or pl:isEquippedClothing(item) or item:isFavorite() then
             table.remove(self.scrollingListBox.items, i)
         end
     end
