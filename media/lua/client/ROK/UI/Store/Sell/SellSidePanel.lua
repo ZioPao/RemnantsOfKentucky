@@ -5,6 +5,12 @@ local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
 
 -- TODO ADD remove Item from list
 
+-- TODO Use getText
+local notificationsTable = {}
+notificationsTable["haveToBeTransferred"] = "it needs to be transferred"
+notificationsTable["isEquipped"] = "it's equipped"
+notificationsTable["isFavorite"] = "it's a favorite"
+
 ---@class SellSidePanel : RightSidePanel
 ---@field showNotification boolean
 ---@field notificationType string
@@ -51,14 +57,7 @@ function SellSidePanel:render()
 
     if self.showNotification then
         text = text .. " <LINE> <CENTRE> <RED> Can't add item, "
-        if self.notificationType == "haveToBeTransferred" then
-            text = text .. "it needs to be transferred"
-        elseif self.notificationType == "isEquipped" then
-            text = text .. "it's equipped"
-
-        elseif self.notificationType == "isFavorite" then
-            text = text .. "it's a favorite"
-        end
+        text = text .. notificationsTable[self.notificationType]
 
         local showTime = os.time()
         if showTime > self.timeShowNotification then

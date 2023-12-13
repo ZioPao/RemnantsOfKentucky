@@ -12,7 +12,6 @@ local ClientShopManager = {}
 ---@param shopCat string
 function ClientShopManager.TryBuy(item, quantity, shopCat)
     local totalPrice = item.basePrice * item.multiplier * quantity
-
     if not ClientShopManager.CanBuy(totalPrice) then
         debugPrint("WARN: ClientShopManager.CanBuy - Player tried to buy with insufficient balance")
         return
@@ -71,7 +70,6 @@ function ClientShopManager.TrySell(sellData)
             end
         else
             error("ERROR: ServerCommands.SellItems - Invalid sellData")
-            
         end
     end
 
@@ -125,13 +123,6 @@ function ClientShopManager.GetDailyItems()
         return {}
     end
 end
---     local shopItems = ClientData.Shop.GetShopItems()
---     if shopItems and shopItems.dailyInventory then
---         return shopItems.dailyInventory
---     end
-
---     return {}
--- end
 
 ---@return table
 function ClientShopManager.GetEssentialItems()
@@ -185,9 +176,7 @@ end
 
 ---@param args table
 function ShopCommands.SellItems(args)
-
     debugPrint("SellItemsSuccess")
-
 end
 
 ---@param args table

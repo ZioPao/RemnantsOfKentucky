@@ -12,10 +12,8 @@ if isClient() then
     --* ButtonsManager.lua
     LuaEventManager.AddEvent("PZEFT_PostISEquippedItemInitialization")
 
-
     --* BuySidePanel
     LuaEventManager.AddEvent("PZEFT_OnSuccessfulBuy")
-
 
     --* SellScrollItemsPanel
     LuaEventManager.AddEvent("PZEFT_OnFailedSellTransfer")

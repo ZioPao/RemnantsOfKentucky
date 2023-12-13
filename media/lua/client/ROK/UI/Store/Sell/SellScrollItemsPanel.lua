@@ -6,7 +6,6 @@ local SellScrollItemsPanel = BaseScrollItemsPanel:derive("SellScrollItemsPanel")
 
 -- TODO Quality/status of the item should affect the price!
 
-
 function SellScrollItemsPanel:new(x, y, width, height)
     local o = BaseScrollItemsPanel:new(x, y, width, height)
     setmetatable(o, self)
@@ -46,7 +45,14 @@ function SellScrollItemsPanel:addItem(item)
 
     self.scrollingListBox:addItem(item:getName(), item)
 
+    -- TODO Create a container and use it!
+
     -- TODO Sort them again
+
+    -- TODO Hide items in inventory
+
+
+
 end
 
 ---@param self ISScrollingListBox
