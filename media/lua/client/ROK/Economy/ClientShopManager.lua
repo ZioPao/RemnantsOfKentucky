@@ -61,6 +61,19 @@ function ClientShopManager.TrySell(sellData)
     end
 
     -- Remove items from the client
+    local player = getPlayer()
+    local inventory = player:getInventory()
+
+    for _, itemData in ipairs(data) do
+        if itemData and itemData.item and itemData.quantity then
+            for i = 1, itemData.quantity do
+                inventory:Remove(itemData.item)
+            end
+        else
+            error("ERROR: ServerCommands.SellItems - Invalid sellData")
+            
+        end
+    end
 
     -- Process transaction
     BankManager.TryProcessTransaction(totalPrice, EFT_MODULES.Shop, "SellItems", data, EFT_MODULES.Shop, "SellFailed", data)
@@ -172,19 +185,9 @@ end
 
 ---@param args table
 function ShopCommands.SellItems(args)
-    local player = getPlayer()
-    local inventory = player:getInventory()
 
-    for _, itemData in ipairs(args) do
-        if itemData and itemData.item and itemData.quantity then
-            for i = 1, itemData.quantity do
-                inventory:Remove(itemData.item)
-            end
-        else
-            debugPrint("ERROR: ServerCommands.SellItems - Invalid sellData")
-            return
-        end
-    end
+    debugPrint("SellItemsSuccess")
+
 end
 
 ---@param args table

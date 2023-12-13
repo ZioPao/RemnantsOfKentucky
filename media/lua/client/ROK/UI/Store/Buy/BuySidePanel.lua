@@ -117,7 +117,7 @@ function BuySidePanel:resetSelectedAmount()
     debugPrint("Running ResetSelectedAmount")
     self.selectedAmount = 1
 end
-Events.PZEFT_OnChangeSelectedItem.Add(BuySidePanel.resetSelectedAmount)
+Events.PZEFT_OnChangeSelectedItem.Add(BuySidePanel.resetSelectedAmount)     -- TODO does it work?
 
 function BuySidePanel:render()
     RightSidePanel.render(self)

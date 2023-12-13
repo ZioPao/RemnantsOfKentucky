@@ -21,4 +21,16 @@ function SellMainPanel:new(x, y, width, height)
     return o
 end
 
+function SellMainPanel.SetSidePanelNotification(category)
+
+    local sidePanel = SellMainPanel.instance.sidePanel
+    ---@cast sidePanel SellSidePanel
+
+    sidePanel:updateNotification(true, category)
+end
+
+Events.PZEFT_OnFailedSellTransfer.Add(SellMainPanel.SetSidePanelNotification)
+
+-- TODO Add other events, like success
+
 return SellMainPanel

@@ -2,8 +2,10 @@ local BaseScrollItemsPanel = require("ROK/UI/Store/Components/BaseScrollItemsPan
 -----------
 
 ---@class SellScrollItemsPanel : BaseScrollItemsPanel
----@field draggeditems {}
 local SellScrollItemsPanel = BaseScrollItemsPanel:derive("SellScrollItemsPanel")
+
+-- TODO Quality/status of the item should affect the price!
+
 
 function SellScrollItemsPanel:new(x, y, width, height)
     local o = BaseScrollItemsPanel:new(x, y, width, height)
@@ -18,12 +20,46 @@ end
 
 function SellScrollItemsPanel:initialise()
     BaseScrollItemsPanel.initialise(self)
-
-    self.draggedItems = {}
 end
 
+---@param item InventoryItem
+function SellScrollItemsPanel:addItem(item)
+    local pl = getPlayer()
+
+    if luautils.haveToBeTransfered(pl, item) then
+        triggerEvent("PZEFT_OnFailedSellTransfer", "haveToBeTransferred")
+        return
+    elseif pl:isEquipped(item) or pl:isEquippedClothing(item) then
+        triggerEvent("PZEFT_OnFailedSellTransfer", "isEquipped")
+        return
+    elseif item:isFavorite() then
+        triggerEvent("PZEFT_OnFailedSellTransfer", "isFavorite")
+        return
+    end
+
+
+    for i = 1, #self.scrollingListBox.items do
+        if self.scrollingListBox.items[i].item == item then
+            return
+        end
+    end
+
+    self.scrollingListBox:addItem(item:getName(), item)
+
+    -- TODO Sort them again
+end
+
+---@param self ISScrollingListBox
+---@param y number
+---@param item {item : InventoryItem}
+---@param alt boolean
+---@return number
 local function SellDoDrawItem(self, y, item, alt)
-    self:drawRectBorder(0, (y), self:getWidth(), self.itemheight - 1, 0.9, self.borderColor.r, self.borderColor.g, self.borderColor.b)
+    self:drawRectBorder(0, (y), self:getWidth(), self.itemheight - 1, 0.9, self.borderColor.r, self.borderColor.g,
+        self.borderColor.b)
+
+
+    -- TODO we should group multiple identical items maybe?
 
     local a = 0.9
     --* Item name
@@ -35,7 +71,7 @@ local function SellDoDrawItem(self, y, item, alt)
     local itemData = PZ_EFT_ShopItems_Config.data[itemFullType]
 
     if itemData == nil then
-        itemData = {basePrice = 100, sellMultiplier = 0.5}
+        itemData = { basePrice = 100, sellMultiplier = 0.5 }
     end
 
     local sellPrice = itemData.basePrice * itemData.sellMultiplier
@@ -53,41 +89,21 @@ end
 ---@param x number
 ---@param y number
 local function SellOnDragItem(self, x, y)
-    -- This is ok, this happens because we're overriding OnMouseUp
-    ---@type SellScrollItemsPanel
-    local parent = self.parent
-
-    ---@cast parent SellScrollItemsPanel
-
     if self.vscroll then
-        self.vscroll.scrolling = false
+        self.vscroll.scrolling = false;
     end
-
     local count = 1
     if ISMouseDrag.dragging then
         for i = 1, #ISMouseDrag.dragging do
             count = 1
             if instanceof(ISMouseDrag.dragging[i], "InventoryItem") then
-                local item = ISMouseDrag.dragging[i]
-                local itemID = item:getID()
-                if not parent:isItemAlreadyDraggedIn(itemID) then
-                    parent:addToDraggedItems(itemID)
-
-                    -- TODO addItem with FullType, not count
-                    self:addItem(itemID, ISMouseDrag.dragging[i])
-                end
+                self.parent:addItem(ISMouseDrag.dragging[i])
             else
                 if ISMouseDrag.dragging[i].invPanel.collapsed[ISMouseDrag.dragging[i].name] then
                     count = 1
                     for j = 1, #ISMouseDrag.dragging[i].items do
                         if count > 1 then
-                            ---@type InventoryItem
-                            local item = ISMouseDrag.dragging[i].items[j]
-                            local itemID = item:getID()
-                            if not parent:isItemAlreadyDraggedIn(itemID) then
-                                parent:addToDraggedItems(itemID)
-                                self:addItem(itemID, item)
-                            end
+                            self.parent:addItem(ISMouseDrag.dragging[i].items[j])
                         end
                         count = count + 1
                     end
@@ -95,12 +111,12 @@ local function SellOnDragItem(self, x, y)
             end
         end
     end
-
 end
+
 local function SellPrender(self)
     if #self.items == 0 then
         local text = getText("IGUI_Shop_Sell_Tooltip")
-        local textX = (self.width - getTextManager():MeasureStringX(UIFont.Medium, text))/4
+        local textX = (self.width - getTextManager():MeasureStringX(UIFont.Medium, text)) / 4
         self:drawText(text, textX, 100, 1, 1, 1, 1, UIFont.Medium)
     end
 
@@ -119,29 +135,15 @@ end
 function SellScrollItemsPanel:update()
     BaseScrollItemsPanel.update(self)
 
+    -- Check if added items are still in players'inv
     local plInv = getPlayer():getInventory()
-    for _, v in pairs(self.draggedItems) do
-        if v ~= nil and plInv:getItemById(v) == nil then
-            self:removeDraggedItem(v)
-            self.scrollingListBox:removeItem(v)
+    for i = 1, #self.scrollingListBox.items do
+        ---@type InventoryItem
+        local item = self.scrollingListBox.items[i].item
+        if plInv:getItemById(item:getID()) == nil then
+            table.remove(self.scrollingListBox.items, i)
         end
     end
-end
-
----@param id number
-function SellScrollItemsPanel:addToDraggedItems(id)
-    self.draggedItems[id] = id
-end
-
----@param id number
-function SellScrollItemsPanel:removeDraggedItem(id)
-    self.draggedItems[id] = nil
-end
-
----@param id number
-function SellScrollItemsPanel:isItemAlreadyDraggedIn(id)
-    if self.draggedItems == nil then return false end
-    if self.draggedItems[id] == id then return true else return false end
 end
 
 return SellScrollItemsPanel

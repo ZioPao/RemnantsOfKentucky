@@ -6,6 +6,9 @@ local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
 -- TODO ADD remove Item from list
 
 ---@class SellSidePanel : RightSidePanel
+---@field showNotification boolean
+---@field notificationType string
+---@field timeShowNotification number
 local SellSidePanel = RightSidePanel:derive("SellSidePanel")
 
 function SellSidePanel:new(x, y, width, height)
@@ -14,6 +17,10 @@ function SellSidePanel:new(x, y, width, height)
     self.__index = self
 
     o:initialise()
+    o.showNotification = false
+    o.notificationType = ""
+    o.timeShowNotification = 0
+
     SellSidePanel.instance = o
 
     ---@cast o BuySidePanel
@@ -32,11 +39,34 @@ end
 function SellSidePanel:render()
     RightSidePanel.render(self)
 
-    -- TODO if nothing is in, set text to "" and stop
-    local text = ""
+    local itemsAmount = #self.parent.scrollPanel.scrollingListBox.items
+    local text
 
-    local price = self:calculateSellPrice()
-    self.textPanel:setText("<CENTRE> You will receive: $" .. tostring(price))
+    if itemsAmount > 0 then
+        local price = self:calculateSellPrice()
+        text = "<CENTRE> You will receive: $" .. tostring(price)
+    else
+        text = ""
+    end
+
+    if self.showNotification then
+        text = text .. " <LINE> <CENTRE> <RED> Can't add item, "
+        if self.notificationType == "haveToBeTransferred" then
+            text = text .. "it needs to be transferred"
+        elseif self.notificationType == "isEquipped" then
+            text = text .. "it's equipped"
+
+        elseif self.notificationType == "isFavorite" then
+            text = text .. "it's a favorite"
+        end
+
+        local showTime = os.time()
+        if showTime > self.timeShowNotification then
+            self.showNotification = false
+        end
+    end
+
+    self.textPanel:setText(text)
     self.textPanel.textDirty = true
 end
 
@@ -104,6 +134,15 @@ function SellSidePanel:onConfirmSell()
     self.textPanel.textDirty = true
     self.parent.scrollPanel.draggedItems = {}
     self.parent.scrollPanel.scrollingListBox.items = {}
+end
+
+---comment
+---@param val boolean
+---@param cat string
+function SellSidePanel:updateNotification(val, cat)
+    self.showNotification = val
+    self.notificationType = cat
+    self.timeShowNotification = os.time() + 3
 end
 
 function SellSidePanel:calculateSellPrice()
