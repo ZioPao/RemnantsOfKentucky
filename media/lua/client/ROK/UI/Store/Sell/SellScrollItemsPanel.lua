@@ -96,13 +96,12 @@ local function SellOnDragItem(self, x, y)
         end
     end
 
-
-    --self.parent.sidePanel:updateInfoPanel()
 end
-
 local function SellPrender(self)
     if #self.items == 0 then
-        self:drawText(getText("IGUI_Shop_Sell_Tooltip"), 10, 100, 1, 1, 1, 1, UIFont.Medium)
+        local text = getText("IGUI_Shop_Sell_Tooltip")
+        local textX = (self.width - getTextManager():MeasureStringX(UIFont.Medium, text))/4
+        self:drawText(text, textX, 100, 1, 1, 1, 1, UIFont.Medium)
     end
 
     ISScrollingListBox.prerender(self)
