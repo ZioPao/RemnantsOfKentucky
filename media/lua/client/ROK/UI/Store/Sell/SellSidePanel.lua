@@ -98,7 +98,8 @@ function SellSidePanel:onConfirmSell()
     -- Cycle through the items and structure them in the correct way
     for i=1, #itemsList do
         ---@type InventoryItem
-        local item = itemsList[i].item
+        local item = itemsList[i].item[1]
+        local amount = #itemsList[i].item
         local fullType = item:getFullType()
 
         ---@type shopItemElement
@@ -114,20 +115,15 @@ function SellSidePanel:onConfirmSell()
                 multiplier = 1,
                 sellMultiplier = itemData.sellMultiplier,
             },
-            quantity = 1,
+            quantity = amount,
         }
 
         table.insert(itemsTosell, itemTable)
     end
 
     -- Try to sell it and removes item on the client
-    if ClientShopManager.TrySell(itemsTosell) then
-        for i=1, #itemsList do
-            ---@type InventoryItem
-            local item = itemsList[i].item
-            ISRemoveItemTool.removeItem(item, getPlayer())
-        end
-    end
+    ClientShopManager.TrySell(itemsTosell)
+    
 
     -- Clean stuff
     self.textPanel:setText("")

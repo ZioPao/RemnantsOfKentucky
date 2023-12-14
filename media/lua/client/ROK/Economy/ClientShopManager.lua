@@ -32,8 +32,6 @@ end
 ---@param sellData {quantity : number, item : shopItemElement}
 ---@return boolean
 function ClientShopManager.TrySell(sellData)
-
-
     -- TODO Simplify this, we don't need all of this to handle a simple sell
 
     local hasData = false
@@ -56,21 +54,8 @@ function ClientShopManager.TrySell(sellData)
     end
 
     if not hasData or not ClientShopManager.CanSell(data.items) then
+        debugPrint("Can't sell items!")
         return false
-    end
-
-    -- Remove items from the client
-    local player = getPlayer()
-    local inventory = player:getInventory()
-
-    for _, itemData in ipairs(data) do
-        if itemData and itemData.item and itemData.quantity then
-            for i = 1, itemData.quantity do
-                inventory:Remove(itemData.item)
-            end
-        else
-            error("ERROR: ServerCommands.SellItems - Invalid sellData")
-        end
     end
 
     -- Process transaction
@@ -174,10 +159,26 @@ function ShopCommands.BuyItem(args)
     triggerEvent("PZEFT_OnSuccessfulBuy", args.shopCat)
 end
 
----@param args table
+
+
+---@param args {totalPrice : number, items : table}
 function ShopCommands.SellItems(args)
     debugPrint("SellItemsSuccess")
+
+    local itemsList = args.items
+    local pl = getPlayer()
+    local plInv = pl:getInventory()
+
+    for i=1, #itemsList do
+        local container = itemsList[i]
+        for _=1, container.quantity do
+            local item = plInv:FindAndReturn(container.item.fullType)
+            ISRemoveItemTool.removeItem(item, pl)
+
+        end
+    end
 end
+
 
 ---@param args table
 function ShopCommands.BuyFailed(args)

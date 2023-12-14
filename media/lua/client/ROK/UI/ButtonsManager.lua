@@ -4,8 +4,6 @@ local DuringMatchAdminPanel = require("ROK/UI/DuringMatch/DuringMatchAdminPanel"
 local LeaderboardPanel = require("ROK/UI/BeforeMatch/LeaderboardPanel")
 ----------------
 
--- FIXME Still wrong!
-
 local og_ISEquippedItem_initialise = ISEquippedItem.initialise
 
 function ISEquippedItem:initialise()
@@ -89,10 +87,11 @@ function ButtonManager.AddNewButton(buttonModule, y, onClick)
     return y + textureH
 end
 
----Creates the buttons
+---Creates the buttons.
 function ButtonManager.CreateButtons()
     --debugPrint("Creating ROK buttons")
     --debugPrint("ISEquippedItem height: " .. tostring(ISEquippedItem.instance:getHeight()))
+
     -- We need to get the height here to prevent issues. I've got no clue why, but if I try to get it from inside
     -- the AddNewButton function I will get a different result after the player die, and it will never "fix" itself.
     -- So fuck it, just get it here one time and be done with it
@@ -111,6 +110,7 @@ function ButtonManager.Hide(isInRaid)
     ButtonManager["Leaderboard"]:setVisible(not isInRaid)
     ButtonManager["Leaderboard"]:setEnabled(not isInRaid)
 end
+
 
 Events.PZEFT_PostISEquippedItemInitialization.Add(ButtonManager.CreateButtons)
 Events.PZEFT_UpdateClientStatus.Add(ButtonManager.Hide)
