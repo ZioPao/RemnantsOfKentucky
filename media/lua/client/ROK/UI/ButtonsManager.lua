@@ -4,7 +4,7 @@ local DuringMatchAdminPanel = require("ROK/UI/DuringMatch/DuringMatchAdminPanel"
 local LeaderboardPanel = require("ROK/UI/BeforeMatch/LeaderboardPanel")
 ----------------
 
-
+-- FIXME Still wrong!
 
 local og_ISEquippedItem_initialise = ISEquippedItem.initialise
 
@@ -127,6 +127,11 @@ function ButtonManager.CreateButtons(isInRaid)
     ISEquippedItem.instance:shrinkWrap()
 end
 
+function ButtonManager.Hide(isInRaid)
+    ButtonManager["Leaderboard"]:setVisible(not isInRaid)
+    ButtonManager["Leaderboard"]:setEnabled(not isInRaid)
+end
+
 function ButtonManager.Reset()
     debugPrint("Resetting ROK buttons")
     debugPrint("ISEquippedItem height: " .. tostring(ISEquippedItem.instance:getHeight()))
@@ -134,5 +139,5 @@ function ButtonManager.Reset()
     ButtonManager.RemoveButton("AdminPanel")
 end
 
-Events.PZEFT_UpdateClientStatus.Add(ButtonManager.CreateButtons)
 Events.PZEFT_PostISEquippedItemInitialization.Add(ButtonManager.CreateButtons)
+Events.PZEFT_UpdateClientStatus.Add(ButtonManager.Hide)
