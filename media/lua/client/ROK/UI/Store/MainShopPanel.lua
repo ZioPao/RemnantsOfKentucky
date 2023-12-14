@@ -212,7 +212,7 @@ local function AddShopMenu(playerNum, context, worldObjects, test)
         if isNear then
             context:addOption(getText("ContextMenu_EFT_OpenShop"), playerObj, MainShopPanel.Open, coords)
 
-            context:addOption("InstaHeal ($2500)", playerObj, InstaHeal.Execute, coords)
+            --context:addOption("InstaHeal ($2500)", playerObj, InstaHeal.Execute, coords)
         end
     end
     return false

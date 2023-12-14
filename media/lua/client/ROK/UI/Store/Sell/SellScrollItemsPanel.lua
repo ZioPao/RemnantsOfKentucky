@@ -2,6 +2,8 @@ local BaseScrollItemsPanel = require("ROK/UI/Store/Components/BaseScrollItemsPan
 -----------
 
 ---@class SellScrollItemsPanel : BaseScrollItemsPanel
+---@field removeBtnSize number
+---@field hoveringRemoveBtn boolean
 local SellScrollItemsPanel = BaseScrollItemsPanel:derive("SellScrollItemsPanel")
 
 -- TODO Quality/status of the item should affect the price!
@@ -37,43 +39,32 @@ function SellScrollItemsPanel:addItem(item)
     end
 
 
-    for i = 1, #self.scrollingListBox.items do
-        if self.scrollingListBox.items[i].item == item then
-            return
-        end
-    end
-
-    self.scrollingListBox:addItem(item:getName(), item)
-
-    -- TODO Create a container and use it!
-
-    -- TODO Sort them again
-
-    -- TODO Hide items in inventory
-
-
-
+    -- TODO Organize them here based on item:getName()
+    local itemName = item:getName()
+    self.scrollingListBox:insertIntoItemTab(itemName, item)
 end
 
 ---@param self ISScrollingListBox
 ---@param y number
----@param item {item : InventoryItem}
+---@param item {text : string, index : number, height : number, item : table<integer, InventoryItem>}
 ---@param alt boolean
 ---@return number
 local function SellDoDrawItem(self, y, item, alt)
-    self:drawRectBorder(0, (y), self:getWidth(), self.itemheight - 1, 0.9, self.borderColor.r, self.borderColor.g,
-        self.borderColor.b)
-
-
-    -- TODO we should group multiple identical items maybe?
+    self:drawRectBorder(0, (y), self:getWidth(), self.itemheight - 1, 0.9, self.borderColor.r, self.borderColor.g, self.borderColor.b)
 
     local a = 0.9
+
     --* Item name
-    local itemName = item.item:getName()
-    self:drawText(itemName, 6, y + 2, 1, 1, 1, a, self.font)
+    local itemName = item.text
+    self:drawText(itemName, 50, y + 2, 1, 1, 1, a, self.font)
+
+
+    --* Amount of same items
+    local amount = #item.item
+    self:drawText(tostring(amount), 6, y + 2, 1, 1, 1, a, self.font)
 
     --* Price
-    local itemFullType = item.item:getFullType()
+    local itemFullType = item.item[1]:getFullType()
     local itemData = PZ_EFT_ShopItems_Config.data[itemFullType]
 
     if itemData == nil then
@@ -81,7 +72,7 @@ local function SellDoDrawItem(self, y, item, alt)
     end
 
     local sellPrice = itemData.basePrice * itemData.sellMultiplier
-    local sellpriceStr = "$" .. tostring(sellPrice)
+    local sellpriceStr = "$" .. tostring(sellPrice) .. " x " .. tostring(amount)
     local sellPriceX = self:getWidth() - getTextManager():MeasureStringX(self.font, sellpriceStr) - 6
 
     self:drawText(sellpriceStr, sellPriceX - 5, y + 2, 1, 1, 1, a, self.font)
@@ -135,6 +126,9 @@ function SellScrollItemsPanel:createChildren()
     self.scrollingListBox.doDrawItem = SellDoDrawItem
     self.scrollingListBox.onMouseUp = SellOnDragItem
     self.scrollingListBox.prerender = SellPrender
+    --self.scrollingListBox.onMouseMove = SellOnMouseMove
+
+    self.scrollingListBox.itemheight = self.scrollingListBox.fontHgt + self.scrollingListBox.itemPadY * 2
 end
 
 --- Check player inv and compare it to the alreadyDragged items. If an item is not in their inventory anymore, delete it from the list
@@ -145,11 +139,16 @@ function SellScrollItemsPanel:update()
     local pl = getPlayer()
     local plInv = pl:getInventory()
     for i = 1, #self.scrollingListBox.items do
-        ---@type InventoryItem
+        ---@type table
         local item = self.scrollingListBox.items[i].item
-        if plInv:getItemById(item:getID()) == nil or luautils.haveToBeTransfered(pl, item) or pl:isEquipped(item) or pl:isEquippedClothing(item) or item:isFavorite() then
-            table.remove(self.scrollingListBox.items, i)
+        for j=1, #item do
+            ---@type InventoryItem
+            local invItem = item[j]
+            if plInv:getItemById(invItem:getID()) == nil or luautils.haveToBeTransfered(pl, invItem) or pl:isEquipped(invItem) or pl:isEquippedClothing(invItem) or invItem:isFavorite() then
+                table.remove(self.scrollingListBox.items.item, j)
+            end
         end
+
     end
 end
 

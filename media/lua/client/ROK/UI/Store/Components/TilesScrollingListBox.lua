@@ -6,6 +6,7 @@ local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
 ---@field itemWidth number
 local TilesScrollingListBox = ISScrollingListBox:derive("TilesScrollingListBox")
 
+---@return TilesScrollingListBox
 function TilesScrollingListBox:new(x, y, width, height, elementsPerRow)
     local o = ISScrollingListBox:new(x, y, width, height)
     setmetatable(o, self)
@@ -117,29 +118,25 @@ function TilesScrollingListBox:prerender()
 
     local i = 1
     for k, v in ipairs(self.items) do
-    if not v.height then v.height = self.itemheight end -- compatibililty
+    	if not v.height then v.height = self.itemheight end -- compatibililty
 
         if alt and altBg then
-            self:drawRect(0, y, self.itemWidth, v.height-1, altBg.r, altBg.g, altBg.b, altBg.a)
+            self:drawRect(elementInRow * self.itemWidth, y, self.itemWidth, v.height-1, altBg.r, altBg.g, altBg.b, altBg.a)
         end
         v.index = i
 
-        --debugPrint("Adding item at y=" .. y)
         local y2 = self:doDrawItem(y, v, elementInRow)
-
         elementInRow = elementInRow + 1
         if elementInRow >= self.elementsPerRow then
             y = y2
             elementInRow = 0
-            --v.height = y2 - y       -- TODO not sure about this
             self.listHeight = y2
-            --debugPrint("Scaling row: y2=" .. y2)
         end
         alt = not alt
         i = i + 1
     end
 
-    self:setScrollHeight((y))
+    self:setScrollHeight(y)
 	self:clearStencilRect()
 	if self.doRepaintStencil then
 		self:repaintStencilRect(stencilX, stencilY, stencilX2 - stencilX, stencilY2 - stencilY)
@@ -166,6 +163,29 @@ function TilesScrollingListBox:prerender()
     end
 end
 
+---@param name string
+---@param item any
+function TilesScrollingListBox:insertIntoItemTab(name, item)
+    for i=1, #self.items do
+        local cItem = self.items[i]
+
+        if cItem.text == name then
+            for j=1, #cItem.item do
+                local singleItem = cItem.item[j]
+                if singleItem == item then return end
+            end
+			table.insert(cItem.item, item)
+			return
+        end
+    end
+
+
+	-- Couldn't add it, so let's add it as a new item
+
+	self:addItem(name, {item})
+
+
+end
 
 
 return TilesScrollingListBox

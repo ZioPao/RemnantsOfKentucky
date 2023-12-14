@@ -75,6 +75,7 @@ function SellSidePanel:update()
     local itemsAmount = #self.parent.scrollPanel.scrollingListBox.items
     self.bottomBtn:setEnable(itemsAmount > 0)
 end
+
 function SellSidePanel:onClick(btn)
     if btn.internal ~= "SELL" then return end
 
@@ -150,7 +151,7 @@ function SellSidePanel:calculateSellPrice()
 
     for i=1, #itemsList do
         ---@type InventoryItem
-        local item = itemsList[i].item
+        local item = itemsList[i].item[1]
         local fullType = item:getFullType()
         ---@type shopItemElement
         local itemData = PZ_EFT_ShopItems_Config.data[fullType]
@@ -159,7 +160,8 @@ function SellSidePanel:calculateSellPrice()
             itemData = {basePrice = 100, sellMultiplier = 0.5}
         end
 
-        local itemPrice = itemData.basePrice * itemData.sellMultiplier
+        local itemAmount = #itemsList[i].item
+        local itemPrice = itemData.basePrice * itemData.sellMultiplier * itemAmount
         price = price + itemPrice
     end
     return price
