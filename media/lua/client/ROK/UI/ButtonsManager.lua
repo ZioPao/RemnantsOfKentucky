@@ -44,10 +44,17 @@ for i = 1, #BUTTONS do
     BUTTONS_DATA_TEXTURES[btn].OFF = getTexture("media/textures/" .. btn .. "_off.png")
 end
 
-
 ButtonManager = {}
 ButtonManager.firstInit = true
 ButtonManager.additionalY = 10
+
+local function OpenAdminMenu()
+    if not ClientState.isInRaid then
+        BeforeMatchAdminPanel.OnOpenPanel()
+    else
+        DuringMatchAdminPanel.OnOpenPanel()
+    end
+end
 
 ---Based on Community Debug Tools
 ---@param buttonModule string
@@ -82,47 +89,20 @@ function ButtonManager.AddNewButton(buttonModule, y, onClick)
     return y + textureH
 end
 
-function ButtonManager.RemoveButton(buttonModule)
-    if ButtonManager[buttonModule] then
-        local btnHeight = ButtonManager[buttonModule]:getHeight()
-        debugPrint("btnHeight to be removed: " .. tostring(btnHeight))
-        ISEquippedItem.instance:removeChild(ButtonManager[buttonModule])
-        ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() - btnHeight - ButtonManager.additionalY)
-        ButtonManager[buttonModule] = nil
-    end
-end
-
-local function OpenAdminMenu()
-    if not ClientState.isInRaid then
-        BeforeMatchAdminPanel.OnOpenPanel()
-    else
-        DuringMatchAdminPanel.OnOpenPanel()
-    end
-end
-
-
----Creates the buttons. Triggered from an event that starts when player gets teleported in or outside a safehouse
----@param isInRaid boolean
-function ButtonManager.CreateButtons(isInRaid)
-    debugPrint("Creating ROK buttons")
-    debugPrint("ISEquippedItem height: " .. tostring(ISEquippedItem.instance:getHeight()))
-
+---Creates the buttons
+function ButtonManager.CreateButtons()
+    --debugPrint("Creating ROK buttons")
+    --debugPrint("ISEquippedItem height: " .. tostring(ISEquippedItem.instance:getHeight()))
     -- We need to get the height here to prevent issues. I've got no clue why, but if I try to get it from inside
     -- the AddNewButton function I will get a different result after the player die, and it will never "fix" itself.
     -- So fuck it, just get it here one time and be done with it
     local y = ISEquippedItem.instance:getHeight()
 
-    -- Cleans up the buttons before resetting them
-    ButtonManager.RemoveButton("Leaderboard")
-    ButtonManager.RemoveButton("AdminPanel")
-
     if isAdmin() then
         y = ButtonManager.AddNewButton("AdminPanel", y, function() OpenAdminMenu() end)
     end
 
-    if type(isInRaid) ~= "boolean" or not isInRaid then
-        y = ButtonManager.AddNewButton("Leaderboard", y, function() LeaderboardPanel.Open(100, 100) end)
-    end
+    y = ButtonManager.AddNewButton("Leaderboard", y, function() LeaderboardPanel.Open(100, 100) end)
 
     ISEquippedItem.instance:shrinkWrap()
 end
@@ -130,13 +110,6 @@ end
 function ButtonManager.Hide(isInRaid)
     ButtonManager["Leaderboard"]:setVisible(not isInRaid)
     ButtonManager["Leaderboard"]:setEnabled(not isInRaid)
-end
-
-function ButtonManager.Reset()
-    debugPrint("Resetting ROK buttons")
-    debugPrint("ISEquippedItem height: " .. tostring(ISEquippedItem.instance:getHeight()))
-    ButtonManager.RemoveButton("Leaderboard")
-    ButtonManager.RemoveButton("AdminPanel")
 end
 
 Events.PZEFT_PostISEquippedItemInitialization.Add(ButtonManager.CreateButtons)
