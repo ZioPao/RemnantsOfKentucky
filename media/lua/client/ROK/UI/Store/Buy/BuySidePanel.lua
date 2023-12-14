@@ -188,7 +188,7 @@ function BuySidePanel:onStartBuy()
     local selectedItem = self.parent.scrollPanel:getSelectedItem()
 
     -- Starts separate confirmation panel
-    local text = getText("IGUI_Shop_Buy_Confirmation", self.selectedAmount, selectedItem["actualItem"]:getName(), tostring(self.currentCost))
+    local text = getText("IGUI_Shop_Buy_Confirmation", self.selectedAmount, selectedItem["actualItem"]:getDisplayName(), tostring(self.currentCost))
     self.parent:openConfirmationPanel(text, self.OnConfirmBuy)
 
 end

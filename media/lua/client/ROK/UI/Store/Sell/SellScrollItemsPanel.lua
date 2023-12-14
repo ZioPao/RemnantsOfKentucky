@@ -38,8 +38,7 @@ function SellScrollItemsPanel:addItem(item)
         return
     end
 
-
-    -- TODO Organize them here based on item:getName()
+    -- Organize them here based on item:getName()
     local itemName = item:getName()
     self.scrollingListBox:insertIntoItemTab(itemName, item)
 end

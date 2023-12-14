@@ -84,9 +84,10 @@ end
 
 function ButtonManager.RemoveButton(buttonModule)
     if ButtonManager[buttonModule] then
+        local btnHeight = ButtonManager[buttonModule]:getHeight()
+        debugPrint("btnHeight to be removed: " .. tostring(btnHeight))
         ISEquippedItem.instance:removeChild(ButtonManager[buttonModule])
-        ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() - ButtonManager[buttonModule]:getHeight() -
-        ButtonManager.additionalY)
+        ISEquippedItem.instance:setHeight(ISEquippedItem.instance:getHeight() - btnHeight - ButtonManager.additionalY)
         ButtonManager[buttonModule] = nil
     end
 end
