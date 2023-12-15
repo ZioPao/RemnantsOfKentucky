@@ -1,3 +1,4 @@
+local ShopItemsManager = require("ROK/ShopItemsManager")
 local BaseScrollItemsPanel = require("ROK/UI/Store/Components/BaseScrollItemsPanel")
 -----------
 
@@ -64,7 +65,7 @@ local function SellDoDrawItem(self, y, item, alt)
 
     --* Price
     local itemFullType = item.item[1]:getFullType()
-    local itemData = PZ_EFT_ShopItems_Config.data[itemFullType]
+    local itemData = ShopItemsManager.data[itemFullType]
 
     if itemData == nil then
         itemData = { basePrice = 100, sellMultiplier = 0.5 }

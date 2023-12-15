@@ -1,11 +1,8 @@
 require "ROK/ClientData"
 local BankManager = require("ROK/Economy/ClientBankManager")
 local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
+local ShopItemsManager = require("ROK/ShopItemsManager")
 ------------------
-
-
-
-
 
 ---@class ClientShopManager
 local ClientShopManager = {}
@@ -33,7 +30,7 @@ function ClientShopManager.StructureSellData(itemsList)
         local quantity = #itemsList[i].item
         local fullType = genericItem:getFullType()
 
-        local itemData = PZ_EFT_ShopItems_Config.GetItem(fullType)
+        local itemData = ShopItemsManager.GetItem(fullType)
         table.insert(structuredData, {itemData = itemData, quantity = quantity, quality = quality})
     end
 

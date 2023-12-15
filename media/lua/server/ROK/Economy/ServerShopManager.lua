@@ -1,5 +1,5 @@
 if not isServer() then return end
-require "ShopItems/PZ_EFT_ShopItems"
+local ShopItemsManager = require("ROK/ShopItemsManager")
 ------------------------------
 
 ---@class ServerShopManager
@@ -41,15 +41,17 @@ end
 function ServerShopManager.LoadShopPrices()
     debugPrint("Loading Shop Prices")
     -- TODO Refactor this as a whole
-    local shopItems = ServerData.Shop.GetShopItems()
-    shopItems.items = shopItems.items or {}
-    shopItems.tags = shopItems.tags or {}
-    shopItems.doInitShopItems = true
-    if shopItems.doInitShopItems then
-        shopItems.doInitShopItems = nil
-        for i, v in pairs(PZ_EFT_ShopItems_Config.data) do
-            shopItems = DoTags(shopItems, i, v)
-            shopItems.items[i] = {
+
+
+    local shopItemsTemp = ServerData.Shop.GetShopItems()
+    shopItemsTemp.items = shopItemsTemp.items or {}
+    shopItemsTemp.tags = shopItemsTemp.tags or {}
+    shopItemsTemp.doInitShopItems = true
+    if shopItemsTemp.doInitShopItems then
+        shopItemsTemp.doInitShopItems = nil
+        for i, v in pairs(ShopItemsManager.data) do
+            shopItemsTemp = DoTags(shopItemsTemp, i, v)
+            shopItemsTemp.items[i] = {
                 fullType = v.fullType,
                 tags = v.tags,
                 basePrice = v.basePrice,

@@ -2,6 +2,7 @@ local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
 local ClientShopManager = require("ROK/Economy/ClientShopManager")
 local ClientBankManager = require("ROK/Economy/ClientBankManager")
 local CommonStore = require("ROK/UI/Store/Components/CommonStore")
+local ShopItemsManager = require("ROK/ShopItemsManager")
 ------------------------
 
 ---@class BuySidePanel : RightSidePanel
@@ -200,7 +201,7 @@ function BuySidePanel.OnConfirmBuy(parent)
     local selectedItem = parent.scrollPanel:getSelectedItem()
     local quantity = tonumber(parent.sidePanel.selectedAmount)
     if quantity == nil then return end
-    local itemData = PZ_EFT_ShopItems_Config.GetItem(selectedItem.fullType)
+    local itemData = ShopItemsManager.GetItem(selectedItem.fullType)
     ClientShopManager.TryBuy(itemData, quantity, parent.shopCat)
 end
 

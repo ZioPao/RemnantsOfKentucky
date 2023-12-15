@@ -1,6 +1,7 @@
 
 local ClientShopManager = require("ROK/Economy/ClientShopManager")
 local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
+local ShopItemsManager = require("ROK/ShopItemsManager")
 ------------------------
 
 -- TODO ADD remove Item from list
@@ -128,7 +129,7 @@ function SellSidePanel:calculateSellPrice()
         local item = itemsList[i].item[1]
         local fullType = item:getFullType()
         ---@type shopItemElement
-        local itemData = PZ_EFT_ShopItems_Config.data[fullType]
+        local itemData = ShopItemsManager.data[fullType]
 
         if itemData == nil then
             itemData = {basePrice = 100, sellMultiplier = 0.5}
