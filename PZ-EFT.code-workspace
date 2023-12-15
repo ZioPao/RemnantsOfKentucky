@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../InventoryTetris"
+		}
+	],
+	"settings": {
+		"Lua.codeLens.enable": true,
+		"Lua.workspace.library": [
+			"C:\\Users\\picch\\Zomboid\\mods\\InventoryTetris",
+			"C:\\Users\\picch\\Zomboid\\Umbrella"
+		]
+	}
+}

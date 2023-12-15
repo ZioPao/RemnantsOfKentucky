@@ -1,4 +1,5 @@
 ContextMenu_EN = {
     ContextMenu_EFT_OpenShop = "Open Shop",
+    ContextMenu_EFT_InstaHeal = "InstaHeal ($%1)"
 
 }
