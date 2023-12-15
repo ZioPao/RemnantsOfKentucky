@@ -31,10 +31,13 @@ local function BuyDoDrawItem(self, y, item, rowElementNumber)
     local width = self:getWidth()/self.elementsPerRow
     local x = width * rowElementNumber
 
+    local clipY = math.max(0, y + self:getYScroll())
+    local clipY2 = math.min(self.height, y + self:getYScroll() + self.itemheight)
+
+
+
     -- Border of single item
-
     self:drawRectBorder(x, y, width, item.height - 1, a, self.borderColor.r, self.borderColor.g, self.borderColor.b)
-
 
     if self.selected == item.index then
         self:drawRect(x, y, width, item.height - 1, 0.3, 0.7, 0.35, 0.15)
@@ -45,12 +48,17 @@ local function BuyDoDrawItem(self, y, item, rowElementNumber)
     local itemCost = item.item.basePrice
 
     --* ITEM NAME *--
+	self:setStencilRect(x, clipY, width - 1, clipY2 - clipY)
     self:drawText(itemDisplayName, x + 6, y + 2, 1, 1, 1, a, self.font)
 
-    -- --* ITEM COST *--
+    --* ITEM COST *--
     local priceStr = "$" .. itemCost
     local priceStrY = getTextManager():MeasureStringY(self.font, priceStr)
     self:drawText(priceStr, x + 6, y + priceStrY + 2, 1, 1, 1, a, self.font)
+    self:clearStencilRect()
+
+
+	self:repaintStencilRect(x, clipY, width, clipY2 - clipY)
 
     return y + item.height
 end
