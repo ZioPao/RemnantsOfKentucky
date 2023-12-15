@@ -2,12 +2,14 @@
 local SafehouseInstanceHandler = {}
 
 --* Crates Handling
+
+---@return table<integer, IsoObject>?
 function SafehouseInstanceHandler.GetCrates()
     local cratesTable = {}
     local safehouse = SafehouseInstanceHandler.GetSafehouse()
     if safehouse == nil then
         debugPrint("ERROR: can't find safehouse! Maybe too soon?")
-        return
+        return nil
     end
     for _, group in pairs(PZ_EFT_CONFIG.SafehouseInstanceSettings.safehouseStorage) do
         local sq = getCell():getGridSquare(safehouse.x + group.x, safehouse.y + group.y, 0)
@@ -17,9 +19,10 @@ function SafehouseInstanceHandler.GetCrates()
         end
         local objects = sq:getObjects()
         for i = 0, objects:size() - 1 do
+
+            ---@type IsoObject
             local obj = objects:get(i)
-            local container = obj:getContainer()
-            if container then table.insert(cratesTable, container) end
+            if obj:getContainer() ~= nil then table.insert(cratesTable, obj) end
         end
     end
 
@@ -36,21 +39,27 @@ function SafehouseInstanceHandler.WipeCrates()
 
         for i=1, #cratesTable do
             local crate = cratesTable[i]
-            crate:clear()
+            crate:getContainer():clear()
         end
     end
     SafehouseInstanceHandler.WaitForSafehouseAndRun(RunWipe, {})
 end
 
 ---@param fullType string
+---@return IsoObject crateObj The used crate
 function SafehouseInstanceHandler.AddToCrate(fullType)
     local cratesTable = SafehouseInstanceHandler.GetCrates()
     if cratesTable == nil or #cratesTable == 0 then debugPrint("Crates are nil or empty!") return end
 
+
     -- Find the first crate which has available space
     local crateCounter = 1
     local switchedToPlayer = false
-    local inv = cratesTable[crateCounter]
+    local crateObj = cratesTable[crateCounter]
+    local inv = crateObj:getContainer()
+
+    crateObj:setHighlighted(true)
+    crateObj:setHighlightColor(1,1,0, 0.5)
 
     -- TODO Workaround for play test!
     if fullType == "ROK.InstaHeal" then
@@ -63,7 +72,8 @@ function SafehouseInstanceHandler.AddToCrate(fullType)
             debugPrint("Switching to next crate")
             crateCounter = crateCounter + 1
             if crateCounter < #cratesTable then
-                inv = cratesTable[crateCounter]
+                crateObj = cratesTable[crateCounter]
+                inv = crateObj:getContainer()
             else
                 debugPrint("No more space in the crates, switching to dropping stuff in the player's inventory")
                 inv = getPlayer():getInventory()
@@ -75,6 +85,11 @@ function SafehouseInstanceHandler.AddToCrate(fullType)
         inv:setDrawDirty(true)
         ISInventoryPage.renderDirty = true
     end
+
+
+    -- TODO Return used crates
+    return crateObj
+
 end
 
 

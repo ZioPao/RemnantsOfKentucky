@@ -15,6 +15,9 @@ if isClient() then
     --* BuySidePanel
     LuaEventManager.AddEvent("PZEFT_OnSuccessfulBuy")
 
+    --* SellSidePanel
+    LuaEventManager.AddEvent("PZEFT_OnSuccessfulSell")
+
     --* SellScrollItemsPanel
     LuaEventManager.AddEvent("PZEFT_OnFailedSellTransfer")
 

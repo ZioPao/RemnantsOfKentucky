@@ -117,7 +117,7 @@ function BuySidePanel:resetSelectedAmount()
     debugPrint("Running ResetSelectedAmount")
     self.selectedAmount = 1
 end
-Events.PZEFT_OnChangeSelectedItem.Add(BuySidePanel.resetSelectedAmount)     -- TODO does it work?
+Events.PZEFT_OnChangeSelectedItem.Add(BuySidePanel.resetSelectedAmount)
 
 function BuySidePanel:render()
     RightSidePanel.render(self)
@@ -198,15 +198,10 @@ end
 function BuySidePanel.OnConfirmBuy(parent)
     debugPrint("Confirm buy")
     local selectedItem = parent.scrollPanel:getSelectedItem()
-    local itemTable = {
-        fullType = selectedItem["fullType"],
-        basePrice = selectedItem["basePrice"],
-        multiplier = 1 -- FIXME This should be with the selectedItem, but it's not there for some reason
-    }
-
     local quantity = tonumber(parent.sidePanel.selectedAmount)
-    ClientShopManager.TryBuy(itemTable, quantity, parent.shopCat)
-
+    if quantity == nil then return end
+    local itemData = PZ_EFT_ShopItems_Config.GetItem(selectedItem.fullType)
+    ClientShopManager.TryBuy(itemData, quantity, parent.shopCat)
 end
 
 

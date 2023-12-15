@@ -1,4 +1,5 @@
--- TODO Modified ISScrolligListBox, multiple in same lin
+-- Modified ISScrolligListBox, multiple in same line
+
 local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
 
 ---@class TilesScrollingListBox : ISScrollingListBox
@@ -23,7 +24,6 @@ function TilesScrollingListBox:new(x, y, width, height, elementsPerRow)
 end
 
 function TilesScrollingListBox:rowAt(x,y)
-
 	local y0 = 0
     local x0 = 0
 	for i,v in ipairs(self.items) do
@@ -43,31 +43,8 @@ function TilesScrollingListBox:rowAt(x,y)
 end
 
 function TilesScrollingListBox:onMouseWheel(del)
-	local yScroll = self.smoothScrollTargetY or self:getYScroll()
     self:setYScroll(self:getYScroll() - (del*24))       -- TODO Workaroundy
     return true
-
-	-- local topRow = self:rowAt(0, -yScroll)
-	-- if self.items[topRow] then
-	-- 	if not self.smoothScrollTargetY then self.smoothScrollY = self:getYScroll() end
-	-- 	local y = self:topOfItem(topRow)
-    --     debugPrint(del)
-
-	-- 	if del < 0 then
-
-    --         -- TODO Something here is wrong!
-	-- 		if yScroll == -y and topRow > 1 then
-	-- 			local prev = self:prevVisibleIndex(topRow)
-	-- 			y = self:topOfItem(prev)
-	-- 		end
-	-- 		self.smoothScrollTargetY = -y
-	-- 	else
-	-- 		self.smoothScrollTargetY = -(y + self.items[topRow].height)
-	-- 	end
-	-- else
-	-- 	self:setYScroll(self:getYScroll() - (del*18))
-	-- end
-    -- return true
 end
 
 function TilesScrollingListBox:prerender()
@@ -164,7 +141,7 @@ function TilesScrollingListBox:prerender()
 end
 
 ---@param name string
----@param item any
+---@param item InventoryItem
 function TilesScrollingListBox:insertIntoItemTab(name, item)
     for i=1, #self.items do
         local cItem = self.items[i]
@@ -181,10 +158,7 @@ function TilesScrollingListBox:insertIntoItemTab(name, item)
 
 
 	-- Couldn't add it, so let's add it as a new item
-
 	self:addItem(name, {item})
-
-
 end
 
 

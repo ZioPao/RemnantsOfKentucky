@@ -10,6 +10,7 @@ local notificationsTable = {}
 notificationsTable["haveToBeTransferred"] = "it needs to be transferred"
 notificationsTable["isEquipped"] = "it's equipped"
 notificationsTable["isFavorite"] = "it's a favorite"
+notificationsTable["successful"] = getText("IGUI_Shop_Sell_Confirmation_Success")
 
 ---@class SellSidePanel : RightSidePanel
 ---@field showNotification boolean
@@ -56,7 +57,10 @@ function SellSidePanel:render()
     end
 
     if self.showNotification then
-        text = text .. " <LINE> <CENTRE> <RED> Can't add item, "
+
+        if self.notificationType ~= 'successful' then
+            text = text .. " <LINE> <CENTRE> <RED> Can't add item, "
+        end
         text = text .. notificationsTable[self.notificationType]
 
         local showTime = os.time()
@@ -91,39 +95,14 @@ end
 
 function SellSidePanel:onConfirmSell()
     debugPrint("OnConfirmSell")
-    local itemsTosell = {}
 
     local itemsList = self.parent.scrollPanel.scrollingListBox.items
 
     -- Cycle through the items and structure them in the correct way
-    for i=1, #itemsList do
-        ---@type InventoryItem
-        local item = itemsList[i].item[1]
-        local amount = #itemsList[i].item
-        local fullType = item:getFullType()
-
-        ---@type shopItemElement
-        local itemData = PZ_EFT_ShopItems_Config.data[fullType]
-        if itemData == nil then
-            itemData = {basePrice = 100, sellMultiplier = 0.5}
-        end
-
-        local itemTable = {
-            item = {
-                fullType = fullType,
-                basePrice = itemData.basePrice,
-                multiplier = 1,
-                sellMultiplier = itemData.sellMultiplier,
-            },
-            quantity = amount,
-        }
-
-        table.insert(itemsTosell, itemTable)
-    end
+    local itemsTosell = ClientShopManager.StructureSellData(itemsList)
 
     -- Try to sell it and removes item on the client
     ClientShopManager.TrySell(itemsTosell)
-    
 
     -- Clean stuff
     self.textPanel:setText("")
@@ -132,7 +111,6 @@ function SellSidePanel:onConfirmSell()
     self.parent.scrollPanel.scrollingListBox.items = {}
 end
 
----comment
 ---@param val boolean
 ---@param cat string
 function SellSidePanel:updateNotification(val, cat)

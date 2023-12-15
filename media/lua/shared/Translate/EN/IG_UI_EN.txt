@@ -60,8 +60,9 @@ IG_UI_EN = {
     IGUI_Shop_Sell_Btn = "Sell",
 
     IGUI_Shop_Sell_Confirmation = " <CENTRE> Are you sure you want to sell these items?",
-    IGUI_Shop_Buy_Confirmation_Success = "<GREEN> Successful buy! Check your crates.",
+    IGUI_Shop_Sell_Confirmation_Success = "<GREEN> Items sold successfully."
     IGUI_Shop_Buy_Confirmation = " <CENTRE> Are you sure you want to buy %1 of %2 for $%3?",
+    IGUI_Shop_Buy_Confirmation_Success = "<GREEN> Successful buy! Check your crates.",
 
     //LEADERBOARD
     

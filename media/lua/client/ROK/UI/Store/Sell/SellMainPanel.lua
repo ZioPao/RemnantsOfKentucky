@@ -33,4 +33,10 @@ Events.PZEFT_OnFailedSellTransfer.Add(SellMainPanel.SetSidePanelNotification)
 
 -- TODO Add other events, like success
 
+
+Events.PZEFT_OnSuccessfulSell.Add(SellMainPanel.SetSidePanelNotification)
+
+
+
+
 return SellMainPanel
