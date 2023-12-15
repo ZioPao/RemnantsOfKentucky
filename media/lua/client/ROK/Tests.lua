@@ -12,3 +12,13 @@ TestFramework.registerTestModule("PVP Instances", "Debug", function()
 
     return Tests
 end)
+
+TestFramework.registerTestModule("Bank", "Debug", function()
+
+    local Tests = {}
+    function Tests.GiveMoney()
+        ServerData_client_debug.setBankAccount(getPlayer():getUsername(), 1000000)
+    end
+
+    return Tests
+end)

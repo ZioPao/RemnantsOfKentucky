@@ -193,12 +193,6 @@ end
 local function AddShopMenu(playerNum, context, worldObjects, test)
     if test then return true end
 
-    -- -- SP DEBUG THING
-    -- if isClient() then
-    --     if not SafehouseInstanceHandler.IsInSafehouse() then return true end
-
-    -- end
-
     ---@type IsoObject
     local clickedObject = worldObjects[1]
     local moveableObject = ISMoveableSpriteProps.fromObject(clickedObject)
@@ -212,7 +206,8 @@ local function AddShopMenu(playerNum, context, worldObjects, test)
         if isNear then
             context:addOption(getText("ContextMenu_EFT_OpenShop"), playerObj, MainShopPanel.Open, coords)
 
-            --context:addOption("InstaHeal ($2500)", playerObj, InstaHeal.Execute, coords)
+            local instaHealOption = context:addOption("InstaHeal ($2500)", playerObj, ClientShopManager.BuyInstaHeal)
+            instaHealOption.notAvailable = not ClientShopManager.CanBuy(2500)
         end
     end
     return false

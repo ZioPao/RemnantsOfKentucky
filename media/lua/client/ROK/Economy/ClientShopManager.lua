@@ -2,10 +2,16 @@ require "ROK/ClientData"
 local BankManager = require("ROK/Economy/ClientBankManager")
 local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 local ShopItemsManager = require("ROK/ShopItemsManager")
+local ClientCommon = require("ROK/ClientCommon")
 ------------------
 
 ---@class ClientShopManager
 local ClientShopManager = {}
+
+
+function ClientShopManager.BuyInstaHeal()
+    BankManager.TryProcessTransaction(-2500, EFT_MODULES.Shop, "BuyInstaHeal", {}, EFT_MODULES.Shop, "BuyFailed", {})
+end
 
 
 ---@alias sellData table<integer, {itemData : shopItemElement, quantity : number, quality : number}>
@@ -36,8 +42,6 @@ function ClientShopManager.StructureSellData(itemsList)
 
     return structuredData
 end
-
-
 
 --- Try buy an item for quantity. Let's assume that it's valid if we process the transaction
 ---@param itemData shopItemElement
@@ -187,6 +191,10 @@ function ShopCommands.BuyItem(args)
     triggerEvent("PZEFT_OnSuccessfulBuy", args.shopCat, usedCrates)
 end
 
+
+function ShopCommands.BuyInstaHeal()
+    ClientCommon.InstaHeal()
+end
 
 
 ---@param transactionData transactionDataType

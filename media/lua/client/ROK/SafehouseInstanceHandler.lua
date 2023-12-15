@@ -51,7 +51,10 @@ if getActivatedMods():contains("INVENTORY_TETRIS") then
     ---@return IsoObject? crateObj The used crate
     function SafehouseInstanceHandler.AddToCrate(fullType)
         local cratesTable = SafehouseInstanceHandler.GetCrates()
-        if cratesTable == nil or #cratesTable == 0 then debugPrint("Crates are nil or empty!") return nil end
+        if cratesTable == nil or #cratesTable == 0 then
+            debugPrint("Crates are nil or empty!")
+            return nil
+        end
 
         -- Find the first crate which has available space
         local crateCounter = 1
@@ -62,39 +65,30 @@ if getActivatedMods():contains("INVENTORY_TETRIS") then
         local plNum = getPlayer():getPlayerNum()
         local itemContainerGrid = ItemContainerGrid.CreateTemp(inv, plNum)
 
-        -- TODO I'm dumb, this should be recursive until we find a crate that it's available
-        -- TODO Workaround for play test!
-        if fullType == "ROK.InstaHeal" then
-            local ClientCommon = require("ROK/ClientCommon")
-            ClientCommon.InstaHeal()
-        else
-            local item = InventoryItemFactory.CreateItem(fullType)
-            
-            if not itemContainerGrid:canAddItem(item) and not switchedToPlayer then
 
-                while crateCounter < #cratesTable do
-                    crate = cratesTable[crateCounter]
-                    itemContainerGrid = ItemContainerGrid.CreateTemp(inv, plNum)
-                    
-                    if itemContainerGrid:canAddItem(item) then
-                        debugPrint("Switching to next crate")
-                        break
-                    end
+        local item = InventoryItemFactory.CreateItem(fullType)
+        if not itemContainerGrid:canAddItem(item) and not switchedToPlayer then
 
-                    crateCounter = crateCounter + 1
+            while crateCounter < #cratesTable do
+                crate = cratesTable[crateCounter]
+                itemContainerGrid = ItemContainerGrid.CreateTemp(inv, plNum)
+                if itemContainerGrid:canAddItem(item) then
+                    debugPrint("Switching to next crate")
+                    break
                 end
 
-
-                if not itemContainerGrid:canAddItem(item) then
-                    inv = getPlayer():getInventory()
-                    switchedToPlayer = true
-                end
+                crateCounter = crateCounter + 1
             end
-            inv:addItemOnServer(item)
-            inv:addItem(item)
-            inv:setDrawDirty(true)
-            ISInventoryPage.renderDirty = true
+
+            if not itemContainerGrid:canAddItem(item) then
+                inv = getPlayer():getInventory()
+                switchedToPlayer = true
+            end
         end
+        inv:addItemOnServer(item)
+        inv:addItem(item)
+        inv:setDrawDirty(true)
+        ISInventoryPage.renderDirty = true
 
         -- Return used crates
         return crate

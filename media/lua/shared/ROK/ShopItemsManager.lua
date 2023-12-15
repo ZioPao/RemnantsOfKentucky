@@ -97,7 +97,6 @@ if isServer() then
     ShopItemsManager.AddItem("Base.9mmClip", {["ESSENTIALS"] = true}, 250, 1, 0.5)
     ShopItemsManager.AddItem("Base.Bullets9mmBox", {["ESSENTIALS"] = true}, 250, 1, 0.5)
     ShopItemsManager.AddItem("Base.Bandage", {["ESSENTIALS"] = true}, 100, 1, 0.5)
-    ShopItemsManager.AddItem("ROK.InstaHeal", {["ESSENTIALS"] = true}, 2500, 1, 0.5)
 
     -------------------------
 
