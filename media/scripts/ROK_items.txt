@@ -13,5 +13,7 @@ module ROK
 		DisplayName	= Insta Heal,
 		Icon	=	Paper,
 		WorldStaticModel = SheetOfPaper,
+		DisplayCategory = Hidden,
+
 	}
 }
