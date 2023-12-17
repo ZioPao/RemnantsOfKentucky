@@ -1,4 +1,4 @@
-local GenericUI = require("ROK/UI/GenericUI")
+local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
 ----------------
 

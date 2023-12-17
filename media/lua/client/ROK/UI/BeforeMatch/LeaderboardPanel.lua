@@ -4,7 +4,7 @@
     balance on that player account.
 ]]
 
-local GenericUI = require("ROK/UI/GenericUI")
+local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 
 -------------------------------------
 ---@class LeaderboardScrollingTable : ISPanel

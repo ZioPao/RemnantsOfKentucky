@@ -1,5 +1,5 @@
-local GenericUI = require("ROK/UI/GenericUI")
-local TilesScrollingListBox = require("ROK/UI/Store/Components/TilesScrollingListBox")
+local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
+local TilesScrollingListBox = require("ROK/UI/BaseComponents/TilesScrollingListBox")
 -----------------------
 
 

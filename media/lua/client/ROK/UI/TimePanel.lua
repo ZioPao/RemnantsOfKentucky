@@ -3,7 +3,7 @@ require "ISUI/ISPanel"
 require "ISUI/ISRichTextPanel"
 require "ISUI/ISButton"
 local ClientState = require("ROK/ClientState")
-local GenericUI = require("ROK/UI/GenericUI")
+local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 ---------------------------
 
 ---@class TimePanel : ISPanel

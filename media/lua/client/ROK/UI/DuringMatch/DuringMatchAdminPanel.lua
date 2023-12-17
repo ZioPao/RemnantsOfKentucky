@@ -1,6 +1,6 @@
 local ClientState = require("ROK/ClientState")
-local GenericUI = require("ROK/UI/GenericUI")
-local BaseAdminPanel = require("ROK/UI/BaseAdminPanel")
+local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
+local BaseAdminPanel = require("ROK/UI/BaseComponents/BaseAdminPanel")
 local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
 local OptionsPanel = require("ROK/UI/DuringMatch/OptionsPanel")
 --------------------------------

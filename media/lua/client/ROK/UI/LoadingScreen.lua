@@ -1,77 +1,36 @@
-local backgroundTexture = getTexture("media/textures/ROK_LoadingScreen.png")
+local TextureScreen = require("ROK/UI/BaseComponents/TextureScreen")
+--------------
 
-
----@class LoadingScreen : ISPanel
+---@class LoadingScreen : TextureScreen
 ---@field text string
 ---@field textX number
 ---@field textY number
 ---@field isClosing boolean
 ---@field closingTime number
-local LoadingScreen = ISPanel:derive("LoadingScreen")
+local LoadingScreen = TextureScreen:derive("LoadingScreen")
 
 ---@return LoadingScreen
 function LoadingScreen:new()
-    local o = ISPanel:new(0, 0, getCore():getScreenWidth(), getCore():getScreenHeight())
+    local o = TextureScreen:new()
     setmetatable(o, self)
     self.__index = self
-    o.backgroundColor = { r = 0, g = 0, b = 0, a = 1 }
-    o.isClosing = false
-    o.closingTime = 0
+    o.backgroundTexture = getTexture("media/textures/ROK_LoadingScreen.png")
 
     ---@cast o LoadingScreen
-
     LoadingScreen.instance = o
     return o
 end
 
-function LoadingScreen:initialise()
-    ISPanel.initialise(self)
-
-    self.text = getText("UI_EFT_Wait")
-    self.textX = (self.width - getTextManager():MeasureStringX(UIFont.Massive, self.text))/2
-    self.textY = self.height/2
-
-end
-
-function LoadingScreen:prerender()
-
-    local alpha = 1
-    if self.isClosing then
-        self.closingTime = self.closingTime + ((2.0 / 60)*getGameTime():getMultiplier())
-    end
-    alpha = 1 - self.closingTime
-
-    self:drawTextureScaled(backgroundTexture, 0, 0, self.width, self.height, alpha, 1, 1, 1)
-    self:drawText(self.text, self.textX, self.textY, 1, 1, 1, alpha, UIFont.Massive)
-
-    if alpha <= 0 then
-        self:close()
-    end
-end
-
-function LoadingScreen:startFade()
-    if self.isClosing == false then
-        self.isClosing = true
-        self.closingTime = 0
-    end
-end
-
-function LoadingScreen:close()
-    self:setVisible(false)
-    self:removeFromUIManager()
-    LoadingScreen.instance = nil
-end
-
--------------------
+-----
 
 function LoadingScreen.Open()
     if not isClient() then return end       -- SP workaround
     if getPlayer():isDead() then return end -- Workaround to prevent issues when player is dead
     if LoadingScreen.instance ~= nil then return end
     debugPrint("Opening black screen")
-    local LoadingScreen = LoadingScreen:new()
-    LoadingScreen:initialise()
-    LoadingScreen:addToUIManager()
+    local loadginScreen = LoadingScreen:new()
+    loadginScreen:initialise()
+    loadginScreen:addToUIManager()
 end
 
 function LoadingScreen.Close()
