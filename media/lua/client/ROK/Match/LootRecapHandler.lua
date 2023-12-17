@@ -9,13 +9,25 @@ local LootRecapHandler = {}
 LootRecapHandler.oldItems = {}
 LootRecapHandler.newItems = {}
 
----@param inv ItemContainer
----@param isBefore boolean
-function LootRecapHandler.SaveInventory(inv, isBefore)
+
+function LootRecapHandler.SaveBeforeMatchInventory()
+    LootRecapHandler.SaveInventory(true)
+end
+Events.PZEFT_OnMatchStart.Add(LootRecapHandler.SaveBeforeMatchInventory)
+
+function LootRecapHandler.SaveAfterMatchInventory()
+    LootRecapHandler.SaveInventory(false)
+end
+Events.PZEFT_OnMatchEnd.Add(LootRecapHandler.SaveAfterMatchInventory)
+
+---@param isStartingRaid boolean
+---@private
+function LootRecapHandler.SaveInventory(isStartingRaid)
+    local inv = getPlayer():getInventory()
     local items = inv:getItems()
-    
+
     local list
-    if isBefore then
+    if isStartingRaid then
         LootRecapHandler.oldItems = {}
         list = LootRecapHandler.oldItems
     else

@@ -1,6 +1,9 @@
----@alias clientStateType {isInRaid : boolean, isStartingMatch : boolean, extractionStatus : table, currentTime : number, availableInstances : number, availableSafehouses : number, isAdminMode : boolean}
-
----@type clientStateType
+---@class ClientState
+---@field isInRaid boolean
+---@field isStartingMatch boolean
+---@field currentTime number
+---@field extractionStatus table
+---@field isAdminMode boolean Admin only
 local ClientState = {
     isInRaid = false,
     isStartingMatch = false,
@@ -11,6 +14,13 @@ local ClientState = {
     --* ADMIN ONLY
     isAdminMode = false
 }
+
+function ClientState.ResetMatchValues()
+    ClientState.isStartingMatch = false
+    ClientState.extractionStatus = {}
+end
+Events.PZEFT_OnMatchEnd.Add(ClientState.ResetMatchValues)
+
 
 -----------------------------------
 --* Commands from the server
@@ -24,16 +34,14 @@ function ClientStateCommands.SetClientStateIsInRaid(args)
 
     ClientState.isInRaid = args.value
 
-    if args.value == false then
-        ClientState.extractionStatus = {}
-        ClientState.isStartingMatch = false -- Reset this to prevent issues
+
+    if ClientState.isInRaid == true then
+        triggerEvent("PZEFT_OnMatchStart")
+    else
+        triggerEvent("PZEFT_OnMatchEnd")
     end
 
     triggerEvent("PZEFT_UpdateClientStatus", ClientState.isInRaid)
-
-    -- If we're in a raid, we need to reset the correct symbols. If we're not, we're gonna just clean them off the map
-    ISWorldMap.HandleEFTExits(getPlayer():getPlayerNum(), not args.value)
-
 end
 
 

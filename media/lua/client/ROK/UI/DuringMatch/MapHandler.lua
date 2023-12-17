@@ -56,9 +56,9 @@ end
 -------------------
 
 --- Handles writing symbols on the map to show the extraction points
----@param playerNum number
 ---@param cleanOnly boolean Wheter or not to add the symbols after cleaning
-ISWorldMap.HandleEFTExits = function(playerNum, cleanOnly)
+function ISWorldMap.HandleEFTExits(cleanOnly)
+    local playerNum = getPlayer():getPlayerNum()
     ISWorldMap.ShowWorldMap(playerNum)
 
     local function TryHandleMapSymbols()
@@ -84,3 +84,8 @@ ISWorldMap.HandleEFTExits = function(playerNum, cleanOnly)
     Events.OnTickEvenPaused.Add(TryHandleMapSymbols)
 
 end
+
+-- If we're in a raid, we need to reset the correct symbols. If we're not, we're gonna just clean them off the map
+Events.PZEFT_UpdateClientStatus.Add(function(isInraid)
+    ISWorldMap.HandleEFTExits(not isInRaid)
+end)

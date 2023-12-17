@@ -1,4 +1,3 @@
--- TODO Add review after extraction for players
 local TextureScreen = require("ROK/UI/BaseComponents/TextureScreen")
 local BaseScrollItemsPanel = require("ROK/UI/BaseComponents/BaseScrollItemsPanel")
 --------------
@@ -34,6 +33,13 @@ function RecapPanel:createChildren()
 
     --TODO List of players that the current player has killed
 end
+
+function RecapPanel.OnSpacePressed(key)
+    if key ~= Keyboard.KEY_SPACE then return end
+    RecapPanel.Close()
+end
+Events.OnKeyStartPressed.Add(RecapPanel.OnSpacePressed)
+
 -----
 
 function RecapPanel.Open()

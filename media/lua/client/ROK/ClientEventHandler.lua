@@ -24,7 +24,7 @@ local function OnPlayerInit()
         sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', {})
 
         --* Clean map
-        ISWorldMap.HandleEFTExits(getPlayer():getPlayerNum(), true)
+        ISWorldMap.HandleEFTExits(true)
 
         LoadingScreen.Close()
     end)

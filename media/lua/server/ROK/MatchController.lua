@@ -107,6 +107,7 @@ end
 function MatchController:extractPlayer(playerObj)
     SafehouseInstanceManager.SendPlayerToSafehouse(playerObj)
     self:removePlayerFromMatchList(playerObj:getOnlineID())
+    sendServerCommand(playerObj, EFT_MODULES.UI, "OpenRecapPanel", {})
 end
 
 ---@param playerId number
