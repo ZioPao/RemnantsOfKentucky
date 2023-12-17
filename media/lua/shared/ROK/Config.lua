@@ -394,6 +394,7 @@ table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
 
 ---@alias starterKitType {fullType : string, amount : number}
 
+
 ---@type starterKitType
 PZ_EFT_CONFIG.StarterKit = {}
 table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.Pistol", amount = 4})
@@ -410,3 +411,118 @@ table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.Cereal", amount = 2})
 table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.Crisps", amount = 4})
 table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.HuntingKnife", amount = 4})
 table.insert(PZ_EFT_CONFIG.StarterKit, {fullType = "Base.Bandage", amount = 8})
+
+
+---@alias starterKitLocationsType {crateIndex : number}
+
+
+PZ_EFT_CONFIG.StarterKitLocations = {}
+
+PZ_EFT_CONFIG.StarterKitLocations["Base.Pistol"] = {
+    crateIndex = 1,
+    [1] = {x = 0, y = 4, isRotated = false},
+    [2] = {x = 2, y = 4, isRotated = false},
+    [3] = {x = 4, y = 4, isRotated = false},
+    [4] = {x = 6, y = 4, isRotated = false},
+}
+PZ_EFT_CONFIG.StarterKitLocations["Base.DoubleBarrelShotgun"] = {
+    crateIndex = 1,
+    [1] = {x = 0, y = 0, isRotated = false},
+    [2] = {x = 5, y = 0, isRotated = false},
+    [3] = {x = 0, y = 2, isRotated = false},
+    [4] = {x = 5, y = 2, isRotated = false},
+}
+
+PZ_EFT_CONFIG.StarterKitLocations["Base.Bullets9mmBox"] = {
+    crateIndex = 1,
+    [1] = {x = 8, y = 4, isRotated = false},
+    [2] = {x = 8, y = 4, isRotated = false},
+    [3] = {x = 8, y = 4, isRotated = false},
+    [4] = {x = 8, y = 4, isRotated = false},
+}
+
+PZ_EFT_CONFIG.StarterKitLocations["Base.ShotgunShellsBox"] = {
+    crateIndex = 1,
+    [1] = {x = 9, y = 4, isRotated = false},
+    [2] = {x = 9, y = 4, isRotated = false},
+    [3] = {x = 9, y = 4, isRotated = false},
+    [4] = {x = 9, y = 4, isRotated = false},
+}
+
+PZ_EFT_CONFIG.StarterKitLocations["Base.HuntingKnife"] = {
+    crateIndex = 1,
+    [1] = {x = 8, y = 5, isRotated = true},
+    [2] = {x = 8, y = 6, isRotated = true},
+    [3] = {x = 8, y = 7, isRotated = true},
+    [4] = {x = 8, y = 8, isRotated = true},
+}
+
+PZ_EFT_CONFIG.StarterKitLocations["Base.9mmClip"] = {
+    crateIndex = 1,
+    [1] = {x = 0, y = 5, isRotated = true},
+    [2] = {x = 2, y = 5, isRotated = true},
+    [3] = {x = 4, y = 5, isRotated = true},
+    [4] = {x = 6, y = 5, isRotated = true},
+    [5] = {x = 0, y = 6, isRotated = true},
+    [6] = {x = 2, y = 6, isRotated = true},
+    [7] = {x = 4, y = 6, isRotated = true},
+    [8] = {x = 6, y = 6, isRotated = true},
+}
+PZ_EFT_CONFIG.StarterKitLocations["Base.WaterBottleFull"] = {
+    crateIndex = 2,
+    [1] = {x = 0, y = 0, isRotated = true},
+    [2] = {x = 2, y = 0, isRotated = true},
+    [3] = {x = 4, y = 0, isRotated = true},
+    [4] = {x = 6, y = 0, isRotated = true},
+}
+PZ_EFT_CONFIG.StarterKitLocations["Base.Crisps"] = {
+    crateIndex = 2,
+    [1] = {x = 8, y = 0, isRotated = false},
+    [2] = {x = 8, y = 1, isRotated = false},
+    [3] = {x = 8, y = 2, isRotated = false},
+    [4] = {x = 8, y = 3, isRotated = false},
+}
+PZ_EFT_CONFIG.StarterKitLocations["Base.Cereal"] = {
+    crateIndex = 2,
+    [1] = {x = 6, y = 1, isRotated = false},
+    [2] = {x = 6, y = 3, isRotated = false},
+}
+PZ_EFT_CONFIG.StarterKitLocations["Base.Bandage"] = {
+    crateIndex = 2,
+    [1] = {x = 9, y = 0, isRotated = true},
+    [2] = {x = 9, y = 1, isRotated = true},
+    [3] = {x = 9, y = 2, isRotated = true},
+    [4] = {x = 9, y = 3, isRotated = true},
+    [5] = {x = 9, y = 4, isRotated = true},
+    [6] = {x = 9, y = 5, isRotated = true},
+    [7] = {x = 9, y = 6, isRotated = true},
+    [8] = {x = 9, y = 7, isRotated = true},
+}
+PZ_EFT_CONFIG.StarterKitLocations["Base.Vest_BulletPolice"] = {
+    crateIndex = 2,
+    [1] = {x = 0, y = 1, isRotated = false},
+    [2] = {x = 3, y = 1, isRotated = false},
+    [3] = {x = 0, y = 4, isRotated = false},
+    [4] = {x = 0, y = 7, isRotated = false},
+}
+PZ_EFT_CONFIG.StarterKitLocations["Base.Hat_Army"] = {
+    crateIndex = 2,
+    [1] = {x = 3, y = 4, isRotated = false},
+    [2] = {x = 3, y = 4, isRotated = false},
+    [3] = {x = 3, y = 6, isRotated = false},
+    [4] = {x = 3, y = 6, isRotated = false},
+}
+PZ_EFT_CONFIG.StarterKitLocations["Base.Shoes_ArmyBoots"] = {
+    crateIndex = 2,
+    [1] = {x = 3, y = 8, isRotated = false},
+    [2] = {x = 4, y = 8, isRotated = false},
+    [3] = {x = 5, y = 8, isRotated = false},
+    [4] = {x = 6, y = 8, isRotated = false},
+}
+PZ_EFT_CONFIG.StarterKitLocations["Base.Bag_DuffelBag"] = {
+    crateIndex = 3,
+    [1] = {x = 0, y = 0, isRotated = false},
+    [2] = {x = 3, y = 0, isRotated = false},
+    [3] = {x = 0, y = 4, isRotated = false},
+    [4] = {x = 3, y = 4, isRotated = false},
+}

@@ -46,115 +46,105 @@ function SafehouseInstanceHandler.WipeCrates()
 end
 
 
-if getActivatedMods():contains("INVENTORY_TETRIS") then
-    ---@param fullType string
-    ---@return IsoObject? crateObj The used crate
-    function SafehouseInstanceHandler.AddToCrate(fullType)
-        local cratesTable = SafehouseInstanceHandler.GetCrates()
-        if cratesTable == nil or #cratesTable == 0 then
-            debugPrint("Crates are nil or empty!")
-            return nil
-        end
+---@param fullType string
+---@return IsoObject? crateObj The used crate
+function SafehouseInstanceHandler.AddToCrate(fullType)
+    local cratesTable = SafehouseInstanceHandler.GetCrates()
+    if cratesTable == nil or #cratesTable == 0 then
+        debugPrint("Crates are nil or empty!")
+        return nil
+    end
 
-        -- Find the first crate which has available space
-        local crateCounter = 1
-        local switchedToPlayer = false
-        local crate = cratesTable[crateCounter]
-        local inv = crate:getContainer()
+    -- Find the first crate which has available space
+    local crateCounter = 1
+    local switchedToPlayer = false
+    local crate = cratesTable[crateCounter]
+    local inv = crate:getContainer()
 
-        local plNum = getPlayer():getPlayerNum()
-        local itemContainerGrid = ItemContainerGrid.CreateTemp(inv, plNum)
+    local plNum = getPlayer():getPlayerNum()
+    local itemContainerGrid = ItemContainerGrid.Create(inv, plNum)
 
 
-        local item = InventoryItemFactory.CreateItem(fullType)
-        if not itemContainerGrid:canAddItem(item) and not switchedToPlayer then
+    local item = InventoryItemFactory.CreateItem(fullType)
+    if not itemContainerGrid:canAddItem(item) and not switchedToPlayer then
 
-            while crateCounter < #cratesTable do
-                crate = cratesTable[crateCounter]
-                itemContainerGrid = ItemContainerGrid.CreateTemp(inv, plNum)
-                if itemContainerGrid:canAddItem(item) then
-                    debugPrint("Switching to next crate")
-                    break
-                end
-
-                crateCounter = crateCounter + 1
+        while crateCounter < #cratesTable do
+            crate = cratesTable[crateCounter]
+            itemContainerGrid = ItemContainerGrid.Create(inv, plNum)
+            if itemContainerGrid:canAddItem(item) then
+                debugPrint("Switching to next crate")
+                break
             end
 
-            if not itemContainerGrid:canAddItem(item) then
-                inv = getPlayer():getInventory()
-                switchedToPlayer = true
-            end
+            crateCounter = crateCounter + 1
         end
+
+        if not itemContainerGrid:canAddItem(item) then
+            inv = getPlayer():getInventory()
+            switchedToPlayer = true
+            itemContainerGrid = ItemContainerGrid.Create(inv, plNum)
+            debugPrint("Switched to player")
+        end
+    end
+    if itemContainerGrid:canAddItem(item) then
+        debugPrint("Adding " .. fullType .. " to crate nr " .. crateCounter)
+        inv:AddItem(item)
         inv:addItemOnServer(item)
-        inv:addItem(item)
         inv:setDrawDirty(true)
+        inv:setHasBeenLooted(true)
         ISInventoryPage.renderDirty = true
 
         -- Return used crates
         return crate
-
     end
-else
-    ---@param fullType string
-    ---@return IsoObject? crateObj The used crate
-    function SafehouseInstanceHandler.AddToCrate(fullType)
-        local cratesTable = SafehouseInstanceHandler.GetCrates()
-        if cratesTable == nil or #cratesTable == 0 then debugPrint("Crates are nil or empty!") return nil end
+    return nil
+end
 
-        -- Find the first crate which has available space
-        local crateCounter = 1
-        local switchedToPlayer = false
-        local crateObj = cratesTable[crateCounter]
-        local inv = crateObj:getContainer()
+function SafehouseInstanceHandler.AddToCrateOrdered(fullType, index, x, y, isRotated)
+    local cratesTable = SafehouseInstanceHandler.GetCrates()
+    if cratesTable == nil or #cratesTable == 0 then debugPrint("Crates are nil or empty!") return nil end
+    local crateObj = cratesTable[index]
+    local inv = crateObj:getContainer()
+    local grid = ItemContainerGrid.Create(inv, getPlayer():getPlayerNum())
+    local item = InventoryItemFactory.CreateItem(fullType)
 
-        -- FIXME This is broken! It's not looping to check the next crate until we find the correct one
-        -- TODO Workaround for play test!
-        if fullType == "ROK.InstaHeal" then
-            local ClientCommon = require("ROK/ClientCommon")
-            ClientCommon.InstaHeal()
-        else
-            local item = InventoryItemFactory.CreateItem(fullType)
-            ---@diagnostic disable-next-line: param-type-mismatch
-            if not inv:hasRoomFor(getPlayer(), item) and not switchedToPlayer then
-                debugPrint("Switching to next crate")
-                crateCounter = crateCounter + 1
-                if crateCounter < #cratesTable then
-                    crateObj = cratesTable[crateCounter]
-                    inv = crateObj:getContainer()
-                else
-                    debugPrint("No more space in the crates, switching to dropping stuff in the player's inventory")
-                    inv = getPlayer():getInventory()
-                    switchedToPlayer = true
-                end
-            end
-            inv:addItemOnServer(item)
-            inv:addItem(item)
-            inv:setDrawDirty(true)
-            ISInventoryPage.renderDirty = true
-        end
+    if grid:canAddItem(item) then
+        debugPrint("Adding " .. fullType .. " to crate " .. tostring(index) .. " at X=" .. tostring(x) .. ", Y=" .. tostring(y))
+        inv:addItemOnServer(item)
+        inv:AddItem(item)
+        inv:setDrawDirty(true)
+        inv:setHasBeenLooted(true)
 
-
-        -- Return used crates
-        return crateObj
-
+        grid:insertItem(item, x, y, 1, isRotated)
+    
+        ISInventoryPage.renderDirty = true
     end
 end
+
 
 --* Starter kit 
 
 ---@param playerObj IsoPlayer
----@param sendToCrates boolean
-function SafehouseInstanceHandler.GiveStarterKit(playerObj, sendToCrates)
+---@param ordered boolean
+function SafehouseInstanceHandler.GiveStarterKit(playerObj, ordered)
+
+    -- 10 x 10 with tetris inventory
+
     function RunGiveStarterKit()
         for i=1, #PZ_EFT_CONFIG.StarterKit do
             ---@type starterKitType
             local element = PZ_EFT_CONFIG.StarterKit[i]
-            if sendToCrates then
+
+            if ordered then
+
+                local loc = PZ_EFT_CONFIG.StarterKitLocations[element.fullType]
+                for j=1, element.amount do
+                    SafehouseInstanceHandler.AddToCrateOrdered(element.fullType, loc.crateIndex, loc[j].x, loc[j].y, loc[j].isRotated)
+                end
+            else
                 for _=1, element.amount do
                     SafehouseInstanceHandler.AddToCrate(element.fullType)
                 end
-            else
-                playerObj:getInventory():AddItems(element.fullType, element.amount)
             end
         end
 

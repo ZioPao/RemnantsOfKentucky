@@ -116,6 +116,51 @@ function debug_testTimer()
     --sendClientCommand("PZEFT-Time", "StartTimer", {stopTime = 30, timeBetweenFunc=5})
 end
 
+
+function debug_giveStarterKit()
+    local pl = getPlayer()
+    local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
+    SafehouseInstanceHandler.GiveStarterKit(pl, true)
+    
+end
+
+function debug_testAddCrate(amount)
+    local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
+    for i=1, amount do
+        SafehouseInstanceHandler.AddToCrate("Base.Bandage")
+    end
+end
+
+function debug_wipeCrates()
+    local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
+    SafehouseInstanceHandler.WipeCrates()
+
+end
+
+function debug_getCrateTetris(index, fullType, x, y, isRotated)
+    local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
+    local cratesTable = SafehouseInstanceHandler.GetCrates()
+    if cratesTable == nil or #cratesTable == 0 then debugPrint("Crates are nil or empty!") return nil end
+    local crateObj = cratesTable[index]
+    local inv = crateObj:getContainer()
+    local grid = ItemContainerGrid.Create(inv, getPlayer():getPlayerNum())
+    local item = InventoryItemFactory.CreateItem(fullType)
+
+    if grid:canAddItem(item) then
+        debugPrint("We can add the item")
+    end
+
+    inv:addItemOnServer(item)
+    inv:AddItem(item)
+    inv:setDrawDirty(true)
+    inv:setHasBeenLooted(true)
+
+    grid:insertItem(item, x, y, 1, isRotated)
+
+    ISInventoryPage.renderDirty = true
+
+end
+
 --* Client Only
 
 ---@diagnostic disable: lowercase-global
