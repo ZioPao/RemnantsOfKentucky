@@ -61,7 +61,10 @@ function BaseScrollItemsPanel:initialiseList(itemsTable)
     if #itemsTable > 1 then
         self.scrollingListBox.selected = 1
         local selectedItem = self.scrollingListBox.items[self.scrollingListBox.selected].item
-        self.buyPanel:setSelectedItem(selectedItem)
+        -- TODO This seems wrong here
+        if self.buyPanel then
+            self.buyPanel:setSelectedItem(selectedItem)
+        end
     end
 end
 

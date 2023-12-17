@@ -6,7 +6,11 @@
 
 local LootRecapHandler = {}
 
+---@alias LootRecapItemsType table<integer, InventoryItem>
+
+---@type LootRecapItemsType
 LootRecapHandler.oldItems = {}
+---@type LootRecapItemsType
 LootRecapHandler.newItems = {}
 
 
@@ -23,42 +27,55 @@ Events.PZEFT_OnMatchEnd.Add(LootRecapHandler.SaveAfterMatchInventory)
 ---@param isStartingRaid boolean
 ---@private
 function LootRecapHandler.SaveInventory(isStartingRaid)
-    local inv = getPlayer():getInventory()
-    local items = inv:getItems()
+    local mainInv = getPlayer():getInventory()
+    local items = mainInv:getItems()
 
     local list
     if isStartingRaid then
+        debugPrint("Saving OLD")
         LootRecapHandler.oldItems = {}
         list = LootRecapHandler.oldItems
     else
+        debugPrint("Saving NEW")
         LootRecapHandler.newItems = {}
-        list = LootRecapHandler.oldItems
+        list = LootRecapHandler.newItems
     end
 
-    for i=0, items:size() - 1 do
-        ---@type InventoryItem
-        local item = items:get(i)
-        local itemID = item:getID()
+    -- Loop
+    LootRecapHandler.SaveInventoryLoop(items, list)
 
-        list[itemID] = item
-    end
     PZEFT_UTILS.PrintTable(list)
     debugPrint("Saved inventory")
 end
 
----@return table<integer, Item>
+function LootRecapHandler.SaveInventoryLoop(itemsList, lootList)
+    for i=0, itemsList:size() - 1 do
+        local item = itemsList:get(i)
+        if instanceof(item, "InventoryContainer") then
+            LootRecapHandler.SaveInventoryLoop(item:getInventory():getItems(), lootList)
+        else
+            local itemID = item:getID()
+            lootList[itemID] = item
+        end
+    end
+end
+
+
 function LootRecapHandler.CompareWithOldInventory()
     --if #LootRecapHandler.oldItems == 0 and #LootRecapHandler.newItems == 0 then return end
 
     local actualNewItems = {}
     for k,v in pairs(LootRecapHandler.newItems) do
+        debugPrint("Checking " .. k)
         if LootRecapHandler.oldItems[k] == nil then
-            table.insert(actualNewItems, v)
+            debugPrint("New item: " .. k)
+            local fullType = v:getFullType()
+            actualNewItems[fullType] = {actualItem = v:getScriptItem(), fullType = fullType}
+            --table.insert(actualNewItems, v)
         end
     end
 
-    return actualNewItems
-
+    triggerEvent("PZEFT_LootRecapReady", actualNewItems)
 end
 
 

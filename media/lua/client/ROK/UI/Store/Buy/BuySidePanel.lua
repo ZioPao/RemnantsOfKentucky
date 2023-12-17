@@ -76,7 +76,7 @@ function BuySidePanel:createChildren()
     self.amountMinusBtn:instantiate()
     self:addChild(self.amountMinusBtn)
 
-    self.amountPlusBtn = ISButton:new(self.amountPanel:getRight() + CommonStore.MARGIN_X, elementAmountY, btnWidth, elementAmountHeight, ">", self, self.onClick)
+    self.amountPlusBtn = ISButton:new(self.amountPanel:getRight(), elementAmountY, btnWidth, elementAmountHeight, ">", self, self.onClick)
     self.amountPlusBtn.internal = 'PLUS'
     self.amountPlusBtn:initialise()
     self.amountPlusBtn:instantiate()

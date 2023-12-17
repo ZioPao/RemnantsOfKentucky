@@ -21,6 +21,16 @@ function LoadingScreen:new()
     return o
 end
 
+function LoadingScreen:renderTexture(alpha)
+    TextureScreen.renderTexture(self, alpha)
+    self:drawText(self.text, self.textX, self.textY, 1, 1, 1, alpha, UIFont.Massive)
+end
+
+function LoadingScreen:close()
+    TextureScreen.close(self)
+    LoadingScreen.instance = nil
+end
+
 -----
 
 function LoadingScreen.Open()

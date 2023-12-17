@@ -52,7 +52,6 @@ function TextureScreen:renderTexture(alpha)
     else
         self:drawRect(0, 0, self:getWidth(), self.height, self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g, self.backgroundColor.b)
     end
-    self:drawText(self.text, self.textX, self.textY, 1, 1, 1, alpha, UIFont.Massive)
 end
 
 function TextureScreen:startFade()

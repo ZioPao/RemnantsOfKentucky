@@ -2,7 +2,7 @@
 if not getActivatedMods():contains("TEST_FRAMEWORK") or not isDebugEnabled() then return end
 local TestFramework = require("TestFramework/TestFramework")
 local TestUtils = require("TestFramework/TestUtils")
-local LootRecapHandler = require("ROK/LootRecapHandler")
+local LootRecapHandler = require("ROK/Match/LootRecapHandler")
 
 TestFramework.registerTestModule("PVP Instances", "Debug", function()
 
@@ -12,11 +12,11 @@ TestFramework.registerTestModule("PVP Instances", "Debug", function()
     end
     
     function Tests.RunBeforeMatchLootRecap()
-        LootRecapHandler.SaveInventory(getPlayer():getInventory(), true)
+        LootRecapHandler.SaveInventory(true)
     end
 
     function Tests.RunAfterMatchLootRecap()
-        LootRecapHandler.SaveInventory(getPlayer():getInventory(), false)
+        LootRecapHandler.SaveInventory(false)
     end
 
     function Tests.CompareLoot()
@@ -35,5 +35,21 @@ TestFramework.registerTestModule("Bank", "Debug", function()
         ServerData_client_debug.setBankAccount(getPlayer():getUsername(), 1000000)
     end
 
+    return Tests
+end)
+
+
+--local RecapPanel = require("ROK/UI/AfterMatch/RecapPanel")
+
+TestFramework.registerTestModule("UI", "Debug", function()
+
+    local Tests = {}
+    function Tests.OpenRecapPanel()
+        RecapPanel.Open()
+    end
+
+    function Tests.CloseRecapPanel()
+        RecapPanel.Close()
+    end
     return Tests
 end)

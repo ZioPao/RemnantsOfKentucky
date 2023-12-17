@@ -1,5 +1,6 @@
 local TextureScreen = require("ROK/UI/BaseComponents/TextureScreen")
 local BaseScrollItemsPanel = require("ROK/UI/BaseComponents/BaseScrollItemsPanel")
+local LootRecapHandler = require("ROK/Match/LootRecapHandler")
 --------------
 
 ---@class RecapPanel : TextureScreen
@@ -8,16 +9,16 @@ local BaseScrollItemsPanel = require("ROK/UI/BaseComponents/BaseScrollItemsPanel
 ---@field textY number
 ---@field isClosing boolean
 ---@field closingTime number
-local RecapPanel = TextureScreen:derive("RecapPanel")
+RecapPanel = TextureScreen:derive("RecapPanel")
 
----@return LoadingScreen
+---@return RecapPanel
 function RecapPanel:new()
     local o = TextureScreen:new()
     setmetatable(o, self)
     self.__index = self
     o.backgroundTexture = getTexture("media/textures/ROK_RecapScreen.png")
 
-    ---@cast o LoadingScreen
+    ---@cast o RecapPanel
     RecapPanel.instance = o
     return o
 end
@@ -26,10 +27,27 @@ function RecapPanel:createChildren()
     TextureScreen.createChildren(self)
 
     --TODO List of items that the player has extracted
-    self.itemsBox = BaseScrollItemsPanel:new(500, 500, 500, 500)
-    self.itemsBox:initalise()
-    self:addChild(self.itemsBox)
 
+    local scaleX = 6.50847457627119
+    local scaleY = 7.3469387755102
+    
+    local dimX = 1.45015105740181
+    local dimY = 1.31067961165049
+
+    local x = self.width/scaleX
+    local y = self.height/scaleY
+
+    local widthPanel = self.width/dimX
+    local heightPanel = self.height/dimY
+
+    self.mainContainerPanel = ISPanel:new(x, y, widthPanel, heightPanel)
+    self:addChild(self.mainContainerPanel)
+
+    local marginX = 10
+    local marginY = 10
+    self.itemsBox = BaseScrollItemsPanel:new(marginX, marginY, self.mainContainerPanel.width/3, self.mainContainerPanel.height - marginY*2)
+    self.itemsBox:initalise()
+    self.mainContainerPanel:addChild(self.itemsBox)
 
     --TODO List of players that the current player has killed
 end
@@ -40,16 +58,37 @@ function RecapPanel.OnSpacePressed(key)
 end
 Events.OnKeyStartPressed.Add(RecapPanel.OnSpacePressed)
 
+---comment
+---@param list table<string, {actualItem : Item, fullType : string}>
+function RecapPanel.SetupItemsList(list)
+    if RecapPanel.instance == nil then return end
+    RecapPanel.instance.itemsBox:initialiseList(list)
+end
+
+Events.PZEFT_LootRecapReady.Add(RecapPanel.SetupItemsList)
+
+
+function RecapPanel:close()
+    TextureScreen.close(self)
+    RecapPanel.instance = nil
+end
 -----
+
+local Delay = require("ROK/Delay")
 
 function RecapPanel.Open()
     if not isClient() then return end       -- SP workaround
     if getPlayer():isDead() then return end -- Workaround to prevent issues when player is dead
-    if LoadingScreen.instance ~= nil then return end
-    debugPrint("Opening black screen")
-    local loadginScreen = LoadingScreen:new()
-    loadginScreen:initialise()
-    loadginScreen:addToUIManager()
+    if RecapPanel.instance ~= nil then return end
+    debugPrint("Opening recap screen")
+    local recapScreen = RecapPanel:new()
+    recapScreen:initialise()
+
+    -- TODO Just for test
+    Delay:set(2, function ()
+        LootRecapHandler.CompareWithOldInventory()
+    end)
+    recapScreen:addToUIManager()
 end
 
 function RecapPanel.Close()
@@ -68,4 +107,4 @@ end
 
 Events.OnResolutionChange.Add(RecapPanel.HandleResolutionChange)
 
-return RecapPanel
+--return RecapPanel

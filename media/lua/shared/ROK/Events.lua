@@ -5,6 +5,8 @@ if isClient() then
     LuaEventManager.AddEvent("PZEFT_OnMatchEnd")
     LuaEventManager.AddEvent("PZEFT_UpdateClientStatus")
 
+    LuaEventManager.AddEvent("PZEFT_LootRecapReady")
+
     --* BaseScrollItemsPanel.lua
     LuaEventManager.AddEvent("PZEFT_OnChangeSelectedItem")
 
