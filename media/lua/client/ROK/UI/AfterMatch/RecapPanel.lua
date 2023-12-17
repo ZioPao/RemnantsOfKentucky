@@ -1,6 +1,6 @@
 -- TODO Add review after extraction for players
-local TextureScreen = require("ROK/UI/TextureScreen")
-local TilesScrollingListBox = require("ROK/UI/BaseComponents/TilesScrollingListBox")
+local TextureScreen = require("ROK/UI/BaseComponents/TextureScreen")
+local BaseScrollItemsPanel = require("ROK/UI/BaseComponents/BaseScrollItemsPanel")
 --------------
 
 ---@class RecapPanel : TextureScreen
@@ -27,7 +27,10 @@ function RecapPanel:createChildren()
     TextureScreen.createChildren(self)
 
     --TODO List of items that the player has extracted
-    self.itemsBox = TilesScrollingListBox
+    self.itemsBox = BaseScrollItemsPanel:new(500, 500, 500, 500)
+    self.itemsBox:initalise()
+    self:addChild(self.itemsBox)
+
 
     --TODO List of players that the current player has killed
 end

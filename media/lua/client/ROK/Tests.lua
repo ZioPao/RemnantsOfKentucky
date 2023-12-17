@@ -2,6 +2,7 @@
 if not getActivatedMods():contains("TEST_FRAMEWORK") or not isDebugEnabled() then return end
 local TestFramework = require("TestFramework/TestFramework")
 local TestUtils = require("TestFramework/TestUtils")
+local LootRecapHandler = require("ROK/LootRecapHandler")
 
 TestFramework.registerTestModule("PVP Instances", "Debug", function()
 
@@ -9,6 +10,20 @@ TestFramework.registerTestModule("PVP Instances", "Debug", function()
     function Tests.PrintPvpInstances()
         ServerData_client_debug.print_pvp_instances()
     end
+    
+    function Tests.RunBeforeMatchLootRecap()
+        LootRecapHandler.SaveInventory(getPlayer():getInventory(), true)
+    end
+
+    function Tests.RunAfterMatchLootRecap()
+        LootRecapHandler.SaveInventory(getPlayer():getInventory(), false)
+    end
+
+    function Tests.CompareLoot()
+        local items = LootRecapHandler.CompareWithOldInventory()
+        PZEFT_UTILS.PrintTable(items)
+    end
+
 
     return Tests
 end)

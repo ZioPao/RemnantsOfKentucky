@@ -1,5 +1,5 @@
 local ShopItemsManager = require("ROK/ShopItemsManager")
-local BaseScrollItemsPanel = require("ROK/UI/Store/Components/BaseScrollItemsPanel")
+local BaseScrollItemsPanel = require("ROK/UI/BaseComponents/BaseScrollItemsPanel")
 -----------
 
 ---@class SellScrollItemsPanel : BaseScrollItemsPanel

@@ -1,4 +1,4 @@
-local BaseAdminPanel = require("ROK/UI/BaseAdminPanel")
+local BaseAdminPanel = require("ROK/UI/BaseComponents/BaseAdminPanel")
 local ManagePlayersPanel = require("ROK/UI/BeforeMatch/ManagePlayersPanel")
 local TimePanel = require("ROK/UI/TimePanel")
 local ClientState = require("ROK/ClientState")
