@@ -1,6 +1,6 @@
 local TextureScreen = require("ROK/UI/BaseComponents/TextureScreen")
 local LootRecapHandler = require("ROK/Match/LootRecapHandler")
-local RecapScrollItemsPanel = require("ROK/UI/Aftermatch/RecapScrollItemsPanel")
+local RecapScrollItemsPanel = require("ROK/UI/AfterMatch/RecapScrollItemsPanel")
 --------------
 
 ---@class RecapPanel : TextureScreen
@@ -35,6 +35,9 @@ function RecapPanel:createChildren()
     local dimX = 1.45015105740181
     local dimY = 1.31067961165049
 
+    debugPrint(self.width)
+    debugPrint(self.height)
+
     local x = self.width/scaleX
     local y = self.height/scaleY
 
@@ -46,7 +49,7 @@ function RecapPanel:createChildren()
 
     local marginX = 10
     local marginY = 10
-    self.itemsBox = RecapScrollItemsPanel:new(marginX, marginY, self.mainContainerPanel.width/3, self.mainContainerPanel.height - marginY*2)
+    self.itemsBox = RecapScrollItemsPanel:new(marginX, marginY, self.mainContainerPanel.width/1.5, self.mainContainerPanel.height - marginY*2)
     self.itemsBox:initalise()
     self.mainContainerPanel:addChild(self.itemsBox)
 

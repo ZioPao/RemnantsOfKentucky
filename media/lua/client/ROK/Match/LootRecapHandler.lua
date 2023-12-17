@@ -66,11 +66,11 @@ function LootRecapHandler.CompareWithOldInventory()
 
     local actualNewItems = {}
     for k,v in pairs(LootRecapHandler.newItems) do
-        debugPrint("Checking " .. k)
+        --debugPrint("Checking " .. k)
         if LootRecapHandler.oldItems[k] == nil then
-            debugPrint("New item: " .. k)
             local fullType = v:getFullType()
-            actualNewItems[fullType] = {actualItem = v:getScriptItem(), fullType = fullType}
+            --debugPrint("New item: " .. fullType)
+            actualNewItems[k] = {actualItem = v:getScriptItem(), fullType = fullType}
             --table.insert(actualNewItems, v)
         end
     end

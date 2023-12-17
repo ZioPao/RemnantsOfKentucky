@@ -42,6 +42,11 @@ function TilesScrollingListBox:rowAt(x,y)
 	return -1
 end
 
+function TilesScrollingListBox:setElementsPerRow(elementsPerRow)
+    self.elementsPerRow = elementsPerRow
+    self.itemWidth = self.width/self.elementsPerRow
+end
+
 function TilesScrollingListBox:onMouseWheel(del)
     self:setYScroll(self:getYScroll() - (del*24))       -- TODO Workaroundy
     return true
