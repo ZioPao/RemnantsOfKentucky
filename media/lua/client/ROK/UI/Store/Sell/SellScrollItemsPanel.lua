@@ -1,16 +1,16 @@
 local ShopItemsManager = require("ROK/ShopItemsManager")
-local BaseScrollItemsPanel = require("ROK/UI/BaseComponents/BaseScrollItemsPanel")
+local StoreScrollItemsPanel = require("ROK/UI/Store/Components/StoreScrollItemsPanel")
 -----------
 
----@class SellScrollItemsPanel : BaseScrollItemsPanel
+---@class SellScrollItemsPanel : StoreScrollItemsPanel
 ---@field removeBtnSize number
 ---@field hoveringRemoveBtn boolean
-local SellScrollItemsPanel = BaseScrollItemsPanel:derive("SellScrollItemsPanel")
+local SellScrollItemsPanel = StoreScrollItemsPanel:derive("SellScrollItemsPanel")
 
 -- TODO Quality/status of the item should affect the price!
 
 function SellScrollItemsPanel:new(x, y, width, height)
-    local o = BaseScrollItemsPanel:new(x, y, width, height)
+    local o = StoreScrollItemsPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
 
@@ -21,7 +21,7 @@ function SellScrollItemsPanel:new(x, y, width, height)
 end
 
 function SellScrollItemsPanel:initialise()
-    BaseScrollItemsPanel.initialise(self)
+    StoreScrollItemsPanel.initialise(self)
 end
 
 ---@param item InventoryItem
@@ -121,7 +121,7 @@ local function SellPrender(self)
 end
 
 function SellScrollItemsPanel:createChildren()
-    BaseScrollItemsPanel.createChildren(self)
+    StoreScrollItemsPanel.createChildren(self)
 
     self.scrollingListBox.doDrawItem = SellDoDrawItem
     self.scrollingListBox.onMouseUp = SellOnDragItem
@@ -133,7 +133,7 @@ end
 
 --- Check player inv and compare it to the alreadyDragged items. If an item is not in their inventory anymore, delete it from the list
 function SellScrollItemsPanel:update()
-    BaseScrollItemsPanel.update(self)
+    StoreScrollItemsPanel.update(self)
 
     -- Check if added items are still in players'inv
     local pl = getPlayer()

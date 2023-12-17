@@ -11,15 +11,13 @@ local BaseScrollItemsPanel = ISPanelJoypad:derive("BaseScrollItemsPanel")
 ---@param y any
 ---@param width any
 ---@param height any
----@param shopPanel any
 ---@return BaseScrollItemsPanel
-function BaseScrollItemsPanel:new(x, y, width, height, shopPanel)
+function BaseScrollItemsPanel:new(x, y, width, height)
     local o = ISPanelJoypad:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
 
     ---@cast o BaseScrollItemsPanel
-    o.shopPanel = shopPanel
     BaseScrollItemsPanel.instance = o
     return o
 end
@@ -60,11 +58,6 @@ function BaseScrollItemsPanel:initialiseList(itemsTable)
     -- Select first item in the list automatically
     if #itemsTable > 1 then
         self.scrollingListBox.selected = 1
-        local selectedItem = self.scrollingListBox.items[self.scrollingListBox.selected].item
-        -- TODO This seems wrong here
-        if self.buyPanel then
-            self.buyPanel:setSelectedItem(selectedItem)
-        end
     end
 end
 
@@ -122,19 +115,6 @@ function BaseScrollItemsPanel:prerender()
     ISPanelJoypad.prerender(self)
 
 end
-
----Set the item that's been selected from the list
----@param item selectedItemType
-function BaseScrollItemsPanel:setSelectedItem(item)
-    --debugPrint(item)
-    if self.selectedItem ~= item then
-        self.selectedItem = item
-        -- Notify change
-        debugPrint("Triggering PZEFT_OnChangeSelectedItem")
-        triggerEvent("PZEFT_OnChangeSelectedItem", self.parent.sidePanel)
-    end
-end
-
 
 ---@return selectedItemType
 function BaseScrollItemsPanel:getSelectedItem()

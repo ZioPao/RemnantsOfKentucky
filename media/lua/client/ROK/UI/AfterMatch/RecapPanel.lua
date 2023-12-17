@@ -1,6 +1,6 @@
 local TextureScreen = require("ROK/UI/BaseComponents/TextureScreen")
-local BaseScrollItemsPanel = require("ROK/UI/BaseComponents/BaseScrollItemsPanel")
 local LootRecapHandler = require("ROK/Match/LootRecapHandler")
+local RecapScrollItemsPanel = require("ROK/UI/Aftermatch/RecapScrollItemsPanel")
 --------------
 
 ---@class RecapPanel : TextureScreen
@@ -13,6 +13,7 @@ RecapPanel = TextureScreen:derive("RecapPanel")
 
 ---@return RecapPanel
 function RecapPanel:new()
+    ---@type RecapPanel
     local o = TextureScreen:new()
     setmetatable(o, self)
     self.__index = self
@@ -30,7 +31,7 @@ function RecapPanel:createChildren()
 
     local scaleX = 6.50847457627119
     local scaleY = 7.3469387755102
-    
+
     local dimX = 1.45015105740181
     local dimY = 1.31067961165049
 
@@ -45,12 +46,13 @@ function RecapPanel:createChildren()
 
     local marginX = 10
     local marginY = 10
-    self.itemsBox = BaseScrollItemsPanel:new(marginX, marginY, self.mainContainerPanel.width/3, self.mainContainerPanel.height - marginY*2)
+    self.itemsBox = RecapScrollItemsPanel:new(marginX, marginY, self.mainContainerPanel.width/3, self.mainContainerPanel.height - marginY*2)
     self.itemsBox:initalise()
     self.mainContainerPanel:addChild(self.itemsBox)
 
     --TODO List of players that the current player has killed
 end
+
 
 function RecapPanel.OnSpacePressed(key)
     if key ~= Keyboard.KEY_SPACE then return end

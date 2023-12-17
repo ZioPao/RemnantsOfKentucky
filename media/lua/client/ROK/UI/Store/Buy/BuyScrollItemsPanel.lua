@@ -1,11 +1,11 @@
-local BaseScrollItemsPanel = require("ROK/UI/BaseComponents/BaseScrollItemsPanel")
+local StoreScrollItemsPanel = require("ROK/UI/Store/Components/StoreScrollItemsPanel")
 -----------
 
----@class BuyScrollItemsPanel : BaseScrollItemsPanel
-local BuyScrollItemsPanel = BaseScrollItemsPanel:derive("BuyScrollItemsPanel")
+---@class BuyScrollItemsPanel : StoreScrollItemsPanel
+local BuyScrollItemsPanel = StoreScrollItemsPanel:derive("BuyScrollItemsPanel")
 
 function BuyScrollItemsPanel:new(x, y, width, height)
-    local o = BaseScrollItemsPanel:new(x, y, width, height)
+    local o = StoreScrollItemsPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
 
@@ -20,9 +20,7 @@ end
 ---@param rowElementNumber number
 ---@return number
 local function BuyDoDrawItem(self, y, item, rowElementNumber)
-
     -- Multi item same line
-
     if y + self:getYScroll() >= self.height then return y + item.height end
     if y + item.height + self:getYScroll() <= 0 then return y + item.height end
 
@@ -33,8 +31,6 @@ local function BuyDoDrawItem(self, y, item, rowElementNumber)
 
     local clipY = math.max(0, y + self:getYScroll())
     local clipY2 = math.min(self.height, y + self:getYScroll() + self.itemheight)
-
-
 
     -- Border of single item
     self:drawRectBorder(x, y, width, item.height - 1, a, self.borderColor.r, self.borderColor.g, self.borderColor.b)
@@ -63,15 +59,14 @@ local function BuyDoDrawItem(self, y, item, rowElementNumber)
     return y + item.height
 end
 
-
 function BuyScrollItemsPanel:createChildren()
-    BaseScrollItemsPanel.createChildren(self)
+    StoreScrollItemsPanel.createChildren(self)
 
     self.scrollingListBox.doDrawItem = BuyDoDrawItem
 end
 
 function BuyScrollItemsPanel:close()
-    BaseScrollItemsPanel.close(self)
+    StoreScrollItemsPanel.close(self)
 end
 
 return BuyScrollItemsPanel
