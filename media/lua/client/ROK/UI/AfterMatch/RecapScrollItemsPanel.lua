@@ -25,6 +25,11 @@ function RecapScrollItemsPanel:createChildren()
     self.scrollingListBox.onMouseDown = nil
 end
 
+---@param itemsBox TilesScrollingListBox
+---@param y number
+---@param item {item : {actualItem : Item, fullType : string}, height : number}
+---@param rowElementNumber number
+---@return number
 function RecapScrollItemsPanel.DrawItem(itemsBox, y, item, rowElementNumber)
     -- Multi item same line
     if y + itemsBox:getYScroll() >= itemsBox.height then return y + item.height end
