@@ -9,4 +9,35 @@ UI_EN = {
     UI_EFT_Say_SentStarterKit = "Sent starter kit to %1",
     UI_EFT_Say_WipePlayer = "Wiping safehouse and assigning a new one to %1",
     UI_EFT_Say_ReceivedStartedKit = "I received a Starter Kit, I should check my crates.",
+
+
+    UI_EFT_Trait_BigPockets = "Big Pockets",
+    UI_EFT_Trait_Camouflaged = "Camouflaged",
+    UI_EFT_Trait_WellFunded = "Well Funded",
+    UI_EFT_Trait_ExtractionExpert = "Extraction Expert",
+    UI_EFT_Trait_LongBluntTraining = "Long Blunt Training",
+    UI_EFT_Trait_LongBladeTraining = "Long Blade Training",
+    UI_EFT_Trait_ShortBladeTraining = "Short Blade Training",
+    UI_EFT_Trait_ShortBladeTraining = "Short Blade Training",
+    UI_EFT_Trait_FirearmTraining = "FirearmTraining",
+    UI_EFT_Trait_Breacher = "Breacher",
+    UI_EFT_Trait_WellComposed = "Well Composed",
+    UI_EFT_Trait_PackMule = "Pack Mule",
+    UI_EFT_Trait_BattleHardened = "Battle-hardened",
+    UI_EFT_Trait_FullPowerFighter = "Full Power Fighter",
+    UI_EFT_Trait_Agile = "Agile",
+    UI_EFT_Trait_Curable = "Curable",
+    UI_EFT_Trait_Immune = "Immune",
+
+    UI_EFT_Trait_SmallPockets = "Small Pockets",
+    UI_EFT_Trait_Exposed = "Exposed",
+    UI_EFT_Trait_PoorlyFunded = "Poorly Funded",
+    UI_EFT_Trait_ExtractionNovice = "Extraction Novice",
+    UI_EFT_Trait_LastMinuteExtractor = "Last Minute Extractor",
+    UI_EFT_Trait_HelicopterExtractor = "Helicopter Extractor",
+    UI_EFT_Trait_BaseDweller = "Base Dweller",
+    UI_EFT_Trait_PoorFighter = "Poor Fighter",
+    UI_EFT_Trait_Susceptible = "Susceptible",
+
+
 }
