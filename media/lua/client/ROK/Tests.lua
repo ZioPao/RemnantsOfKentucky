@@ -10,7 +10,7 @@ TestFramework.registerTestModule("PVP Instances", "Debug", function()
     function Tests.PrintPvpInstances()
         ServerData_client_debug.print_pvp_instances()
     end
-    
+
     function Tests.RunBeforeMatchLootRecap()
         LootRecapHandler.SaveInventory(true)
     end
@@ -38,7 +38,15 @@ TestFramework.registerTestModule("Bank", "Debug", function()
     return Tests
 end)
 
+TestFramework.registerTestModule("Various", "Player", function()
+    local Tests = {}
 
+    function Tests.Kill()
+        getPlayer():Kill(getPlayer())
+    end
+
+    return Tests
+end)
 --local RecapPanel = require("ROK/UI/AfterMatch/RecapPanel")
 
 TestFramework.registerTestModule("UI", "Debug", function()

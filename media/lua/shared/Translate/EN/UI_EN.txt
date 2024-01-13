@@ -12,22 +12,46 @@ UI_EN = {
 
 
     UI_EFT_Trait_BigPockets = "Big Pockets",
+    UI_EFT_Trait_BigPockets_Desc = "Increases carry capacity on your body",
+
+    UI_EFT_Trait_Charismatic = "Charismatic",
+    UI_EFT_Trait_Charismatic_Desc = "You’re able to smooth talk your way to cheaper prices",
+
     UI_EFT_Trait_Camouflaged = "Camouflaged",
+    UI_EFT_Trait_Camouflaged_Desc = "Zomboids might think you’re one of them from a distance",
+
     UI_EFT_Trait_WellFunded = "Well Funded",
+    UI_EFT_Trait_WellFunded_Desc = "Well Funded",
+
     UI_EFT_Trait_ExtractionExpert = "Extraction Expert",
+    UI_EFT_Trait_ExtractionExpert_Desc = "Time required to extract is significantly reduced",
+
     UI_EFT_Trait_LongBluntTraining = "Long Blunt Training",
+
     UI_EFT_Trait_LongBladeTraining = "Long Blade Training",
+
     UI_EFT_Trait_ShortBladeTraining = "Short Blade Training",
+
     UI_EFT_Trait_ShortBladeTraining = "Short Blade Training",
+
     UI_EFT_Trait_FirearmTraining = "FirearmTraining",
+
     UI_EFT_Trait_Breacher = "Breacher",
+
     UI_EFT_Trait_WellComposed = "Well Composed",
+
     UI_EFT_Trait_PackMule = "Pack Mule",
+
     UI_EFT_Trait_BattleHardened = "Battle-hardened",
+
     UI_EFT_Trait_FullPowerFighter = "Full Power Fighter",
+
     UI_EFT_Trait_Agile = "Agile",
+
     UI_EFT_Trait_Curable = "Curable",
+
     UI_EFT_Trait_Immune = "Immune",
+
 
     UI_EFT_Trait_SmallPockets = "Small Pockets",
     UI_EFT_Trait_Exposed = "Exposed",
