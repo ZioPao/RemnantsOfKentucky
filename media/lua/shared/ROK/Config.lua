@@ -389,7 +389,7 @@ table.insert(PZ_EFT_CONFIG.RandomExtractionPoints, {
     isRandom = true
 })
 
-
+--------------------------------------------------
 --* Starter kit setup
 
 ---@alias starterKitType {fullType : string, amount : number}
@@ -526,3 +526,19 @@ PZ_EFT_CONFIG.StarterKitLocations["Base.Bag_DuffelBag"] = {
     [3] = {x = 0, y = 4, isRotated = false},
     [4] = {x = 3, y = 4, isRotated = false},
 }
+
+---------------------------------------------------
+-- --* Sandbox Vars override
+-- local function ForceSetSandboxVars()
+--     debugPrint("Setting foced Sandbox Vars")
+--     local options = SandboxOptions.new()
+-- 	options:copyValuesFrom(getSandboxOptions())
+
+--     options['Zombies'] = 5
+--     options['WaterShutModifier'] = 2147483647
+--     options['ElecShutModifier'] = 2147483647
+
+--     options:sendToServer()
+-- end
+
+-- Events.OnGameStart.Add(ForceSetSandboxVars)
