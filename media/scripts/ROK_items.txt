@@ -16,4 +16,13 @@ module ROK
 		DisplayCategory = Hidden,
 
 	}
+
+	item ROKPoster
+	{
+		Weight = 0.2,
+		Type = Moveable,
+		WorldObjectSprite = PZ_EFT_HousePoster_0,
+		DisplayName = ROK Poster,
+		Icon = Poster,
+	}
 }

@@ -8,3 +8,5 @@ tags=Build 41
 versionMin=41.0
 modversion=0.9.1
 require=INVENTORY_TETRIS
+pack=ROKPoster
+tiledef=PZ_EFT_Posters 353
