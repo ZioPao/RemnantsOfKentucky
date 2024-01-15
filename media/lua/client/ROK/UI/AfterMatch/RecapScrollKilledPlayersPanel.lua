@@ -1,26 +1,26 @@
-local ShopItemsManager = require("ROK/ShopItemsManager")
+-- TODO Wrong base class, we don't want Items
+
+
 local BaseScrollItemsPanel = require("ROK/UI/BaseComponents/BaseScrollItemsPanel")
---------------
+----------------
+---@class RecapScrollKilledPlayersPanel : BaseScrollItemsPanel
+local RecapScrollKilledPlayersPanel = BaseScrollItemsPanel:derive("RecapScrollKilledPlayersPanel")
 
----@class RecapScrollItemspanel : BaseScrollItemsPanel
-local RecapScrollItemsPanel = BaseScrollItemsPanel:derive("RecapScrollItemsPanel")
-
-function RecapScrollItemsPanel:new(x, y, width, height)
-    ---@type RecapScrollItemspanel
+function RecapScrollKilledPlayersPanel:new(x, y, width, height)
+    ---@type RecapScrollKilledPlayersPanel
     local o = BaseScrollItemsPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
 
-    ---@cast o RecapScrollItemsPanel
-    RecapScrollItemsPanel.instance = o
+    ---@cast o RecapScrollKilledPlayersPanel
+    RecapScrollKilledPlayersPanel.instance = o
     return o
 end
-
-function RecapScrollItemsPanel:createChildren()
+function RecapScrollKilledPlayersPanel:createChildren()
     BaseScrollItemsPanel.createChildren(self)
 
     self.scrollingListBox:setElementsPerRow(1)
-    self.scrollingListBox.doDrawItem = RecapScrollItemsPanel.DrawItem
+    self.scrollingListBox.doDrawItem = RecapScrollKilledPlayersPanel.DrawItem
     self.scrollingListBox.onMouseDown = nil
 end
 
@@ -29,8 +29,7 @@ end
 ---@param item {item : {actualItem : Item, fullType : string}, height : number}
 ---@param rowElementNumber number
 ---@return number
-function RecapScrollItemsPanel.DrawItem(itemsBox, y, item, rowElementNumber)
-    -- Multi item same line
+function RecapScrollKilledPlayersPanel.DrawItem(itemsBox, y, item, rowElementNumber)
     if y + itemsBox:getYScroll() >= itemsBox.height then return y + item.height end
     if y + item.height + itemsBox:getYScroll() <= 0 then return y + item.height end
 
@@ -70,4 +69,4 @@ function RecapScrollItemsPanel.DrawItem(itemsBox, y, item, rowElementNumber)
     return y + item.height
 end
 
-return RecapScrollItemsPanel
+return RecapScrollKilledPlayersPanel

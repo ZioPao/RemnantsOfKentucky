@@ -7,10 +7,10 @@ local TilesScrollingListBox = require("ROK/UI/BaseComponents/TilesScrollingListB
 ---@field parent StoreContainerPanel
 local BaseScrollItemsPanel = ISPanelJoypad:derive("BaseScrollItemsPanel")
 
----@param x any
----@param y any
----@param width any
----@param height any
+---@param x number
+---@param y number
+---@param width number
+---@param height number
 ---@return BaseScrollItemsPanel
 function BaseScrollItemsPanel:new(x, y, width, height)
     local o = ISPanelJoypad:new(x, y, width, height)

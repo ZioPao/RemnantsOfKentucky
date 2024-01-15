@@ -1,6 +1,8 @@
 local TextureScreen = require("ROK/UI/BaseComponents/TextureScreen")
 local LootRecapHandler = require("ROK/Match/LootRecapHandler")
 local RecapScrollItemsPanel = require("ROK/UI/AfterMatch/RecapScrollItemsPanel")
+local RecapScrollKilledPlayersPanel = require("ROK/UI/AfterMatch/RecapScrollKilledPlayersPanel")
+
 --------------
 
 ---@class RecapPanel : TextureScreen
@@ -27,8 +29,8 @@ end
 function RecapPanel:createChildren()
     TextureScreen.createChildren(self)
 
-    --TODO List of items that the player has extracted
 
+    -- Scaling calculated for 16:9 screens
     local scaleX = 6.50847457627119
     local scaleY = 7.3469387755102
 
@@ -49,11 +51,20 @@ function RecapPanel:createChildren()
 
     local marginX = 10
     local marginY = 10
-    self.itemsBox = RecapScrollItemsPanel:new(marginX, marginY, self.mainContainerPanel.width/1.5, self.mainContainerPanel.height - marginY*2)
+    local boxHeight = self.mainContainerPanel.height - marginY*2
+
+    -- List of items that the player has extracted
+    self.itemsBox = RecapScrollItemsPanel:new(marginX, marginY, self.mainContainerPanel.width/1.5, boxHeight)
     self.itemsBox:initalise()
     self.mainContainerPanel:addChild(self.itemsBox)
 
-    --TODO List of players that the current player has killed
+    local remainingX = self.itemsBox:getWidth()
+    local killedPlayersBoxWidth = self.mainContainerPanel:getWidth() - self.itemsBox:getWidth() - marginX
+    -- List of players that the current player has killed
+    self.killedPlayersBox = RecapScrollKilledPlayersPanel:new(remainingX, marginY, killedPlayersBoxWidth, boxHeight)
+    self.killedPlayersBox:initialise()
+    self.mainContainerPanel:addChild(self.killedPlayersBox)
+
 end
 
 

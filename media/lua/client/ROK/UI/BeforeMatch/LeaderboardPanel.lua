@@ -240,8 +240,7 @@ function LeaderboardPanel.SetBankAccounts(accounts)
 
     LeaderboardPanel.bankAccounts = sortedAccounts
         --debugPrint(sortedAccounts)
-        --PZEFT_UTILS.PrintTable(sortedAccounts)
-    
+    PZEFT_UTILS.PrintTable(sortedAccounts)
 end
 
 
