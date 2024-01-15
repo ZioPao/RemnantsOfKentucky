@@ -1,4 +1,5 @@
 local SafehouseInstanceManager = require("ROK/SafehouseInstanceManager")
+local ShopItemsManager = require("ROK/ShopItemsManager")
 
 -- TODO Add to the bank account I guess?
 local CratesValueCalculator = {}
@@ -11,7 +12,7 @@ function CratesValueCalculator.GetCrates(username)
 
     local cratesTable = {}
     if safehouse == nil then
-        error("ERROR: can't find safehouse!")
+        debugPrint("ERROR: can't find safehouse for player " .. username)
         return
     end
     for _, group in pairs(PZ_EFT_CONFIG.SafehouseInstanceSettings.safehouseStorage) do
@@ -28,13 +29,23 @@ function CratesValueCalculator.GetCrates(username)
         end
     end
 
-    debugPrint("Found " .. #cratesTable .. " crates")
+    --debugPrint("Found " .. #cratesTable .. " crates")
 
     return cratesTable
 end
 
 function CratesValueCalculator.GetValue(item)
-    -- TODO Based on Config
+    local fullType = item:getFullType()
+    local shopItem = ShopItemsManager.GetItem(fullType)
+
+    if shopItem then
+        --debugPrint(fullType .. " : $" .. tostring(shopItem.basePrice))
+        return shopItem.basePrice
+    else
+        print("Couldn't find item with fullType " .. item:getFullType())
+        return 0
+    end
+
 end
 
 ---@param username string
@@ -47,20 +58,15 @@ function CratesValueCalculator.CalculateValueAllItems(username)
         local crate = crates[i]
         local crateItems = crate:getItems()
         for j=0, crateItems:size() - 1 do
-
-
             local item = crateItems:get(j)
             value = value + CratesValueCalculator.GetValue(item)
-
-
-
         end
-
         -- TODO Get Items inside and calculate value
-
     end
 
     return value
 
     -- TODO save it somewhere
 end
+
+return CratesValueCalculator

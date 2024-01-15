@@ -8,6 +8,15 @@ local MODULE = 'SERVER_DEBUG'
 
 local ClientCommands = {}
 
+ClientCommands.calculateCratesValue = function(playerObj)
+    local username = playerObj:getUsername()
+
+    local CratesValueCalculator = require("ROK/Economy/CratesValueCalculator")
+    local x = CratesValueCalculator.CalculateValueAllItems(username)
+    debugPrint("Got crates value for player " .. username)
+    debugPrint(tostring(x))
+end
+
 ClientCommands.loadNewInstances = function()
     PvpInstanceManager.LoadPvpInstances()
 end

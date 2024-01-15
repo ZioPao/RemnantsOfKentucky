@@ -40,7 +40,7 @@ function LeaderboardScrollingTable:createChildren()
     self.datas.drawBorder = true
     self.datas:addColumn("#", 0)
     self.datas:addColumn("Player", 100)
-    self.datas:addColumn("Balance", 400)
+    self.datas:addColumn("Total balance", 400)
     self:addChild(self.datas)
 end
 
@@ -61,6 +61,11 @@ function LeaderboardScrollingTable:update()
     self.datas.doDrawItem = self.drawDatas
 end
 
+---comment
+---@param y any
+---@param item {index : number, itemindex : number, item : bankPlayerTable}
+---@param alt any
+---@return unknown
 function LeaderboardScrollingTable:drawDatas(y, item, alt)
     if y + self:getYScroll() + self.itemheight < 0 or y + self:getYScroll() >= self.height then
         return y + self.itemheight
@@ -97,7 +102,9 @@ function LeaderboardScrollingTable:drawDatas(y, item, alt)
     self:clearStencilRect()
 
     -- Balance
-    self:drawText("$" .. tostring(item.item.balance), self.columns[3].size + xOffset, y + 4, 1, 1, 1, a, self.font)
+
+    local totalBalance = item.item.balance + item.item.cratesValue
+    self:drawText("$" .. tostring(totalBalance), self.columns[3].size + xOffset, y + 4, 1, 1, 1, a, self.font)
 
     return y + self.itemheight
 end

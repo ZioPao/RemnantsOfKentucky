@@ -5,11 +5,12 @@ local LeaderboardPanel = require("ROK/UI/BeforeMatch/LeaderboardPanel")
 ---@class ClientBankManager
 local ClientBankManager = {}
 
-function ClientBankManager.RequestBankAccountFromServer()
+---@param updateCratesValue boolean?
+function ClientBankManager.RequestBankAccountFromServer(updateCratesValue)
     local md = PZEFT_UTILS.GetPlayerModData()
     md.bankAccount = nil
     debugPrint("Requesting bank account from client")
-    sendClientCommand(EFT_MODULES.Bank, "SendBankAccount", {})
+    sendClientCommand(EFT_MODULES.Bank, "SendBankAccount", {updateCratesValue = updateCratesValue or false})
 end
 
 --- Returns account balance from player's mod data
@@ -65,7 +66,7 @@ function BankCommands.GetBankAccount(args)
         debugPrint('ERROR: ServerCommands.GetBankAccount - Tried to update bank account without ARGS')
         return
     end
-    PZEFT_UTILS.PrintTable(args.account)
+    --PZEFT_UTILS.PrintTable(args.account)
     local md = PZEFT_UTILS.GetPlayerModData()
     md.bankAccount = args.account
 end

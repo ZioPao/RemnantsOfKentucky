@@ -1,7 +1,10 @@
 local ClientState = require("ROK/ClientState")
 local LoadingScreen = require("ROK/UI/LoadingScreen")
+local ClientBankManager = require("ROK/Economy/ClientBankManager")
 local Delay = require("ROK/Delay")
 -----------------------------
+local CratesHandling = {}
+
 
 --* Startup handling
 
@@ -22,6 +25,10 @@ local function OnPlayerInit()
         --* Shop Items
         debugPrint("Requesting TransmitShopItems to the client now that player is in")
         sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', {})
+
+        --* Request bank account 
+        --sendClientCommand(EFT_MODULES.Bank, 'UpdateCratesValue', {})
+        CratesHandling.ToggleContainersValueUpdate(false)
 
         --* Clean map
         ISWorldMap.HandleEFTExits(true)
@@ -64,3 +71,31 @@ end
 Events.OnPlayerDeath.Add(OnPlayerExit)
 Events.OnDisconnect.Add(OnPlayerExit)
 
+
+--* Crates handling
+
+
+function CratesHandling.UpdateContainersValue()
+    -- TODO Stupid heavy, figure out a better way to check when a container status changes instead of this crap
+    --sendClientCommand(EFT_MODULES.Bank, 'UpdateCratesValue', {})
+    debugPrint("Update containers value, requesting bank account again")
+    ClientBankManager.RequestBankAccountFromServer(true)
+
+end
+
+---comment
+---@param isInRaid boolean
+function CratesHandling.ToggleContainersValueUpdate(isInRaid)
+    debugPrint("Toggling UpdateCratesValue")
+
+    if not isInRaid then
+        Events.EveryOneMinute.Remove(CratesHandling.UpdateContainersValue)
+        Events.EveryOneMinute.Add(CratesHandling.UpdateContainersValue)
+    else
+        Events.EveryOneMinute.Remove(CratesHandling.UpdateContainersValue)
+    end
+end
+
+
+
+Events.PZEFT_UpdateClientStatus.Add(CratesHandling.ToggleContainersValueUpdate)

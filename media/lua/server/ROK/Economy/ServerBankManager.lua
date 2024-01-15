@@ -1,4 +1,5 @@
 if not isServer() then return end
+local CratesValueCalculator = require("ROK/Economy/CratesValueCalculator")
 require "ROK/ServerData"
 ------------------------------
 
@@ -68,12 +69,25 @@ function BankCommands.SetBankAccount(playerObj)
 end
 
 --- Sends command to client to set the player's safehouse
+---@param args {updateCratesValue : boolean}
 ---@param playerObj IsoPlayer
-function BankCommands.SendBankAccount(playerObj)
-    local account = ServerBankManager.GetOrCreateAccount(playerObj:getUsername())
+function BankCommands.SendBankAccount(playerObj, args)
+    local username = playerObj:getUsername()
+    local account = ServerBankManager.GetOrCreateAccount(username)
     debugPrint("Running SendBankAccount")
+
+    if args.updateCratesValue == true then
+        account.cratesValue= CratesValueCalculator.CalculateValueAllItems(username)
+    end
     --PZEFT_UTILS.PrintTable(account)
     sendServerCommand(playerObj, EFT_MODULES.Bank, 'GetBankAccount', {account=account})
+end
+
+function BankCommands.UpdateCratesValue(playerObj)
+    debugPrint("Setting crates value")
+    local username = playerObj:getUsername()
+    local account = ServerBankManager.GetOrCreateAccount(username)
+    account.cratesValue= CratesValueCalculator.CalculateValueAllItems(username)
 end
 
 

@@ -249,6 +249,12 @@ function ServerData_client_debug.loadShopPrices()
     sendClientCommand("SERVER_DEBUG", "loadShopPrices", {})
 end
 
+
+function ServerData_client_debug.calculateCratesValue()
+    sendClientCommand("SERVER_DEBUG", "calculateCratesValue", {})
+
+end
+
 -- function ServerData_client_debug.transmit_shop_prices()
 --     sendClientCommand("SERVER_DEBUG")
 -- end
