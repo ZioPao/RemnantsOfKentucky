@@ -40,7 +40,6 @@ local function OnPlayerInit()
 end
 
 
---Events.OnCreateLivingCharacter.Add(OnPlayerInit)
 Events.OnPlayerUpdate.Add(OnPlayerInit)
 
 
@@ -78,7 +77,7 @@ Events.OnDisconnect.Add(OnPlayerExit)
 function CratesHandling.UpdateContainersValue()
     -- TODO Stupid heavy, figure out a better way to check when a container status changes instead of this crap
     --sendClientCommand(EFT_MODULES.Bank, 'UpdateCratesValue', {})
-    debugPrint("Update containers value, requesting bank account again")
+    --debugPrint("Update containers value, requesting bank account again")
     ClientBankManager.RequestBankAccountFromServer(true)
 
 end

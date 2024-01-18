@@ -207,7 +207,7 @@ function ManagePlayersPanel:initialise()
     local normalBtnHeight = 25
 
     self.btnWipeEverything = ISButton:new(xPadding, self:getHeight() - normalBtnHeight - 10, normalBtnWidth,
-        normalBtnHeight / 1.5, getText("IGUI_EFT_AdminPanel_WipeEverything"), self, ManagePlayersPanel.onClick)
+        normalBtnHeight / 1.2, getText("IGUI_EFT_AdminPanel_WipeEverything"), self, ManagePlayersPanel.onClick)
     self.btnWipeEverything.internal = "WIPE_EVERYTHING"
     self.btnWipeEverything:setTooltip(getText("IGUI_EFT_AdminPanel_Tooltip_WipeEverything"))
     self.btnWipeEverything:setImage(deleteDataIco)

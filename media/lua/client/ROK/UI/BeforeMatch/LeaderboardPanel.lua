@@ -169,7 +169,9 @@ function LeaderboardPanel:createChildren()
 
     yOffset = yOffset + self.filterEntry:getHeight() + yMargin
 
-    self.panel = ISTabPanel:new(xOffset, yOffset, self:getWidth() - xOffset * 2, self:getHeight() - yOffset)
+
+    -- TODO Test if this thing actually scrolls
+    self.panel = ISTabPanel:new(xOffset, yOffset, self:getWidth() - xOffset * 2, self:getHeight())
     self.panel:initialise()
     self.panel.borderColor = { r = 0, g = 0, b = 0, a = 0 }
     self.panel.target = self
@@ -177,6 +179,7 @@ function LeaderboardPanel:createChildren()
     self.panel.tabTransparency = 0
     self.panel.tabHeight = 0
     self:addChild(self.panel)
+
     self.mainCategory = LeaderboardScrollingTable:new(0, 0, self.panel.width, self.panel.height, self)
     self.mainCategory:initialise()
     self.panel:addView("", self.mainCategory)
