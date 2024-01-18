@@ -150,7 +150,7 @@ function DuringMatchAdminPanel:update()
     self.labelTime.textDirty = true
 
     -- Close the panel automatically if the client is not in a raid anymore
-    if not ClientState.isInRaid then
+    if not ClientState.GetIsInRaid() then
         self:close()        -- TODO test this
     end
 end

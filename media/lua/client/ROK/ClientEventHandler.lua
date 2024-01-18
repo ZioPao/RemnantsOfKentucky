@@ -47,7 +47,7 @@ Events.OnPlayerUpdate.Add(OnPlayerInit)
 
 -- If player in raid, set that they're not in it anymore
 local function OnPlayerExit()
-    if ClientState.isInRaid == false then return end
+    if ClientState.GetIsInRaid() == false then return end
 
     sendClientCommand(EFT_MODULES.Match, "RemovePlayer", {})
 

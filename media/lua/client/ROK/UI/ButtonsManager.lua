@@ -47,7 +47,7 @@ ButtonManager.firstInit = true
 ButtonManager.additionalY = 10
 
 local function OpenAdminMenu()
-    if not ClientState.isInRaid then
+    if not ClientState.GetIsInRaid() then
         BeforeMatchAdminPanel.OnOpenPanel()
     else
         DuringMatchAdminPanel.OnOpenPanel()

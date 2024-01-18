@@ -15,6 +15,10 @@ local ClientState = {
     isAdminMode = false
 }
 
+function ClientState.GetIsInRaid()
+    return ClientState.isInRaid
+end
+
 function ClientState.ResetMatchValues()
     ClientState.isStartingMatch = false
     ClientState.extractionStatus = {}
@@ -35,18 +39,18 @@ function ClientStateCommands.SetClientStateIsInRaid(args)
     ClientState.isInRaid = args.value
 
 
-    if ClientState.isInRaid == true then
+    if args.value == true then
         triggerEvent("PZEFT_OnMatchStart")
     else
         triggerEvent("PZEFT_OnMatchEnd")
     end
 
-    triggerEvent("PZEFT_UpdateClientStatus", ClientState.isInRaid)
+    triggerEvent("PZEFT_UpdateClientStatus", args.value)
 end
 
 
 function ClientStateCommands.CommitDieIfInRaid()
-    if ClientState.isInRaid then
+    if ClientState.GetIsInRaid() then
         ClientState.extractionStatus = {}
         local pl = getPlayer()
         pl:Kill(pl)

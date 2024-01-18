@@ -16,6 +16,7 @@
 ]]
 
 require "ISUI/ISCollapsableWindow"
+local ClientState = require("ROK/ClientState")
 
 -- TODO Add sellMultiplier
 -- TODO Add filtering
@@ -192,6 +193,7 @@ end
 ---@return boolean
 local function AddShopMenu(playerNum, context, worldObjects, test)
     if test then return true end
+    if ClientState.GetIsInRaid() then return true end
 
     ---@type IsoObject
     local clickedObject = worldObjects[1]
