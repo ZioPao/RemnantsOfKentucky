@@ -74,7 +74,7 @@ end
 function BankCommands.SendBankAccount(playerObj, args)
     local username = playerObj:getUsername()
     local account = ServerBankManager.GetOrCreateAccount(username)
-    debugPrint("Running SendBankAccount")
+    --debugPrint("Running SendBankAccount")
 
     if args.updateCratesValue == true then
         account.cratesValue= CratesValueCalculator.CalculateValueAllItems(username)
@@ -126,7 +126,7 @@ end
 
 local function OnBankCommands(module, command, playerObj, args)
     if module == EFT_MODULES.Bank and BankCommands[command] then
-        debugPrint("Client Command - " .. EFT_MODULES.Bank .. "." .. command)
+        --debugPrint("Client Command - " .. EFT_MODULES.Bank .. "." .. command)
         BankCommands[command](playerObj, args)
     end
 end

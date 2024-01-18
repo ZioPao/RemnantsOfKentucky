@@ -238,16 +238,22 @@ function LeaderboardPanel.SetBankAccounts(accounts)
         table.insert(sortedAccounts, v)
     end
 
+    ---@param a bankPlayerTable
+    ---@param b bankPlayerTable
+    ---@return boolean
     local function SortByBalance(a,b)
-        return a.balance > b.balance
+        return a.balance + a.cratesValue > b.balance + b.cratesValue
     end
 
     table.sort(sortedAccounts, SortByBalance)
 
 
+    -- TODO This is crap
     LeaderboardPanel.bankAccounts = sortedAccounts
-        --debugPrint(sortedAccounts)
-    PZEFT_UTILS.PrintTable(sortedAccounts)
+    LeaderboardPanel.instance.mainCategory:initList(LeaderboardPanel.bankAccounts)
+
+    --debugPrint(sortedAccounts)
+   -- PZEFT_UTILS.PrintTable(sortedAccounts)
 end
 
 

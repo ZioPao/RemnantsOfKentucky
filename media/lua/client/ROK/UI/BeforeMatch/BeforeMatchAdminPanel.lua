@@ -72,13 +72,13 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnSetTime:setEnable(false)
     self:addChild(self.btnSetTime)
 
-    y = y - btnHeight - yPadding
+    --y = y - btnHeight - yPadding
 
-    self.btnAdminMode = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
-    self.btnAdminMode.internal = "ADMIN_MODE"
-    self.btnAdminMode:initialise()
-    self.btnAdminMode:setEnable(false)
-    self:addChild(self.btnAdminMode)
+    -- self.btnAdminMode = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
+    -- self.btnAdminMode.internal = "ADMIN_MODE"
+    -- self.btnAdminMode:initialise()
+    -- self.btnAdminMode:setEnable(false)
+    -- self:addChild(self.btnAdminMode)
 
     --------------------
     -- INFO PANEL, TOP ONE
@@ -104,12 +104,9 @@ function BeforeMatchAdminPanel:createChildren()
 
 
     -- Top of the panelInfo
-    self:createIsRichTextPanel("labelInstancesAvailable", "panelInfo", 0, 0, labelWidth, labelHeight, labelHeight/4, AVAILABLE_INSTANCES_STR)
-    self:createIsRichTextPanel("labelAssignedSafehouses", "panelInfo", labelWidth, 0, labelWidth, labelHeight, labelHeight/4, ASSIGNED_SAFEHOUSES_STR)
-
+    self:createIsRichTextPanel("labelInstancesAvailable", "panelInfo", labelWidth/2, 0, labelWidth, labelHeight, labelHeight/4, AVAILABLE_INSTANCES_STR)
     -- Bottom of Panel Info
-    self:createIsRichTextPanel("labelValInstancesAvailable", "panelInfo", 0, labelHeight + yPadding, labelWidth, labelHeight, 0, "")
-    self:createIsRichTextPanel("labelValAssignedSafehouses", "panelInfo", labelWidth, labelHeight + yPadding, labelWidth, labelHeight, 0, "")
+    self:createIsRichTextPanel("labelValInstancesAvailable", "panelInfo", labelWidth/2, labelHeight + yPadding, labelWidth, labelHeight, 0, "")
 
 end
 
@@ -160,16 +157,15 @@ function BeforeMatchAdminPanel:update()
     -- When starting the match, we'll disable the default close button
     self.closeButton:setEnable(not ClientState.isStartingMatch)
     self.btnManagePlayers:setEnable(not ClientState.isStartingMatch)
-    self.btnAdminMode:setEnable(not ClientState.isStartingMatch)
+    --self.btnAdminMode:setEnable(not ClientState.isStartingMatch)
 
 
     -- Change title to btnAdminMode
-    if ClientState.isAdminMode then
-        self.btnAdminMode.title = getText("IGUI_EFT_AdminPanel_AdminModeOn")
-    else
-        self.btnAdminMode.title = getText("IGUI_EFT_AdminPanel_AdminModeOff")
-
-    end
+    -- if ClientState.isAdminMode then
+    --     self.btnAdminMode.title = getText("IGUI_EFT_AdminPanel_AdminModeOn")
+    -- else
+    --     self.btnAdminMode.title = getText("IGUI_EFT_AdminPanel_AdminModeOff")
+    -- end
 
     -- Check hour 
     local time = getGameTime():getTimeOfDay()
@@ -198,9 +194,9 @@ function BeforeMatchAdminPanel:update()
         self.btnSetTime:setEnable(not ClientState.isStartingMatch)
     end
 
-    local valAssignedSafehousesText = " <CENTRE> -1"     -- TODO This is a placeholder!
-    self.labelValAssignedSafehouses:setText(valAssignedSafehousesText)
-    self.labelValAssignedSafehouses.textDirty = true
+    -- local valAssignedSafehousesText = " <CENTRE> -1"     -- TODO This is a placeholder!
+    -- self.labelValAssignedSafehouses:setText(valAssignedSafehousesText)
+    -- self.labelValAssignedSafehouses.textDirty = true
 end
 
 function BeforeMatchAdminPanel:setAvailableInstancesText(text)

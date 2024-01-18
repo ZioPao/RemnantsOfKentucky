@@ -25,4 +25,4 @@ local function OnTimeCommand(module, command, playerObj, args)
     end
 end
 
-Events.OnClientCommand.Add(TimeCommands)
+Events.OnClientCommand.Add(OnTimeCommand)

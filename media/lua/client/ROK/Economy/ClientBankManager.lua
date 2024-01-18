@@ -9,7 +9,7 @@ local ClientBankManager = {}
 function ClientBankManager.RequestBankAccountFromServer(updateCratesValue)
     local md = PZEFT_UTILS.GetPlayerModData()
     md.bankAccount = nil
-    debugPrint("Requesting bank account from client")
+    --debugPrint("Requesting bank account from client")
     sendClientCommand(EFT_MODULES.Bank, "SendBankAccount", {updateCratesValue = updateCratesValue or false})
 end
 
@@ -84,7 +84,7 @@ end
 
 local function OnBankCommands(module, command, args)
     if module == EFT_MODULES.Bank and BankCommands[command] then
-        debugPrint("Server Command - " .. EFT_MODULES.Bank .. "." .. command)
+        --debugPrint("Server Command - " .. EFT_MODULES.Bank .. "." .. command)
         BankCommands[command](args)
     end
 end
