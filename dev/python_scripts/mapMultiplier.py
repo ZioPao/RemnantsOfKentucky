@@ -14,8 +14,8 @@ inc_y = 2 + buffer
 
 cwd = os.getcwd()
 
-input_dir = os.path.join(cwd, "input")
-output_dir = os.path.join(cwd, "output")
+input_dir = os.path.join(cwd, "dev", "python_scripts", "map_data")
+output_dir = os.path.join(cwd, "dev", "python_scripts", "map_output")
 
 if not os.path.exists(output_dir):
     os.mkdir(output_dir)
