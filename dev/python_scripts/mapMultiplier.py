@@ -1,9 +1,6 @@
 import shutil
 import os
 
-start_x = 2
-start_y = 1
-
 x_grid_len = 10
 y_grid_len = 10
 
@@ -46,53 +43,53 @@ base_lotheader = "{x}_{y}.lotheader"
 base_chunkdata = "chunkdata_{x}_{y}.bin"
 base_lotpack = "world_{x}_{y}.lotpack"
 
-start_x = 0
+start_x = 50
 start_y = 0
 copyLoop(base_lotheader)
 copyLoop(base_chunkdata)
 copyLoop(base_lotpack)
 
 
-start_x = 0
+start_x = 50
 start_y = 1
 copyLoop(base_lotheader)
 copyLoop(base_chunkdata)
 copyLoop(base_lotpack)
 
-start_x = 1
+start_x = 51
 start_y = 0
 copyLoop(base_lotheader)
 copyLoop(base_chunkdata)
 copyLoop(base_lotpack)
 
-start_x = 1
-start_y = 1
-copyLoop(base_lotheader)
-copyLoop(base_chunkdata)
-copyLoop(base_lotpack)
-
-
-start_x = 2
-start_y = 0
-copyLoop(base_lotheader)
-copyLoop(base_chunkdata)
-copyLoop(base_lotpack)
-
-start_x = 2
+start_x = 51
 start_y = 1
 copyLoop(base_lotheader)
 copyLoop(base_chunkdata)
 copyLoop(base_lotpack)
 
 
-start_x = 3
+start_x = 52
+start_y = 0
+copyLoop(base_lotheader)
+copyLoop(base_chunkdata)
+copyLoop(base_lotpack)
+
+start_x = 52
+start_y = 1
+copyLoop(base_lotheader)
+copyLoop(base_chunkdata)
+copyLoop(base_lotpack)
+
+
+start_x = 53
 start_y = 0
 copyLoop(base_lotheader)
 copyLoop(base_chunkdata)
 copyLoop(base_lotpack)
 
 
-start_x = 3
+start_x = 53
 start_y = 1
 copyLoop(base_lotheader)
 copyLoop(base_chunkdata)

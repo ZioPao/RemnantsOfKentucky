@@ -57,7 +57,6 @@ end
 function DuringMatchAdminPanel:createChildren()
     BaseAdminPanel.createChildren(self)
 
-    
     local xPadding = 20
     local yPadding = 20
 
@@ -79,7 +78,7 @@ function DuringMatchAdminPanel:createChildren()
     self.btnMatchOptions:initialise()
     self.btnMatchOptions:setEnable(not self:getIsMatchEnded())
     self:addChild(self.btnMatchOptions)
-    
+
     -----------------------
 
     self.panelInfo = ISPanel:new(0, 20, self:getWidth(), self:getHeight() - y)
@@ -104,7 +103,6 @@ function DuringMatchAdminPanel:createChildren()
     self.labelAlivePlayers:paginate()
     self.panelInfo:addChild(self.labelAlivePlayers)
 
-    
 
 end
 
@@ -134,7 +132,7 @@ function DuringMatchAdminPanel:update()
     BaseAdminPanel.update(self)
     local firstLabelText = "" -- Time or announcements
 
-    if self:getIsMatchEnded() then
+    if self:getIsMatchEnded() or ClientState.currentTime == -1 then
         firstLabelText = getText("IGUI_EFT_AdminPanel_MatchEnded")
         self.btnStop:setEnable(false)
         self:setAlivePlayersText(nil)
@@ -151,7 +149,7 @@ function DuringMatchAdminPanel:update()
 
     -- Close the panel automatically if the client is not in a raid anymore
     if not ClientState.GetIsInRaid() then
-        self:close()        -- TODO test this
+        self:close()
     end
 end
 

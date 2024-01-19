@@ -1,6 +1,9 @@
 local TextureScreen = require("ROK/UI/BaseComponents/TextureScreen")
 --------------
 
+-- TODO Add a fail safe
+
+
 ---@class LoadingScreen : TextureScreen
 ---@field text string
 ---@field textX number

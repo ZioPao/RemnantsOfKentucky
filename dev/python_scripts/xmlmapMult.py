@@ -6,18 +6,16 @@ import copy
 
 
 
-start_x = 4
+start_x = 50
 start_y = 0
 
-end_x = 3
-end_y = 1
 
 
-max_x = 40
-max_y = 20
+# max_x = 40
+# max_y = 20
 
 cwd = os.getcwd()
-input_dir = os.path.join(cwd, "python_scripts", "input")
+input_dir = os.path.join(cwd, "dev", "python_scripts", "input")
 original_file_path = os.path.join(input_dir, 'worldmap_base.xml')
 save_file_path = os.path.join(input_dir, 'new_worldmap.xml')
 
@@ -43,7 +41,7 @@ new_childs = []
 for addedY in range(0, 5):
     new_y = addedY*3
     for addedX in range(0, 7):
-        new_x = addedX*5
+        new_x = addedX*5 + start_x
         for child in root.iter('cell'):
             print(child.attrib)
             new_element = copy.deepcopy(child)  # Save them in a separate list

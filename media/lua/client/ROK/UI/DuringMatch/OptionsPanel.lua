@@ -123,6 +123,8 @@ function OptionsPanel:createHorizontalPanel(name, textLabel, setCommand, askComm
     self[name].entry:setMaxTextLength(1)
     self[name].entry.onTextChange = OnEntryChange
     self[name].entry:setEditable(false)     -- By default it's not enabled, until we get the ok from the server
+    self[name].entry:setAnchorRight(true)
+	self[name].entry:setAnchorBottom(true)
     self[name].entry.syncedWithServer = false
     self[name]:addChild(self[name].entry)
     self[name].referencedCommand = setCommand
