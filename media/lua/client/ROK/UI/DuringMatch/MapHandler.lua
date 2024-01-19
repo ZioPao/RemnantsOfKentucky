@@ -86,6 +86,7 @@ function ISWorldMap.HandleEFTExits(cleanOnly)
 end
 
 -- If we're in a raid, we need to reset the correct symbols. If we're not, we're gonna just clean them off the map
-Events.PZEFT_UpdateClientStatus.Add(function(isInraid)
-    ISWorldMap.HandleEFTExits(not isInRaid)
+Events.PZEFT_UpdateClientStatus.Add(function(status)
+    debugPrint("Updating client status, handling eft exits")
+    ISWorldMap.HandleEFTExits(not status)
 end)

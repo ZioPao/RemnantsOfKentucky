@@ -6,7 +6,7 @@ import copy
 
 
 
-start_x = 50
+start_x = 100
 start_y = 0
 
 
@@ -38,9 +38,9 @@ root = tree.getroot()
 
 new_childs = []
 
-for addedY in range(0, 5):
+for addedY in range(0, 10):
     new_y = addedY*3
-    for addedX in range(0, 7):
+    for addedX in range(0, 10):
         new_x = addedX*5 + start_x
         for child in root.iter('cell'):
             print(child.attrib)

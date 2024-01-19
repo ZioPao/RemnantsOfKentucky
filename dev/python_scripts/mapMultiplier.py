@@ -43,53 +43,53 @@ base_lotheader = "{x}_{y}.lotheader"
 base_chunkdata = "chunkdata_{x}_{y}.bin"
 base_lotpack = "world_{x}_{y}.lotpack"
 
-start_x = 50
+start_x = 100
 start_y = 0
 copyLoop(base_lotheader)
 copyLoop(base_chunkdata)
 copyLoop(base_lotpack)
 
 
-start_x = 50
+start_x = 100
 start_y = 1
 copyLoop(base_lotheader)
 copyLoop(base_chunkdata)
 copyLoop(base_lotpack)
 
-start_x = 51
+start_x = 101
 start_y = 0
 copyLoop(base_lotheader)
 copyLoop(base_chunkdata)
 copyLoop(base_lotpack)
 
-start_x = 51
-start_y = 1
-copyLoop(base_lotheader)
-copyLoop(base_chunkdata)
-copyLoop(base_lotpack)
-
-
-start_x = 52
-start_y = 0
-copyLoop(base_lotheader)
-copyLoop(base_chunkdata)
-copyLoop(base_lotpack)
-
-start_x = 52
+start_x = 101
 start_y = 1
 copyLoop(base_lotheader)
 copyLoop(base_chunkdata)
 copyLoop(base_lotpack)
 
 
-start_x = 53
+start_x = 102
+start_y = 0
+copyLoop(base_lotheader)
+copyLoop(base_chunkdata)
+copyLoop(base_lotpack)
+
+start_x = 102
+start_y = 1
+copyLoop(base_lotheader)
+copyLoop(base_chunkdata)
+copyLoop(base_lotpack)
+
+
+start_x = 103
 start_y = 0
 copyLoop(base_lotheader)
 copyLoop(base_chunkdata)
 copyLoop(base_lotpack)
 
 
-start_x = 53
+start_x = 103
 start_y = 1
 copyLoop(base_lotheader)
 copyLoop(base_chunkdata)

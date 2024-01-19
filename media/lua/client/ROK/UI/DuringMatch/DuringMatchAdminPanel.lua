@@ -132,7 +132,7 @@ function DuringMatchAdminPanel:update()
     BaseAdminPanel.update(self)
     local firstLabelText = "" -- Time or announcements
 
-    if self:getIsMatchEnded() or ClientState.currentTime == -1 then
+    if self:getIsMatchEnded() or ClientState.currentTime == -1 or ClientState.currentTime == 0 then
         firstLabelText = getText("IGUI_EFT_AdminPanel_MatchEnded")
         self.btnStop:setEnable(false)
         self:setAlivePlayersText(nil)

@@ -105,7 +105,7 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
     buffer = 1,
 
     -- first instance x cell position
-    firstXCellPos = 50,
+    firstXCellPos = 100,
     -- first instance y cell position
     firstYCellPos = 0,
 
