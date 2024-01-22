@@ -11,20 +11,22 @@ function SafehouseInstanceHandler.GetCrates()
         debugPrint("ERROR: can't find safehouse! Maybe too soon?")
         return nil
     end
-    for _, group in pairs(PZ_EFT_CONFIG.SafehouseInstanceSettings.safehouseStorage) do
-        local sq = getCell():getGridSquare(safehouse.x + group.x, safehouse.y + group.y, 0)
-        if sq == nil then
-            debugPrint("ERROR: Square not found while searching for crate. Maybe too soon?")
-            break
+    pcall(function()
+        for _, group in pairs(PZ_EFT_CONFIG.SafehouseInstanceSettings.safehouseStorage) do
+            local sq = getCell():getGridSquare(safehouse.x + group.x, safehouse.y + group.y, 0)
+            if sq == nil then
+                debugPrint("ERROR: Square not found while searching for crate. Maybe too soon?")
+                break
+            end
+            local objects = sq:getObjects()
+            for i = 0, objects:size() - 1 do
+                ---@type IsoObject
+                local obj = objects:get(i)
+                if obj:getContainer() ~= nil then table.insert(cratesTable, obj) end
+            end
         end
-        local objects = sq:getObjects()
-        for i = 0, objects:size() - 1 do
+    end)
 
-            ---@type IsoObject
-            local obj = objects:get(i)
-            if obj:getContainer() ~= nil then table.insert(cratesTable, obj) end
-        end
-    end
 
     --debugPrint("Found " .. #cratesTable .. " crates")
 

@@ -40,7 +40,9 @@ function LeaderboardScrollingTable:createChildren()
     self.datas.drawBorder = true
     self.datas:addColumn("#", 0)
     self.datas:addColumn("Player", 100)
-    self.datas:addColumn("Total balance", 400)
+    self.datas:addColumn("Balance", 300)
+    self.datas:addColumn("Crates Value", 450)
+    self.datas:addColumn("Total", 600)
     self:addChild(self.datas)
 end
 
@@ -61,7 +63,6 @@ function LeaderboardScrollingTable:update()
     self.datas.doDrawItem = self.drawDatas
 end
 
----comment
 ---@param y any
 ---@param item {index : number, itemindex : number, item : bankPlayerTable}
 ---@param alt any
@@ -102,9 +103,24 @@ function LeaderboardScrollingTable:drawDatas(y, item, alt)
     self:clearStencilRect()
 
     -- Balance
+    clipX = self.columns[3].size
+    clipX2 = self.columns[4].size
+    self:setStencilRect(clipX, clipY, clipX2 - clipX, clipY2 - clipY)
+    self:drawText("$" .. tostring(item.item.balance), self.columns[3].size + xOffset, y + 4, 1, 1, 1, a, self.font)
+    self:clearStencilRect()
 
+
+    -- Crates Value
+    clipX = self.columns[4].size
+    clipX2 = self.columns[5].size
+    self:setStencilRect(clipX, clipY, clipX2 - clipX, clipY2 - clipY)
+    self:drawText("$" .. tostring(item.item.cratesValue), self.columns[4].size + xOffset, y + 4, 1, 1, 1, a, self.font)
+    self:clearStencilRect()
+
+    -- Total
     local totalBalance = item.item.balance + item.item.cratesValue
-    self:drawText("$" .. tostring(totalBalance), self.columns[3].size + xOffset, y + 4, 1, 1, 1, a, self.font)
+    self:drawText("$" .. tostring(totalBalance), self.columns[5].size + xOffset, y + 4, 1, 1, 1, a, self.font)
+
 
     return y + self.itemheight
 end
