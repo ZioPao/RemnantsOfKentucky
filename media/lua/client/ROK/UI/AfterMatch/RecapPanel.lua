@@ -11,7 +11,7 @@ local RecapScrollKilledPlayersPanel = require("ROK/UI/AfterMatch/RecapScrollKill
 ---@field textY number
 ---@field isClosing boolean
 ---@field closingTime number
-RecapPanel = TextureScreen:derive("RecapPanel")
+local RecapPanel = TextureScreen:derive("RecapPanel")
 
 ---@return RecapPanel
 function RecapPanel:new()
@@ -83,6 +83,15 @@ end
 
 Events.PZEFT_LootRecapReady.Add(RecapPanel.SetupItemsList)
 
+function RecapPanel:prerender()
+
+    TextureScreen.prerender(self)
+    local alpha = 1 - self.closingTime
+
+    self.itemsBox.backgroundColor.a = alpha
+
+end
+
 
 function RecapPanel:close()
     TextureScreen.close(self)
@@ -123,4 +132,4 @@ end
 
 Events.OnResolutionChange.Add(RecapPanel.HandleResolutionChange)
 
---return RecapPanel
+return RecapPanel

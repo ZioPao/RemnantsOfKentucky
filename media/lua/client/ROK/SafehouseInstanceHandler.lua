@@ -238,6 +238,7 @@ function SafehouseInstanceCommands.ReceiveStarterKit()
     debugPrint("ReceiveStarterKit")
     SafehouseInstanceHandler.GiveStarterKit(getPlayer(), true)
 end
+
 ------------------------
 
 local OnSafehouseInstanceCommand = function(module, command, args)

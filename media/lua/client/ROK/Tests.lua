@@ -50,6 +50,7 @@ end)
 --local RecapPanel = require("ROK/UI/AfterMatch/RecapPanel")
 
 TestFramework.registerTestModule("UI", "Debug", function()
+    local RecapPanel = require("ROK/UI/AfterMatch/RecapPanel")
 
     local Tests = {}
     function Tests.OpenRecapPanel()

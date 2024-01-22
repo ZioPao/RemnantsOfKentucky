@@ -2,11 +2,11 @@ local ShopItemsManager = require("ROK/ShopItemsManager")
 local BaseScrollItemsPanel = require("ROK/UI/BaseComponents/BaseScrollItemsPanel")
 --------------
 
----@class RecapScrollItemspanel : BaseScrollItemsPanel
+---@class RecapScrollItemsPanel : BaseScrollItemsPanel
 local RecapScrollItemsPanel = BaseScrollItemsPanel:derive("RecapScrollItemsPanel")
 
 function RecapScrollItemsPanel:new(x, y, width, height)
-    ---@type RecapScrollItemspanel
+    ---@type RecapScrollItemsPanel
     local o = BaseScrollItemsPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self

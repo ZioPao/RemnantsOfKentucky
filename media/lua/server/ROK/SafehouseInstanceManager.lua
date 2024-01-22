@@ -251,6 +251,22 @@ function SafehouseInstanceManagerCommands.ResetSafehouseAllocation(_, args)
 
 end
 
+---@param args {id : number}
+function SafehouseInstanceManagerCommands.DespawnZombies(args)
+    debugPrint("received request to despawn a zombie")
+    local id = args.id
+    local zombies = getCell():getZombieList()
+    for i = 0, zombies:size() - 1 do
+        local zombie = zombies:get(i)
+        if instanceof(zombie, "IsoZombie") and zombie:getOnlineID() == id then
+            zombie:removeFromWorld()
+            zombie:removeFromSquare()
+            return
+        end
+    end
+end
+
+
 local OnSafehouseInstanceManagerCommand = function(module, command, playerObj, args)
     if module == MODULE and SafehouseInstanceManagerCommands[command] then
         -- debugPrint("Client Command - " .. MODULE .. "." .. command)

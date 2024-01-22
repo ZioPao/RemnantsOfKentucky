@@ -33,6 +33,9 @@ local function OnPlayerInit()
         --* Clean map
         ISWorldMap.HandleEFTExits(true)
 
+        --* Force delete zombies while in safehouse (to prevent issues)
+        
+
         LoadingScreen.Close()
     end)
 

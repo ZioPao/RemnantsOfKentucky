@@ -41,7 +41,8 @@ end
 
 function ExtractionPanel:runExtractionMethod()
     self.btnExtract:setEnable(false)
-    local ExtractionHandler = require("ROK/ExtractionHandler")
+    -- Require it from here to prvent issues since we're already requiring the panel in the handler. I'm dumb I know
+    local ExtractionHandler = require("ROK/Match/ExtractionHandler")
     ExtractionHandler.DoExtraction()
 end
 
