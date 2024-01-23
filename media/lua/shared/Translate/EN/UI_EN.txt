@@ -64,4 +64,21 @@ UI_EN = {
     UI_EFT_Trait_Susceptible = "Susceptible",
 
 
+
+
+
+    UI_EFT_Profession_SharpShooter = "Sharpshooter",
+    UI_EFT_Profession_SharpShooter_Desc = "Years of practive with firearms have turned you into a skilled marksman, proficient with a wide variety of guns.",
+
+    UI_EFT_Profession_Brawler = "Brawler",
+    UI_EFT_Profession_Brawler_Desc = "Dozens of fights, both with the alive and undead, have gotten you well acquainted with melee weapons.",
+
+    UI_EFT_Profession_Medic = "Medic",
+    UI_EFT_Profession_Medic_Desc = "Throughout the apocalypse, people have relied upon you to tend to wounds of all types.",
+
+    UI_EFT_Profession_Scavenger = "Scavenger",
+    UI_EFT_Profession_Scavenger_Desc = "You've built up a reputation as an efficient courier, finding rare and valuable items for the highest bidder.",
+
+
+
 }
