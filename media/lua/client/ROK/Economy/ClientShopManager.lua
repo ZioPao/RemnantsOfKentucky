@@ -14,35 +14,6 @@ function ClientShopManager.BuyInstaHeal()
 end
 
 
----@alias sellData table<integer, {itemData : shopItemElement, quantity : number, quality : number}>
-
---- ItemsList is coming from the ScrollingListBox, we need to keep track of quality stuff so that's why we need groups of every single item
----@param itemsList table<integer, {item : table<integer, InventoryItem>}>
----@return sellData
-function ClientShopManager.StructureSellData(itemsList)
-   -- Cycle through the items and structure them in the correct way
-   local structuredData = {}
-    for i=1, #itemsList do
-
-        local quality = 1
-
-        -- TODO Calculate quality based on Usages left, conditions, etc
-        for j=1, #itemsList[i].item do
-            local item = itemsList[i].item[j]
-            quality = quality - 0
-        end
-
-        local genericItem = itemsList[i].item[1]
-        local quantity = #itemsList[i].item
-        local fullType = genericItem:getFullType()
-
-        local itemData = ShopItemsManager.GetItem(fullType)
-        table.insert(structuredData, {itemData = itemData, quantity = quantity, quality = quality})
-    end
-
-    return structuredData
-end
-
 --- Try buy an item for quantity. Let's assume that it's valid if we process the transaction
 ---@param itemData shopItemElement
 ---@param quantity number

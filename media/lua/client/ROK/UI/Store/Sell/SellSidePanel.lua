@@ -47,12 +47,14 @@ end
 function SellSidePanel:render()
     RightSidePanel.render(self)
 
-    local itemsAmount = #self.parent.scrollPanel.scrollingListBox.items
+    ---@type sellData
+    local sellItemsData = self.parent.scrollPanel.scrollingListBox.sellItemsData
+    local itemsAmount = #sellItemsData
     local text
 
     if itemsAmount > 0 then
-        local price = self:calculateSellPrice()
-        text = "<CENTRE> You will receive: $" .. tostring(price)
+        local price = self:getTotalSellPrice(sellItemsData)
+        text = string.format("<CENTRE> You will receive: $%.2f", tostring(price))
     else
         text = ""
     end
@@ -97,19 +99,20 @@ end
 function SellSidePanel:onConfirmSell()
     debugPrint("OnConfirmSell")
 
-    local itemsList = self.parent.scrollPanel.scrollingListBox.items
-
-    -- Cycle through the items and structure them in the correct way
-    local itemsTosell = ClientShopManager.StructureSellData(itemsList)
+    ---@type SellMainPanel
+    local parent = self.parent
+    local itemsToSell = parent:getSellItemsData()
 
     -- Try to sell it and removes item on the client
-    ClientShopManager.TrySell(itemsTosell)
+    ClientShopManager.TrySell(itemsToSell)
 
     -- Clean stuff
     self.textPanel:setText("")
     self.textPanel.textDirty = true
     self.parent.scrollPanel.draggedItems = {}
     self.parent.scrollPanel.scrollingListBox.items = {}
+    self.parent.scrollPanel.scrollingListBox.sellItemsData = {}
+    
 end
 
 ---@param val boolean
@@ -120,25 +123,19 @@ function SellSidePanel:updateNotification(val, cat)
     self.timeShowNotification = os.time() + 3
 end
 
-function SellSidePanel:calculateSellPrice()
+---@param sellItemsData sellData
+---@return number
+function SellSidePanel:getTotalSellPrice(sellItemsData)
     local price = 0
-    local itemsList = self.parent.scrollPanel.scrollingListBox.items
-
-    for i=1, #itemsList do
-        ---@type InventoryItem
-        local item = itemsList[i].item[1]
-        local fullType = item:getFullType()
-        ---@type shopItemElement
-        local itemData = ShopItemsManager.data[fullType]
-
-        if itemData == nil then
-            itemData = {basePrice = 100, sellMultiplier = 0.5}
-        end
-
-        local itemAmount = #itemsList[i].item
-        local itemPrice = itemData.basePrice * itemData.sellMultiplier * itemAmount
-        price = price + itemPrice
+    for i=1, #sellItemsData do
+        local data = sellItemsData[i]
+        local bPrice = data.itemData.basePrice
+        local sellMult = data.itemData.sellMultiplier
+        local quantity = data.quantity
+        local quality = data.quality
+        price = price + (bPrice * sellMult * quantity * quality)
     end
+
     return price
 end
 

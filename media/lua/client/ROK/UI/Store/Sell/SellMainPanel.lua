@@ -21,6 +21,11 @@ function SellMainPanel:new(x, y, width, height)
     return o
 end
 
+---@return sellData
+function SellMainPanel:getSellItemsData()
+    return self.scrollPanel.scrollingListBox.sellItemsData
+end
+
 function SellMainPanel.SetSidePanelNotification(category)
 
     local sidePanel = SellMainPanel.instance.sidePanel
@@ -28,6 +33,8 @@ function SellMainPanel.SetSidePanelNotification(category)
 
     sidePanel:updateNotification(true, category)
 end
+
+
 
 Events.PZEFT_OnFailedSellTransfer.Add(SellMainPanel.SetSidePanelNotification)
 

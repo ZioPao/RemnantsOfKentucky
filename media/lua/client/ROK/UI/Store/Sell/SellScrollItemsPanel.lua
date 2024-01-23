@@ -1,4 +1,5 @@
 local ShopItemsManager = require("ROK/ShopItemsManager")
+local ClientShopManager = require("ROK/Economy/ClientShopManager")
 local StoreScrollItemsPanel = require("ROK/UI/Store/Components/StoreScrollItemsPanel")
 -----------
 
@@ -71,11 +72,30 @@ local function SellDoDrawItem(self, y, item, alt)
         itemData = { basePrice = 100, sellMultiplier = 0.5 }
     end
 
-    local sellPrice = itemData.basePrice * itemData.sellMultiplier
-    local sellpriceStr = "$" .. tostring(sellPrice) .. " x " .. tostring(amount)
-    local sellPriceX = self:getWidth() - getTextManager():MeasureStringX(self.font, sellpriceStr) - 6
 
-    self:drawText(sellpriceStr, sellPriceX - 5, y + 2, 1, 1, 1, a, self.font)
+    -- TODO Horrendous workaround, for playtest
+
+    ---@param iData any
+    ---@return {itemData : any, quantity : number, quality  : number}
+    local function GetSellItemsData(iData)
+
+        for i=1, #self.sellItemsData do
+            local cSellItemData = self.sellItemsData[i]
+            if cSellItemData.itemData == iData then
+                return cSellItemData
+            end
+        end
+        return {}
+    end
+
+    local cSellItemData = GetSellItemsData(itemData)
+    local sellPrice = itemData.basePrice * itemData.sellMultiplier * cSellItemData.quality
+
+    local sellPriceStr = string.format("$%.2f x %d", tostring(sellPrice), tostring(amount))
+    --local sellpriceStr = "$" .. tostring(sellPrice) .. " x " .. tostring(amount)
+    local sellPriceX = self:getWidth() - getTextManager():MeasureStringX(self.font, sellPriceStr) - 6
+
+    self:drawText(sellPriceStr, sellPriceX - 5, y + 2, 1, 1, 1, a, self.font)
 
 
     return y + self.itemheight
@@ -108,6 +128,13 @@ local function SellOnDragItem(self, x, y)
             end
         end
     end
+
+
+
+    -- Cycle through the items and structure them in the correct way.
+    -- Save them in this table
+    self.sellItemsData = ShopItemsManager.StructureSellData(self.items)
+
 end
 
 local function SellPrender(self)
@@ -129,6 +156,7 @@ function SellScrollItemsPanel:createChildren()
     --self.scrollingListBox.onMouseMove = SellOnMouseMove
 
     self.scrollingListBox.itemheight = self.scrollingListBox.fontHgt + self.scrollingListBox.itemPadY * 2
+    self.scrollingListBox.sellItemsData = {}
 end
 
 --- Check player inv and compare it to the alreadyDragged items. If an item is not in their inventory anymore, delete it from the list

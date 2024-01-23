@@ -174,12 +174,8 @@ function MainShopPanel:render()
     local balanceText
 
     -- SP Workaround
-    if isClient then
-        balanceText = getText("IGUI_Shop_CurrentBalance", self.accountBalance)
-    else
-        balanceText = getText("IGUI_Shop_CurrentBalance", 1000)
-    end
- 
+    balanceText = getText("IGUI_Shop_CurrentBalance", string.format("%.2f",self.accountBalance))
+
     self.balancePanel:setText(balanceText)
     self.balancePanel:paginate()
 end
