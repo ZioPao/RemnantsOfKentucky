@@ -15,24 +15,14 @@ end
 ---@param item any
 ---@return table
 local function DoTags(shopItems, id, item)
-    if item.tags["JUNK"] then
-        shopItems.tags["JUNK"] = shopItems.tags["JUNK"] or {}
-        shopItems.tags["JUNK"][id] = true
-    end
-
-    if item.tags["ESSENTIALS"] then
-        shopItems.tags["ESSENTIALS"] = shopItems.tags["ESSENTIALS"] or {}
-        shopItems.tags["ESSENTIALS"][id] = true
-    end
-
-    if item.tags["HIGHVALUE"] then
-        shopItems.tags["HIGHVALUE"] = shopItems.tags["HIGHVALUE"] or {}
-        shopItems.tags["HIGHVALUE"][id] = true
-    end
-
-    if item.tags["LOWVALUE"] then
-        shopItems.tags["LOWVALUE"] = shopItems.tags["LOWVALUE"] or {}
-        shopItems.tags["LOWVALUE"][id] = true
+    local tags = {"FOOD", "CLOTHING_NORMAL", "CLOTHING_BAG", "CLOTHING_MILITARY", "TOOL", "TOOL_MELEE", "GUN",
+    "GUN_PART","COSMETIC","EXP","DAILY", }
+    for i=1, #tags do
+        local tag = tags[i]
+        if item.tags[tag] then
+            shopItems.tags[tag] = shopItems.tags[tag] or {}
+            shopItems.tags[tag][id] = true
+        end
     end
     return shopItems
 end
@@ -40,10 +30,8 @@ end
 
 function ServerShopManager.LoadShopPrices()
     debugPrint("Loading Shop Prices")
-    -- TODO Refactor this as a whole
-
-
     local shopItemsTemp = ServerData.Shop.GetShopItems()
+    ShopItemsManager.GenerateDailyItems()
     shopItemsTemp.items = shopItemsTemp.items or {}
     shopItemsTemp.tags = shopItemsTemp.tags or {}
     shopItemsTemp.doInitShopItems = true
@@ -62,6 +50,17 @@ function ServerShopManager.LoadShopPrices()
         end
     end
 end
+
+
+-- TODO This thing STINKS so fucking much. Rework this for the love of god
+Events.EveryDays.Add(function()
+    debugPrint("Regenerating daily items")
+    ServerShopManager.LoadShopPrices()
+    local items = ServerShopManager.GetItems()
+    sendServerCommand(EFT_MODULES.Shop, "GetShopItems", items)
+end)
+
+
 
 Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
 

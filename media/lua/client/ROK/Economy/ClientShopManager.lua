@@ -95,15 +95,14 @@ end
 function ClientShopManager.GetDailyItems()
     -- TODO Temp for playtest
     local shopItems = ClientData.Shop.GetShopItems()
-    if shopItems and shopItems.tags and shopItems.tags['HIGHVALUE'] then
-        local essentialsList = {}
-        for itemType, _ in pairs(shopItems.tags['HIGHVALUE']) do
-            essentialsList[itemType] = nil
-            essentialsList[itemType] = shopItems.items[itemType]
+    if shopItems and shopItems.tags and shopItems.tags['DAILY'] then
+        local dailyList = {}
+        for itemType, _ in pairs(shopItems.tags['DAILY']) do
+            dailyList[itemType] = nil
+            dailyList[itemType] = shopItems.items[itemType]
         end
-        --PZEFT_UTILS.PrintTable(essentialsList)
 
-        return essentialsList
+        return dailyList
     else
         return {}
     end
