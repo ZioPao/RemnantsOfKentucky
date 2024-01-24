@@ -34,7 +34,6 @@ local function OnPlayerInit()
         ISWorldMap.HandleEFTExits(true)
 
         --* Force delete zombies while in safehouse (to prevent issues)
-        
 
         LoadingScreen.Close()
     end)
@@ -42,8 +41,10 @@ local function OnPlayerInit()
     Events.OnPlayerUpdate.Remove(OnPlayerInit)
 end
 
+Events.OnCreatePlayer.Add(function()
+    Events.OnPlayerUpdate.Add(OnPlayerInit)
+end)
 
-Events.OnPlayerUpdate.Add(OnPlayerInit)
 
 
 --* Raid handling

@@ -87,7 +87,7 @@ function BankCommands.UpdateCratesValue(playerObj)
     debugPrint("Setting crates value")
     local username = playerObj:getUsername()
     local account = ServerBankManager.GetOrCreateAccount(username)
-    account.cratesValue= CratesValueCalculator.CalculateValueAllItems(username)
+    account.cratesValue = CratesValueCalculator.CalculateValueAllItems(username)
 end
 
 

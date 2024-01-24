@@ -18,8 +18,8 @@ function CratesValueCalculator.GetCrates(username)
     for _, group in pairs(PZ_EFT_CONFIG.SafehouseInstanceSettings.safehouseStorage) do
         local sq = getCell():getGridSquare(safehouse.x + group.x, safehouse.y + group.y, 0)
         if sq == nil then
-            error("ERROR: Square not found while searching for crates")
-            break
+            debugPrint("ERROR: Square not found while searching for crates")
+            return nil
         end
         local objects = sq:getObjects()
         for i = 0, objects:size() - 1 do
