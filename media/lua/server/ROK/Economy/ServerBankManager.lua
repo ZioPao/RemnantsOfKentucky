@@ -76,8 +76,8 @@ function BankCommands.SendBankAccount(playerObj, args)
     local account = ServerBankManager.GetOrCreateAccount(username)
     --debugPrint("Running SendBankAccount")
 
-    if args.updateCratesValue == true then
-        account.cratesValue= CratesValueCalculator.CalculateValueAllItems(username)
+    if args and args.updateCratesValue == true then
+        account.cratesValue = CratesValueCalculator.CalculateValueAllItems(username)
     end
     --PZEFT_UTILS.PrintTable(account)
     sendServerCommand(playerObj, EFT_MODULES.Bank, 'GetBankAccount', {account=account})
