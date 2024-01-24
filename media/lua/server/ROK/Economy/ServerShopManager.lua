@@ -7,7 +7,12 @@ local ServerShopManager = {}
 
 ---Transmit shop items
 function ServerShopManager.TransmitShopItems()
-    ServerData.Shop.TransmitShopItems()
+    ServerData.Shop.TransmitShopItemsData()
+end
+
+function ServerShopManager.GetItems()
+    local items = ServerData.Shop.GetShopItemsData()
+    return items
 end
 
 ---@param shopItems any
@@ -27,49 +32,36 @@ local function DoTags(shopItems, id, item)
     return shopItems
 end
 
-
 function ServerShopManager.LoadShopPrices()
-    debugPrint("Loading Shop Prices")
-    local shopItemsTemp = ServerData.Shop.GetShopItems()
+    local shopItemsData = ServerData.Shop.GetShopItemsData()
     ShopItemsManager.GenerateDailyItems()
-    shopItemsTemp.items = shopItemsTemp.items or {}
-    shopItemsTemp.tags = shopItemsTemp.tags or {}
-    shopItemsTemp.doInitShopItems = true
-    if shopItemsTemp.doInitShopItems then
-        shopItemsTemp.doInitShopItems = nil
-        for i, v in pairs(ShopItemsManager.data) do
-            shopItemsTemp = DoTags(shopItemsTemp, i, v)
-            shopItemsTemp.items[i] = {
-                fullType = v.fullType,
-                tags = v.tags,
-                basePrice = v.basePrice,
-                multiplier = v.initialMultiplier,
-                sellMultiplier = v.sellMultiplier
-            }
-            --PZEFT_UTILS.PrintTable(shopItems.items[i])
-        end
+
+    -- Init
+    shopItemsData.items = shopItemsData.items or {}
+    shopItemsData.tags = shopItemsData.tags or {}
+
+    for i, v in pairs(ShopItemsManager.data) do
+        shopItemsData = DoTags(shopItemsData, i, v)
+        shopItemsData.items[i] = {
+            fullType = v.fullType,
+            tags = v.tags,
+            basePrice = v.basePrice,
+            multiplier = v.initialMultiplier,
+            sellMultiplier = v.sellMultiplier
+        }
+        --PZEFT_UTILS.PrintTable(shopItems.items[i])
     end
 end
+Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
 
 
--- TODO This thing STINKS so fucking much. Rework this for the love of god
-Events.EveryDays.Add(function()
+function ServerShopManager.RetransmitDailyItems()
     debugPrint("Regenerating daily items")
     ServerShopManager.LoadShopPrices()
     local items = ServerShopManager.GetItems()
     sendServerCommand(EFT_MODULES.Shop, "GetShopItems", items)
-end)
-
-
-
-Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
-
-
-function ServerShopManager.GetItems()
-    local items = ServerData.Shop.GetShopItems()
-    return items
 end
-
+Events.EveryDays.Add(ServerShopManager.RetransmitDailyItems)
 
 ------------------------------------------------------------------------
 --* COMMANDS FROM CLIENTS *--

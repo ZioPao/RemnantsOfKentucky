@@ -141,26 +141,25 @@ function ServerData.Bank.SetBankAccounts(data)
 end
 
 ------------------------------------------------
----@alias shopItem {basePrice : number, multiplier : number}        -- multiplier by default 1
 ---@alias itemFullType string FullType of the item
----@alias shopItemsTable table<itemFullType,shopItem>       -- Key will be full type of the item
+---@alias shopItemsTable table<itemFullType, table<integer, shopItemElement>>  -- Key will be full type of the item
 
 ServerData.Shop = ServerData.Shop or {}
 
 --- Get table of shop items
 ---@return shopItemsTable
-ServerData.Shop.GetShopItems = function()
+function ServerData.Shop.GetShopItemsData()
     return ModData.getOrCreate(KEY_SHOP_ITEMS)
 end
 
 --- Set table of shop items
 ---@param data shopItemsTable
-ServerData.Shop.SetShopItems = function(data)
+function ServerData.Shop.SetShopItemsData(data)
     ModData.add(KEY_SHOP_ITEMS, data)
 end
 
 --- Transmits table of shop items to clients
-ServerData.Shop.TransmitShopItems = function()
+function ServerData.Shop.TransmitShopItemsData()
     ModData.transmit(KEY_SHOP_ITEMS)
 end
 ------------------------------------------------
