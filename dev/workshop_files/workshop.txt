@@ -1,6 +1,0 @@
-version=1
-id=3106735758
-title=Remnants of Kentucky
-tags=Build 41
-visibility=unlisted
-description=Test Build

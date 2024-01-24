@@ -26,14 +26,11 @@ local function OnPlayerInit()
         debugPrint("Requesting TransmitShopItems to the client now that player is in")
         sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', {})
 
-        --* Request bank account 
-        --sendClientCommand(EFT_MODULES.Bank, 'UpdateCratesValue', {})
+        --* Request bank account and request bank account periodically.
         CratesHandling.ToggleContainersValueUpdate(false)
 
         --* Clean map
         ISWorldMap.HandleEFTExits(true)
-
-        --* Force delete zombies while in safehouse (to prevent issues)
 
         LoadingScreen.Close()
     end)

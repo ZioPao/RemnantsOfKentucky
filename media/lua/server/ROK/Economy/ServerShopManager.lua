@@ -21,7 +21,7 @@ end
 ---@return table
 local function DoTags(shopItems, id, item)
     local tags = {"FOOD", "CLOTHING_NORMAL", "CLOTHING_BAG", "CLOTHING_MILITARY", "TOOL", "TOOL_MELEE", "GUN",
-    "GUN_PART","COSMETIC","EXP","DAILY", }
+    "GUN_PART","COSMETIC","EXP","DAILY", "ESSENTIALS" }
     for i=1, #tags do
         local tag = tags[i]
         if item.tags[tag] then

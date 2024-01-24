@@ -32,9 +32,12 @@ function BaseScrollItemsPanel:initialiseList(itemsTable)
     local sortedItems = {}
 
     -- TODO workaroundy
+    --FIXME This can fail if we didn't load ALL the mods with the items added in the list
     for k,v in pairs(itemsTable) do
         v.actualItem = getScriptManager():getItem(v.fullType)
-        table.insert(sortedItems, v)
+        if v.actualItem ~= nil then
+            table.insert(sortedItems, v)        -- FIXME Workaround, it could prevent from reaching the desired amount of daily items
+        end
     end
 
     ---@param a {actualItem : Item}
