@@ -48,7 +48,7 @@ end
 -----------------------------------------------------------------
 
 local ClientDataCommands = {}
-local MODULE = "PZEFT-Data"
+local MODULE = EFT_MODULES.Data
 
 ---Starts when Server Mod Data is ready, initialize Global Mod Data on the client
 function ClientDataCommands.SeverModDataReady()
