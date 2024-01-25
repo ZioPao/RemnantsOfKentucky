@@ -1,7 +1,4 @@
 local ClientState = require("ROK/ClientState")
-local LoadingScreen = require("ROK/UI/LoadingScreen")
-local ClientBankManager = require("ROK/Economy/ClientBankManager")
-local Delay = require("ROK/Delay")
 -----------------------------
 local CratesHandling = {}
 
@@ -11,6 +8,9 @@ local CratesHandling = {}
 --- On player initialise, request safehouse allocation of player from server
 local function OnPlayerInit()
     debugPrint("Initializing player")
+    local LoadingScreen = require("ROK/UI/LoadingScreen")
+    local Delay = require("ROK/Delay")
+
     LoadingScreen.Open()
 
     Delay.Initialize()
@@ -79,6 +79,7 @@ function CratesHandling.UpdateContainersValue()
     -- TODO Stupid heavy, figure out a better way to check when a container status changes instead of this crap
     --sendClientCommand(EFT_MODULES.Bank, 'UpdateCratesValue', {})
     --debugPrint("Update containers value, requesting bank account again")
+    local ClientBankManager = require("ROK/Economy/ClientBankManager")
     ClientBankManager.RequestBankAccountFromServer(true)
 
 end

@@ -3,11 +3,12 @@
 local function OnCharacterDeath(playerObj)
     if playerObj:isZombie() then return end
 
+    ---@type IsoPlayer
     local killerObj = playerObj:getAttackedBy()
 
     if killerObj and killerObj ~= playerObj then
-        -- TODO Add to kill count, send it back to client
-
+        -- Add to kill count, send it back to client
+        sendServerCommand(killerObj, EFT_MODULES.KillTracker, 'AddKill', {victimUsername = playerObj:getUsername()})
     end
 end
 

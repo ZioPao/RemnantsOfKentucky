@@ -24,7 +24,7 @@ function RecapScrollItemsPanel:createChildren()
     self.scrollingListBox.onMouseDown = nil
 end
 
----@param itemsBox TilesScrollingListBox
+---@param itemsBox TilesScrollingListBox the parent
 ---@param y number
 ---@param item {item : {actualItem : Item, fullType : string}, height : number}
 ---@param rowElementNumber number
