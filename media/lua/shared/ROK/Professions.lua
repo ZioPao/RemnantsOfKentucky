@@ -30,6 +30,8 @@ function SetEFTProfessionDescription(prof)
 end
 
 
+-- TODO When player dies, these do not appear anymore
+
 Events.OnGameBoot.Add(function()
     local sharpShooter = ProfessionFactory.addProfession("SharpShooter", getText("UI_EFT_Profession_SharpShooter"), "profession_veteran2", -4)
     sharpShooter:addFreeTrait("Desensitized")

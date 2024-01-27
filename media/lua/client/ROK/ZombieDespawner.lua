@@ -6,7 +6,7 @@ local function DespawnZombies(zombie)
     if not SafehouseInstanceHandler.IsInSafehouse() then return end
 
     local id = zombie:getOnlineID()
-    debugPrint("Found a zombie in a safehouse! id = " .. tostring(id))
+    --debugPrint("Found a zombie in a safehouse! id = " .. tostring(id))
     --sendClientCommand(EFT_MODULES.Safehouse, "DespawnZombies", { id = id })
     zombie:removeFromWorld()
     zombie:removeFromSquare()
@@ -25,5 +25,6 @@ end
 
 
 Events.PZEFT_OnMatchStart.Add(StopZombieDespawner)
+Events.OnPlayerDeath.Add(StopZombieDespawner)
 Events.PZEFT_OnMatchEnd.Add(StartZombieDespawner)
 Events.OnZombieUpdate.Add(DespawnZombies)

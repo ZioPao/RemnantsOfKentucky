@@ -19,6 +19,9 @@ function ClientData.OnReceiveGlobalModData(key, modData)
         ModData.add(key, modData)
     end
 
+
+    -- TODO USE THIS TO PREVENT ISSUES WITH MAP HANDLING AND TELEPORTING!!!!
+
     -- The client has collected the mod data from the server
     triggerEvent("PZEFT_ClientModDataReady", key)
 end
