@@ -17,6 +17,13 @@ end
 
 function MapHandler:write()
     local instance = getPlayer():getModData().currentInstance
+    if instance == nil then
+        debugPrint("Trying to draw extraction points, but modData instance is null")
+        return
+    end
+
+
+
     local extractionPoints = instance.extractionPoints
 
     --Loop through extraction points and add the note on the map
@@ -85,8 +92,18 @@ function ISWorldMap.HandleEFTExits(cleanOnly)
 
 end
 
+
+-- TODO Rework init
+
 -- If we're in a raid, we need to reset the correct symbols. If we're not, we're gonna just clean them off the map
-Events.PZEFT_UpdateClientStatus.Add(function(status)
-    debugPrint("Updating client status, handling eft exits")
-    ISWorldMap.HandleEFTExits(not status)
+
+Events.PZEFT_OnMatchEnd.Add(function()
+    ISWorldMap.HandleEFTExits(true)
 end)
+
+Events.PZEFT_ClientModDataReady.Add(function(key)
+    if key == KEY_PVP_CURRENTINSTANCE then
+        ISWorldMap.HandleEFTExits(false)
+    end
+end)
+

@@ -7,6 +7,12 @@ local SafehouseInstanceManager = require("ROK/SafehouseInstanceManager")
 
 ---------------------------------------------------
 
+
+
+-- TODO Server performance affects this HEAVILY! People don't get teleported for example. Test it somehow
+
+
+
 ---@class MatchController
 ---@field pvpInstance pvpInstanceTable
 ---@field playersInMatch table<number,number>        Table of player ids
@@ -40,6 +46,7 @@ function MatchController:initialise()
     -- Teleport everyone in the match
     PvpInstanceManager.TeleportPlayersToInstance()
 
+    -- TODO Somehow getOnlinePlayers doesn't return ALL the players in some cases, ie heavy load on server
     -- Add them to the list to keep track of them
     local temp = getOnlinePlayers()
     for i = 0, temp:size() - 1 do
@@ -97,7 +104,6 @@ function MatchController:killAlivePlayers()
         if plID ~= nil then
             local pl = getPlayerByOnlineID(plID)
             sendServerCommand(pl, EFT_MODULES.State, "CommitDieIfInRaid", {})
-
         end
     end
 end
