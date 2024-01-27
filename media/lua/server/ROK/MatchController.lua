@@ -51,6 +51,7 @@ function MatchController:initialise()
     local temp = getOnlinePlayers()
     for i = 0, temp:size() - 1 do
         local player = temp:get(i)
+        debugPrint("Adding " .. player:getUsername() .. " to match")
         local plId = player:getOnlineID()
         self.playersInMatch[plId] = plId
     end
