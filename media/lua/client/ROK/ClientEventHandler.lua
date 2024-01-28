@@ -32,6 +32,13 @@ local function OnPlayerInit()
         --* Clean map
         ISWorldMap.HandleEFTExits(true)
 
+
+
+        --* Request current running match, if there is some set the correct UI
+        if isAdmin() then
+            sendClientCommand(EFT_MODULES.Match, 'CheckIsRunningMatch', {})
+        end
+
         LoadingScreen.Close()
     end)
 

@@ -54,6 +54,17 @@ function LoadingScreen.Close()
     end
 end
 
+
+
+-- TODO make this better
+Events.PZEFT_ClientModDataReady.Add(function(key)
+    if key == "PZ-EFT-PVP-CURRENTINSTANCE" then
+        LoadingScreen.Close()
+    end
+end)
+
+
+
 function LoadingScreen.HandleResolutionChange(oldW, oldH, w, h)
     if LoadingScreen.instance then
         LoadingScreen.instance:setWidth(w)

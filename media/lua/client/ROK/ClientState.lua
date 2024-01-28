@@ -11,19 +11,34 @@ local ClientState = {
     extractionStatus = {},
 
 
-    --* ADMIN ONLY
-    isAdminMode = false
+    isMatchRunning = false,
+
 }
 
 function ClientState.GetIsInRaid()
     return ClientState.isInRaid
 end
 
+function ClientState.GetIsMatchRunning()
+    return ClientState.isMatchRunning
+
+end
+
 function ClientState.ResetMatchValues()
     ClientState.isStartingMatch = false
     ClientState.extractionStatus = {}
+    ClientState.isMatchRunning = false
 end
 Events.PZEFT_OnMatchEnd.Add(ClientState.ResetMatchValues)
+
+
+function ClientState.SetIsMatchRunning(value)
+    ClientState.isMatchRunning = value
+end
+
+Events.PZEFT_OnMatchStart.Add(function ()
+    ClientState.SetIsMatchRunning(true)
+end)
 
 
 -----------------------------------
@@ -38,7 +53,6 @@ function ClientStateCommands.SetClientStateIsInRaid(args)
 
     ClientState.isInRaid = args.value
 
-
     if args.value == true then
         triggerEvent("PZEFT_OnMatchStart")
     else
@@ -48,12 +62,18 @@ function ClientStateCommands.SetClientStateIsInRaid(args)
     triggerEvent("PZEFT_UpdateClientStatus", args.value)
 end
 
+function ClientStateCommands.SetClientStateIsMatchRunning(args)
+    ClientState.isMatchRunning = args.value
+
+end
 
 function ClientStateCommands.CommitDieIfInRaid()
     if ClientState.GetIsInRaid() then
         ClientState.extractionStatus = {}
         local pl = getPlayer()
         pl:Kill(pl)
+
+        -- FIXME Triggers an error in VFE_WeaponLight
     end
 end
 

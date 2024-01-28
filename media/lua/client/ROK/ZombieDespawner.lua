@@ -4,12 +4,13 @@ local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 local function DespawnZombies(zombie)
     -- Double check, player need to be in their safehouse
     if not SafehouseInstanceHandler.IsInSafehouse() then return end
+	SendCommandToServer(string.format("/removezombies -remove true"))
 
-    local id = zombie:getOnlineID()
-    --debugPrint("Found a zombie in a safehouse! id = " .. tostring(id))
-    --sendClientCommand(EFT_MODULES.Safehouse, "DespawnZombies", { id = id })
-    zombie:removeFromWorld()
-    zombie:removeFromSquare()
+    -- local id = zombie:getOnlineID()
+    -- --debugPrint("Found a zombie in a safehouse! id = " .. tostring(id))
+    -- --sendClientCommand(EFT_MODULES.Safehouse, "DespawnZombies", { id = id })
+    -- zombie:removeFromWorld()
+    -- zombie:removeFromSquare()
 end
 
 local function StartZombieDespawner()

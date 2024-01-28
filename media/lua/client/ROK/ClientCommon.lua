@@ -37,6 +37,15 @@ function CommonCommands.Teleport(args)
     player:setLx(args.x)
     player:setLy(args.y)
     player:setLz(args.z)
+
+
+    -- TODO Event to notify after teleport is successful... instead of this crap
+
+    -- Send a forced remove zombies, just to be sure.
+    local Delay = require("ROK/Delay")
+    Delay:set(5, function()
+        SendCommandToServer(string.format("/removezombies -remove true"))
+    end)
 end
 
 ------------------------------------

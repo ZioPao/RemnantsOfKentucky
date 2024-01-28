@@ -47,7 +47,9 @@ ButtonManager.firstInit = true
 ButtonManager.additionalY = 10
 
 local function OpenAdminMenu()
-    if not ClientState.GetIsInRaid() then
+
+    -- TODO Fix this, if the admin is not in a raid they should be able to open the during match menu anyway
+    if not ClientState.isMatchRunning then
         BeforeMatchAdminPanel.OnOpenPanel()
     else
         DuringMatchAdminPanel.OnOpenPanel()

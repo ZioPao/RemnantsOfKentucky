@@ -130,8 +130,8 @@ PZ_EFT_CONFIG.MatchSettings = {
     endMatchTime = 5,
 
     -- Server only
-    roundTime = 1200,       -- 20 minutes
-    roundOvertime = 300,    -- 5 minutes
+    roundTime = 10, --1200,       -- 20 minutes
+    roundOvertime = 10, --300,    -- 5 minutes
     zombieIncreaseTime = 60,
     checkAlivePlayersTime = 10,      -- Every 10 seconds, we check if there are players alive in the match
 

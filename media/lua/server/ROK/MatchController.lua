@@ -94,13 +94,14 @@ end
 function MatchController:startOvertime()
     Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.roundOvertime, function()
         debugPrint("End match")
-        MatchController:killAlivePlayers()
+        self:killAlivePlayers()
         self:stopMatch()
     end, true, "Overtime")
 end
 
 --- Kill players that are still in the pvp instance and didn't manage to escape in time
 function MatchController:killAlivePlayers()
+    debugPrint("Killing remaining players in match")
     for k, plID in pairs(self.playersInMatch) do
         if plID ~= nil then
             local pl = getPlayerByOnlineID(plID)
@@ -257,6 +258,15 @@ end
 
 local MODULE = EFT_MODULES.Match
 local MatchCommands = {}
+
+
+function MatchCommands.CheckIsRunningMatch(playerObj, args)
+    local handler = MatchController.GetHandler()
+
+    local isMatchRunning = handler ~= nil
+    sendServerCommand(playerObj, EFT_MODULES.State, 'SetClientStateIsMatchRunning', {value = isMatchRunning})
+
+end
 
 ---@param playerObj IsoPlayer
 ---@param args {stopTime : number}

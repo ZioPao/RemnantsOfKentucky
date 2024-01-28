@@ -149,8 +149,8 @@ function DuringMatchAdminPanel:update()
     self.labelTime:setText(firstLabelText)
     self.labelTime.textDirty = true
 
-    -- Close the panel automatically if the client is not in a raid anymore
-    if not ClientState.GetIsInRaid() then
+    -- Close the panel automatically if the match is not running anymore
+    if not ClientState.GetIsMatchRunning() then
         self:close()
     end
 end
