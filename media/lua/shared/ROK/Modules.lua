@@ -10,18 +10,7 @@ EFT_MODULES = {
     Match = "PZEFT-Match",
     PvpInstances = "PZEFT-PvpInstances",
     Safehouse = "PZEFT-Safehouse",
-    Time = "PZEFT-Time",
     State = "PZEFT-State",
 
-    KillTracker = "PZEFT-KillTracker",
-
-
-
-    ------------------
-    -- UI ONLY
-    ------------------
-
-    --TimeUI = "PZEFT-TimeUI",
-    --AdminPanelUI = "PZEFT-AdminPanelUI",
 
 }

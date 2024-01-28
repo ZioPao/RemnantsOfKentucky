@@ -140,10 +140,7 @@ function SafehouseInstanceManager.SendPlayerToSafehouse(player)
     local playerSafehouseKey = SafehouseInstanceManager.GetOrAssignSafehouse(player)
     local safehouseCoords = SafehouseInstanceManager.GetSafehouseInstanceByKey(playerSafehouseKey)
 
-    
-
-    sendServerCommand(player, EFT_MODULES.Common, "Teleport", safehouseCoords)
-    sendServerCommand(player, EFT_MODULES.State, "SetClientStateIsInRaid", {value = false})
+    sendServerCommand(player, EFT_MODULES.Safehouse, "TeleportToSafehouse", safehouseCoords)
 end
 
 ---Send all the players to their respective safehouse
@@ -168,8 +165,8 @@ function SafehouseInstanceManager.ResetPlayerSafehouse(pl)
     local safehouseKey = SafehouseInstanceManager.GetOrAssignSafehouse(pl)
     local safehouseCoords = SafehouseInstanceManager.GetSafehouseInstanceByKey(safehouseKey)
     sendServerCommand(pl, EFT_MODULES.Safehouse, 'SetSafehouse', safehouseCoords)
-    sendServerCommand(pl, EFT_MODULES.Common, "Teleport", safehouseCoords)
-    sendServerCommand(pl, EFT_MODULES.State, "SetClientStateIsInRaid", {value = false})
+    sendServerCommand(pl, EFT_MODULES.Safehouse, "TeleportToSafehouse", safehouseCoords)
+
 
 end
 
@@ -223,7 +220,7 @@ function SafehouseInstanceManagerCommands.RequestSafehouseAllocation(playerObj, 
 
     if args.teleport then
         debugPrint("Teleporting to instance from request safehouse allocation")
-        sendServerCommand(playerObj, EFT_MODULES.Common, "Teleport", safehouseCoords)
+        sendServerCommand(playerObj, EFT_MODULES.Safehouse, "TeleportToSafehouse", safehouseCoords)
     end
 end
 
@@ -244,7 +241,8 @@ function SafehouseInstanceManagerCommands.ResetSafehouseAllocation(_, args)
     local safehouseKey = SafehouseInstanceManager.GetOrAssignSafehouse(pl)
     local safehouseCoords = SafehouseInstanceManager.GetSafehouseInstanceByKey(safehouseKey)
     sendServerCommand(pl, MODULE, 'SetSafehouse', safehouseCoords)
-    sendServerCommand(pl, EFT_MODULES.Common, "Teleport", safehouseCoords)
+    sendServerCommand(pl, EFT_MODULES.Safehouse, "TeleportToSafehouse", safehouseCoords)
+
 
 end
 

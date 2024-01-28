@@ -96,6 +96,7 @@ end
 function CratesHandling.ToggleContainersValueUpdate(isInRaid)
     debugPrint("Toggling UpdateCratesValue")
 
+    -- TODO Will get triggered even with Overtime. Doesn't really cause issues, but keep this in mind
     if not isInRaid then
         Events.EveryOneMinute.Remove(CratesHandling.UpdateContainersValue)
         Events.EveryOneMinute.Add(CratesHandling.UpdateContainersValue)

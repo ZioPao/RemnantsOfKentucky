@@ -217,6 +217,13 @@ local MODULE = EFT_MODULES.Safehouse
 
 local SafehouseInstanceCommands = {}
 
+function SafehouseInstanceCommands.TeleportToSafehouse(coords)
+    local ClientCommon = require("ROK/ClientCommon")
+    local ClientState = require("ROK/ClientState")
+    ClientCommon.Teleport(coords)
+    ClientState.SetIsInRaid(false)
+end
+
 --- When client recieves SetSafehouse Server Command
 --- Update mod data of player with recieved safehouse data
 ---@param safehouseCoords coords {x=0, y=0,z=0} Safehouse Instance
@@ -243,7 +250,7 @@ end
 
 ------------------------
 
-local OnSafehouseInstanceCommand = function(module, command, args)
+local function OnSafehouseInstanceCommand(module, command, args)
     if module == MODULE and SafehouseInstanceCommands[command] then
         --debugPrint("Server Command - " .. MODULE .. "." .. command)
         SafehouseInstanceCommands[command](args)

@@ -1,9 +1,3 @@
--- TODO Save current inventory
-
--- TODO Compare it with the inventory after match
-
--- TODO Write it to the RecapPanel
-
 local LootRecapHandler = {}
 
 ---@alias LootRecapItemsType table<integer, InventoryItem>

@@ -19,6 +19,14 @@ local ClientState = {
 ---@param val boolean
 function ClientState.SetIsInRaid(val)
     ClientState.isInRaid = val
+
+    if val == true then
+        triggerEvent("PZEFT_OnMatchStart")
+    else
+        triggerEvent("PZEFT_OnMatchEnd")
+    end
+
+    triggerEvent("PZEFT_UpdateClientStatus", val)
 end
 
 ---@param val number
@@ -64,16 +72,8 @@ local MODULE = EFT_MODULES.State
 ---Set client state if is in a raid or not
 ---@param args {value : boolean}
 function ClientStateCommands.SetClientStateIsInRaid(args)
-
-    ClientState.isInRaid = args.value
-
-    if args.value == true then
-        triggerEvent("PZEFT_OnMatchStart")
-    else
-        triggerEvent("PZEFT_OnMatchEnd")
-    end
-
-    triggerEvent("PZEFT_UpdateClientStatus", args.value)
+    debugPrint("SetClientStateIsInraid => " .. tostring(args.value))
+    ClientState.SetIsInRaid(args.value)
 end
 
 function ClientStateCommands.SetClientStateIsMatchRunning(args)
