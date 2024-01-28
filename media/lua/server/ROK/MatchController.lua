@@ -29,6 +29,7 @@ function MatchController:new()
 
     o.pvpInstance = PvpInstanceManager.GetNextInstance()
     o.playersInMatch = {}
+    o.amountPlayersInMatch = 0
 
     ---@type MatchController
     MatchController.instance = o
@@ -51,26 +52,21 @@ function MatchController:initialise()
 
         -- Add them to the list to keep track of them
         local plId = player:getOnlineID()
-        self.playersInMatch[plId] = plId
+        if plId then
+            self:addPlayerToMatchList(plId)
+            
+            -- Teleport the player
+            local spawnPoint = PvpInstanceManager.PopRandomSpawnPoint()
+            if not spawnPoint then
+                debugPrint("No more spawnpoints! Can't teleport player!")
+                return
+            end
 
-        -- Teleport the player
-        local spawnPoint = PvpInstanceManager.PopRandomSpawnPoint()
-        if not spawnPoint then
-            debugPrint("No more spawnpoints! Can't teleport player!")
-            return
+            debugPrint("Teleporting " .. player:getUsername() .. " to " .. spawnPoint.name)
+            sendServerCommand(player, EFT_MODULES.Match, "TeleportToInstance", spawnPoint)
+
         end
-
-        debugPrint("Teleporting " .. player:getUsername() .. " to " .. spawnPoint.name)
-
-        sendServerCommand(player, EFT_MODULES.Match, "TeleportToInstance", spawnPoint)
-
-
     end
-
-
-    -- Recalculate the amount of players once at startup
-    MatchController.UpdateAlivePlayers()
-
     -- Default value for the zombie multiplier
     self:setZombieSpawnMultiplier(PZ_EFT_CONFIG.MatchSettings.zombieSpawnMultiplier)
 end
@@ -97,7 +93,7 @@ function MatchController:start()
     Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.zombieIncreaseTime, MatchController.HandleZombieSpawns)
 
     -- Setup checking alive players to stop the match and such things
-    Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.checkAlivePlayersTime, MatchController.UpdateAlivePlayers)
+    Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.checkAlivePlayersTime, MatchController.CheckAlivePlayers)
 
     sendServerCommand(EFT_MODULES.UI, "CloseLoadingScreen", {})
 
@@ -130,10 +126,16 @@ function MatchController:extractPlayer(playerObj)
     self:removePlayerFromMatchList(playerObj:getOnlineID())
     sendServerCommand(playerObj, EFT_MODULES.UI, "OpenRecapPanel", {})
 end
+---@param playerId number
+function MatchController:addPlayerToMatchList(playerId)
+    self.playersInMatch[playerId] = playerId
+    self.amountPlayersInMatch = self.amountPlayersInMatch + 1
+end
 
 ---@param playerId number
 function MatchController:removePlayerFromMatchList(playerId)
     self.playersInMatch[playerId] = nil
+    self.amountPlayersInMatch = self.amountPlayersInMatch - 1
 end
 
 --- Stop the match and teleport back everyone
@@ -226,35 +228,42 @@ function MatchController.HandleZombieSpawns(loops)
 end
 
 ---Checks if there are players still alive in a match. When it gets to 0, stop the match
-function MatchController.UpdateAlivePlayers()
+---We have to check it periodically to account for crashes
+function MatchController.CheckAlivePlayers()
+
     --debugPrint("checking alive players")
     local instance = MatchController.GetHandler()
     if instance == nil then return end
-    --debugPrint("Instance available, checking now players")
-    --debugPrint(MatchController.GetAmountAlivePlayers())
-
-    local counter = 0
     for k, v in pairs(instance.playersInMatch) do
-
         if v then
             local testPl = getPlayerByOnlineID(v)
             -- ping player
             if testPl == nil then
                 instance:removePlayerFromMatchList(v)
-            else
-                counter = counter + 1
             end
         end
-
     end
-
-    instance.amountPlayersInMatch = counter
 
     if instance.amountPlayersInMatch == 0 then
         debugPrint("no alive players in match, stopping it")
         MatchController.instance:forceStopMatch()
     end
 end
+
+---@param playerObj IsoPlayer
+function MatchController.HandlePlayerDeath(playerObj)
+    if playerObj:isZombie() then return end
+    ---@type IsoPlayer
+    local killerObj = playerObj:getAttackedBy()
+
+    if killerObj and killerObj ~= playerObj then
+        -- Add to kill count, send it back to client
+        sendServerCommand(killerObj, EFT_MODULES.Match, 'AddKill', {victimUsername = playerObj:getUsername()})
+    end
+end
+
+Events.OnCharacterDeath.Add(MatchController.HandlePlayerDeath)
+
 
 
 --------------------------------------------------
