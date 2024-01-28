@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-01-28T14:28:19.405Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="LNZMs7wpAf4P6BEN54R0" version="23.0.2" type="github">
+<mxfile host="app.diagrams.net" modified="2024-01-28T17:11:42.570Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="S-mB-WXltr3uXsuS05Ad" version="23.0.2" type="github">
   <diagram name="Page-1" id="cz6WCXl3cMV2WezYyClN">
-    <mxGraphModel dx="1728" dy="922" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1430" dy="763" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -31,16 +31,16 @@
         <mxCell id="KYILoqeihOHbmcCBH2La-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="KYILoqeihOHbmcCBH2La-10" target="KYILoqeihOHbmcCBH2La-13">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="KYILoqeihOHbmcCBH2La-10" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.traditional_server;fillColor=#7D7C7C;gradientColor=none;" vertex="1" parent="1">
-          <mxGeometry x="390" y="110" width="46.5" height="63" as="geometry" />
+        <mxCell id="KYILoqeihOHbmcCBH2La-10" value="Server" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.traditional_server;fillColor=#7D7C7C;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="546.75" y="278.5" width="46.5" height="63" as="geometry" />
         </mxCell>
         <mxCell id="KYILoqeihOHbmcCBH2La-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="KYILoqeihOHbmcCBH2La-6" target="KYILoqeihOHbmcCBH2La-10">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="KYILoqeihOHbmcCBH2La-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="KYILoqeihOHbmcCBH2La-13" target="KYILoqeihOHbmcCBH2La-8">
+        <mxCell id="KYILoqeihOHbmcCBH2La-15" value="Send data to client" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="KYILoqeihOHbmcCBH2La-13" target="KYILoqeihOHbmcCBH2La-8">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="KYILoqeihOHbmcCBH2La-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="KYILoqeihOHbmcCBH2La-13" target="KYILoqeihOHbmcCBH2La-2">
+        <mxCell id="KYILoqeihOHbmcCBH2La-23" value="Send data to client" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="KYILoqeihOHbmcCBH2La-13" target="KYILoqeihOHbmcCBH2La-2">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="570" y="490" as="targetPoint" />
           </mxGeometry>
@@ -60,7 +60,7 @@
         <mxCell id="KYILoqeihOHbmcCBH2La-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="KYILoqeihOHbmcCBH2La-24" target="KYILoqeihOHbmcCBH2La-25">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="KYILoqeihOHbmcCBH2La-24" value="Set isInRaid" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="KYILoqeihOHbmcCBH2La-24" value="- Set isInRaid&lt;br&gt;- Teleport to instance" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="5" y="440" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="KYILoqeihOHbmcCBH2La-25" value="Teleport to instance" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
