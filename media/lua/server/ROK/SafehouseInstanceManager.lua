@@ -145,6 +145,8 @@ function SafehouseInstanceManager.SendPlayerToSafehouse(player)
     local playerSafehouseKey = SafehouseInstanceManager.GetOrAssignSafehouse(player)
     local safehouseCoords = SafehouseInstanceManager.GetSafehouseInstanceByKey(playerSafehouseKey)
 
+    
+
     sendServerCommand(player, EFT_MODULES.Common, "Teleport", safehouseCoords)
     sendServerCommand(player, EFT_MODULES.State, "SetClientStateIsInRaid", {value = false})
 end

@@ -15,6 +15,16 @@ local ClientState = {
 
 }
 
+--* Setters
+---@param val boolean
+function ClientState.SetIsInRaid(val)
+    ClientState.isInRaid = val
+end
+
+
+
+--* Getters
+
 function ClientState.GetIsInRaid()
     return ClientState.isInRaid
 end
@@ -68,13 +78,16 @@ function ClientStateCommands.SetClientStateIsMatchRunning(args)
 end
 
 function ClientStateCommands.CommitDieIfInRaid()
-    if ClientState.GetIsInRaid() then
-        ClientState.extractionStatus = {}
-        local pl = getPlayer()
-        pl:Kill(pl)
 
-        -- FIXME Triggers an error in VFE_WeaponLight
-    end
+    if ClientState.GetIsInRaid() == false then return end
+
+
+
+    ClientState.extractionStatus = {}
+    local pl = getPlayer()
+    pl:Kill(pl)
+
+    ClientState.SetIsInRaid(false)
 end
 
 local function OnClientStateCommands(module, command, args)

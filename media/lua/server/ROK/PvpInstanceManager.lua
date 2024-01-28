@@ -200,38 +200,35 @@ function PvpInstanceManager.GetPermanentExtractionPoints(cellX, cellY)
     return points
 end
 
-function PvpInstanceManager.TeleportPlayersToInstance()
-    debugPrint("Teleporting players")
-    local playersArray = getOnlinePlayers()
-    for i = 0, playersArray:size() - 1 do
-        ---@type IsoPlayer
-        local player = playersArray:get(i)
-        local spawnPoint = PvpInstanceManager.PopRandomSpawnPoint()
-        if not spawnPoint then return end --no more spawnpoints available
+-- function PvpInstanceManager.TeleportPlayersToInstance()
+--     debugPrint("Teleporting players")
+--     local playersArray = getOnlinePlayers()
+--     for i = 0, playersArray:size() - 1 do
+--         ---@type IsoPlayer
+--         local player = playersArray:get(i)
+--         local spawnPoint = PvpInstanceManager.PopRandomSpawnPoint()
+--         if not spawnPoint then return end --no more spawnpoints available
 
-        debugPrint(spawnPoint.name)
-        --debugPrint("Teleporting to instance")
-        -- Teleport the player to their instance
-        local coords = {
-            x = spawnPoint.x,
-            y = spawnPoint.y,
-            z = spawnPoint.z
-        }
-        sendServerCommand(player, EFT_MODULES.Common, "Teleport", coords)
+--         debugPrint(spawnPoint.name)
+--         --debugPrint("Teleporting to instance")
+--         -- Teleport the player to their instance
+--         local coords = {
+--             x = spawnPoint.x,
+--             y = spawnPoint.y,
+--             z = spawnPoint.z
+--         }
+--         sendServerCommand(player, EFT_MODULES.Common, "Teleport", coords)
 
-        -- Set the correct client data
-        sendServerCommand(player, EFT_MODULES.State, "SetClientStateIsInRaid", {value = true})
-    end
+--         -- Set the correct client data
+--         sendServerCommand(player, EFT_MODULES.State, "SetClientStateIsInRaid", {value = true})
+--     end
 
-    PvpInstanceManager.SendCurrentInstance()
-end
+--     PvpInstanceManager.SendCurrentInstance()
+-- end
 
 local function OnLoad()
-
     -- TODO We should make this more obvious that the admin needs to start the resetter before starting up the game
-
     PvpInstanceManager.Reset()
-    --PvpInstanceManager.LoadPvpInstances()
 end
 
 Events.OnLoad.Add(OnLoad)

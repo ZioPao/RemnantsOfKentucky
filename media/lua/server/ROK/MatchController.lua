@@ -43,18 +43,37 @@ function MatchController:initialise()
         return
     end
 
-    -- Teleport everyone in the match
-    PvpInstanceManager.TeleportPlayersToInstance()
-
-    -- TODO Somehow getOnlinePlayers doesn't return ALL the players in some cases, ie heavy load on server
-    -- Add them to the list to keep track of them
-    local temp = getOnlinePlayers()
-    for i = 0, temp:size() - 1 do
-        local player = temp:get(i)
+    -- Init players in match
+    local playersArray = getOnlinePlayers()
+    for i = 0, playersArray:size() - 1 do
+        local player = playersArray:get(i)
         debugPrint("Adding " .. player:getUsername() .. " to match")
+
+        -- Add them to the list to keep track of them
         local plId = player:getOnlineID()
         self.playersInMatch[plId] = plId
+
+        -- Teleport the player
+        local spawnPoint = PvpInstanceManager.PopRandomSpawnPoint()
+        if not spawnPoint then
+            debugPrint("No more spawnpoints! Can't teleport player!")
+            return
+        end
+
+        debugPrint("Teleporting " .. player:getUsername() .. " to " .. spawnPoint.name)
+
+        local coords = {
+            x = spawnPoint.x,
+            y = spawnPoint.y,
+            z = spawnPoint.z
+        }
+        sendServerCommand(player, EFT_MODULES.Common, "Teleport", coords)
+
+        -- Set the correct client data
+        sendServerCommand(player, EFT_MODULES.State, "SetClientStateIsInRaid", {value = true})
+
     end
+
 
     -- Recalculate the amount of players once at startup
     MatchController.UpdateAlivePlayers()
@@ -95,7 +114,8 @@ function MatchController:startOvertime()
     Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.roundOvertime, function()
         debugPrint("End match")
         self:killAlivePlayers()
-        self:stopMatch()
+        Countdown.Stop()
+        MatchController.instance = nil
     end, true, "Overtime")
 end
 
@@ -124,7 +144,7 @@ function MatchController:removePlayerFromMatchList(playerId)
 end
 
 --- Stop the match and teleport back everyone
-function MatchController:stopMatch()
+function MatchController:forceStopMatch()
     Countdown.Stop()
     SafehouseInstanceManager.SendAllPlayersToSafehouses()
     MatchController.instance = nil
@@ -239,7 +259,7 @@ function MatchController.UpdateAlivePlayers()
 
     if instance.amountPlayersInMatch == 0 then
         debugPrint("no alive players in match, stopping it")
-        MatchController.instance:stopMatch()
+        MatchController.instance:forceStopMatch()
     end
 end
 
@@ -296,7 +316,7 @@ function MatchCommands.StartMatchEndCountdown(playerObj, args)
 
     local function StopMatch()
         local handler = MatchController.GetHandler()
-        if handler then handler:stopMatch() end
+        if handler then handler:forceStopMatch() end
 
         sendServerCommand(playerObj, EFT_MODULES.UI, 'SwitchMatchAdminUI', {startingState='DURING'})
     end
