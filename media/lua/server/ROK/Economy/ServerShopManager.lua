@@ -61,7 +61,8 @@ function ServerShopManager.RetransmitDailyItems()
     local items = ServerShopManager.GetItems()
     sendServerCommand(EFT_MODULES.Shop, "GetShopItems", items)
 end
-Events.EveryDays.Add(ServerShopManager.RetransmitDailyItems)
+
+Events.PZEFT_OnMatchEnd.Add(ServerShopManager.RetransmitDailyItems)
 
 ------------------------------------------------------------------------
 --* COMMANDS FROM CLIENTS *--

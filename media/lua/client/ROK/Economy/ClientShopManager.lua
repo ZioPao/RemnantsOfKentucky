@@ -93,7 +93,6 @@ end
 
 ---@return table
 function ClientShopManager.GetDailyItems()
-    -- TODO Temp for playtest
     local shopItems = ClientData.Shop.GetShopItems()
     if shopItems and shopItems.tags and shopItems.tags['DAILY'] then
         local dailyList = {}

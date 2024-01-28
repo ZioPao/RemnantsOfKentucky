@@ -30,7 +30,6 @@ function AdminShopManager.AdjustItem(fullType, newMultiplier, sellMultiplier)
     return true
 end
 
---TODO Refresh daily items with % split between high value and low value
 --- Manually refreshes the daily items
 function AdminShopManager.RefreshDailyItems()
     debugPrint("Refreshing daily items")
