@@ -1,3 +1,6 @@
+
+--* DISABLE BOREDOM AND UNHAPPYNESS
+
 local function ResetBoredomAndUnhappyness()
     local bd = getPlayer():getBodyDamage()
     bd:setBoredomLevel(0)
@@ -5,3 +8,5 @@ local function ResetBoredomAndUnhappyness()
 end
 
 Events.EveryOneMinute.Add(ResetBoredomAndUnhappyness)
+
+
