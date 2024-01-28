@@ -23,7 +23,7 @@ function ISMoveableCursor:isValid( _square )
             local moveProps = objects[self.objectIndex].moveProps
             self.origMoveProps = moveProps
             if moveProps.spriteName == 'location_military_generic_01_8' or moveProps.spriteName == 'appliances_com_01_75' then
-                debugPrint("Crate or PC in safehouse!")
+                --debugPrint("Crate or PC in safehouse!")
                 return false
             end
         end
@@ -38,7 +38,7 @@ function ISMoveableCursor:isValid( _square )
         if rotateObject then
             local moveProps = rotateObject.moveProps
             if moveProps.spriteName == 'location_military_generic_01_8' or moveProps.spriteName == 'appliances_com_01_75' then
-                debugPrint("Do not rotate crate or pc")
+                --debugPrint("Do not rotate crate or pc")
                 return false
             end
         end
