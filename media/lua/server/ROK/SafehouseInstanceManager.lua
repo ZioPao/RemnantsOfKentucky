@@ -129,11 +129,6 @@ function SafehouseInstanceManager.GetOrAssignSafehouse(player)
 
         -- Clean crates, send starter kit 
         sendServerCommand(player, EFT_MODULES.Safehouse, 'PrepareNewSafehouse', {})
-
-        -- sendServerCommand(player, EFT_MODULES.Safehouse, 'CleanStorage', {})
-        
-        -- -- New safehouse, new starter kit
-        -- sendServerCommand(player, EFT_MODULES.Common, "ReceiveStarterKit", {})
     end
 
     return playerSafehouseKey
@@ -269,7 +264,7 @@ function SafehouseInstanceManagerCommands.DespawnZombies(args)
 end
 
 
-local OnSafehouseInstanceManagerCommand = function(module, command, playerObj, args)
+local function OnSafehouseInstanceManagerCommand(module, command, playerObj, args)
     if module == MODULE and SafehouseInstanceManagerCommands[command] then
         -- debugPrint("Client Command - " .. MODULE .. "." .. command)
         SafehouseInstanceManagerCommands[command](playerObj, args)

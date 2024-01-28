@@ -31,6 +31,7 @@ local CommonCommands = {}
 ---@param args coords
 function CommonCommands.Teleport(args)
     local player = getPlayer()
+
     player:setX(args.x)
     player:setY(args.y)
     player:setZ(args.z)

@@ -181,7 +181,7 @@ local MatchOptionsCommands = {}
 local MODULE = EFT_MODULES.Match
 
 
----@param args {spawnZombieMultiplier : number}
+---@param args { spawnZombieMultiplier : number }
 function MatchOptionsCommands.ReceiveCurrentZombieSpawnMultiplier(args)
     if OptionsPanel.instance == nil then return end
     local panelName = optionsReferenceTable.ZombieSpawnMultiplier.panelName

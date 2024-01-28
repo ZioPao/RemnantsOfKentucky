@@ -28,7 +28,7 @@ function PlayersCommands.ResetPlayer(_, args)
 
 
 end
-local OnPlayersCommands = function(module, command, playerObj, args)
+local function OnPlayersCommands(module, command, playerObj, args)
     if module == MODULE and PlayersCommands[command] then
         -- debugPrint("Client Command - " .. MODULE .. "." .. command)
         PlayersCommands[command](playerObj, args)

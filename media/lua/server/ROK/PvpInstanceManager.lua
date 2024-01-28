@@ -255,7 +255,7 @@ function PvpInstanceCommands.GetAmountAvailableInstances()
     sendServerCommand(EFT_MODULES.UI, "ReceiveAmountAvailableInstances", {amount = amount})
 end
 
-local OnPvpInstanceCommands = function(module, command, playerObj, args)
+local function OnPvpInstanceCommands(module, command, playerObj, args)
     if module == MODULE and PvpInstanceCommands[command] then
         -- debugPrint("Client Command - " .. MODULE .. "." .. command)
         PvpInstanceCommands[command](playerObj, args)

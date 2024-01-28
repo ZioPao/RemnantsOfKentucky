@@ -369,7 +369,7 @@ function MatchCommands.SendAlivePlayersAmount(playerObj)
 
 end
 ---------------------------------
-local OnMatchCommand = function(module, command, playerObj, args)
+local function OnMatchCommand(module, command, playerObj, args)
     if module == MODULE and MatchCommands[command] then
         --debugPrint("Client Command - " .. MODULE .. "." .. command)
         MatchCommands[command](playerObj, args)
