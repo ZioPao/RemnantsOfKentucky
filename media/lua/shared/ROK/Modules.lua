@@ -13,5 +13,15 @@ EFT_MODULES = {
     Time = "PZEFT-Time",
     State = "PZEFT-State",
 
-    KillTracker = "PZEFT-KillTracker"
+    KillTracker = "PZEFT-KillTracker",
+
+
+
+    ------------------
+    -- UI ONLY
+    ------------------
+
+    --TimeUI = "PZEFT-TimeUI",
+    --AdminPanelUI = "PZEFT-AdminPanelUI",
+
 }

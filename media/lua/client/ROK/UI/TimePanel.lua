@@ -147,7 +147,7 @@ Events.OnResolutionChange.Add(TimePanel.HandleResolutionChange)
 --* COMMANDS FROM SERVER *--
 ------------------------------------------------------------------------
 
-local MODULE = EFT_MODULES.Time
+local MODULE = EFT_MODULES.UI
 local TimeCommands = {}
 
 ---@param args {description : string}

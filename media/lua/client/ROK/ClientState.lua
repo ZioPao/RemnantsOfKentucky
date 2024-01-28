@@ -21,6 +21,10 @@ function ClientState.SetIsInRaid(val)
     ClientState.isInRaid = val
 end
 
+---@param val number
+function ClientState.SetCurrentTime(val)
+    ClientState.currentTime = val
+end
 
 
 --* Getters

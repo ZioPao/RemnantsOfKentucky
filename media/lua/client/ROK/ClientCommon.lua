@@ -1,25 +1,24 @@
 ---@class ClientCommon
 local ClientCommon = {}
 
-
--- function ClientCommon.WaitAndRunAfterPlayerInitialization(func, args)
---     local function RunFunction(player)
---         if player == nil or player ~= getPlayer() then return end
---         func(unpack(args))
---         Events.OnPlayerUpdate.Remove(RunFunction)
-
---     end
---     Events.OnPlayerUpdate.Add(RunFunction)
-
--- end
-
-
 function ClientCommon.InstaHeal()
     local pl = getPlayer()
     pl:getBodyDamage():RestoreToFullHealth()
     pl:Say("I feel better now!")
 end
 
+---@param coords coords
+function ClientCommon.Teleport(coords)
+    local pl = getPlayer()
+
+    pl:setX(coords.x)
+    pl:setY(coords.y)
+    pl:setZ(coords.z)
+    pl:setLx(coords.x)
+    pl:setLy(coords.y)
+    pl:setLz(coords.z)
+
+end
 ------------------------------------------------------------------------
 --* COMMANDS FROM SERVER *--
 ------------------------------------------------------------------------

@@ -1,25 +1,50 @@
 local BeforeMatchAdminPanel = require("ROK/UI/BeforeMatch/BeforeMatchAdminPanel")
 local DuringMatchAdminPanel = require("ROK/UI/DuringMatch/DuringMatchAdminPanel")
-local LoadingScreen = require("ROK/UI/LoadingScreen")
-local RecapPanel = require("ROK/UI/AfterMatch/RecapPanel")
+local ClientState = require("ROK/ClientState")
 
 local MODULE = EFT_MODULES.UI
 
-------------------------------------------
-
 local InterfaceCommands = {}
 
+
+--* Time Panel commands *--
+
+---@param args {description : string}
+function InterfaceCommands.OpenTimePanel(args)
+    local TimePanel = require("ROK/UI/TimePanel")
+    TimePanel.Close()
+    TimePanel.Open(args.description)
+
+    ClientState.SetCurrentTime(100) -- Workaround to prevent the TimePanel from closing
+end
+
+---@param args { time : number }
+function InterfaceCommands.ReceiveTimeUpdate(args)
+    ClientState.SetCurrentTime(args.time)
+    -- Locally, 1 player, about 4-5 ms of delay.
+end
+
+
+--* Recap Panel commands *--
 function InterfaceCommands.OpenRecapPanel()
+    local RecapPanel = require("ROK/UI/AfterMatch/RecapPanel")
     RecapPanel.Open()
 end
 
+
+--* Loading Screen commands *--
 function InterfaceCommands.OpenLoadingScreen()
+    local LoadingScreen = require("ROK/UI/LoadingScreen")
     LoadingScreen.Open()
 end
 
 function InterfaceCommands.CloseLoadingScreen()
+    local LoadingScreen = require("ROK/UI/LoadingScreen")
     LoadingScreen.Close()
 end
+
+
+--* Admin Panel Commands *--
 
 ---@param args {startingState : string}
 function InterfaceCommands.SwitchMatchAdminUI(args)
@@ -50,6 +75,22 @@ function InterfaceCommands.ReceiveAlivePlayersAmount(args)
     DuringMatchAdminPanel.instance:setAlivePlayersText(tostring(args.amount))
 
 end
+
+--- During Match Admin Panel -> Options Panel
+---@param args { spawnZombieMultiplier : number }
+function InterfaceCommands.ReceiveCurrentZombieSpawnMultiplier(args)
+    local OptionsPanel = require("ROK/UI/DuringMatch/OptionsPanel")
+    if OptionsPanel.instance == nil then return end
+    local optRef = OptionsPanel.GetOptionsReference()
+    local panelName = optRef.ZombieSpawnMultiplier.panelName
+
+    ---@type ISTextEntryBox
+    local entry = OptionsPanel.instance[panelName].entry
+    entry:setText(tostring(args.spawnZombieMultiplier))
+    entry:setEditable(true)
+    entry.syncedWithServer = true
+end
+
 
 ------------------------------------------
 local function OnInterfaceCommands(module, command, args)

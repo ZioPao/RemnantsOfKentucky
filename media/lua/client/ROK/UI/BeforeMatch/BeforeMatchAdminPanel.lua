@@ -133,13 +133,13 @@ function BeforeMatchAdminPanel:onClick(btn)
         end
     elseif btn.internal == 'SET_TIME_DAY' then
         debugPrint("Setting Day Time")
-        sendClientCommand(EFT_MODULES.Time, "SetDayTime", {})
+        sendClientCommand(EFT_MODULES.UI, "SetDayTime", {})
         btn:setEnable(false)
         self.btnSetTimeTab.isChanging = true
         self.btnSetTimeTab.prevInt = 'SET_TIME_DAY'
     elseif btn.internal == 'SET_TIME_NIGHT' then
         debugPrint("Setting Night Time")
-        sendClientCommand(EFT_MODULES.Time, "SetNightTime", {})
+        sendClientCommand(EFT_MODULES.UI, "SetNightTime", {})
         btn:setEnable(false)
         self.btnSetTimeTab.isChanging = true
         self.btnSetTimeTab.prevInt = 'SET_TIME_NIGHT'

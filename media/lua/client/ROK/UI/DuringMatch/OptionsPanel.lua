@@ -172,37 +172,10 @@ function OptionsPanel.Close()
     OptionsPanel.instance:close()
 end
 
-
-
-
---* Commands from the server
-
-local MatchOptionsCommands = {}
-local MODULE = EFT_MODULES.Match
-
-
----@param args { spawnZombieMultiplier : number }
-function MatchOptionsCommands.ReceiveCurrentZombieSpawnMultiplier(args)
-    if OptionsPanel.instance == nil then return end
-    local panelName = optionsReferenceTable.ZombieSpawnMultiplier.panelName
-
-    ---@type ISTextEntryBox
-    local entry = OptionsPanel.instance[panelName].entry
-    entry:setText(tostring(args.spawnZombieMultiplier))
-    entry:setEditable(true)
-    entry.syncedWithServer = true
+function OptionsPanel.GetOptionsReference()
+    return optionsReferenceTable
 end
 
-----------
-
-local function OnMatchOptionsCommand(module, command, args)
-    if (module == MODULE or module == MODULE) and MatchOptionsCommands[command] then
-        --debugPrint("Server Command - " .. MODULE .. "." .. command)
-        MatchOptionsCommands[command](args)
-    end
-end
-
-Events.OnServerCommand.Add(OnMatchOptionsCommand)
 
 -----------------------------------
 

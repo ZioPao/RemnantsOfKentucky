@@ -30,7 +30,7 @@ function Countdown.Setup(stopTime, fun, displayOnClient, description)
 
 	if displayOnClient and displayOnClient == true then
 		description = description or ""
-		sendServerCommand(EFT_MODULES.Time, "OpenTimePanel", {description = description})
+		sendServerCommand(EFT_MODULES.UI, "OpenTimePanel", {description = description})
 		Countdown.displayOnClient = true
 	else
 		Countdown.displayOnClient = false
@@ -62,7 +62,7 @@ function Countdown.Update()
 	local currSeconds = Countdown.stopTime - currTime
 
 	if Countdown.displayOnClient and Countdown.displayOnClient == true then
-		sendServerCommand(EFT_MODULES.Time, "ReceiveTimeUpdate", { time = currSeconds })
+		sendServerCommand(EFT_MODULES.UI, "ReceiveTimeUpdate", { time = currSeconds })
 	end
 
 	-- Check interval funcs
@@ -94,7 +94,7 @@ function Countdown.Stop()
 
 	if Countdown.displayOnClient and Countdown.displayOnClient == true then
 		-- Close forcefully TimePanel on the clients
-		sendServerCommand(EFT_MODULES.Time, "ReceiveTimeUpdate", { time = 0 })
+		sendServerCommand(EFT_MODULES.UI, "ReceiveTimeUpdate", { time = 0 })
 	end
 
 	Events.OnTickEvenPaused.Remove(Countdown.Update)

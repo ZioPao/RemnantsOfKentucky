@@ -62,15 +62,8 @@ function MatchController:initialise()
 
         debugPrint("Teleporting " .. player:getUsername() .. " to " .. spawnPoint.name)
 
-        local coords = {
-            x = spawnPoint.x,
-            y = spawnPoint.y,
-            z = spawnPoint.z
-        }
-        sendServerCommand(player, EFT_MODULES.Common, "Teleport", coords)
+        sendServerCommand(player, EFT_MODULES.Match, "TeleportToInstance", spawnPoint)
 
-        -- Set the correct client data
-        sendServerCommand(player, EFT_MODULES.State, "SetClientStateIsInRaid", {value = true})
 
     end
 
