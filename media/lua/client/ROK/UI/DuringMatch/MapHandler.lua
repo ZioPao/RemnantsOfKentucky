@@ -17,7 +17,7 @@ end
 
 function MapHandler:write()
     local currentInstanceData = ClientData.PVPInstances.GetCurrentInstance()
-    if instance == nil then
+    if currentInstanceData == nil then
         debugPrint("Trying to draw extraction points, but modData instance is null")
         return
     end
@@ -28,8 +28,8 @@ function MapHandler:write()
     for i = 1, #extractionPoints do
         local singleExtractionPoint = extractionPoints[i]
 
-        local x = instance.x + (singleExtractionPoint.x1 + singleExtractionPoint.x2)/2 - 150
-        local y = instance.y + (singleExtractionPoint.y1 + singleExtractionPoint.y2)/2 -- - 5
+        local x = currentInstanceData.x + (singleExtractionPoint.x1 + singleExtractionPoint.x2)/2 - 150
+        local y = currentInstanceData.y + (singleExtractionPoint.y1 + singleExtractionPoint.y2)/2 -- - 5
         local iconSymbol = self.symbolsAPI:addTexture("PZEFT-Exit", x, y)
 
         if singleExtractionPoint.isRandom then

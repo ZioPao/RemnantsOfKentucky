@@ -2,10 +2,8 @@
 ClientData = {}
 
 
-function ClientData.RequestData()
-    ModData.request(EFT_ModDataKeys.SHOP_ITEMS)
-    ModData.request(EFT_ModDataKeys.PVP_INSTANCES)      -- TODO Does this actually work?
-    ModData.request(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID)
+function ClientData.RequestPvpInstances()
+    ModData.request(EFT_ModDataKeys.PVP_INSTANCES)
 end
 
 function ClientData.OnReceiveGlobalModData(key, modData)
@@ -13,7 +11,7 @@ function ClientData.OnReceiveGlobalModData(key, modData)
         debugPrint("Received modData for " .. key)
         ModData.add(key, modData)
 
-        PZEFT_UTILS.PrintTable(modData)
+       -- PZEFT_UTILS.PrintTable(modData)
 
         -- The client has collected the mod data from the server
         triggerEvent("PZEFT_ClientModDataReady", key)

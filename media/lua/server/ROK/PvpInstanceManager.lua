@@ -140,10 +140,13 @@ function PvpInstanceManager.PopRandomSpawnPoint()
     end
 
     local randIndex = ZombRand(size)
+    debugPrint("randIndex for spawnpoint => " .. tostring(randIndex))
     local spawnPoint = currentInstance.spawnPoints[randIndex]
     table.remove(currentInstance.spawnPoints, randIndex)
 
-
+    if spawnPoint == nil then
+        debugPrint("Spawnpoint is nil! Something fucky is going on")
+    end
     return spawnPoint
 end
 

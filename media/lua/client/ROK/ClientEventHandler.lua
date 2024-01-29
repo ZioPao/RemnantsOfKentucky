@@ -32,7 +32,8 @@ local function OnPlayerInit()
         --* Clean map
         ISWorldMap.HandleEFTExits(true)
 
-
+        --* Request the list of PVP Instances from the server
+        ClientData.RequestPvpInstances()
 
         --* Request current running match, if there is some set the correct UI
         if isAdmin() then
