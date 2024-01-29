@@ -18,7 +18,7 @@ end
 function MapHandler:write()
     local currentInstanceData = ClientData.PVPInstances.GetCurrentInstance()
     if currentInstanceData == nil then
-        debugPrint("Trying to draw extraction points, but modData instance is null")
+        debugPrint("Trying to draw extraction points, but current pvp instance is null on this client")
         return
     end
 

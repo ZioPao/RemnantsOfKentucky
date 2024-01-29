@@ -133,13 +133,16 @@ function PvpInstanceManager.PopRandomSpawnPoint()
         return nil
     end
     local size = #currentInstance.spawnPoints
+    debugPrint("Usable spawnpoints: " .. tostring(size))
 
     if size <= 0 then
         debugPrint("No more spawn points left to pop!")
         return nil
     end
 
-    local randIndex = ZombRand(size)
+    -- Daily reminder that ZombRand does not include the maxValue! 
+    -- If size = 20, then ZombRand will be [0, 19], which will fuck up things obviously
+    local randIndex = ZombRand(size) + 1        -- IT MUST NEVER BE 0!!!!!!
     debugPrint("randIndex for spawnpoint => " .. tostring(randIndex))
     local spawnPoint = currentInstance.spawnPoints[randIndex]
     table.remove(currentInstance.spawnPoints, randIndex)

@@ -45,6 +45,12 @@ TestFramework.registerTestModule("Various", "Player", function()
         getPlayer():Kill(getPlayer())
     end
 
+    function Tests.Random()
+        local size = 2
+        local value = ZombRand(size) + 1
+        print(value)
+    end
+
     return Tests
 end)
 --local RecapPanel = require("ROK/UI/AfterMatch/RecapPanel")
