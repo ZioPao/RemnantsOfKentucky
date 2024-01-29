@@ -16,15 +16,13 @@ function MapHandler:new(symbolsAPI)
 end
 
 function MapHandler:write()
-    local instance = getPlayer():getModData().currentInstance
+    local currentInstanceData = ClientData.PVPInstances.GetCurrentInstance()
     if instance == nil then
         debugPrint("Trying to draw extraction points, but modData instance is null")
         return
     end
 
-
-
-    local extractionPoints = instance.extractionPoints
+    local extractionPoints = currentInstanceData.extractionPoints
 
     --Loop through extraction points and add the note on the map
     for i = 1, #extractionPoints do
@@ -42,9 +40,7 @@ function MapHandler:write()
             iconSymbol:setRGBA(0.25, 0, 0, 1.0)
         end
 
-
         iconSymbol:setAnchor(0.0, 0.0)
-        --iconSymbol:setScale(ISMap.SCALE/6)
 
     end
 end
@@ -98,11 +94,16 @@ end
 -- If we're in a raid, we need to reset the correct symbols. If we're not, we're gonna just clean them off the map
 
 Events.PZEFT_OnMatchEnd.Add(function()
+    debugPrint("Match ended, cleaning map")
     ISWorldMap.HandleEFTExits(true)
 end)
 
+
+
 Events.PZEFT_ClientModDataReady.Add(function(key)
-    if key == KEY_PVP_CURRENTINSTANCE then
+    if key == EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID then
+        -- TODO Check if isInRaid
+
         ISWorldMap.HandleEFTExits(false)
     end
 end)

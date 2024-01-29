@@ -1,25 +1,19 @@
-local KEY_SHOP_ITEMS = "PZ-EFT-SHOP-ITEMS"
-local KEY_PVP_INSTANCES = "PZ-EFT-PVP-INSTANCES"
-local KEY_PVP_CURRENTINSTANCE = "PZ-EFT-PVP-CURRENTINSTANCE"
-
-----------------------------------------------------------------------------
-
 ---@class ClientData
-ClientData = ClientData or {}
+ClientData = {}
+
 
 function ClientData.RequestData()
-    ModData.request(KEY_SHOP_ITEMS)
-    ModData.request(KEY_PVP_CURRENTINSTANCE)
-    ModData.request(KEY_PVP_INSTANCES)
+    ModData.request(EFT_ModDataKeys.SHOP_ITEMS)
+    ModData.request(EFT_ModDataKeys.PVP_INSTANCES)      -- TODO Does this actually work?
+    ModData.request(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID)
 end
 
 function ClientData.OnReceiveGlobalModData(key, modData)
-
-    if key == KEY_SHOP_ITEMS or key == KEY_PVP_CURRENTINSTANCE or key == KEY_PVP_INSTANCES then
+    if key == EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID or key == EFT_ModDataKeys.PVP_INSTANCES or key == EFT_ModDataKeys.SHOP_ITEMS then
         debugPrint("Received modData for " .. key)
         ModData.add(key, modData)
 
-            -- TODO USE THIS TO PREVENT ISSUES WITH MAP HANDLING AND TELEPORTING!!!!
+        PZEFT_UTILS.PrintTable(modData)
 
         -- The client has collected the mod data from the server
         triggerEvent("PZEFT_ClientModDataReady", key)
@@ -34,11 +28,15 @@ Events.OnReceiveGlobalModData.Add(ClientData.OnReceiveGlobalModData)
 ClientData.PVPInstances = ClientData.PVPInstances or {}
 
 function ClientData.PVPInstances.GetPvpInstances()
-    return ModData.getOrCreate(KEY_PVP_INSTANCES)
+    return ModData.getOrCreate(EFT_ModDataKeys.PVP_INSTANCES)
 end
 
 function ClientData.PVPInstances.GetCurrentInstance()
-    return ModData.getOrCreate(KEY_PVP_CURRENTINSTANCE)
+    local currInstanceIdTab = ModData.get(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID)
+    local instancesData = ModData.get(EFT_ModDataKeys.PVP_INSTANCES)
+
+    local currentInstance = instancesData[currInstanceIdTab.id]
+    return currentInstance
 end
 
 --------------------------------------
@@ -46,33 +44,6 @@ end
 ClientData.Shop = ClientData.Shop or {}
 
 function ClientData.Shop.GetShopItems()
-    return ModData.getOrCreate(KEY_SHOP_ITEMS)
+    return ModData.getOrCreate(EFT_ModDataKeys.SHOP_ITEMS)
 end
 
------------------------------------------------------------------
-
-local ClientDataCommands = {}
-local MODULE = EFT_MODULES.Data
-
----Starts when Server Mod Data is ready, initialize Global Mod Data on the client
-function ClientDataCommands.SeverModDataReady()
-    ClientData.RequestData()
-end
-
---- Sets pvpInstanceTable
---- Or use ClientCommands.print_pvp_currentinstance() to print current instance on the server's console
----@param instanceData pvpInstanceTable
-function ClientDataCommands.SetCurrentInstance(instanceData)
-    local md = getPlayer():getModData()
-    md.currentInstance = md.currentInstance or {}
-    md.currentInstance = instanceData
-end
-
-local function OnClientDataCommands(module, command, args)
-    if (module == MODULE or module == MODULE) and ClientDataCommands[command] then
-        --debugPrint("Server Command - " .. MODULE .. "." .. command)
-        ClientDataCommands[command](args)
-    end
-end
-
-Events.OnServerCommand.Add(OnClientDataCommands)

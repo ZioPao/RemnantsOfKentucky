@@ -3,14 +3,10 @@ if not isServer() then return end
 require("ROK/DebugTools")
 ------------------------
 
-
-local KEY_PVP_INSTANCES = "PZ-EFT-PVP-INSTANCES"
 local KEY_PVP_USEDINSTANCES = "PZ-EFT-PVP-USEDINSTANCES"
-local KEY_PVP_CURRENTINSTANCE = "PZ-EFT-PVP-CURRENTINSTANCE"
 local KEY_SAFEHOUSE_INSTANCES = "PZ-EFT-SAFEHOUSE-INSTANCES"
 local KEY_SAFEHOUSE_ASSIGNEDINSTANCES = "PZ-EFT-SAFEHOUSE-ASSIGNEDINSTANCES"
 local KEY_BANK_ACCOUNTS = "PZ-EFT-BANK-ACCOUNTS"
-local KEY_SHOP_ITEMS = "PZ-EFT-SHOP-ITEMS"
 
 ServerData = ServerData or {}
 
@@ -21,13 +17,13 @@ function ServerData.GlobalModDataInit()
 
     -- TODO On a first load this doesn't get triggered for some reason
     debugPrint("Starting Global Mod Data Init")
-    ModData.getOrCreate(KEY_PVP_INSTANCES)
+    ModData.getOrCreate(EFT_ModDataKeys.PVP_INSTANCES)
     ModData.getOrCreate(KEY_PVP_USEDINSTANCES)
-    ModData.getOrCreate(KEY_PVP_CURRENTINSTANCE)
+    ModData.getOrCreate(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID)
     ModData.getOrCreate(KEY_SAFEHOUSE_INSTANCES)
     ModData.getOrCreate(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
     ModData.getOrCreate(KEY_BANK_ACCOUNTS)
-    ModData.getOrCreate(KEY_SHOP_ITEMS)
+    ModData.getOrCreate(EFT_ModDataKeys.SHOP_ITEMS)
 
     triggerEvent("PZEFT_ServerModDataReady")
 end
@@ -35,13 +31,13 @@ end
 Events.OnInitGlobalModData.Add(ServerData.GlobalModDataInit)
 
 function ServerData.ClearAllData()
-    ModData.remove(KEY_PVP_INSTANCES)
+    ModData.remove(EFT_ModDataKeys.PVP_INSTANCES)
     ModData.remove(KEY_PVP_USEDINSTANCES)
-    ModData.remove(KEY_PVP_CURRENTINSTANCE)
+    ModData.remove(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID)
     ModData.remove(KEY_SAFEHOUSE_INSTANCES)
     ModData.remove(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
     ModData.remove(KEY_BANK_ACCOUNTS)
-    ModData.remove(KEY_SHOP_ITEMS)
+    ModData.remove(EFT_ModDataKeys.SHOP_ITEMS)
 
     ServerData.GlobalModDataInit()
 end
@@ -53,13 +49,13 @@ ServerData.PVPInstances = ServerData.PVPInstances or {}
 --- Get table of PVP instances data
 ---@return pvpInstanceTable
 ServerData.PVPInstances.GetPvpInstances = function()
-    return ModData.getOrCreate(KEY_PVP_INSTANCES)
+    return ModData.getOrCreate(EFT_ModDataKeys.PVP_INSTANCES)
 end
 
 --- Set table of PVP instances data
 ---@param data pvpInstanceTable
 ServerData.PVPInstances.SetPvpInstances = function(data)
-    ModData.add(KEY_PVP_INSTANCES, data)
+    ModData.add(EFT_ModDataKeys.PVP_INSTANCES, data)
 end
 
 --- Get table of PVP used instances data
@@ -77,16 +73,16 @@ end
 --- Get PVP current instance data
 ---@return pvpInstanceTable
 ServerData.PVPInstances.GetPvpCurrentInstance = function()
-    return ModData.getOrCreate(KEY_PVP_CURRENTINSTANCE)
+    return ModData.getOrCreate(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID)
 end
 
 --- Set PVP current instance data
 ---@param data pvpInstanceTable
-ServerData.PVPInstances.SetPvpCurrentInstance = function(data, doTransmit)
-    ModData.add(KEY_PVP_CURRENTINSTANCE, data)
+function ServerData.PVPInstances.SetPvpCurrentInstance(data, doTransmit)
+    ModData.add(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID, data)
 
     if doTransmit then
-        ModData.transmit(KEY_PVP_CURRENTINSTANCE)
+        ModData.transmit(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID)
     end
 end
 
@@ -149,18 +145,18 @@ ServerData.Shop = ServerData.Shop or {}
 --- Get table of shop items
 ---@return shopItemsTable
 function ServerData.Shop.GetShopItemsData()
-    return ModData.getOrCreate(KEY_SHOP_ITEMS)
+    return ModData.getOrCreate(EFT_ModDataKeys.SHOP_ITEMS)
 end
 
 --- Set table of shop items
 ---@param data shopItemsTable
 function ServerData.Shop.SetShopItemsData(data)
-    ModData.add(KEY_SHOP_ITEMS, data)
+    ModData.add(EFT_ModDataKeys.SHOP_ITEMS, data)
 end
 
 --- Transmits table of shop items to clients
 function ServerData.Shop.TransmitShopItemsData()
-    ModData.transmit(KEY_SHOP_ITEMS)
+    ModData.transmit(EFT_ModDataKeys.SHOP_ITEMS)
 end
 ------------------------------------------------
 
@@ -168,7 +164,7 @@ end
 ServerData.debug = ServerData.debug or {}
 
 ServerData.debug.print_pvp_instances = function()
-    local data = ModData.getOrCreate(KEY_PVP_INSTANCES)
+    local data = ModData.getOrCreate(EFT_ModDataKeys.PVP_INSTANCES)
     PZEFT_UTILS.PrintTable(data)
 end
 
@@ -178,7 +174,7 @@ ServerData.debug.print_pvp_usedinstances = function()
 end
 
 ServerData.debug.print_pvp_currentinstance = function()
-    local data = ModData.getOrCreate(KEY_PVP_CURRENTINSTANCE)
+    local data = ModData.getOrCreate(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID)
     PZEFT_UTILS.PrintTable(data)
 end
 
@@ -198,7 +194,7 @@ ServerData.debug.print_bankaccounts = function()
 end
 
 ServerData.debug.print_shopitems = function()
-    local data = ModData.getOrCreate(KEY_SHOP_ITEMS)
+    local data = ModData.getOrCreate(EFT_ModDataKeys.SHOP_ITEMS)
     PZEFT_UTILS.PrintTable(data)
 end
 

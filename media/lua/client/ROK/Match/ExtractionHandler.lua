@@ -80,7 +80,8 @@ end
 
 ---Will run the extraction on the client
 function ExtractionHandler.DoExtraction()
-    local currentInstanceData = getPlayer():getModData().currentInstance
+    local currentInstanceData = ClientData.PVPInstances.GetCurrentInstance()
+
     ExtractionHandler.stopTime = os_time() + currentInstanceData.extractionPoints[ExtractionHandler.key].time
     Events.OnTick.Add(ExtractionHandler.HandleTimer)
 end

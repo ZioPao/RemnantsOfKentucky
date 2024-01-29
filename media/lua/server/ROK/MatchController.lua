@@ -53,7 +53,7 @@ function MatchController:initialise()
         local plId = player:getOnlineID()
         if plId then
             self:addPlayerToMatchList(plId)
-            
+
             -- Teleport the player
             local spawnPoint = PvpInstanceManager.PopRandomSpawnPoint()
             if not spawnPoint then

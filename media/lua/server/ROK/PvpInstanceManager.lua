@@ -23,7 +23,7 @@ end
 function PvpInstanceManager.Reset()
     ServerData.PVPInstances.SetPvpInstances({})
     ServerData.PVPInstances.SetPvpUsedInstances({})
-    ServerData.PVPInstances.SetPvpCurrentInstance({}, true)
+    ServerData.PVPInstances.SetPvpCurrentInstance({}, false)
     PvpInstanceManager.LoadPvpInstances()
 end
 
@@ -103,7 +103,10 @@ end
 ---@return pvpInstanceTable?
 function PvpInstanceManager.GetCurrentInstance()
     local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
-    if currentInstance == nil then return nil end
+    if currentInstance == nil then
+        debugPrint("GetCurrentInstance returning nil for some reason!")
+        return nil
+    end
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
     return pvpInstances[currentInstance.id]
 end
@@ -123,8 +126,12 @@ end
 ---Consumes a spawnpoint.
 ---@return {name : string, x : number, y : number, z : number}?
 function PvpInstanceManager.PopRandomSpawnPoint()
+    debugPrint("Popping random spawn point")
     local currentInstance = PvpInstanceManager.GetCurrentInstance()
-    if currentInstance == nil then return nil end
+    if currentInstance == nil then
+        debugPrint("Current instance is nil, can't pop random spawn point")
+        return nil
+    end
     local size = #currentInstance.spawnPoints
 
     if size <= 0 then
@@ -136,7 +143,6 @@ function PvpInstanceManager.PopRandomSpawnPoint()
     local spawnPoint = currentInstance.spawnPoints[randIndex]
     table.remove(currentInstance.spawnPoints, randIndex)
 
-    ServerData.PVPInstances.SetPvpCurrentInstance(currentInstance, true)
 
     return spawnPoint
 end
