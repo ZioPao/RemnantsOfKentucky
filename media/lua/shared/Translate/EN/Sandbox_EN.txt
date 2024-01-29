@@ -1,0 +1,7 @@
+Sandbox_EN = {
+    Sandbox_ROK = "Remnants of Kentucky",
+
+    Sandbox_ROK_RoundTime = "Round Time",
+    Sandbox_ROK_RoundOvertime = "Round Overtime",
+
+}

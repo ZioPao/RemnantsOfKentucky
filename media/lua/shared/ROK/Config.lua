@@ -130,8 +130,8 @@ PZ_EFT_CONFIG.MatchSettings = {
     endMatchTime = 5,
 
     -- Server only
-    roundTime = 10, --1200,       -- 20 minutes
-    roundOvertime = 10, --300,    -- 5 minutes
+    roundTime = SandboxVars.ROK.RoundTime,
+    roundOvertime = SandboxVars.ROK.RoundOvertime,
     zombieIncreaseTime = 60,
     checkAlivePlayersTime = 10,      -- Every 10 seconds, we check if there are players alive in the match
 
