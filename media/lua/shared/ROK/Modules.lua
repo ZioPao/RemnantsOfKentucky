@@ -1,4 +1,4 @@
----@alias EFT_ModulesType {Common : string, Data : string, Bank : string, Shop : string, UI : string, Match : string, PvpInstances : string, Safehouse : string, Time : string, State : string, KillTracker : string}
+---@alias EFT_ModulesType {Common : string, Data : string, Bank : string, Shop : string, UI : string, Match : string, PvpInstances : string, Safehouse : string, Time : string, State : string}
 
 ---@type EFT_ModulesType
 EFT_MODULES = {

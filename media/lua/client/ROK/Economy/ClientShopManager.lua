@@ -116,7 +116,7 @@ function ClientShopManager.GetEssentialItems()
             essentialsList[itemType] = nil
             essentialsList[itemType] = shopItems.items[itemType]
         end
-        --PZEFT_UTILS.PrintTable(essentialsList)
+        PZEFT_UTILS.PrintTable(essentialsList)
 
         return essentialsList
     else

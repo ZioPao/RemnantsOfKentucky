@@ -13,7 +13,7 @@ function SetEFTProfessionDescription(prof)
 	end
 	table.sort(infoList, function(a,b) return not string.sort(a.perkName, b.perkName) end)
 	for _,info in ipairs(infoList) do
-		if desc ~= "" then desc = desc .. "\n" end
+		if desc and desc ~= "" then desc = desc .. "\n" end
 		desc = desc .. info.levelStr .. " " .. info.perkName
 	end
 	local traits = prof:getFreeTraits()

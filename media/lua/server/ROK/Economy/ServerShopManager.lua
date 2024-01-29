@@ -1,5 +1,4 @@
 if not isServer() then return end
-local ShopItemsManager = require("ROK/ShopItemsManager")
 ------------------------------
 
 ---@class ServerShopManager
@@ -34,6 +33,7 @@ end
 
 function ServerShopManager.LoadShopPrices()
     local shopItemsData = ServerData.Shop.GetShopItemsData()
+    local ShopItemsManager = require("ROK/ShopItemsManager")
     ShopItemsManager.GenerateDailyItems()
 
     -- Init
@@ -69,11 +69,13 @@ Events.PZEFT_OnMatchEnd.Add(ServerShopManager.RetransmitDailyItems)
 ------------------------------------------------------------------------
 
 local ShopCommands = {}
+local MODULE = EFT_MODULES.Shop
 
 --- Send shop data to a specific client
 ---@param playerObj IsoPlayer
 function ShopCommands.TransmitShopItems(playerObj)
-    debugPrint("Transmit Shop Items")
+    debugPrint("Transmitting Shop Items to Client => " .. playerObj:getUsername())
+
     local items = ServerShopManager.GetItems()
     sendServerCommand(playerObj, EFT_MODULES.Shop, "GetShopItems", items)
     --debugPrint(playerObj:getUsername() .. " asked for a retransmission of Shop Items")
@@ -82,8 +84,11 @@ end
 
 ------------------------------------
 
-function OnShopCommand(module, command, playerObj, args)
-    if module == EFT_MODULES.Shop and ShopCommands[command] then
+local function OnShopCommand(module, command, playerObj, args)
+    --debugPrint("Received something")
+    --debugPrint(module)
+    --debugPrint(command)
+    if module == MODULE and ShopCommands[command] then
         debugPrint("Client Command - " .. EFT_MODULES.Shop .. "." .. command)
         ShopCommands[command](playerObj, args)
     end

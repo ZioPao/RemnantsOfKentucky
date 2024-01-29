@@ -5,11 +5,6 @@ require "ROK/ClientData"
 ---@class AdminShopManager
 local AdminShopManager = {}
 
---- Transmit prices to server, which then will be transmitted back to clients
-function AdminShopManager.TransmitShopItems()
-    local shopItems = ClientData.Shop.GetShopItems()
-    --sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', shopItems)
-end
 
 --- Adjust an item's price multiplier
 ---@param fullType String
@@ -69,8 +64,6 @@ function AdminShopManager.RefreshDailyItems()
             shopItems.dailyInventory[id] = shopItems.items[id]
         end
     end
-
-    --sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', shopItems)
 end
 
 -------------------------------------------------------------------

@@ -1,8 +1,9 @@
+LuaEventManager.AddEvent("PZEFT_OnMatchStart")
+LuaEventManager.AddEvent("PZEFT_OnMatchEnd")
+
 if isClient() then
     --* ClientData.lua
     LuaEventManager.AddEvent("PZEFT_ClientModDataReady")
-    LuaEventManager.AddEvent("PZEFT_OnMatchStart")
-    LuaEventManager.AddEvent("PZEFT_OnMatchEnd")
     LuaEventManager.AddEvent("PZEFT_UpdateClientStatus")
 
     LuaEventManager.AddEvent("PZEFT_LootRecapReady")

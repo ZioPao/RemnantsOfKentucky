@@ -11,8 +11,6 @@ local SafehouseInstanceManager = require("ROK/SafehouseInstanceManager")
 
 -- TODO Server performance affects this HEAVILY! People don't get teleported for example. Test it somehow
 
-
-
 ---@class MatchController
 ---@field pvpInstance pvpInstanceTable
 ---@field playersInMatch table<number,number>        Table of player ids
@@ -97,15 +95,23 @@ function MatchController:start()
 
     sendServerCommand(EFT_MODULES.UI, "CloseLoadingScreen", {})
 
+    triggerEvent("PZEFT_OnMatchStart")
+
 end
 
 function MatchController:startOvertime()
     Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.roundOvertime, function()
-        debugPrint("End match")
-        self:killAlivePlayers()
-        Countdown.Stop()
-        MatchController.instance = nil
+        self:stopOvertime()
     end, true, "Overtime")
+end
+
+function MatchController:stopOvertime()
+    debugPrint("End match")
+    self:killAlivePlayers()
+    Countdown.Stop()
+    MatchController.instance = nil
+
+    triggerEvent("PZEFT_OnMatchEnd")
 end
 
 --- Kill players that are still in the pvp instance and didn't manage to escape in time
@@ -283,6 +289,7 @@ local MatchCommands = {}
 
 
 function MatchCommands.CheckIsRunningMatch(playerObj, args)
+    debugPrint("Client asked if match is running")
     local handler = MatchController.GetHandler()
 
     local isMatchRunning = handler ~= nil

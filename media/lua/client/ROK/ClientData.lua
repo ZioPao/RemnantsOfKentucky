@@ -14,16 +14,17 @@ function ClientData.RequestData()
 end
 
 function ClientData.OnReceiveGlobalModData(key, modData)
+
     if key == KEY_SHOP_ITEMS or key == KEY_PVP_CURRENTINSTANCE or key == KEY_PVP_INSTANCES then
         debugPrint("Received modData for " .. key)
         ModData.add(key, modData)
+
+            -- TODO USE THIS TO PREVENT ISSUES WITH MAP HANDLING AND TELEPORTING!!!!
+
+        -- The client has collected the mod data from the server
+        triggerEvent("PZEFT_ClientModDataReady", key)
     end
 
-
-    -- TODO USE THIS TO PREVENT ISSUES WITH MAP HANDLING AND TELEPORTING!!!!
-
-    -- The client has collected the mod data from the server
-    triggerEvent("PZEFT_ClientModDataReady", key)
 end
 
 Events.OnReceiveGlobalModData.Add(ClientData.OnReceiveGlobalModData)
