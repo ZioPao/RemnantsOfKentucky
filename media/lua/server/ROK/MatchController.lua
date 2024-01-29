@@ -7,8 +7,6 @@ local SafehouseInstanceManager = require("ROK/SafehouseInstanceManager")
 
 ---------------------------------------------------
 
-
-
 -- TODO Server performance affects this HEAVILY! People don't get teleported for example. Test it somehow
 
 ---@class MatchController
@@ -72,12 +70,12 @@ end
 ---Wait 5 seconds before starting the match
 function MatchController:waitForStart()
     debugPrint("Start wait")
-    Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.loadWaitTime, function () self:start() end, false)
+    Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.loadWaitTime, function () self:startMatch() end, false)
     sendServerCommand(EFT_MODULES.UI, "OpenLoadingScreen", {})
 end
 
 ---Setup teleporting players to their spawn points
-function MatchController:start()
+function MatchController:startMatch()
     debugPrint("Starting match!")
 
 
@@ -99,6 +97,29 @@ function MatchController:start()
 
 end
 
+function MatchController:stopMatch()
+    Countdown.Stop()
+    MatchController.instance = nil
+    triggerEvent("PZEFT_OnMatchEnd")
+end
+
+--- Stop the match and teleport back everyone. Triggered manually by an admin
+function MatchController:forceStopMatch()
+    self:stopMatch()
+    SafehouseInstanceManager.SendAllPlayersToSafehouses()
+end
+
+--- Extract the player and return to safehouse
+---@param playerObj IsoPlayer
+function MatchController:extractPlayer(playerObj)
+    SafehouseInstanceManager.SendPlayerToSafehouse(playerObj)
+    self:removePlayerFromMatchList(playerObj:getOnlineID())
+    sendServerCommand(playerObj, EFT_MODULES.UI, "OpenRecapPanel", {})
+end
+
+
+--* Overtime
+
 function MatchController:startOvertime()
     Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.roundOvertime, function()
         self:stopOvertime()
@@ -106,12 +127,8 @@ function MatchController:startOvertime()
 end
 
 function MatchController:stopOvertime()
-    debugPrint("End match")
+    self:stopMatch()
     self:killAlivePlayers()
-    Countdown.Stop()
-    MatchController.instance = nil
-
-    triggerEvent("PZEFT_OnMatchEnd")
 end
 
 --- Kill players that are still in the pvp instance and didn't manage to escape in time
@@ -125,31 +142,6 @@ function MatchController:killAlivePlayers()
     end
 end
 
---- Extract the player and return to safehouse
----@param playerObj IsoPlayer
-function MatchController:extractPlayer(playerObj)
-    SafehouseInstanceManager.SendPlayerToSafehouse(playerObj)
-    self:removePlayerFromMatchList(playerObj:getOnlineID())
-    sendServerCommand(playerObj, EFT_MODULES.UI, "OpenRecapPanel", {})
-end
----@param playerId number
-function MatchController:addPlayerToMatchList(playerId)
-    self.playersInMatch[playerId] = playerId
-    self.amountPlayersInMatch = self.amountPlayersInMatch + 1
-end
-
----@param playerId number
-function MatchController:removePlayerFromMatchList(playerId)
-    self.playersInMatch[playerId] = nil
-    self.amountPlayersInMatch = self.amountPlayersInMatch - 1
-end
-
---- Stop the match and teleport back everyone
-function MatchController:forceStopMatch()
-    Countdown.Stop()
-    SafehouseInstanceManager.SendAllPlayersToSafehouses()
-    MatchController.instance = nil
-end
 
 --* Getter/Setters
 
@@ -166,7 +158,7 @@ function MatchController:getAmountAlivePlayers()
     return self.amountPlayersInMatch
 end
 
---* Events/Checks
+--* Various Events
 
 ---Run it every once, depending on the Config, spawns zombies for each player
 ---@param loops number amount of time that this function has been called by Countdown
@@ -233,6 +225,36 @@ function MatchController.HandleZombieSpawns(loops)
     Events.OnTick.Add(WaitAndSendSound)
 end
 
+---@param playerObj IsoPlayer
+function MatchController.HandlePlayerDeath(playerObj)
+    if playerObj:isZombie() then return end
+    ---@type IsoPlayer
+    local killerObj = playerObj:getAttackedBy()
+
+    if killerObj and killerObj ~= playerObj then
+        -- Add to kill count, send it back to client
+        sendServerCommand(killerObj, EFT_MODULES.Match, 'AddKill', {victimUsername = playerObj:getUsername()})
+    end
+end
+
+Events.OnCharacterDeath.Add(MatchController.HandlePlayerDeath)
+
+
+------------------------
+--* Match List
+
+---@param playerId number
+function MatchController:addPlayerToMatchList(playerId)
+    self.playersInMatch[playerId] = playerId
+    self.amountPlayersInMatch = self.amountPlayersInMatch + 1
+end
+
+---@param playerId number
+function MatchController:removePlayerFromMatchList(playerId)
+    self.playersInMatch[playerId] = nil
+    self.amountPlayersInMatch = self.amountPlayersInMatch - 1
+end
+
 ---Checks if there are players still alive in a match. When it gets to 0, stop the match
 ---We have to check it periodically to account for crashes
 function MatchController.CheckAlivePlayers()
@@ -256,19 +278,15 @@ function MatchController.CheckAlivePlayers()
     end
 end
 
----@param playerObj IsoPlayer
-function MatchController.HandlePlayerDeath(playerObj)
-    if playerObj:isZombie() then return end
-    ---@type IsoPlayer
-    local killerObj = playerObj:getAttackedBy()
 
-    if killerObj and killerObj ~= playerObj then
-        -- Add to kill count, send it back to client
-        sendServerCommand(killerObj, EFT_MODULES.Match, 'AddKill', {victimUsername = playerObj:getUsername()})
-    end
-end
 
-Events.OnCharacterDeath.Add(MatchController.HandlePlayerDeath)
+
+
+
+
+
+
+
 
 
 

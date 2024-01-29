@@ -1,7 +1,7 @@
 
 
-function SetEFTProfessionDescription(prof)
-	local desc = getTextOrNull("UI_EFT_Profession_" .. prof:getType() .. "_Desc")
+local function SetEFTProfessionDescription(prof)
+	local desc = getTextOrNull("UI_EFT_Profession_" .. prof:getType() .. "_Desc") or ""
 	local boost = transformIntoKahluaTable(prof:getXPBoostMap())
 	local infoList = {}
 	for perk,level in pairs(boost) do
@@ -14,7 +14,9 @@ function SetEFTProfessionDescription(prof)
 	table.sort(infoList, function(a,b) return not string.sort(a.perkName, b.perkName) end)
 	for _,info in ipairs(infoList) do
 		if desc and desc ~= "" then desc = desc .. "\n" end
-		desc = desc .. info.levelStr .. " " .. info.perkName
+        if info and desc then
+            desc = desc .. info.levelStr .. " " .. info.perkName
+        end
 	end
 	local traits = prof:getFreeTraits()
 	for j=1,traits:size() do
@@ -25,7 +27,7 @@ function SetEFTProfessionDescription(prof)
 	end
 	prof:setDescription(desc)
 
-    debugPrint(desc)
+    --debugPrint(desc)
 
 end
 
