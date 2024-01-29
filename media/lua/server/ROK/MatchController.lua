@@ -40,6 +40,9 @@ function MatchController:initialise()
         return
     end
 
+    -- Opens the loading screen for everyone
+    sendServerCommand(EFT_MODULES.UI, "OpenLoadingScreen", {})
+
     -- Init players in match
     local playersArray = getOnlinePlayers()
     for i = 0, playersArray:size() - 1 do
@@ -65,13 +68,6 @@ function MatchController:initialise()
     end
     -- Default value for the zombie multiplier
     self:setZombieSpawnMultiplier(PZ_EFT_CONFIG.MatchSettings.zombieSpawnMultiplier)
-end
-
----Wait 5 seconds before starting the match
-function MatchController:waitForStart()
-    debugPrint("Start wait")
-    Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.loadWaitTime, function () self:startMatch() end, false)
-    sendServerCommand(EFT_MODULES.UI, "OpenLoadingScreen", {})
 end
 
 ---Setup teleporting players to their spawn points
@@ -280,16 +276,6 @@ end
 
 
 
-
-
-
-
-
-
-
-
-
-
 --------------------------------------------------
 --- Get the instance of MatchController
 ---@return MatchController
@@ -322,7 +308,7 @@ function MatchCommands.StartCountdown(playerObj, args)
         debugPrint("Initialize match")
         local handler = MatchController:new()
         handler:initialise()
-        handler:waitForStart()
+        handler:startMatch()
 
         -- Closes automatically the admin panel\switch it to the during match one
         sendServerCommand(playerObj, EFT_MODULES.UI, 'SwitchMatchAdminUI', {startingState='BEFORE'})

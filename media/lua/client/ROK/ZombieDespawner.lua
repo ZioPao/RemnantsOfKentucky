@@ -1,8 +1,9 @@
 -- Should be triggered only when in a safehouse, never elsewhere
 local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 
-local function DespawnZombies(zombie)
+local function DespawnZombies()
     -- Double check, player need to be in their safehouse
+    debugPrint("Removing zombies")
     if not SafehouseInstanceHandler.IsInSafehouse() then return end
 	SendCommandToServer(string.format("/removezombies -remove true"))
 end
@@ -23,3 +24,6 @@ Events.PZEFT_OnMatchStart.Add(StopZombieDespawner)
 Events.OnPlayerDeath.Add(StopZombieDespawner)
 Events.PZEFT_OnMatchEnd.Add(StartZombieDespawner)
 Events.OnZombieUpdate.Add(DespawnZombies)
+
+
+Events.PZEFT_OnSuccessfulTeleport.Add(DespawnZombies)

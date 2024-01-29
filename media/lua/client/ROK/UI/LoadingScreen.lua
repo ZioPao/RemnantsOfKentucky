@@ -54,14 +54,7 @@ function LoadingScreen.Close()
     end
 end
 
-
-
--- TODO make this better
-Events.PZEFT_ClientModDataReady.Add(function(key)
-    if key == "PZ-EFT-PVP-CURRENTINSTANCE" then
-        LoadingScreen.Close()
-    end
-end)
+Events.PZEFT_OnSuccessfulTeleport.Add(LoadingScreen.Close)
 
 
 

@@ -18,6 +18,21 @@ function ClientCommon.Teleport(coords)
     pl:setLy(coords.y)
     pl:setLz(coords.z)
 
+    local function CheckTeleportStatus()
+        debugPrint("Checking is teleport is successful")
+        local x = pl:getX()
+        local y = pl:getY()
+        local z = pl:getZ()
+        -- tODO don't be so precise about it, add 1-2 squares to prevent issues
+        if x == coords.x and y == coords.y and z == coords.z then
+            debugPrint("Successful teleport!")
+            Events.OnTick.Remove(CheckTeleportStatus)
+            triggerEvent("PZEFT_OnSuccessfulTeleport")
+        end
+    end
+
+    Events.OnTick.Add(CheckTeleportStatus)
+
 end
 ------------------------------------------------------------------------
 --* COMMANDS FROM SERVER *--
@@ -29,28 +44,12 @@ local CommonCommands = {}
 ---Teleport the player
 ---@param args coords
 function CommonCommands.Teleport(args)
-    local player = getPlayer()
-
-    player:setX(args.x)
-    player:setY(args.y)
-    player:setZ(args.z)
-    player:setLx(args.x)
-    player:setLy(args.y)
-    player:setLz(args.z)
-
-
-    -- TODO Event to notify after teleport is successful... instead of this crap
-
-    -- Send a forced remove zombies, just to be sure.
-    local Delay = require("ROK/Delay")
-    Delay:set(5, function()
-        SendCommandToServer(string.format("/removezombies -remove true"))
-    end)
+    ClientCommon.Teleport(args)
 end
 
 ------------------------------------
 local function OnCommonCommand(module, command, args)
-    if (module == MODULE or module == MODULE) and CommonCommands[command] then
+    if module == MODULE and CommonCommands[command] then
         --debugPrint("Server Command - " .. MODULE .. "." .. command)
         CommonCommands[command](args)
     end

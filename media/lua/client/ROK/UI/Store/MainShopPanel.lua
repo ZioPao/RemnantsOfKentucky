@@ -160,7 +160,12 @@ end
 
 function MainShopPanel:update()
     ISCollapsableWindow.update(self)
-    self.accountBalance = ClientBankManager.GetPlayerBankAccountBalance()
+    local newBalance = ClientBankManager.GetPlayerBankAccountBalance()
+
+    -- If we're receiving an update, it's gonna get -1, making it flicker. This forces it to keep the old value for this update
+    if newBalance ~= -1 then
+        self.accountBalance = newBalance
+    end
 
     -- Check distance from computer
     if IsoUtils.DistanceTo(self.pcPosition.x, self.pcPosition.y, self.character:getX(), self.character:getY()) > 2 then
@@ -174,7 +179,7 @@ function MainShopPanel:render()
     local balanceText
 
     -- SP Workaround
-    balanceText = getText("IGUI_Shop_CurrentBalance", string.format("%.2f",self.accountBalance))
+    balanceText = getText("IGUI_Shop_CurrentBalance", string.format("%.2f", self.accountBalance))
 
     self.balancePanel:setText(balanceText)
     self.balancePanel:paginate()
