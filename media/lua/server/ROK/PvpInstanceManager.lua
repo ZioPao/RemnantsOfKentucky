@@ -19,8 +19,9 @@ function PvpInstanceManager.getInstanceID(cellX, cellY)
     return cellX .. "-" .. cellY
 end
 
---- Clear existing PVP instance and reload PVP instances
+--- Clear existing PVP instances and reload PVP instances
 function PvpInstanceManager.Reset()
+    debugPrint("Resetting PVP Instances")
     ServerData.PVPInstances.SetPvpInstances({})
     ServerData.PVPInstances.SetPvpUsedInstances({})
     ServerData.PVPInstances.SetPvpCurrentInstance({}, false)
@@ -212,39 +213,13 @@ function PvpInstanceManager.GetPermanentExtractionPoints(cellX, cellY)
     return points
 end
 
--- function PvpInstanceManager.TeleportPlayersToInstance()
---     debugPrint("Teleporting players")
---     local playersArray = getOnlinePlayers()
---     for i = 0, playersArray:size() - 1 do
---         ---@type IsoPlayer
---         local player = playersArray:get(i)
---         local spawnPoint = PvpInstanceManager.PopRandomSpawnPoint()
---         if not spawnPoint then return end --no more spawnpoints available
-
---         debugPrint(spawnPoint.name)
---         --debugPrint("Teleporting to instance")
---         -- Teleport the player to their instance
---         local coords = {
---             x = spawnPoint.x,
---             y = spawnPoint.y,
---             z = spawnPoint.z
---         }
---         sendServerCommand(player, EFT_MODULES.Common, "Teleport", coords)
-
---         -- Set the correct client data
---         sendServerCommand(player, EFT_MODULES.State, "SetClientStateIsInRaid", {value = true})
---     end
-
---     PvpInstanceManager.SendCurrentInstance()
+-- local function OnLoad()
+--     -- TODO We should make this more obvious that the admin needs to start the resetter before starting up the game
+--     PvpInstanceManager.Reset()
 -- end
 
-local function OnLoad()
-    -- TODO We should make this more obvious that the admin needs to start the resetter before starting up the game
-    PvpInstanceManager.Reset()
-end
-
-Events.OnLoad.Add(OnLoad)
-Events.OnServerStarted.Add(OnLoad)
+-- Events.OnLoad.Add(OnLoad)
+-- Events.OnServerStarted.Add(OnLoad)
 
 
 ------------------------------------------------------------------------
@@ -265,6 +240,10 @@ function PvpInstanceCommands.GetAmountAvailableInstances()
     local amount = 100 - counter
     --print("Amount of instances on the server " .. tostring(amount))
     sendServerCommand(EFT_MODULES.UI, "ReceiveAmountAvailableInstances", {amount = amount})
+end
+
+function PvpInstanceCommands.ResetPVPInstances()
+    PvpInstanceManager.Reset()
 end
 
 local function OnPvpInstanceCommands(module, command, playerObj, args)

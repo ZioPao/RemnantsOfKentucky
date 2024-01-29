@@ -30,8 +30,7 @@ IG_UI_EN = {
     IGUI_EFT_AdminPanel_SetDayTime = "Set Time - Day",
     IGUI_EFT_AdminPanel_SetNightTime = "Set Time - Night",
 
-    IGUI_EFT_AdminPanel_AdminModeOn = "Admin Mode - On",
-    IGUI_EFT_AdminPanel_AdminModeOff = "Admin Mode - Off",
+    IGUI_EFT_AdminPanel_ResetUsedInstances = "Reset Used Instances",
     
     // ADMIN PANEL - DURING MATCH
 

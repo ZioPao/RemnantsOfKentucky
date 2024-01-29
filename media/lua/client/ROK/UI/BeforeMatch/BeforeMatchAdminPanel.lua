@@ -72,21 +72,20 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnSetTime:setEnable(false)
     self:addChild(self.btnSetTime)
 
-    --y = y - btnHeight - yPadding
+    y = y - btnHeight - yPadding
 
-    -- self.btnAdminMode = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
-    -- self.btnAdminMode.internal = "ADMIN_MODE"
-    -- self.btnAdminMode:initialise()
-    -- self.btnAdminMode:setEnable(false)
-    -- self:addChild(self.btnAdminMode)
+    self.btnResetUsedInstances = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
+    self.btnResetUsedInstances.internal = "RESET_USED_INSTANCES"
+    self.btnResetUsedInstances:initialise()
+    self.btnResetUsedInstances:setEnable(false)
+    self.btnResetUsedInstances:setTitle(getText("IGUI_EFT_AdminPanel_ResetUsedInstances"))
+    self:addChild(self.btnResetUsedInstances)
 
     --------------------
     -- INFO PANEL, TOP ONE
 
     -- TODO This is temporary, kinda broken
-    local panelInfoHeight = self:getHeight() - y
-    debugPrint(self:getHeight())
-    debugPrint(y)
+    local panelInfoHeight = self:getHeight()/4
 
     self.panelInfo = ISRichTextPanel:new(0, 20, self:getWidth(), panelInfoHeight)
     self.panelInfo.autosetheight = false
@@ -143,9 +142,9 @@ function BeforeMatchAdminPanel:onClick(btn)
         btn:setEnable(false)
         self.btnSetTimeTab.isChanging = true
         self.btnSetTimeTab.prevInt = 'SET_TIME_NIGHT'
-    elseif btn.internal == 'ADMIN_MODE' then
-        debugPrint("Admin Mode")
-        ClientState.isAdminMode = not ClientState.isAdminMode
+    elseif btn.internal == 'RESET_USED_INSTANCES' then
+        debugPrint("Resetting used instances to base values")
+        sendClientCommand(EFT_MODULES.PvpInstances, 'ResetPVPInstances', {})
     end
 end
 
@@ -157,15 +156,7 @@ function BeforeMatchAdminPanel:update()
     -- When starting the match, we'll disable the default close button
     self.closeButton:setEnable(not ClientState.isStartingMatch)
     self.btnManagePlayers:setEnable(not ClientState.isStartingMatch)
-    --self.btnAdminMode:setEnable(not ClientState.isStartingMatch)
-
-
-    -- Change title to btnAdminMode
-    -- if ClientState.isAdminMode then
-    --     self.btnAdminMode.title = getText("IGUI_EFT_AdminPanel_AdminModeOn")
-    -- else
-    --     self.btnAdminMode.title = getText("IGUI_EFT_AdminPanel_AdminModeOff")
-    -- end
+    self.btnResetUsedInstances:setEnable(not ClientState.isStartingMatch)
 
     -- Check hour 
     local time = getGameTime():getTimeOfDay()
@@ -173,7 +164,6 @@ function BeforeMatchAdminPanel:update()
     if time > 9 and time < 21 then
         self.btnSetTime.internal = "SET_TIME_NIGHT"
         self.btnSetTime.title = getText("IGUI_EFT_AdminPanel_SetNightTime")
-
     else
         self.btnSetTime.internal = "SET_TIME_DAY"
         self.btnSetTime.title = getText("IGUI_EFT_AdminPanel_SetDayTime")
@@ -194,9 +184,6 @@ function BeforeMatchAdminPanel:update()
         self.btnSetTime:setEnable(not ClientState.isStartingMatch)
     end
 
-    -- local valAssignedSafehousesText = " <CENTRE> -1"     -- TODO This is a placeholder!
-    -- self.labelValAssignedSafehouses:setText(valAssignedSafehousesText)
-    -- self.labelValAssignedSafehouses.textDirty = true
 end
 
 function BeforeMatchAdminPanel:setAvailableInstancesText(text)

@@ -66,5 +66,41 @@ TestFramework.registerTestModule("UI", "Debug", function()
     function Tests.CloseRecapPanel()
         RecapPanel.Close()
     end
+
+
+    function Tests.LoopStartEndMatch()
+
+
+
+        local function StartMatch()
+            local TimePanel = require("ROK/UI/TimePanel")
+            sendClientCommand(EFT_MODULES.Match, "StartCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.startMatchTime })
+            TimePanel.Open("Starting match in...")
+        end
+
+        local function StopMatch()
+            sendClientCommand(EFT_MODULES.Match, "StartMatchEndCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.endMatchTime })
+
+        end
+
+        StartMatch()
+
+        Events.PZEFT_OnMatchStart.Add(function()
+            -- Stop Match
+            StopMatch()
+        end)
+
+
+        Events.PZEFT_OnMatchEnd.Add(function()
+            -- Start match
+            StartMatch()
+        end)
+
+
+
+
+
+    end
+
     return Tests
 end)
