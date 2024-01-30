@@ -150,23 +150,55 @@ end
 
 --* Add Moveable in specific point
 
----@param itemObj Moveable
----@return nil
-function SafehouseInstanceHandler.TryToPlaceMoveable(itemObj)
+function SafehouseInstanceHandler.GetMoveableDeliveryPoint()
     local safehouse = SafehouseInstanceHandler.GetSafehouse()
     if safehouse == nil then
-        debugPrint("ERROR: can't find safehouse! Maybe too soon?")
+        debugPrint("ERROR: can't find safehouse while searching for delivery point! Maybe too soon?")
         return nil
     end
 
     local deliveryPoint = PZ_EFT_CONFIG.SafehouseInstanceSettings.safehouseMovDeliveryPoint
     local sq = getCell():getGridSquare(safehouse.x + deliveryPoint.x, safehouse.y + deliveryPoint.y, 0)
+    return sq
+end
 
-    local sprite = itemObj:getWorldSprite()
+function SafehouseInstanceHandler.IsDeliveryPointClear()
+    local sq = SafehouseInstanceHandler.GetMoveableDeliveryPoint()
+    if sq == nil then return false end
+	for i=1, sq:getObjects():size() do
+		local obj = sq:getObjects():get(i-1)
+        print(obj:getName())
+        local spr = obj:getSprite()
 
-    local props = ISMoveableSpriteProps.new(IsoObject.new(sq, sprite):getSprite())
-    props.rawWeight = 10
-    props:placeMoveableInternal(sq, itemObj, sprite)
+        local props = spr:getProperties()
+        if props:Is("IsMoveAble") then
+            debugPrint("Found moveable in delivery area, can't put a new one")
+            return false
+        end
+	end
+
+    return true
+
+end
+
+---@param itemObj Moveable
+---@return nil
+function SafehouseInstanceHandler.TryToPlaceMoveable(itemObj)
+
+    local sq = SafehouseInstanceHandler.GetMoveableDeliveryPoint()
+    if sq == nil then return end
+
+    if SafehouseInstanceHandler.IsDeliveryPointClear() then
+        local sprite = itemObj:getWorldSprite()
+
+        local props = ISMoveableSpriteProps.new(IsoObject.new(sq, sprite):getSprite())
+        props.rawWeight = 10
+        props:placeMoveableInternal(sq, itemObj, sprite)
+    
+    else
+        debugPrint("Delivery point is not clear! Can't put items there")
+    end
+
 
 end
 

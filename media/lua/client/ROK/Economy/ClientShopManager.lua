@@ -151,7 +151,7 @@ function ShopCommands.BuyItem(args)
     end
 
 
-    -- TODO Check if is moveable. if it is, send to specific point
+    -- Check if is moveable. if it is, send to specific point
 
     local item = InventoryItemFactory.CreateItem(args.itemData.fullType)
 
@@ -161,7 +161,7 @@ function ShopCommands.BuyItem(args)
 
         local usedCrates = {}
         local isRefund = false
-    
+
         for i=1, args.quantity do
             local crate = SafehouseInstanceHandler.TryToAddToCrate(args.itemData.fullType)
             if crate then

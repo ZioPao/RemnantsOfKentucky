@@ -1,6 +1,6 @@
 local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
 local ClientShopManager = require("ROK/Economy/ClientShopManager")
-local ClientBankManager = require("ROK/Economy/ClientBankManager")
+local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 local CommonStore = require("ROK/UI/Store/Components/CommonStore")
 local ShopItemsManager = require("ROK/ShopItemsManager")
 ------------------------
@@ -107,8 +107,14 @@ function BuySidePanel:update()
             self.bottomBtn:setTooltip(getText("IGUI_Shop_Buy_Btn_NoCash_Tooltip"))
         else
             -- IF confirmation panel is open, disable it in the meantime
-            local enableBuy = self.confirmationPanelRef == nil or not self.confirmationPanelRef:isVisible()
-            self.bottomBtn:setEnable(enableBuy)
+            local isConfirmationClosed = self.confirmationPanelRef == nil or not self.confirmationPanelRef:isVisible()
+            -- Second check, if it's a moveable we want to use the delivery point instead of the crates
+            local testItem = InventoryItemFactory.CreateItem(selectedItem.fullType)
+            if instanceof(testItem, "Moveable") then
+                isConfirmationClosed = isConfirmationClosed and SafehouseInstanceHandler.IsDeliveryPointClear()
+            end
+
+            self.bottomBtn:setEnable(isConfirmationClosed)
             self.bottomBtn:setTooltip(nil)
         end
     else
