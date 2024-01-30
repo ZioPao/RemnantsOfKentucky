@@ -80,7 +80,9 @@ function SellSidePanel:update()
     RightSidePanel.update(self)
     -- Count amount of items
     local itemsAmount = #self.parent.scrollPanel.scrollingListBox.items
-    self.bottomBtn:setEnable(itemsAmount > 0)
+    local enableSell = self.confirmationPanelRef == nil or not self.confirmationPanelRef:isVisible()
+
+    self.bottomBtn:setEnable(itemsAmount > 0 and enableSell)
 end
 
 function SellSidePanel:onClick(btn)
@@ -91,7 +93,7 @@ end
 
 function SellSidePanel:onStartSell()
     local text = getText("IGUI_Shop_Sell_Confirmation")
-    self.parent:openConfirmationPanel(text, function()
+    self.confirmationPanelRef = self.parent:openConfirmationPanel(text, function()
         self:onConfirmSell()
     end)
 end

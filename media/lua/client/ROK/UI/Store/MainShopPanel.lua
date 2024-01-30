@@ -160,6 +160,16 @@ end
 
 function MainShopPanel:update()
     ISCollapsableWindow.update(self)
+    self:updateUsableBalance()
+
+    -- Check distance from computer
+    if IsoUtils.DistanceTo(self.pcPosition.x, self.pcPosition.y, self.character:getX(), self.character:getY()) > 2 then
+        self:close()
+    end
+end
+
+
+function MainShopPanel:updateUsableBalance()
     local newBalance = ClientBankManager.GetPlayerBankAccountBalance()
 
     -- If we're receiving an update, it's gonna get -1, making it flicker. This forces it to keep the old value for this update
@@ -167,10 +177,10 @@ function MainShopPanel:update()
         self.accountBalance = newBalance
     end
 
-    -- Check distance from computer
-    if IsoUtils.DistanceTo(self.pcPosition.x, self.pcPosition.y, self.character:getX(), self.character:getY()) > 2 then
-        self:close()
-    end
+end
+
+function MainShopPanel:getUsableBalance()
+    return self.accountBalance
 end
 
 function MainShopPanel:render()

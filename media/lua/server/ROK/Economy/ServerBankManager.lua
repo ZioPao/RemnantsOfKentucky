@@ -37,7 +37,7 @@ end
 ---@param username string
 ---@param amount integer
 ---@return {success : boolean, account : string}
-function ServerBankManager.ProcessTransaction (username, amount)
+function ServerBankManager.ProcessTransaction(username, amount)
     local bankAccounts = ServerData.Bank.GetBankAccounts()
 
     if not bankAccounts[username] then

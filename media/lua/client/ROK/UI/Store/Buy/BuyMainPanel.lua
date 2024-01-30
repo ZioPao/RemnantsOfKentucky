@@ -54,22 +54,19 @@ function BuyMainPanel:render()
     end
 end
 
----comment
 ---@param category string
 ---@param usedCrates table<IsoObject,boolean>
-function BuyMainPanel.SetSuccessfulBuyConfirmation(category, usedCrates)
+function BuyMainPanel.SetSuccessfulBuyConfirmation(category, usedCrates, isRefund)
     debugPrint("SetSuccessfulBuyConfirmation")
-
-    local t = BuyMainPanel.instances
 
     ---@type BuySidePanel
     local sidePanel = BuyMainPanel.instances[category].sidePanel
 
-    sidePanel.showBuyConfirmation = true
-    sidePanel.timeShowBuyConfirmation = os.time() + 3
+    sidePanel.confirmationStatus.showBuyConfirmation = true
+    sidePanel.confirmationStatus.isShowingRefund = isRefund
+    sidePanel.confirmationStatus.timeShowBuyConfirmation = os.time() + 3
 
-
-    -- Render highlighted containers
+    -- Render highlighted containers (if there is any)
     BuyMainPanel.instances[category].usedCrates = usedCrates
 end
 Events.PZEFT_OnSuccessfulBuy.Add(BuyMainPanel.SetSuccessfulBuyConfirmation)

@@ -5,10 +5,11 @@ local LeaderboardPanel = require("ROK/UI/BeforeMatch/LeaderboardPanel")
 ---@class ClientBankManager
 local ClientBankManager = {}
 
+---Requests the server for an update on the local bank account. Do not nil the mod data to prevent issues during transactions
 ---@param updateCratesValue boolean?
 function ClientBankManager.RequestBankAccountFromServer(updateCratesValue)
-    local md = PZEFT_UTILS.GetPlayerModData()
-    md.bankAccount = nil
+   -- local md = PZEFT_UTILS.GetPlayerModData()
+    --md.bankAccount = nil
     --debugPrint("Requesting bank account from client")
     sendClientCommand(EFT_MODULES.Bank, "SendBankAccount", {updateCratesValue = updateCratesValue or false})
 end

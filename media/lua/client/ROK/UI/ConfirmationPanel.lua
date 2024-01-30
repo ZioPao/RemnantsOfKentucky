@@ -1,3 +1,4 @@
+---@class ConfirmationPanel : ISPanel
 local ConfirmationPanel = ISPanel:derive("ConfirmationPanel")
 
 ---Starts a new confirmation panel
@@ -7,7 +8,7 @@ local ConfirmationPanel = ISPanel:derive("ConfirmationPanel")
 ---@param height number
 ---@param alertText string
 ---@param onConfirmFunc function
----@return ISPanel
+---@return ConfirmationPanel
 function ConfirmationPanel:new(x, y, width, height, alertText, parentPanel, onConfirmFunc)
     local o = ISPanel:new(x, y, width, height)
     setmetatable(o, self)
@@ -18,6 +19,8 @@ function ConfirmationPanel:new(x, y, width, height, alertText, parentPanel, onCo
     o.onConfirmFunc = onConfirmFunc
     o.parentPanel = parentPanel
     ConfirmationPanel.instance = o
+
+    ---@cast o ConfirmationPanel
     return o
 end
 
@@ -84,6 +87,12 @@ end
 -------------------------
 -- Mostly debug stuff
 
+---@param alertText any
+---@param x any
+---@param y any
+---@param parentPanel any
+---@param onConfirmFunc any
+---@return ConfirmationPanel
 function ConfirmationPanel.Open(alertText, x, y, parentPanel, onConfirmFunc)
     local width = 500
     local height = 120

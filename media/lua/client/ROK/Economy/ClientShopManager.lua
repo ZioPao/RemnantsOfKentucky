@@ -151,13 +151,20 @@ function ShopCommands.BuyItem(args)
     end
 
     local usedCrates = {}
+    local isRefund = false
 
     for i=1, args.quantity do
-        local crate = SafehouseInstanceHandler.AddToCrate(args.itemData.fullType)
-        usedCrates[crate] = true
+        local crate = SafehouseInstanceHandler.TryToAddToCrate(args.itemData.fullType)
+        if crate then
+            usedCrates[crate] = true
+        else
+            -- if no crates were available, a refund will be given to the player
+            isRefund = true
+            sendClientCommand(EFT_MODULES.Bank, "ProcessTransaction", {amount = args.itemData.basePrice})
+        end
     end
 
-    triggerEvent("PZEFT_OnSuccessfulBuy", args.shopCat, usedCrates)
+    triggerEvent("PZEFT_OnSuccessfulBuy", args.shopCat, usedCrates, isRefund)
 end
 
 

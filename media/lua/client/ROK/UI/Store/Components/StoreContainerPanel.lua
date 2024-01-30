@@ -70,10 +70,12 @@ function StoreContainerPanel:render()
 end
 
 ---@param text string
+---@return ConfirmationPanel
 function StoreContainerPanel:openConfirmationPanel(text, onConfirm)
     local confX = self.parent:getAbsoluteX() + (self.parent:getWidth()/2)
     local confY = self.parent:getAbsoluteY() + self.parent:getHeight() + 20
     self.confirmationPanel = ConfirmationPanel.Open(text, confX, confY, self, onConfirm)
+    return self.confirmationPanel
 end
 
 function StoreContainerPanel:close()

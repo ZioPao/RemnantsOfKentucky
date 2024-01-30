@@ -127,7 +127,7 @@ end
 function debug_testAddCrate(amount)
     local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
     for i=1, amount do
-        SafehouseInstanceHandler.AddToCrate("Base.Bandage")
+        SafehouseInstanceHandler.TryToAddToCrate("Base.Bandage")
     end
 end
 
@@ -277,5 +277,6 @@ end
 -- Bank handling --
 
 function ServerData_client_debug.setBankAccount(name, balance)
-    sendClientCommand("SERVER_DEBUG", "setBankAccount", {name = name, balance = balance} )
+    sendClientCommand(EFT_MODULES.Bank, "ProcessTransaction", {amount = 100000000})
+    --sendClientCommand("SERVER_DEBUG", "setBankAccount", {name = name, balance = balance} )
 end

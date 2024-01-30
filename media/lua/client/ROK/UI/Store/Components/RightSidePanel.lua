@@ -4,6 +4,7 @@ local CommonStore = require("ROK/UI/Store/Components/CommonStore")
 
 ---@class RightSidePanel : ISPanel
 ---@field parent StoreContainerPanel
+---@field confirmationPanelRef ConfirmationPanel
 local RightSidePanel = ISPanel:derive("RightSidePanel")
 
 ---Starts a new quantity panel
@@ -76,8 +77,8 @@ function RightSidePanel:update()
 end
 
 function RightSidePanel:close()
-    if self.confirmationPanel then
-        self.confirmationPanel:close()
+    if self.confirmationPanelRef and self.confirmationPanelRef:isVisible() then
+        self.confirmationPanelRef:close()
     end
 
     ISPanel.close(self)

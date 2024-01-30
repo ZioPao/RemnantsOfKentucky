@@ -50,59 +50,48 @@ function SafehouseInstanceHandler.WipeCrates()
     SafehouseInstanceHandler.WaitForSafehouseAndRun(RunWipe, {})
 end
 
-
+--- Tries to add an item to a crate and returns the used crate
 ---@param fullType string
 ---@return IsoObject? crateObj The used crate
-function SafehouseInstanceHandler.AddToCrate(fullType)
+function SafehouseInstanceHandler.TryToAddToCrate(fullType)
     local cratesTable = SafehouseInstanceHandler.GetCrates()
     if cratesTable == nil or #cratesTable == 0 then
         debugPrint("Crates are nil or empty!")
         return nil
     end
-
-    -- Find the first crate which has available space
-    local crateCounter = 1
-    local switchedToPlayer = false
-    local crate = cratesTable[crateCounter]
-    local inv = crate:getContainer()
-
-    local plNum = getPlayer():getPlayerNum()
-    local itemContainerGrid = ItemContainerGrid.Create(inv, plNum)
-
-
     local item = InventoryItemFactory.CreateItem(fullType)
-    if not itemContainerGrid:canAddItem(item) and not switchedToPlayer then
+    local plNum = getPlayer():getPlayerNum()
 
-        while crateCounter < #cratesTable do
-            crate = cratesTable[crateCounter]
-            itemContainerGrid = ItemContainerGrid.Create(inv, plNum)
+    local function GetFirstAvailableCrate()
+        for i=1, #cratesTable do
+            local crate = cratesTable[i]
+            local inv = crate:getContainer()
+            local itemContainerGrid = ItemContainerGrid.Create(inv, plNum)
+
+            -- Check if can fit item
             if itemContainerGrid:canAddItem(item) then
-                debugPrint("Switching to next crate")
-                break
+                debugPrint("Found available crate => " .. tostring(i))
+                return crate
             end
-
-            crateCounter = crateCounter + 1
         end
 
-        if not itemContainerGrid:canAddItem(item) then
-            inv = getPlayer():getInventory()
-            switchedToPlayer = true
-            itemContainerGrid = ItemContainerGrid.Create(inv, plNum)
-            debugPrint("Switched to player")
-        end
+
+        -- TODO Else throw on the ground
+        return nil
     end
-    if itemContainerGrid:canAddItem(item) then
-        debugPrint("Adding " .. fullType .. " to crate nr " .. crateCounter)
+
+    local crate = GetFirstAvailableCrate()
+    if crate ~= nil then
+        local inv = crate:getContainer()
+        debugPrint("Adding " .. fullType .. " to crate")
         inv:AddItem(item)
         inv:addItemOnServer(item)
         inv:setDrawDirty(true)
         inv:setHasBeenLooted(true)
         ISInventoryPage.renderDirty = true
-
-        -- Return used crates
-        return crate
     end
-    return nil
+
+    return crate
 end
 
 function SafehouseInstanceHandler.AddToCrateOrdered(fullType, index, x, y, isRotated)
@@ -148,7 +137,7 @@ function SafehouseInstanceHandler.GiveStarterKit(playerObj, ordered)
                 end
             else
                 for _=1, element.amount do
-                    SafehouseInstanceHandler.AddToCrate(element.fullType)
+                    SafehouseInstanceHandler.TryToAddToCrate(element.fullType)
                 end
             end
         end

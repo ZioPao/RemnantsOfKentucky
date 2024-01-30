@@ -10,8 +10,7 @@ local ShopItemsManager = require("ROK/ShopItemsManager")
 ---@field selectedAmount number
 ---@field currentCost number?
 ---@field shopCat string
----@field showBuyConfirmation boolean
----@field timeShowBuyConfirmation number
+---@field confirmationStatus {showBuyConfirmation : boolean, timeShowBuyConfirmation : number, isShowingRefund : boolean}
 local BuySidePanel = RightSidePanel:derive("BuySidePanel")
 
 ---Starts a new quantity panel
@@ -26,9 +25,12 @@ function BuySidePanel:new(x, y, width, height)
     self.__index = self
 
     o:initialise()
-    o.showBuyConfirmation = false
+    o.confirmationStatus = {
+        showBuyConfirmation = false,
+        timeShowBuyConfirmation = 0,
+        isShowingRefund = false
+    }
     o.selectedAmount = 1
-    o.timeShowBuyConfirmation = 0
 
     ---@cast o BuySidePanel
     return o
@@ -97,13 +99,16 @@ function BuySidePanel:update()
         local itemCost = selectedItem.basePrice
         self.currentCost = tonumber(self.selectedAmount) * itemCost
 
-        -- We've already requested the bank account from the Main Shop panel
-        local balance = ClientBankManager.GetPlayerBankAccountBalance()
+        -- We've already requested the bank account from the Main Shop panel, and the usable is being updated there.
+        --- parent = MainBuyPanel, parent -> parent = MainTab in mainShopPanel, parent -> parent -> parent is mainshoppanel
+        local balance = self.parent.parent.parent:getUsableBalance()
         if balance < self.currentCost then
             self.bottomBtn:setEnable(false)
             self.bottomBtn:setTooltip(getText("IGUI_Shop_Buy_Btn_NoCash_Tooltip"))
         else
-            self.bottomBtn:setEnable(true)
+            -- IF confirmation panel is open, disable it in the meantime
+            local enableBuy = self.confirmationPanelRef == nil or not self.confirmationPanelRef:isVisible()
+            self.bottomBtn:setEnable(enableBuy)
             self.bottomBtn:setTooltip(nil)
         end
     else
@@ -149,12 +154,21 @@ function BuySidePanel:render()
         finalStr = itemNameStr .. " <LINE> " .. itemFinalCostStr
     end
 
-    if self.showBuyConfirmation then
-        finalStr = finalStr .. " <LINE> " .. getText("IGUI_Shop_Buy_Confirmation_Success")
+
+
+    if self.confirmationStatus.showBuyConfirmation then
+
+        if self.confirmationStatus.isShowingRefund then
+            finalStr = finalStr .. " <LINE> " .. getText("IGUI_Shop_Buy_Refund")
+        else
+            finalStr = finalStr .. " <LINE> " .. getText("IGUI_Shop_Buy_Confirmation_Success")
+
+        end
 
         local showTime = os.time()
-        if showTime > self.timeShowBuyConfirmation then
-            self.showBuyConfirmation = false
+        local maxTimeToShow = self.confirmationStatus.timeShowBuyConfirmation
+        if showTime > maxTimeToShow then
+            self.confirmationStatus.showBuyConfirmation = false
         end
     end
 
@@ -190,8 +204,7 @@ function BuySidePanel:onStartBuy()
 
     -- Starts separate confirmation panel
     local text = getText("IGUI_Shop_Buy_Confirmation", self.selectedAmount, selectedItem["actualItem"]:getDisplayName(), tostring(self.currentCost))
-    self.parent:openConfirmationPanel(text, self.OnConfirmBuy)
-
+    self.confirmationPanelRef = self.parent:openConfirmationPanel(text, self.OnConfirmBuy)
 end
 
 ---This runs from the parent panel!
