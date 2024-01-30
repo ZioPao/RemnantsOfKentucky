@@ -23,8 +23,9 @@ function ClientCommon.Teleport(coords)
         local x = pl:getX()
         local y = pl:getY()
         local z = pl:getZ()
-        -- tODO don't be so precise about it, add 1-2 squares to prevent issues
-        if x == coords.x and y == coords.y and z == coords.z then
+
+        local tolerance = 1
+        if math.abs(x - coords.x) <= tolerance and math.abs(y - coords.y) <= tolerance and math.abs(z - coords.z) <= tolerance then
             debugPrint("Successful teleport!")
             Events.OnTick.Remove(CheckTeleportStatus)
             triggerEvent("PZEFT_OnSuccessfulTeleport")
