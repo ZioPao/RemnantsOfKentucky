@@ -46,6 +46,10 @@ function ExtractionPanel:runExtractionMethod()
     ExtractionHandler.DoExtraction()
 end
 
+function ExtractionPanel:disableButton()
+    self.btnExtract:setEnable(false)
+end
+
 ---Set the text that will appear in the button
 ---@param title string
 function ExtractionPanel:setExtractButtonTitle(title)

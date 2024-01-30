@@ -6,6 +6,7 @@ local os_time = os.time
 
 ---@class ExtractionHandler
 ---@field key string
+---@field stopTime number
 local ExtractionHandler = {}
 
 ---Starts the loop to handle the event
@@ -74,18 +75,25 @@ function ExtractionHandler.HandleTimer()
     ExtractionPanel.instance:setExtractButtonTitle(formattedTime)
 
     if cTime >= ExtractionHandler.stopTime then
-        debugPrint("Extract now!")
-        sendClientCommand(EFT_MODULES.Match, "RequestExtraction", {})
-        ExtractionPanel.Close()
-        Events.OnTick.Remove(ExtractionHandler.HandleTimer)
+        ExtractionPanel.instance:disableButton()        -- To prevent issues in case of lag
+        ExtractionHandler.ExecuteExtraction()
     end
+end
+
+function ExtractionHandler.ExecuteExtraction()
+    debugPrint("Extract now!")
+    ExtractionHandler.key = nil     -- Set this to nil for next match. If it stays it's gonna break stuff next round
+    sendClientCommand(EFT_MODULES.Match, "RequestExtraction", {})
+    ExtractionPanel.Close()
+    Events.OnTick.Remove(ExtractionHandler.HandleTimer)
 end
 
 ---Will run the extraction on the client
 function ExtractionHandler.DoExtraction()
-    local currentInstanceData = ClientData.PVPInstances.GetCurrentInstance()
+    --local currentInstanceData = ClientData.PVPInstances.GetCurrentInstance()
 
-    ExtractionHandler.stopTime = os_time() + currentInstanceData.extractionPoints[ExtractionHandler.key].time
+    ExtractionHandler.stopTime = os_time() + PZ_EFT_CONFIG.MatchSettings.extractionTime
+    -- + currentInstanceData.extractionPoints[ExtractionHandler.key].time
     Events.OnTick.Add(ExtractionHandler.HandleTimer)
 end
 

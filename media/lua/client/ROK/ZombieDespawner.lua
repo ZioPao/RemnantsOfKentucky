@@ -28,5 +28,6 @@ Events.OnZombieUpdate.Add(DespawnZombies)
 
 
 Events.PZEFT_OnSuccessfulTeleport.Add(function()
+    debugPrint("Teleported, despawning zombies near player")        -- TODO Probably still a bit too early to work correctly
     SendCommandToServer(string.format("/removezombies -remove true"))
 end)
