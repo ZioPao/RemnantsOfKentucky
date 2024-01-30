@@ -51,7 +51,7 @@ PZ_EFT_CONFIG.SafehouseInstanceSettings = {
     },
 
     --- relative to entrance
-    --- no building/disassembly
+    --- TODO no building/disassembly
     safehouseStaticRoom = {
         x1 = 38 - relativeSafehouseEntrance.x,
         y1 = 25 - relativeSafehouseEntrance.y,
@@ -72,6 +72,11 @@ PZ_EFT_CONFIG.SafehouseInstanceSettings = {
         {x = 39 - relativeSafehouseEntrance.x, y = 21 - relativeSafehouseEntrance.y},
         {x = 40 - relativeSafehouseEntrance.x, y = 21 - relativeSafehouseEntrance.y},
         {x = 41 - relativeSafehouseEntrance.x, y = 21 - relativeSafehouseEntrance.y},
+    },
+
+    safehouseMovDeliveryPoint = {
+        x = 41 - relativeSafehouseEntrance.x,
+        y = 23 - relativeSafehouseEntrance.y
     },
 
     --- relative to entrance
@@ -135,7 +140,7 @@ PZ_EFT_CONFIG.MatchSettings = {
     -- Server only
     roundTime = SandboxVars.RemnantsOfKentucky.RoundTime,
     roundOvertime = SandboxVars.RemnantsOfKentucky.RoundOvertime,
-    
+
     zombieIncreaseTime = 60,
     checkAlivePlayersTime = 10,      -- Every 10 seconds, we check if there are players alive in the match
 

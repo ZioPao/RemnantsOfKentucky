@@ -148,6 +148,27 @@ function SafehouseInstanceHandler.GiveStarterKit(playerObj, ordered)
     SafehouseInstanceHandler.WaitForSafehouseAndRun(RunGiveStarterKit, {})
 end
 
+--* Add Moveable in specific point
+
+---@param itemObj Moveable
+---@return nil
+function SafehouseInstanceHandler.TryToPlaceMoveable(itemObj)
+    local safehouse = SafehouseInstanceHandler.GetSafehouse()
+    if safehouse == nil then
+        debugPrint("ERROR: can't find safehouse! Maybe too soon?")
+        return nil
+    end
+
+    local deliveryPoint = PZ_EFT_CONFIG.SafehouseInstanceSettings.safehouseMovDeliveryPoint
+    local sq = getCell():getGridSquare(safehouse.x + deliveryPoint.x, safehouse.y + deliveryPoint.y, 0)
+
+    local sprite = itemObj:getWorldSprite()
+
+    local props = ISMoveableSpriteProps.new(IsoObject.new(sq, sprite):getSprite())
+    props.rawWeight = 10
+    props:placeMoveableInternal(sq, itemObj, sprite)
+
+end
 
 --* Safehouse Checks
 
