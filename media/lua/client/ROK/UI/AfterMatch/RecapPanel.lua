@@ -4,7 +4,6 @@ local RecapScrollItemsPanel = require("ROK/UI/AfterMatch/RecapScrollItemsPanel")
 local RecapScrollKilledPlayersPanel = require("ROK/UI/AfterMatch/RecapScrollKilledPlayersPanel")
 
 local LootRecapHandler = require("ROK/Match/LootRecapHandler")
-local KillTrackerHandler = require("ROK/Match/KillTrackerHandler")
 --------------
 
 ---@class RecapPanel : TextureScreen
@@ -66,7 +65,6 @@ function RecapPanel:createChildren()
     -- List of players that the current player has killed
     self.killedPlayersBox = RecapScrollKilledPlayersPanel:new(remainingX, marginY, killedPlayersBoxWidth, boxHeight)
     self.killedPlayersBox:initialise()
-    self.killedPlayersBox:initialiseList(KillTrackerHandler.GetData())
     self.mainContainerPanel:addChild(self.killedPlayersBox)
 
 end

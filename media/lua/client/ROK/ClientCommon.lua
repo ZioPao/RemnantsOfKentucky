@@ -1,3 +1,6 @@
+local Delay = require("ROK/Delay")
+
+
 ---@class ClientCommon
 local ClientCommon = {}
 
@@ -18,6 +21,9 @@ function ClientCommon.Teleport(coords)
     pl:setLy(coords.y)
     pl:setLz(coords.z)
 
+
+
+
     local function CheckTeleportStatus()
         debugPrint("Checking is teleport is successful")
         local x = pl:getX()
@@ -31,6 +37,14 @@ function ClientCommon.Teleport(coords)
             triggerEvent("PZEFT_OnSuccessfulTeleport")
         end
     end
+
+    function StopTeleportCheck()
+        debugPrint("Force stop check for successful teleport")
+        Events.OnTick.Remove(CheckTeleportStatus)
+    end
+
+    -- Remove the check after 10 seconds if nothing changes.
+    Delay:set(10, StopTeleportCheck)
 
     Events.OnTick.Add(CheckTeleportStatus)
 

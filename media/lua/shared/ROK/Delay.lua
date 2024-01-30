@@ -11,10 +11,13 @@ function Delay:set(delay, func)
     o.func = func
     --o.args = args
 
+    debugPrint("Added function to delay. Delay="..tostring(delay) .. ", Func=" ..tostring(func))
+
     table.insert(Delay.instances, o)
 end
 
 function Delay.Initialize()
+    Events.OnTick.Remove(Delay.Handle)
     Events.OnTick.Add(Delay.Handle)
 end
 
@@ -23,7 +26,8 @@ function Delay.Handle()
 
     for i=1, #Delay.instances do
         local inst = Delay.instances[i]
-        if cTime > inst.eTime then
+        if inst and cTime > inst.eTime then
+            debugPrint("Delay: started function, removing instance nr " .. tostring(i))
             inst.func()
             table.remove(Delay.instances, i)
         end

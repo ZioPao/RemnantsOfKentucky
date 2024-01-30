@@ -1,4 +1,4 @@
--- TODO Wrong base class, we don't want Items
+local KillTrackerHandler = require("ROK/Match/KillTrackerHandler")
 local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 
 local TilesScrollingListBox = require("ROK/UI/BaseComponents/TilesScrollingListBox")
@@ -65,6 +65,8 @@ function RecapScrollKilledPlayersPanel:createChildren()
     self.scrollingListBox:setElementsPerRow(1)
     self.scrollingListBox.doDrawItem = RecapScrollKilledPlayersPanel.DrawItem
     self.scrollingListBox.onMouseDown = nil
+
+    self:initialiseList(KillTrackerHandler.GetData())
 end
 
 

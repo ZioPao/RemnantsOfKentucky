@@ -4,6 +4,82 @@ local TestFramework = require("TestFramework/TestFramework")
 local TestUtils = require("TestFramework/TestUtils")
 local LootRecapHandler = require("ROK/Match/LootRecapHandler")
 
+
+TestFramework.registerTestModule("Gameplay", "Debug", function()
+    local Tests = {}
+    local function StartMatch()
+        local TimePanel = require("ROK/UI/TimePanel")
+        sendClientCommand(EFT_MODULES.Match, "StartCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.startMatchTime })
+        TimePanel.Open("Starting match in...")
+    end
+
+    local function ExecuteExtraction()
+        local instance = ClientData.PVPInstances.GetCurrentInstance()
+        local extractionPoints = instance.extractionPoints
+
+        local point = extractionPoints[1]
+        local x = instance.x + point.x1
+        local y = instance.y + point.y1
+
+        local pl = getPlayer()
+        pl:setX(x)
+        pl:setY(y)
+        pl:setLx(x)
+        pl:setLy(y)
+        -- local Delay = require("ROK/Delay")
+
+        -- Delay:set(2, function()
+        --     debugPrint("TEST: EXTRACTION!")
+        --     local ExtractionHandler = require("ROK/Match/ExtractionHandler")
+        --     ExtractionHandler.DoExtraction()
+        -- end)
+
+    end
+
+
+    function Tests.LoopStartEndMatch()
+
+
+        local function StopMatch()
+            sendClientCommand(EFT_MODULES.Match, "StartMatchEndCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.endMatchTime })
+
+        end
+
+        StartMatch()
+
+        Events.PZEFT_OnMatchStart.Add(function()
+            -- Stop Match
+            StopMatch()
+        end)
+
+
+        Events.PZEFT_OnMatchEnd.Add(function()
+            -- Start match
+            StartMatch()
+        end)
+    end
+
+    function Tests.StartMatch()
+        StartMatch()
+    end
+
+    function Tests.ExecuteExtraction()
+        ExecuteExtraction()
+    end
+
+    function Tests.StartMatchAndExtract()
+        StartMatch()
+
+        local Delay = require("ROK/Delay")
+
+        Delay:set(5, ExecuteExtraction)
+
+    end
+
+    return Tests
+
+end)
+
 TestFramework.registerTestModule("PVP Instances", "Debug", function()
 
     local Tests = {}
@@ -67,40 +143,6 @@ TestFramework.registerTestModule("UI", "Debug", function()
         RecapPanel.Close()
     end
 
-
-    function Tests.LoopStartEndMatch()
-
-
-
-        local function StartMatch()
-            local TimePanel = require("ROK/UI/TimePanel")
-            sendClientCommand(EFT_MODULES.Match, "StartCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.startMatchTime })
-            TimePanel.Open("Starting match in...")
-        end
-
-        local function StopMatch()
-            sendClientCommand(EFT_MODULES.Match, "StartMatchEndCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.endMatchTime })
-
-        end
-
-        StartMatch()
-
-        Events.PZEFT_OnMatchStart.Add(function()
-            -- Stop Match
-            StopMatch()
-        end)
-
-
-        Events.PZEFT_OnMatchEnd.Add(function()
-            -- Start match
-            StartMatch()
-        end)
-
-
-
-
-
-    end
 
     return Tests
 end)
