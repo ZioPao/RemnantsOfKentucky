@@ -3,9 +3,10 @@ local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 
 local function DespawnZombies()
     -- Double check, player need to be in their safehouse
-    debugPrint("Removing zombies")
     if not SafehouseInstanceHandler.IsInSafehouse() then return end
-	SendCommandToServer(string.format("/removezombies -remove true"))
+    debugPrint("Removing zombies")
+
+    SendCommandToServer(string.format("/removezombies -remove true"))
 end
 
 local function StartZombieDespawner()
@@ -26,4 +27,6 @@ Events.PZEFT_OnMatchEnd.Add(StartZombieDespawner)
 Events.OnZombieUpdate.Add(DespawnZombies)
 
 
-Events.PZEFT_OnSuccessfulTeleport.Add(DespawnZombies)
+Events.PZEFT_OnSuccessfulTeleport.Add(function()
+    SendCommandToServer(string.format("/removezombies -remove true"))
+end)

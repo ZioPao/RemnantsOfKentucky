@@ -97,6 +97,9 @@ function PvpInstanceManager.GetNextInstance()
 
     ServerData.PVPInstances.SetPvpUsedInstances(usedInstances)
     ServerData.PVPInstances.SetPvpCurrentInstance(currentInstance, true)
+
+    debugPrint("Selected next instance, ID = " .. tostring(currentInstance.id))
+
     return pvpInstances[currentInstance.id]
 end
 
@@ -119,10 +122,6 @@ function PvpInstanceManager.SendCurrentInstance()
     sendServerCommand("PZEFT-Data", "SetCurrentInstance", currentInstance)
 end
 
---- Clears the players' current instance
-function PvpInstanceManager.SendClearCurrentInstance()
-    sendServerCommand("PZEFT-Data", "SetCurrentInstance", {})
-end
 
 ---Consumes a spawnpoint.
 ---@return {name : string, x : number, y : number, z : number}?

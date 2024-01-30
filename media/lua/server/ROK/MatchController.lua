@@ -7,7 +7,7 @@ local SafehouseInstanceManager = require("ROK/SafehouseInstanceManager")
 
 ---------------------------------------------------
 
--- TODO Server performance affects this HEAVILY! People don't get teleported for example. Test it somehow
+--FIXME Dead players (that haven't respawned) get counted
 
 ---@class MatchController
 ---@field pvpInstance pvpInstanceTable

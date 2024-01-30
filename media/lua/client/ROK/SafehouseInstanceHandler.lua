@@ -11,6 +11,9 @@ function SafehouseInstanceHandler.GetCrates()
         debugPrint("ERROR: can't find safehouse! Maybe too soon?")
         return nil
     end
+
+    if SafehouseInstanceHandler.IsInSafehouse() == false then return end
+
     pcall(function()
         for _, group in pairs(PZ_EFT_CONFIG.SafehouseInstanceSettings.safehouseStorage) do
             local sq = getCell():getGridSquare(safehouse.x + group.x, safehouse.y + group.y, 0)

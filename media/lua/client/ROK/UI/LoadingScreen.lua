@@ -1,8 +1,6 @@
 local TextureScreen = require("ROK/UI/BaseComponents/TextureScreen")
 --------------
 
--- TODO Add a fail safe
-
 
 ---@class LoadingScreen : TextureScreen
 ---@field text string
@@ -17,6 +15,7 @@ function LoadingScreen:new()
     local o = TextureScreen:new()
     setmetatable(o, self)
     self.__index = self
+
     o.backgroundTexture = getTexture("media/textures/ROK_LoadingScreen.png")
 
     ---@cast o LoadingScreen
@@ -37,25 +36,27 @@ end
 -----
 
 function LoadingScreen.Open()
-    if not isClient() then return end       -- SP workaround
     if getPlayer():isDead() then return end -- Workaround to prevent issues when player is dead
     if LoadingScreen.instance ~= nil then return end
-    debugPrint("Opening black screen")
+    debugPrint("Opening Loading screen")
     local loadginScreen = LoadingScreen:new()
     loadginScreen:initialise()
     loadginScreen:addToUIManager()
 end
 
 function LoadingScreen.Close()
-    --debugPrint("Closing black screen")
     if LoadingScreen.instance then
-        debugPrint("black screen instance available, closing")
         LoadingScreen.instance:startFade()
     end
 end
 
-Events.PZEFT_OnSuccessfulTeleport.Add(LoadingScreen.Close)
 
+-- TODO Breaks Recap Panel somehow.
+Events.PZEFT_OnSuccessfulTeleport.Add(function()
+
+    debugPrint("Trying to close Loading Screen after teleport")
+    LoadingScreen.Close()
+end)
 
 
 function LoadingScreen.HandleResolutionChange(oldW, oldH, w, h)

@@ -14,7 +14,7 @@ function ExtractionHandler.ToggleEvent(isInRaid)
     if isInRaid == true then
         Events.OnTick.Add(ExtractionHandler.RunEvent)
     else
-        -- CLose it forcefully here
+        -- Close it forcefully here
         ExtractionPanel.Close()
         Events.OnTick.Remove(ExtractionHandler.RunEvent)
     end
@@ -25,8 +25,11 @@ Events.PZEFT_UpdateClientStatus.Add(ExtractionHandler.ToggleEvent)
 ---Triggers PZEFT_UpdateExtractionZoneState if player is in an extraction zone
 function ExtractionHandler.RunEvent()
     local pl = getPlayer()
-    local currentInstanceData = getPlayer():getModData().currentInstance
-    if currentInstanceData == nil or currentInstanceData.id == nil then return end
+    local currentInstanceData = ClientData.PVPInstances.GetCurrentInstance()
+    if currentInstanceData == nil then
+        debugPrint("Current Instance Data is null, can't run ExtractionHandler event")
+        return
+    end
     local extractionPoints = currentInstanceData.extractionPoints
     if extractionPoints then
         local playerSquare = pl:getSquare()

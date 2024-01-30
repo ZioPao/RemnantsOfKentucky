@@ -6,19 +6,17 @@
 ---@field closingTime number
 local TextureScreen = ISPanel:derive("TextureScreen")
 
----@return LoadingScreen
+---@return TextureScreen
 function TextureScreen:new()
     local o = ISPanel:new(0, 0, getCore():getScreenWidth(), getCore():getScreenHeight())
     setmetatable(o, self)
     self.__index = self
+
     o.backgroundTexture = nil
     o.backgroundColor = { r = 0, g = 0, b = 0, a = 1 }
     o.isClosing = false
     o.closingTime = 0
 
-    ---@cast o LoadingScreen
-
-    TextureScreen.instance = o
     return o
 end
 
@@ -55,6 +53,7 @@ function TextureScreen:renderTexture(alpha)
 end
 
 function TextureScreen:startFade()
+    debugPrint("Start fading panel")
     if self.isClosing == false then
         self.isClosing = true
         self.closingTime = 0
@@ -64,7 +63,6 @@ end
 function TextureScreen:close()
     self:setVisible(false)
     self:removeFromUIManager()
-    TextureScreen.instance = nil
 end
 
 return TextureScreen

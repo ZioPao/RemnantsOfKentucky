@@ -21,6 +21,7 @@ function RecapPanel:new()
     local o = TextureScreen:new()
     setmetatable(o, self)
     self.__index = self
+
     o.backgroundTexture = getTexture("media/textures/ROK_RecapScreen.png")
 
     ---@cast o RecapPanel
@@ -121,7 +122,6 @@ end
 
 function RecapPanel.Close()
     if RecapPanel.instance then
-        debugPrint("black screen instance available, closing")
         RecapPanel.instance:startFade()
     end
 end
