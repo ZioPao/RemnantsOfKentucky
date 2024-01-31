@@ -251,6 +251,43 @@ function SafehouseInstanceHandler.WaitForSafehouseAndRun(funcToRun, args)
 end
 
 
+---@param sq IsoGridSquare
+---@param excludeDeliveryPoint boolean?
+---@return boolean
+function SafehouseInstanceHandler.IsInStaticArea(sq, excludeDeliveryPoint)
+
+    excludeDeliveryPoint = excludeDeliveryPoint or true
+
+    local isInStaticArea = false
+    local safehouse = SafehouseInstanceHandler.GetSafehouse()
+    if safehouse then
+        local dim = PZ_EFT_CONFIG.SafehouseInstanceSettings.safehouseStaticRoom
+
+        local staticRoomArea = {
+            x1 = safehouse.x + dim.x1,
+            x2 = safehouse.x + dim.x2,
+            y1 = safehouse.y + dim.y1,
+            y2 = safehouse.y + dim.y2,
+            z1 = 0,
+            z2 = 0
+        }
+
+        isInStaticArea = PZEFT_UTILS.IsInRectangle({x = sq:getX(), y = sq:getY(), z = sq:getZ() }, staticRoomArea)
+
+        if excludeDeliveryPoint then
+            local movDeliverySq = SafehouseInstanceHandler.GetMoveableDeliveryPoint()
+            if movDeliverySq and isInStaticArea then
+                debugPrint("Checking delivery point")
+                isInStaticArea = not(movDeliverySq:getX() == sq:getX() and movDeliverySq:getY() == sq:getY())
+            end
+        end
+    end
+
+    debugPrint(isInStaticArea)
+
+    return isInStaticArea
+end
+
 ------------------------------------------------------------------------
 --* COMMANDS FROM SERVER *--
 ------------------------------------------------------------------------

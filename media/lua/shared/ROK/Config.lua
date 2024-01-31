@@ -51,7 +51,7 @@ PZ_EFT_CONFIG.SafehouseInstanceSettings = {
     },
 
     --- relative to entrance
-    --- TODO no building/disassembly
+    --- no building/disassembly
     safehouseStaticRoom = {
         x1 = 38 - relativeSafehouseEntrance.x,
         y1 = 25 - relativeSafehouseEntrance.y,
