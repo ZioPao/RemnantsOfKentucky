@@ -69,6 +69,12 @@ function InterfaceCommands.ReceiveAmountAvailableInstances(args)
     BeforeMatchAdminPanel.instance:setAvailableInstancesText(tostring(args.amount))
 end
 
+function InterfaceCommands.ReceiveFailStartingMatch(args)
+    if isAdmin() then
+        getPlayer():Say("Can't start match! Please reset map files or press 'Reset Used Instances' in the Admin Panel.")
+    end
+end
+
 ---@param args {amount : number}
 function InterfaceCommands.ReceiveAlivePlayersAmount(args)
     if DuringMatchAdminPanel.instance == nil then return end
