@@ -13,36 +13,47 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
         TimePanel.Open("Starting match in...")
     end
 
+    local function CloseRecapScreen()
+        local RecapPanel = require("ROK/UI/AfterMatch/RecapPanel")
+        RecapPanel.Close()
+    end
+
     local function ExecuteExtraction()
         local instance = ClientData.PVPInstances.GetCurrentInstance()
         local extractionPoints = instance.extractionPoints
 
         local point = extractionPoints[1]
-        local x = instance.x + point.x1
-        local y = instance.y + point.y1
+        local x = point.x1
+        local y = point.y1
 
         local pl = getPlayer()
         pl:setX(x)
         pl:setY(y)
         pl:setLx(x)
         pl:setLy(y)
-        -- local Delay = require("ROK/Delay")
+        local Delay = require("ROK/Delay")
 
-        -- Delay:set(2, function()
-        --     debugPrint("TEST: EXTRACTION!")
-        --     local ExtractionHandler = require("ROK/Match/ExtractionHandler")
-        --     ExtractionHandler.DoExtraction()
-        -- end)
+        Delay:set(2, function()
+            debugPrint("TEST: EXTRACTION!")
+            local ExtractionHandler = require("ROK/Match/ExtractionHandler")
+            ExtractionHandler.DoExtraction()
 
+
+            Delay:set(2, CloseRecapScreen)
+
+
+        end)
     end
 
+
+
+    
 
     function Tests.LoopStartEndMatch()
 
 
         local function StopMatch()
             sendClientCommand(EFT_MODULES.Match, "StartMatchEndCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.endMatchTime })
-
         end
 
         StartMatch()
@@ -71,8 +82,21 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
         StartMatch()
 
         local Delay = require("ROK/Delay")
+        Delay:set(10, ExecuteExtraction)
 
-        Delay:set(5, ExecuteExtraction)
+    end
+
+
+    function Tests.LoopStartMatchAndExtract()
+        StartMatch()
+        local Delay = require("ROK/Delay")
+        Delay:set(10, ExecuteExtraction)
+
+        Events.PZEFT_OnMatchEnd.Add(function()
+            -- Start match
+            StartMatch()
+            Delay:set(10, ExecuteExtraction)
+        end)
 
     end
 
