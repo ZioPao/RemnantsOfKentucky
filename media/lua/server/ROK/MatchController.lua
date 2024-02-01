@@ -34,8 +34,8 @@ function MatchController:new()
 end
 
 function MatchController:initialise()
-    if self.instance == nil then
-        debugPrint("PZ_EFT: No more instances found!")
+    if self.pvpInstance == nil then
+        debugPrint("PZ_EFT: No more PVP instances found!")
         MatchController.instance = nil
         return
     end

@@ -92,6 +92,8 @@ function PvpInstanceManager.GetNextInstance()
 
     if not changedInstance then
         debugPrint("No more instances left! Please reset map files.")
+        -- SendNotification to admin
+        sendClientCommand(EFT_MODULES.UI, "ReceiveFailStartingMatch", {})
         return nil
     end
 
