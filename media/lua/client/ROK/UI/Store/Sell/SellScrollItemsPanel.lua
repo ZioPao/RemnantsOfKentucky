@@ -1,7 +1,51 @@
 local ShopItemsManager = require("ROK/ShopItemsManager")
-local ClientShopManager = require("ROK/Economy/ClientShopManager")
 local StoreScrollItemsPanel = require("ROK/UI/Store/Components/StoreScrollItemsPanel")
 -----------
+
+---@param pl IsoPlayer
+---@param item InventoryItem
+local function CheckPlayerContainersForItem(pl, item)
+    local wornItems = pl:getWornItems()
+    for i=0, wornItems:size() - 1 do
+        local wornItem = wornItems:get(i)
+        if wornItem then
+            local cont = wornItem:getItem():getContainer()
+            if cont and cont:getItemById(item:getID()) then
+                return true
+            end
+        end
+    end
+
+    return false
+end
+
+local function CheckCanPutInSellTab(item)
+    local pl = getPlayer()
+
+
+    if pl:isEquipped(item) or pl:isEquippedClothing(item) then
+        triggerEvent("PZEFT_OnFailedSellTransfer", "isEquipped")
+        return false
+    elseif item:isFavorite() then
+        triggerEvent("PZEFT_OnFailedSellTransfer", "isFavorite")
+        return false
+    end
+
+
+    local isValid = CheckPlayerContainersForItem(pl, item)
+    if not isValid then
+        debugPrint("Couldn't find item in players container, checking inventory")
+        if luautils.haveToBeTransfered(pl, item) then
+            triggerEvent("PZEFT_OnFailedSellTransfer", "haveToBeTransferred")
+            return false
+        end
+    end
+
+    return isValid
+end
+
+
+
 
 ---@class SellScrollItemsPanel : StoreScrollItemsPanel
 ---@field removeBtnSize number
@@ -27,22 +71,10 @@ end
 
 ---@param item InventoryItem
 function SellScrollItemsPanel:addItem(item)
-    local pl = getPlayer()
-
-    if luautils.haveToBeTransfered(pl, item) then
-        triggerEvent("PZEFT_OnFailedSellTransfer", "haveToBeTransferred")
-        return
-    elseif pl:isEquipped(item) or pl:isEquippedClothing(item) then
-        triggerEvent("PZEFT_OnFailedSellTransfer", "isEquipped")
-        return
-    elseif item:isFavorite() then
-        triggerEvent("PZEFT_OnFailedSellTransfer", "isFavorite")
-        return
-    end
-
     -- Organize them here based on item:getName()
     local itemName = item:getName()
     self.scrollingListBox:insertIntoItemTab(itemName, item)
+    
 end
 
 ---@param self ISScrollingListBox
@@ -109,27 +141,21 @@ local function SellOnDragItem(self, x, y)
     if self.vscroll then
         self.vscroll.scrolling = false;
     end
-    local count = 1
+
+
+    local t = ISMouseDrag.dragging
+
     if ISMouseDrag.dragging then
         for i = 1, #ISMouseDrag.dragging do
-            count = 1
-            if instanceof(ISMouseDrag.dragging[i], "InventoryItem") then
-                self.parent:addItem(ISMouseDrag.dragging[i])
-            else
-                if ISMouseDrag.dragging[i].invPanel.collapsed[ISMouseDrag.dragging[i].name] then
-                    count = 1
-                    for j = 1, #ISMouseDrag.dragging[i].items do
-                        if count > 1 then
-                            self.parent:addItem(ISMouseDrag.dragging[i].items[j])
-                        end
-                        count = count + 1
-                    end
+            local itemTab = ISMouseDrag.dragging[i]
+            for j = 1, #itemTab.items do
+                local item = itemTab.items[j]
+                if item and CheckCanPutInSellTab(item) then
+                    self.parent:addItem(item)
                 end
             end
         end
     end
-
-
 
     -- Cycle through the items and structure them in the correct way.
     -- Save them in this table
@@ -159,24 +185,34 @@ function SellScrollItemsPanel:createChildren()
     self.scrollingListBox.sellItemsData = {}
 end
 
---- Check player inv and compare it to the alreadyDragged items. If an item is not in their inventory anymore, delete it from the list
+--- Check player inv and compare it to the alreadyDragged items. If an item is not in their inventory/backpacks anymore, delete it from the list
 function SellScrollItemsPanel:update()
     StoreScrollItemsPanel.update(self)
 
     -- Check if added items are still in players'inv
     local pl = getPlayer()
     local plInv = pl:getInventory()
-    for i = 1, #self.scrollingListBox.items do
-        ---@type table
-        local item = self.scrollingListBox.items[i].item
-        for j=1, #item do
+
+    for i=1, #self.scrollingListBox.items do
+        local itemTab = self.scrollingListBox.items[i]
+        for j=1, #itemTab.item do
             ---@type InventoryItem
-            local invItem = item[j]
-            if plInv:getItemById(invItem:getID()) == nil or luautils.haveToBeTransfered(pl, invItem) or pl:isEquipped(invItem) or pl:isEquippedClothing(invItem) or invItem:isFavorite() then
-                table.remove(self.scrollingListBox.items.item, j)
+            local item = itemTab.item[j]
+
+            -- Check main inv 
+            if plInv:getItemById(item:getID()) == nil then
+                debugPrint("Item not in main inv => " .. item:getFullType())
+                if CheckPlayerContainersForItem(pl, item) == false then
+                    debugPrint("Removing item from sell list => " .. item:getFullType())
+                    table.remove(self.scrollingListBox.items[i].item, j)
+
+                    if #self.scrollingListBox.items[i].item == 0 then
+                        table.remove(self.scrollingListBox.items, i)
+                    end
+                end
+
             end
         end
-
     end
 end
 
