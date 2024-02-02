@@ -64,8 +64,6 @@ function BeforeMatchAdminPanel:createChildren()
     }
 
 
-    -- TODO Make a separate panel to handle btns like setTime or admin mode
-
     self.btnSetTime = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
     self.btnSetTime.internal = "SET_TIME"
     self.btnSetTime:initialise()
@@ -84,7 +82,6 @@ function BeforeMatchAdminPanel:createChildren()
     --------------------
     -- INFO PANEL, TOP ONE
 
-    -- TODO This is temporary, kinda broken
     local panelInfoHeight = self:getHeight()/4
 
     self.panelInfo = ISRichTextPanel:new(0, 20, self:getWidth(), panelInfoHeight)

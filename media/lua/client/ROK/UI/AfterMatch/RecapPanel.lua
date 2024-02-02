@@ -90,10 +90,10 @@ function RecapPanel:prerender()
     TextureScreen.prerender(self)
     local alpha = 1 - self.closingTime
 
+    --debugPrint("Setting alpha to itemsBox and killerPlayerBox to " .. tostring(alpha))
 
-    -- TODO NOT WORKING
-    self.itemsBox.backgroundColor.a = alpha
-    self.killedPlayersBox.backgroundColor.a = alpha
+    self.itemsBox.scrollingListBox.backgroundColor.a = alpha
+    self.killedPlayersBox.scrollingListBox.backgroundColor.a = alpha
 
 end
 

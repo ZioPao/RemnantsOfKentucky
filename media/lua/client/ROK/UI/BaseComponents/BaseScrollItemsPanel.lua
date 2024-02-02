@@ -32,7 +32,6 @@ function BaseScrollItemsPanel:initialiseList(itemsTable)
     local sortedItems = {}
 
     -- TODO workaroundy
-    --FIXME This can fail if we didn't load ALL the mods with the items added in the list
     for k,v in pairs(itemsTable) do
         v.actualItem = getScriptManager():getItem(v.fullType)
         if v.actualItem ~= nil then

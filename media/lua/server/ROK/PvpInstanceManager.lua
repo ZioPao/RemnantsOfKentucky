@@ -224,13 +224,7 @@ local function OnInitGlobalModData()
     PvpInstanceManager.LoadPvpInstances()
 end
 
-
--- local function OnLoad()
---     -- TODO We should make this more obvious that the admin needs to start the resetter before starting up the game
---     PvpInstanceManager.Reset()
--- end
 Events.OnInitGlobalModData.Add(OnInitGlobalModData)
--- Events.OnServerStarted.Add(OnLoad)
 
 
 ------------------------------------------------------------------------
