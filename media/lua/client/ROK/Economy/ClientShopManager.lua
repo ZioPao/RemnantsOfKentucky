@@ -192,12 +192,29 @@ function ShopCommands.SellItems(transactionData)
 
     for i=1, #transactionData do
         local data = transactionData[i]
+
         for _=1, data.quantity do
             local item = plInv:FindAndReturn(data.fullType)
 
-            -- FIXME Not removing it from bags!!
-            ISRemoveItemTool.removeItem(item, pl)
+            -- TODO Optimize this
+            if item == nil then
+                local wornItems = pl:getWornItems()
+                for j=0, wornItems:size() - 1 do
+                    local wornItem = wornItems:get(i)
+                    if wornItem then
+                        local cont = wornItem:getItem():getContainer()
+                        if cont and cont:FindAndReturn(data.fullType) then
+                            ISRemoveItemTool.removeItem(item, pl)
+                        end
+                    end
+                end
+            else
+                ISRemoveItemTool.removeItem(item, pl)
+
+            end
         end
+
+
     end
     triggerEvent("PZEFT_OnSuccessfulSell", "successful")
 end

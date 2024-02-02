@@ -9,6 +9,8 @@ local SafehouseInstanceManager = require("ROK/SafehouseInstanceManager")
 
 --FIXME Dead players (that haven't respawned) get counted
 
+-- FIXME Handle players that crash during the match and delete their loot. Or kill them? Track it somehow
+
 ---@class MatchController
 ---@field pvpInstance pvpInstanceTable
 ---@field playersInMatch table<number,number>        Table of player ids

@@ -37,6 +37,8 @@ function ServerShopManager.LoadShopPrices()
     ShopItemsManager.GenerateDailyItems()
 
     -- Init
+
+    -- TODO DAILY ITEMS NOT RESETTING!!!
     shopItemsData.items = shopItemsData.items or {}
     shopItemsData.tags = shopItemsData.tags or {}
 
