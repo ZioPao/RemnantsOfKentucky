@@ -135,7 +135,7 @@ PZ_EFT_CONFIG.MatchSettings = {
     endMatchTime = 5,
 
     -- Client
-    extractionTime = 1, --SandboxVars.RemnantsOfKentucky.ExtractionTime,        -- TODO Set it to 10 sec
+    extractionTime = SandboxVars.RemnantsOfKentucky.ExtractionTime,        -- TODO Set it to 10 sec
 
     -- Server only
     roundTime = SandboxVars.RemnantsOfKentucky.RoundTime,

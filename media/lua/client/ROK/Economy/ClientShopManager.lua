@@ -194,6 +194,8 @@ function ShopCommands.SellItems(transactionData)
         local data = transactionData[i]
         for _=1, data.quantity do
             local item = plInv:FindAndReturn(data.fullType)
+
+            -- FIXME Not removing it from bags!!
             ISRemoveItemTool.removeItem(item, pl)
         end
     end
