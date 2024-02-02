@@ -46,6 +46,7 @@ end
 
 --- load PVP instances and add them to the stores
 function PvpInstanceManager.LoadPvpInstances()
+    debugPrint("Loading PVP Instances")
     local pvpInstances = {}
     local settings = pvpInstanceSettings
 
@@ -75,12 +76,14 @@ end
 --- Marks old instance as used and Gets new instance
 ---@return pvpInstanceTable?
 function PvpInstanceManager.GetNextInstance()
+    debugPrint("Fetching next PVP instance")
     local pvpInstances = ServerData.PVPInstances.GetPvpInstances()
     local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
     local currentInstance = ServerData.PVPInstances.GetPvpCurrentInstance()
     local changedInstance = false
 
     for key, value in pairs(pvpInstances) do
+        debugPrint("Checking instance with key=" .. key)
         if not usedInstances[key] then
             changedInstance = true
             usedInstances[key] = true
@@ -93,7 +96,7 @@ function PvpInstanceManager.GetNextInstance()
     if not changedInstance then
         debugPrint("No more instances left! Please reset map files.")
         -- SendNotification to admin
-        sendClientCommand(EFT_MODULES.UI, "ReceiveFailStartingMatch", {})
+        sendServerCommand(EFT_MODULES.UI, "ReceiveFailStartingMatch", {})
         return nil
     end
 
@@ -214,12 +217,19 @@ function PvpInstanceManager.GetPermanentExtractionPoints(cellX, cellY)
     return points
 end
 
+
+local function OnInitGlobalModData()
+    debugPrint("INITIALIZING PVP INSTANCES MOD DATA")
+    ServerData.PVPInstances.SetPvpCurrentInstance({}, false)
+    PvpInstanceManager.LoadPvpInstances()
+end
+
+
 -- local function OnLoad()
 --     -- TODO We should make this more obvious that the admin needs to start the resetter before starting up the game
 --     PvpInstanceManager.Reset()
 -- end
-
--- Events.OnLoad.Add(OnLoad)
+Events.OnInitGlobalModData.Add(OnInitGlobalModData)
 -- Events.OnServerStarted.Add(OnLoad)
 
 

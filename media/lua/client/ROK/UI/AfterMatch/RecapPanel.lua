@@ -90,7 +90,10 @@ function RecapPanel:prerender()
     TextureScreen.prerender(self)
     local alpha = 1 - self.closingTime
 
+
+    -- TODO NOT WORKING
     self.itemsBox.backgroundColor.a = alpha
+    self.killedPlayersBox.backgroundColor.a = alpha
 
 end
 
