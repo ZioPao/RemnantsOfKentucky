@@ -256,7 +256,7 @@ function ManagePlayersPanel:onClick(button)
     elseif button.internal == 'WIPE_EVERYTHING' then
         local function OnConfirmWipeEverything()
             debugPrint("Wipe everything")
-            -- TODO Implement wiping everything
+            -- FIXME Implement wiping everything
         end
         local text = getText("IGUI_EFT_AdminPanel_Confirmation_WipeEverything")
         self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, self, OnConfirmWipeEverything)

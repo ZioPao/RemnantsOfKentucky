@@ -4,6 +4,8 @@ local TimePanel = require("ROK/UI/TimePanel")
 local ClientState = require("ROK/ClientState")
 --------------------------------
 
+-- FIXME Not resetting after Overtime
+
 ---@class BeforeMatchAdminPanel : BaseAdminPanel
 local BeforeMatchAdminPanel = BaseAdminPanel:derive("BeforeMatchAdminPanel")
 BeforeMatchAdminPanel.instance = nil
