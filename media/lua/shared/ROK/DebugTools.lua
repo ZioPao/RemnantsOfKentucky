@@ -7,22 +7,15 @@ function debugPrint(text)
     end
 end
 
+
 function debugPrintAllItems()
     ---@type ArrayList
     local allItems = getScriptManager():getAllItems()
 
-    local tagCosts = {
-        FOOD = {name = "FOOD", priceMin = 100, priceMax = 200},
-        CLOTHING_NORMAL = {name = "CLOTHING_NORMAL", priceMin = 50, priceMax = 400 },          -- No bullet defense
-        CLOTHING_BAG = {name = "CLOTHING_BAG", priceMin = 200, priceMax = 2000},
-        CLOTHING_MILITARY = {name = "CLOTHING_MILITARY", priceMin = 400, priceMax = 3500 },
-        TOOL = {name = "TOOL", priceMin = 100, priceMax = 1500 },            -- Only tool, like a saw
-        TOOL_MELEE = {name = "TOOL_MELEE", priceMin = 500, priceMax = 2500 },
-        GUN = {name = "GUN", priceMin = 300, priceMax = 5000},
-        GUN_PART = {name = "GUN_PART", priceMin = 150, priceMax = 1000},
-        COSMETIC = {name = "COSMETIC", priceMin = 100, priceMax = 10000},
-        EXP = {name = "EXP", priceMin = 1000, priceMax = 10000}
-    }
+    local json = require("ROK/JSON")
+    local STR_JSON_FOLDER = "media/data/"
+    local STR_ITEMS_JSON = "items.json"
+    local items = {}
 
     for i=0, allItems:size() - 1 do
 
@@ -31,43 +24,35 @@ function debugPrintAllItems()
 
         if not item:isHidden() then
 
+            cat = "["
 
-            local fullType = item:getModuleName() .. "." .. item:getName()
-            local itemType = item:getType()
+            for y=0, item:getCategories():size() - 1 do
 
-            if itemType ~= Type.Key and itemType ~= Type.Map then
-                local tag
+                n = item:getCategories():get(y)
 
-                if itemType == Type.Clothing then
-                    ---@type Clothing
-                    local cItem = InventoryItemFactory.CreateItem(fullType)
-
-                    if cItem:getBulletDefense() > 30 then
-                        tag = tagCosts.CLOTHING_MILITARY
-                    else
-                        tag = tagCosts.CLOTHING_NORMAL
-                    end
-                elseif itemType == Type.Food then tag = tagCosts.FOOD
-                elseif itemType == Type.Weapon then tag = tagCosts.GUN
-                elseif itemType == Type.WeaponPart then tag = tagCosts.GUN_PART
-                elseif itemType == Type.Literature then tag = tagCosts.EXP -- TODO Not 100% correct
-                elseif itemType == Type.Radio or itemType == Type.AlarmClock or itemType == Type.AlarmClockClothing or itemType == Type.Drainable then
-                    tag = tagCosts.TOOL
-                elseif itemType == Type.Normal or itemType == Type.Moveable then
-                    tag = tagCosts.COSMETIC
-                elseif itemType == Type.Container then
-                    tag = tagCosts.CLOTHING_BAG
-                else
-                    debugPrint(itemType)
-                    debugPrint(fullType)
-                    debugPrint("__")
-                end
-                local price = ZombRand(tag.priceMin, tag.priceMax)
-                print("fullType: " .. fullType .. ", basePrice: " .. tostring(price) .. ", tag: " .. tag.name)
-                print("_______________")
+                cat = cat .. n .. ", "
             end
+
+            if item:getDisplayCategory() then
+                cat = cat .. item:getDisplayCategory() .. "]"
+            else
+                cat = cat .. "]"
+            end
+
+            itemTab = {
+                fullType = item:getModuleName() .. "." .. item:getName(),
+                name = item:getDisplayName(),
+                category = tostring(cat),
+                weight = item:getActualWeight()
+            }
+            table.insert(items, itemTab)
         end
     end
+
+    jsonStr = json.stringify(items)
+    writer = getModFileWriter('ROK_Test', STR_JSON_FOLDER .. STR_ITEMS_JSON, true, false)
+    writer:write(jsonStr)
+    writer:close()
 end
 
 function debug_getPosition()
