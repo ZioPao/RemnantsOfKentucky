@@ -17,9 +17,6 @@
 
 require "ISUI/ISCollapsableWindow"
 local ClientState = require("ROK/ClientState")
-
--- TODO Add sellMultiplier
--- TODO Add filtering
 local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 local ClientShopManager = require("ROK/Economy/ClientShopManager")
 local ClientBankManager = require("ROK/Economy/ClientBankManager")

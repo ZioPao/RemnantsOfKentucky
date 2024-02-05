@@ -1,6 +1,6 @@
 -- Should be triggered only when in a safehouse, never elsewhere
 local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
-
+-- FIXME This would work only on admins, not normal players. Rethink this
 local function DespawnZombies()
     -- Double check, player need to be in their safehouse
     if not SafehouseInstanceHandler.IsInSafehouse() then return end

@@ -41,7 +41,6 @@ function BuyMainPanel:render()
 
     if self.usedCrates == nil then return end
 
-    -- TODO Add timer to this
     for obj, _ in pairs(self.usedCrates) do
         ---@cast obj IsoObject
         obj:setHighlighted(true, false)
