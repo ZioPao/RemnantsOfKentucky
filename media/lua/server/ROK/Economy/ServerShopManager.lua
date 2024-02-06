@@ -45,7 +45,6 @@ end
 function ServerShopManager.LoadShopPrices()
     local shopItemsData = ServerData.Shop.GetShopItemsData()
     local ShopItemsManager = require("ROK/ShopItemsManager")
-    ShopItemsManager.GenerateDailyItems()
 
     -- Init
     shopItemsData.items = {}
@@ -60,9 +59,23 @@ function ServerShopManager.LoadShopPrices()
             multiplier = v.initialMultiplier,
             sellMultiplier = v.sellMultiplier
         }
-        --PZEFT_UTILS.PrintTable(shopItems.items[i])
     end
+
+
+    --!!!!!!!!!!!!!!
+    -- Generating daily items depends on having the tags already done.
+    -- After this, we need to re-set the tags table once again to make them available
+    --!!!!!!!!!!!!!!!
+    ShopItemsManager.GenerateDailyItems()
+
+    -- TODO Awful, but it'll do for now
+    shopItemsData = ServerData.Shop.GetShopItemsData()
+    for i,v in pairs(ShopItemsManager.data) do
+        shopItemsData = DoTags(shopItemsData, i, v)
+    end
+
 end
+
 Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
 
 

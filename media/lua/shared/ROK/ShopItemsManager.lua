@@ -3084,6 +3084,35 @@ ShopItemsManager.AddItem("ATA2.ATA2ItemContainer", {["VARIOUS"] = true}, 5, 1, 0
 
 if isServer() then
 
+    local function GetKeys(t)
+        local t2 = {}
+        --PZEFT_UTILS.PrintTable(t)
+
+        for key, _ in pairs(t) do
+            table.insert(t2, key)
+        end
+
+        return t2
+      end
+      
+    local function FetchNRandomItems(percentage, items, tag)
+        local amount = PZ_EFT_CONFIG.Shop.dailyItemsAmount * (percentage/100)
+        local currentAmount = 0
+
+        -- We want to pop stuff from here
+        local keys = GetKeys(items.tags[tag])
+        --PZEFT_UTILS.PrintTable(keys)
+
+        while currentAmount < amount do
+            local randIndex = ZombRand(#keys) + 1
+            local fType = keys[randIndex]
+            debugPrint("Adding to daily: fType=" .. fType)
+            ShopItemsManager.SetTagToItem(fType, "DAILY", true)
+            table.remove(keys, randIndex)
+            currentAmount = currentAmount + 1
+        end
+    end
+
     --- At startup and at every new day
     function ShopItemsManager.GenerateDailyItems()
         debugPrint("DAILY ITEMS DAILY ITEMS DAILY ITEMS")
@@ -3095,15 +3124,25 @@ if isServer() then
             local fType = v.fullType
             ShopItemsManager.SetTagToItem(fType, "DAILY", false)
 
-
-            local chance = ZombRand(0,100) > 90
-            if chance and fType ~= "ROK.InstaHeal" and counter < PZ_EFT_CONFIG.Shop.dailyItemsAmount then
-                ShopItemsManager.SetTagToItem(fType, "DAILY", true)
-                debugPrint("Added item to dailies: " .. tostring(fType))
-                counter = counter + 1
-            end
         end
+        local items = ServerData.Shop.GetShopItemsData()
+
+        FetchNRandomItems(25, items, 'WEAPON')
+        FetchNRandomItems(25, items, "MILITARY_CLOTHING")
+        FetchNRandomItems(15, items, "CLOTHING")
+        FetchNRandomItems(35, items, "VARIOUS")
     end
+
+
+
+    --         local chance = ZombRand(0,100) > 90
+    --         if chance and fType ~= "ROK.InstaHeal" and counter < PZ_EFT_CONFIG.Shop.dailyItemsAmount then
+    --             ShopItemsManager.SetTagToItem(fType, "DAILY", true)
+    --             debugPrint("Added item to dailies: " .. tostring(fType))
+    --             counter = counter + 1
+    --         end
+    --     end
+    -- end
 
 
 
