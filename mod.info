@@ -7,6 +7,6 @@ icon=icon.png
 tags=Build 41
 versionMin=41.0
 modversion=0.9.3
-require=INVENTORY_TETRIS
+require=INVENTORY_TETRIS,WakeThemUp
 pack=ROKPoster
 tiledef=PZ_EFT_Posters 353

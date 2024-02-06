@@ -66,6 +66,15 @@ function BeforeMatchAdminPanel:createChildren()
     }
 
 
+    self.btnTeleportToSafehouse = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
+    self.btnTeleportToSafehouse.internal = "TELEPORT_SAFEHOUSE"
+    self.btnTeleportToSafehouse:initialise()
+    self.btnTeleportToSafehouse:setEnable(true)
+    self.btnTeleportToSafehouse:setTitle(getText("IGUI_EFT_AdminPanel_TeleportToSafehouse"))
+    self:addChild(self.btnTeleportToSafehouse)
+
+    y = y - btnHeight - yPadding
+
     self.btnSetTime = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
     self.btnSetTime.internal = "SET_TIME"
     self.btnSetTime:initialise()
@@ -79,7 +88,6 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnResetUsedInstances:initialise()
     self.btnResetUsedInstances:setEnable(false)
     self.btnResetUsedInstances:setTitle(getText("IGUI_EFT_AdminPanel_ResetUsedInstances"))
-    self:addChild(self.btnResetUsedInstances)
 
     --------------------
     -- INFO PANEL, TOP ONE
@@ -144,6 +152,8 @@ function BeforeMatchAdminPanel:onClick(btn)
     elseif btn.internal == 'RESET_USED_INSTANCES' then
         debugPrint("Resetting used instances to base values")
         sendClientCommand(EFT_MODULES.PvpInstances, 'ResetPVPInstances', {})
+    elseif btn.internal == 'TELEPORT_SAFEHOUSE' then
+        sendClientCommand(EFT_MODULES.Safehouse, "RequestSafehouseAllocation", {teleport = true})
     end
 end
 
