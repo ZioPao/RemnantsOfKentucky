@@ -79,6 +79,8 @@ function OptionsPanel:onClick(btn)
             local command = opt.referencedCommand
             sendClientCommand(EFT_MODULES.Match, command, {val = optVal})
         end
+
+        getPlayer():Say("Settings applied.")
     end
 end
 

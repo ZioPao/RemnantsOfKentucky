@@ -1,4 +1,3 @@
-local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 
 local function DespawnZombies(zombie)
     --if not SafehouseInstanceHandler.IsInSafehouse() then return end

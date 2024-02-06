@@ -268,7 +268,7 @@ function ManagePlayersPanel:onClick(button)
 
         if button.internal == 'STARTER_KIT' then
             local function OnConfirmGiveStarterKit()
-                sendClientCommand(EFT_MODULES.Common, "RelayStarterKit", {playerID = plID})
+                sendClientCommand(EFT_MODULES.Player, "RelayStarterKit", {playerID = plID})
                 local text = getText("UI_EFT_Say_SentStarterKit", plUsername)
                 getPlayer():Say(text)
             end

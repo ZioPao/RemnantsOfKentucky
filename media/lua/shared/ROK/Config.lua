@@ -145,7 +145,7 @@ PZ_EFT_CONFIG.MatchSettings = {
     checkAlivePlayersTime = 10,      -- Every 10 seconds, we check if there are players alive in the match
 
     zombiesAmountBase = 2,          -- Base value for zombie spawn
-    zombieSpawnMultiplier = 1,       -- 1, this could get really ugly.
+    zombieSpawnMultiplier = 2,       -- 2, this could get really ugly.
     chanceRandomSoundOnZombieSpawn = 50
 
     -- As of now, zombies spawned should be around 600/700 in total per instance, at the highest.

@@ -24,6 +24,7 @@ function ServerData.GlobalModDataInit()
     ModData.getOrCreate(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
     ModData.getOrCreate(KEY_BANK_ACCOUNTS)
     ModData.getOrCreate(EFT_ModDataKeys.SHOP_ITEMS)
+    ModData.getOrCreate(EFT_ModDataKeys.PLAYERS)
 
     triggerEvent("PZEFT_ServerModDataReady")
 end
@@ -38,6 +39,7 @@ function ServerData.ClearAllData()
     ModData.remove(KEY_SAFEHOUSE_ASSIGNEDINSTANCES)
     ModData.remove(KEY_BANK_ACCOUNTS)
     ModData.remove(EFT_ModDataKeys.SHOP_ITEMS)
+    ModData.remove(EFT_ModDataKeys.PLAYERS)
 
     ServerData.GlobalModDataInit()
 end
@@ -122,6 +124,7 @@ end
 ---@alias bankPlayerTable {username : string, balance : number, cratesValue : number}
 ---@alias bankAccountsTable table<username, bankPlayerTable>
 
+--* BANK - SERVER DATA *--
 ServerData.Bank = ServerData.Bank or {}
 
 --- Get table of bank accounts
@@ -140,6 +143,7 @@ end
 ---@alias itemFullType string FullType of the item
 ---@alias shopItemsTable table<itemFullType, table<integer, shopItemElement>>  -- Key will be full type of the item
 
+--* SHOP - SERVER DATA *--
 ServerData.Shop = ServerData.Shop or {}
 
 --- Get table of shop items
@@ -159,6 +163,30 @@ function ServerData.Shop.TransmitShopItemsData()
     ModData.transmit(EFT_ModDataKeys.SHOP_ITEMS)
 end
 ------------------------------------------------
+
+
+--* PLAYERS MISSING IN ACTION - SERVER DATA *--
+ServerData.Players = ServerData.Players or {}
+
+-- { username : { table of booleans that can be sent to client maybe}}
+
+---@alias PlayersDataType table<string, {isMIA : boolean}>
+
+---@return PlayersDataType
+function ServerData.Players.GetPlayersData()
+    return ModData.getOrCreate(EFT_ModDataKeys.PLAYERS)
+end
+
+function ServerData.Players.SetPlayersData(data)
+    ModData.add(EFT_ModDataKeys.PLAYERS, data)
+end
+
+function ServerData.Shop.TransmitPlayersData()
+    ModData.transmit(EFT_ModDataKeys.PLAYERS)
+end
+
+------------------------------------------------
+
 
 
 ServerData.debug = ServerData.debug or {}

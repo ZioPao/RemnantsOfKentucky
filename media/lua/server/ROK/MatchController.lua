@@ -4,6 +4,7 @@ require("ROK/DebugTools")
 local Countdown = require("ROK/Countdown")
 local PvpInstanceManager = require("ROK/PvpInstanceManager")
 local SafehouseInstanceManager = require("ROK/SafehouseInstanceManager")
+local PlayersManager = require("ROK/PlayersManager")
 
 ---------------------------------------------------
 
@@ -13,7 +14,7 @@ local SafehouseInstanceManager = require("ROK/SafehouseInstanceManager")
 
 ---@class MatchController
 ---@field pvpInstance pvpInstanceTable
----@field playersInMatch table<number,number>        Table of player ids
+---@field playersInMatch table<number,{playerId : number, username : string}>        Table of player ids and usernames
 ---@field amountPlayersInMatch number
 ---@field zombieSpawnMultiplier number
 local MatchController = {}
@@ -49,12 +50,13 @@ function MatchController:initialise()
     local playersArray = getOnlinePlayers()
     for i = 0, playersArray:size() - 1 do
         local player = playersArray:get(i)
-        debugPrint("Adding " .. player:getUsername() .. " to match")
+        local plUsername = player:getUsername()
+        debugPrint("Adding " .. plUsername .. " to match")
 
         -- Add them to the list to keep track of them
         local plId = player:getOnlineID()
         if plId then
-            self:addPlayerToMatchList(plId)
+            self:addPlayerToMatchList(plId, plUsername)
 
             -- Teleport the player
             local spawnPoint = PvpInstanceManager.PopRandomSpawnPoint()
@@ -63,7 +65,7 @@ function MatchController:initialise()
                 return
             end
 
-            debugPrint("Teleporting " .. player:getUsername() .. " to " .. spawnPoint.name)
+            debugPrint("Teleporting " .. plUsername .. " to " .. spawnPoint.name)
             sendServerCommand(player, EFT_MODULES.Match, "TeleportToInstance", spawnPoint)
 
         end
@@ -132,8 +134,9 @@ end
 --- Kill players that are still in the pvp instance and didn't manage to escape in time
 function MatchController:killAlivePlayers()
     debugPrint("Killing remaining players in match")
-    for k, plID in pairs(self.playersInMatch) do
-        if plID ~= nil then
+    for k, tab in pairs(self.playersInMatch) do
+        if tab ~= nil then
+            local plID = tab.playerId
             local pl = getPlayerByOnlineID(plID)
             sendServerCommand(pl, EFT_MODULES.State, "CommitDieIfInRaid", {})
         end
@@ -167,8 +170,9 @@ function MatchController.HandleZombieSpawns(loops)
     local randomPlayers = {}
 
     -- Spawn Zombies
-    for k, plId in pairs(instance.playersInMatch) do
-        if plId ~= nil then
+    for k, v in pairs(instance.playersInMatch) do
+        if v ~= nil then
+            local plId = v.playerId
             local player = getPlayerByOnlineID(plId)
             if player ~= nil then
                 local x = player:getX()
@@ -242,8 +246,12 @@ Events.OnCharacterDeath.Add(MatchController.HandlePlayerDeath)
 --* Match List
 
 ---@param playerId number
-function MatchController:addPlayerToMatchList(playerId)
-    self.playersInMatch[playerId] = playerId
+---@param username string
+function MatchController:addPlayerToMatchList(playerId, username)
+    self.playersInMatch[playerId] = {
+        playerId = playerId,
+        username = username
+    }
     self.amountPlayersInMatch = self.amountPlayersInMatch + 1
 end
 
@@ -264,10 +272,13 @@ function MatchController.CheckAlivePlayers()
     if instance == nil then return end
     for k, v in pairs(instance.playersInMatch) do
         if v then
-            local testPl = getPlayerByOnlineID(v)
+            local plId = v.playerId
+            local plUsername = v.username
+            local testPl = getPlayerByOnlineID(plId)
             -- ping player
             if testPl == nil then
-                instance:removePlayerFromMatchList(v)
+                PlayersManager.MarkPlayerAsMIA(plUsername)
+                instance:removePlayerFromMatchList(plId)
             end
         end
     end
@@ -362,14 +373,16 @@ function MatchCommands.SetZombieSpawnMultiplier(_, args)
     local instance = MatchController.GetHandler()
     if instance == nil then return end
 
+    debugPrint("Setting zombie multiplier to " .. tostring(args.val))
     instance:setZombieSpawnMultiplier(args.val)
 end
 
 function MatchCommands.SendZombieSpawnMultiplier(playerObj)
     local instance = MatchController.GetHandler()
+    debugPrint("Player asked for Zombie Spawn Multiplayer")
     if instance == nil then return end
     local spawnZombieMultiplier = instance:getZombieSpawnMultiplier()
-    sendServerCommand(playerObj, EFT_MODULES.Match, "ReceiveCurrentZombieSpawnMultiplier", {spawnZombieMultiplier = spawnZombieMultiplier})
+    sendServerCommand(playerObj, EFT_MODULES.UI, "ReceiveCurrentZombieSpawnMultiplier", {spawnZombieMultiplier = spawnZombieMultiplier})
 
 end
 
