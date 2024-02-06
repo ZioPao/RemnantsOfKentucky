@@ -11,7 +11,6 @@ end
 function debugPrintAllItems()
     ---@type ArrayList
     local allItems = getScriptManager():getAllItems()
-
     local json = require("ROK/JSON")
     local STR_JSON_FOLDER = "media/data/"
     local STR_ITEMS_JSON = "items.json"
@@ -39,12 +38,30 @@ function debugPrintAllItems()
                 cat = cat .. "]"
             end
 
+            fType = item:getModuleName() .. "." .. item:getName()
+
             itemTab = {
-                fullType = item:getModuleName() .. "." .. item:getName(),
+                fullType = fType,
                 name = item:getDisplayName(),
                 category = tostring(cat),
-                weight = item:getActualWeight()
+                weight = item:getActualWeight(),
             }
+
+
+            it = InventoryItemFactory.CreateItem(fType)
+            
+
+            if instanceof(it, "Clothing") then
+                ---@cast it Clothing
+                itemTab['bulletDefense'] = it:getBulletDefense()
+            end
+
+            if instanceof(it, "HandWeapon") then
+                ---@cast it HandWeapon
+
+                itemTab['damage'] = (it:getMinDamage() + it:getMaxDamage())/2
+            end
+
             table.insert(items, itemTab)
         end
     end
