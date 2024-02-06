@@ -257,6 +257,8 @@ end
 ---We have to check it periodically to account for crashes
 function MatchController.CheckAlivePlayers()
 
+    -- TODO Mark the player as to be wiped at relog... Or something
+
     --debugPrint("checking alive players")
     local instance = MatchController.GetHandler()
     if instance == nil then return end
@@ -294,13 +296,28 @@ local MODULE = EFT_MODULES.Match
 local MatchCommands = {}
 
 
-function MatchCommands.CheckIsRunningMatch(playerObj, args)
+function MatchCommands.CheckIsRunningMatch(playerObj, _)
     debugPrint("Client asked if match is running")
     local handler = MatchController.GetHandler()
 
     local isMatchRunning = handler ~= nil
     sendServerCommand(playerObj, EFT_MODULES.State, 'SetClientStateIsMatchRunning', {value = isMatchRunning})
 
+end
+
+---@param args {id : number}
+function MatchCommands.KillZombies(_, args)
+    local id = args.id
+    local zombies = getCell():getZombieList()
+    for i = 0, zombies:size() - 1 do
+        local zombie = zombies:get(i)
+        if instanceof(zombie, "IsoZombie") and zombie:getOnlineID() == id then
+            debugPrint("Removing zombie with id="..tostring(id))
+            zombie:removeFromWorld()
+            zombie:removeFromSquare()
+            return
+        end
+    end
 end
 
 ---@param playerObj IsoPlayer

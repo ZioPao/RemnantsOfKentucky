@@ -1,43 +1,38 @@
--- -- Should be triggered only when in a safehouse, never elsewhere
--- local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
--- -- FIXME This would work only on admins, not normal players. Rethink this
--- local function DespawnZombies(zombie)
---     -- Double check, player need to be in their safehouse
---     --if not SafehouseInstanceHandler.IsInSafehouse() then return end
---     debugPrint("Removing zombies")
+local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 
---     --SendCommandToServer(string.format("/removezombies -remove true"))
---     if zombie and instanceof(zombie, "IsoZombie") then
--- 		zombie:removeFromWorld()
--- 		zombie:removeFromSquare()
+local function DespawnZombies(zombie)
+    --if not SafehouseInstanceHandler.IsInSafehouse() then return end
 
---         EFTRemoveZombie(zombie)
--- 	end
--- end
+    local onlineID = zombie:getOnlineID()
+    debugPrint("NoZombiesAllowed: Sending removeZombie ID: " .. onlineID)
+    sendClientCommand(EFT_MODULES.Match, "KillZombies", { id = onlineID })
+    zombie:removeFromWorld()
+    zombie:removeFromSquare()
+end
 
--- Events.OnZombieUpdate.Add(DespawnZombies)
+function ActivateZombieDespawner()
+    Events.OnZombieUpdate.Remove(DespawnZombies)
+    Events.OnZombieUpdate.Add(DespawnZombies)
+end
 
-
--- -- local function StartZombieDespawner()
--- --     debugPrint("Activating zombie despawner")
--- --     Events.OnZombieUpdate.Remove(DespawnZombies)
--- --     Events.OnZombieUpdate.Add(DespawnZombies)
--- -- end
--- -- local function StopZombieDespawner()
--- --     debugPrint("Deactivating zombie despawner")
--- --     Events.OnZombieUpdate.Remove(DespawnZombies)
-
--- -- end
+function DeactivateZombieDespawner()
+    Events.OnZombieUpdate.Remove(DespawnZombies)
+end
 
 
--- -- Events.PZEFT_OnMatchStart.Add(StopZombieDespawner)
--- -- Events.OnPlayerDeath.Add(StopZombieDespawner)
--- -- Events.PZEFT_OnMatchEnd.Add(StartZombieDespawner)
--- -- Events.OnZombieUpdate.Add(DespawnZombies)
+--* Activate it at startup
+Events.OnGameStart.Add(ActivateZombieDespawner)
+Events.PZEFT_OnMatchEnd.Add(ActivateZombieDespawner)
+Events.PZEFT_OnSuccessfulTeleport.Add(function()
+    debugPrint("Teleported, despawning zombies near player")
+    ActivateZombieDespawner()
+    local Delay = require("ROK/Delay")
+    Delay:set(2, function()
+        debugPrint("Deactivating zombie despawner")
+        DeactivateZombieDespawner()
+    end)
+end)
 
+Events.PZEFT_OnMatchStart.Add(DeactivateZombieDespawner)
+Events.OnPlayerDeath.Add(DeactivateZombieDespawner)
 
--- -- Events.PZEFT_OnSuccessfulTeleport.Add(function()
--- --     debugPrint("Teleported, despawning zombies near player")        -- TODO Probably still a bit too early to work correctly
--- --     -- TODO Add delay func
--- --     --SendCommandToServer(string.format("/removezombies -remove true"))
--- -- end)
