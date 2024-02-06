@@ -158,7 +158,7 @@ PZ_EFT_CONFIG.Default = {
 
 
 PZ_EFT_CONFIG.Shop = {
-    dailyItemsAmount = 20,
+    dailyItemsAmount = 30,
     instaHealCost = 2500
 }
 

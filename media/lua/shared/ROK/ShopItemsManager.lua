@@ -3079,7 +3079,7 @@ ShopItemsManager.AddItem("ATA2.ATABullbar2Item", {["VARIOUS"] = true}, 5, 1, 0.2
 ShopItemsManager.AddItem("ATA2.ATASpoilerRear1Item", {["VARIOUS"] = true}, 5, 1, 0.25)
 ShopItemsManager.AddItem("ATA2.ATA2ItemContainer", {["VARIOUS"] = true}, 5, 1, 0.25)
 
-
+-----------------------------------------
 
 
 if isServer() then
@@ -3094,7 +3094,7 @@ if isServer() then
 
         return t2
       end
-      
+
     local function FetchNRandomItems(percentage, items, tag)
         local amount = PZ_EFT_CONFIG.Shop.dailyItemsAmount * (percentage/100)
         local currentAmount = 0
@@ -3115,10 +3115,9 @@ if isServer() then
 
     --- At startup and at every new day
     function ShopItemsManager.GenerateDailyItems()
-        debugPrint("DAILY ITEMS DAILY ITEMS DAILY ITEMS")
+        debugPrint("Generating daily items")
 
-        local counter = 0
-        for k,v in pairs(ShopItemsManager.data) do
+        for _,v in pairs(ShopItemsManager.data) do
         ---@cast v shopItemElement
 
             local fType = v.fullType
@@ -3127,24 +3126,17 @@ if isServer() then
         end
         local items = ServerData.Shop.GetShopItemsData()
 
-        FetchNRandomItems(25, items, 'WEAPON')
-        FetchNRandomItems(25, items, "MILITARY_CLOTHING")
-        FetchNRandomItems(15, items, "CLOTHING")
-        FetchNRandomItems(35, items, "VARIOUS")
+
+        -- Should stack to 100%
+        FetchNRandomItems(20, items, 'WEAPON')
+        FetchNRandomItems(15, items, "MILITARY_CLOTHING")
+        FetchNRandomItems(10, items, "CLOTHING")
+        FetchNRandomItems(5, items, "SKILL_BOOK")
+        FetchNRandomItems(15, items, "FURNITURE")
+        FetchNRandomItems(5, items, "FIRST_AID")
+        FetchNRandomItems(5, items, "FOOD")
+        FetchNRandomItems(25, items, "VARIOUS")
     end
-
-
-
-    --         local chance = ZombRand(0,100) > 90
-    --         if chance and fType ~= "ROK.InstaHeal" and counter < PZ_EFT_CONFIG.Shop.dailyItemsAmount then
-    --             ShopItemsManager.SetTagToItem(fType, "DAILY", true)
-    --             debugPrint("Added item to dailies: " .. tostring(fType))
-    --             counter = counter + 1
-    --         end
-    --     end
-    -- end
-
-
 
 
 end

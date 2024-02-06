@@ -172,7 +172,7 @@ function SafehouseInstanceHandler.IsDeliveryPointClear()
 
         local props = spr:getProperties()
         if props:Is("IsMoveAble") then
-            debugPrint("Found moveable in delivery area, can't put a new one")
+            --debugPrint("Found moveable in delivery area, can't put a new one")
             return false
         end
 	end
@@ -194,9 +194,8 @@ function SafehouseInstanceHandler.TryToPlaceMoveable(itemObj)
         local props = ISMoveableSpriteProps.new(IsoObject.new(sq, sprite):getSprite())
         props.rawWeight = 10
         props:placeMoveableInternal(sq, itemObj, sprite)
-    
-    else
-        debugPrint("Delivery point is not clear! Can't put items there")
+    --else
+       --debugPrint("Delivery point is not clear! Can't put items there")
     end
 
 
