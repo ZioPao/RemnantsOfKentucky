@@ -185,6 +185,9 @@ end
 
 ---@param transactionData transactionDataType
 function ShopCommands.SellItems(transactionData)
+
+    -- FIXME This can fetch the wrong item since we're just checking by FullType. We'd want an id to be more precise
+
     debugPrint("SellItemsSuccess")
 
     local pl = getPlayer()
@@ -196,26 +199,30 @@ function ShopCommands.SellItems(transactionData)
         for _=1, data.quantity do
             local item = plInv:FindAndReturn(data.fullType)
 
-            -- TODO Optimize this
-            -- FIXME NEED TO CHECK THIS!!! STILL UNTESTED
-            if item == nil then
-                local wornItems = pl:getWornItems()
-                for j=0, wornItems:size() - 1 do
-                    local wornItem = wornItems:get(i)
-                    if wornItem then
-                        local cont = wornItem:getItem():getContainer()
-                        if cont and cont:FindAndReturn(data.fullType) then
-                            ISRemoveItemTool.removeItem(item, pl)
-                        end
-                    end
-                end
-            else
+            if item then
                 ISRemoveItemTool.removeItem(item, pl)
 
+            else
+                -- Search inside other inventory containers
+                local wornItems = pl:getWornItems()
+                for j=0, wornItems:size() - 1 do
+                    debugPrint("Looping container, index="..tostring(j))
+                    local contInv = wornItems:get(j):getItem():getInventory()
+                    --if wornItem then
+                    --    local contInv = wornItem:
+
+                        if contInv then
+                            local itemInInv = contInv:FindAndReturn(data.fullType)
+                            if itemInInv then
+                                debugPrint("Removing item in Container")
+                                ISRemoveItemTool.removeItem(itemInInv, pl)
+                                break
+                            end
+                        end
+                    --end
+                end
             end
         end
-
-
     end
     triggerEvent("PZEFT_OnSuccessfulSell", "successful")
 end
