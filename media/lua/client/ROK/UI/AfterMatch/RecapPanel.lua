@@ -1,10 +1,19 @@
 local TextureScreen = require("ROK/UI/BaseComponents/TextureScreen")
-
 local RecapScrollItemsPanel = require("ROK/UI/AfterMatch/RecapScrollItemsPanel")
 local RecapScrollKilledPlayersPanel = require("ROK/UI/AfterMatch/RecapScrollKilledPlayersPanel")
-
 local LootRecapHandler = require("ROK/Match/LootRecapHandler")
 --------------
+
+local screens = {
+    [1] = getTexture("media/textures/RecapScreen/1.png"),
+    [2] = getTexture("media/textures/RecapScreen/2.png"),
+    [3] = getTexture("media/textures/RecapScreen/3.png"),
+    [4] = getTexture("media/textures/RecapScreen/4.png"),
+    [5] = getTexture("media/textures/RecapScreen/5.png"),
+}
+
+
+
 
 ---@class RecapPanel : TextureScreen
 ---@field text string
@@ -21,7 +30,8 @@ function RecapPanel:new()
     setmetatable(o, self)
     self.__index = self
 
-    o.backgroundTexture = getTexture("media/textures/ROK_RecapScreen.png")
+    local i = ZombRand(#screens) + 1
+    o.backgroundTexture = screens[i]
 
     ---@cast o RecapPanel
     RecapPanel.instance = o
@@ -88,9 +98,11 @@ Events.PZEFT_LootRecapReady.Add(RecapPanel.SetupItemsList)
 function RecapPanel:prerender()
 
     TextureScreen.prerender(self)
-    local alpha = 1 - self.closingTime
+    local alpha = 0.8 - self.closingTime
 
     --debugPrint("Setting alpha to itemsBox and killerPlayerBox to " .. tostring(alpha))
+
+    if alpha < 0 then alpha = 0 end
 
     self.itemsBox.scrollingListBox.backgroundColor.a = alpha
     self.killedPlayersBox.scrollingListBox.backgroundColor.a = alpha
