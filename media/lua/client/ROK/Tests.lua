@@ -170,3 +170,22 @@ TestFramework.registerTestModule("UI", "Debug", function()
 
     return Tests
 end)
+
+
+TestFramework.registerTestModule("UI", "KillTracker", function()
+    
+    local Tests = {}
+    
+    local KillTrackerHandler = require("ROK/Match/KillTrackerHandler")
+
+    function Tests.AddFakeKill()
+        KillTrackerHandler.Init()
+        KillTrackerHandler.AddKill("Fake Kill1", os.time())
+        KillTrackerHandler.AddKill("Fake Kill2", os.time())
+        KillTrackerHandler.AddKill("Fake Kill3", os.time())
+    end
+
+
+    return Tests
+
+end)

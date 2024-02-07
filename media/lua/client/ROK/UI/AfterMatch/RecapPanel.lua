@@ -114,7 +114,6 @@ function RecapPanel.Open()
     local recapScreen = RecapPanel:new()
     recapScreen:initialise()
 
-    -- TODO Just for test
     Delay:set(2, function ()
         LootRecapHandler.CompareWithOldInventory()
     end)

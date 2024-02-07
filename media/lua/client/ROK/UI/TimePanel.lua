@@ -69,7 +69,7 @@ function TimePanel:render()
         debugPrint("Closing timer")
         self:close()
     end
-    self.timePanel:setText(GenericUI.FormatTime(timeNumber))
+    self.timePanel:setText(GenericUI.FormatTime(timeNumber, true))
     self.timePanel.textDirty = true
 
     if self.isStartingMatch then return end

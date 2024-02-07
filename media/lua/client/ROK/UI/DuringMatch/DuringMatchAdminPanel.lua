@@ -143,7 +143,7 @@ function DuringMatchAdminPanel:update()
         local isStopDisabled = self.confirmationPanel and self.confirmationPanel:isVisible()
         self.btnStop:setEnable(not isStopDisabled)
 
-        firstLabelText = getText("IGUI_EFT_AdminPanel_MatchTime", GenericUI.FormatTime(tonumber(ClientState.currentTime)))
+        firstLabelText = getText("IGUI_EFT_AdminPanel_MatchTime", GenericUI.FormatTime(tonumber(ClientState.currentTime), true))
     end
 
     self.labelTime:setText(firstLabelText)

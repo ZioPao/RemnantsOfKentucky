@@ -124,15 +124,17 @@ function RecapScrollKilledPlayersPanel.DrawItem(playersBox, y, item, rowElementN
     playersBox:drawRectBorder(x, y, width, item.height - 1, a, playersBox.borderColor.r, playersBox.borderColor.g, playersBox.borderColor.b)
 
 
-
-
     --* USER NAME *--
     local username = item.item.victimUsername
     local timestamp = item.item.timestamp
 	playersBox:setStencilRect(x, clipY, width - 1, clipY2 - clipY)
     playersBox:drawText(username, x + 6, y + 2, 1, 1, 1, a, playersBox.font)
 
-
+    --* ITEM COST *--
+    local timeStr = GenericUI.FormatTime(timestamp, false)
+    local timeStrY = getTextManager():MeasureStringY(playersBox.font, timeStr)
+    playersBox:drawText(timeStr, x + 6, y + timeStrY + 2, 1, 1, 1, a, playersBox.font)
+    playersBox:clearStencilRect()
 
     return y + item.height
 end
