@@ -181,8 +181,9 @@ TestFramework.registerTestModule("UI", "KillTracker", function()
     function Tests.AddFakeKill()
         KillTrackerHandler.Init()
         KillTrackerHandler.AddKill("Fake Kill1", os.time())
-        KillTrackerHandler.AddKill("Fake Kill2", os.time())
-        KillTrackerHandler.AddKill("Fake Kill3", os.time())
+        KillTrackerHandler.AddKill("Fake Kill2", os.time() + 10)
+        KillTrackerHandler.AddKill("Fake Kill3", os.time() + 100)
+        KillTrackerHandler.AddKill("Fake Kill4", os.time() + 1000)
     end
 
 

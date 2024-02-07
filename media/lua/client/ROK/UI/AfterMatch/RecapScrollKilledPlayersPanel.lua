@@ -130,10 +130,14 @@ function RecapScrollKilledPlayersPanel.DrawItem(playersBox, y, item, rowElementN
 	playersBox:setStencilRect(x, clipY, width - 1, clipY2 - clipY)
     playersBox:drawText(username, x + 6, y + 2, 1, 1, 1, a, playersBox.font)
 
-    --* ITEM COST *--
+    --* TIMESTAMP *--
     local timeStr = GenericUI.FormatTime(timestamp, false)
     local timeStrY = getTextManager():MeasureStringY(playersBox.font, timeStr)
-    playersBox:drawText(timeStr, x + 6, y + timeStrY + 2, 1, 1, 1, a, playersBox.font)
+    local timeStrX = getTextManager():MeasureStringX(playersBox.font, timeStr)
+
+    local timeStrStartX = playersBox:getWidth() - timeStrX - 10
+
+    playersBox:drawText(timeStr, timeStrStartX, y + 2 + 2, 1, 1, 1, a, playersBox.font)
     playersBox:clearStencilRect()
 
     return y + item.height
