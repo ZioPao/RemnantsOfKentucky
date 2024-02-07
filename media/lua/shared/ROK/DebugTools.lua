@@ -118,6 +118,49 @@ function debug_testTimer()
     --sendClientCommand("PZEFT-Time", "StartTimer", {stopTime = 30, timeBetweenFunc=5})
 end
 
+function debug_wipeInventory()
+
+    ---@param inv InventoryContainer
+    local function WipeItems(inv)
+        debugPrint("entering container")
+        local items = inv:getItems()
+
+        for i=0, items:size() - 1 do
+            local val = items:get(i)
+            if val then
+                local item = items:get(i):getItem()
+                debugPrint(item:getFullType())
+                if item and instanceof(item, "InventoryContainer") then
+                    debugPrint("Container inside container")
+                    --WipeItems(item:getInventory())
+                else
+                    debugPrint("Not container")
+                    --ISRemoveItemTool.removeItem(item, getPlayer())
+                end
+            end
+        end
+    end
+
+    -- local ClientCommon = require("ROK/ClientCommon")
+    -- ClientCommon.WipeInventory()
+    local pl = getPlayer()
+	for i=0, pl:getWornItems():size()-1 do
+		local item = pl:getWornItems():get(i):getItem()
+
+        debugPrint(item:getFullType())
+		if item and instanceof(item, "InventoryContainer") then
+            debugPrint("Container")
+            --PZEFT_UTILS.PrintArray(item:getInventory():getItems())
+            WipeItems(item:getInventory())
+        else
+            debugPrint("Not container")
+            --ISRemoveItemTool.removeItem(item, pl)
+        end
+
+        debugPrint("______________________")
+    end
+end
+
 
 function debug_giveStarterKit()
     local pl = getPlayer()

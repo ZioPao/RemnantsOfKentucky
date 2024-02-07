@@ -50,7 +50,15 @@ function ClientCommon.Teleport(coords)
 
 end
 
+---Cleans the inventory of a player
+function ClientCommon.WipeInventory()
+    debugPrint("Wiping player inventory")
+    local pl = getPlayer()
+    pl:getInventory():removeAllItems()
+end
+
 function ClientCommon.ForceKill()
+    debugPrint("Force killing player")
     local pl = getPlayer()
     pl:Kill(pl)
 end
@@ -82,6 +90,10 @@ end
 
 function CommonCommands.ForceRemove()
     ClientCommon.ForceRemove()
+end
+
+function CommonCommands.WipeInventory()
+    ClientCommon.WipeInventory()
 end
 
 ------------------------------------

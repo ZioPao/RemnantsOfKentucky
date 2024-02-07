@@ -197,6 +197,7 @@ function ShopCommands.SellItems(transactionData)
             local item = plInv:FindAndReturn(data.fullType)
 
             -- TODO Optimize this
+            -- FIXME NEED TO CHECK THIS!!! STILL UNTESTED
             if item == nil then
                 local wornItems = pl:getWornItems()
                 for j=0, wornItems:size() - 1 do

@@ -69,27 +69,23 @@ function PlayersCommands.CheckPlayer(playerObj, args)
 
     local Delay = require("ROK/Delay")
     Delay.Initialize()
-
-    -- TODO Add SandboxVars to activate this stuff
+    -- TODO Add SandboxVars to activate this stuffs
     local username = playerObj:getUsername()
     local plData = PlayersManager.GetOrCreateData(username)
 
 
     -- Missing in action check
-    local isMIA = plData.isMIA
+    local isMIA = true --plData.isMIA
 
-    if isMIA then
-        debugPrint("Player was set as Missing in Action, doing something that he won't forget!")
+    if isMIA and SandboxVars.RemnantsOfKentucky.PunishCrashedPlayers then
+        debugPrint("Player was set as Missing in Action, doing something that they won't forget!")
 
-        Delay:set(1,function()
-            --fixme after this players need to log back in again. Not optimal
-            sendServerCommand(playerObj, EFT_MODULES.Common, "ForceRemove", {})
+        Delay:set(3, function()
+            sendServerCommand(playerObj, EFT_MODULES.Common, "WipeInventory", {})
             PlayersManager.SetData(username, {isMIA = false})
         end)
-
-        -- -- Teleport to an invalid zone first
-        -- Delay:set(2, function()
-        --     --sendServerCommand(playerObj, EFT_MODULES.Common, "Teleport", {x=3000,y=3000,z=0})
+        -- Delay:set(5,function()
+        --     --fixme after this players need to log back in again. Not optimal
 
         -- end)
 

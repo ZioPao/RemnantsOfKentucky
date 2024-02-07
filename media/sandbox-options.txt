@@ -31,3 +31,12 @@ option RemnantsOfKentucky.ExtractionTime
     page = ROK,
     translation = ROK_ExtractionTime,
 }
+
+option RemnantsOfKentucky.PunishCrashedPlayers
+{
+    type = boolean,
+    default = true
+
+    page = ROK,
+    translation = ROK_PunishCrashedPlayers,
+}
