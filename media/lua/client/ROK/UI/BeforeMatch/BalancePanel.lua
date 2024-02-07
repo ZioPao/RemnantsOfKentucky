@@ -7,6 +7,7 @@ local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 ---------------------------
 
 ---@class BalancePanel : ISPanel
+---@field personalAccount bankPlayerTable
 BalancePanel = ISPanel:derive("BalancePanel")
 
 ---@param x number
@@ -31,7 +32,7 @@ function BalancePanel:createChildren()
 
     self.balanceText = ISRichTextPanel:new(0, 0, self.width, self.height)
     self.balanceText:initialise()
-    self:addChild(self.timePanel)
+    self:addChild(self.balanceText)
 
     self.balanceText.defaultFont = UIFont.Massive
     self.balanceText.anchorTop = false
@@ -52,23 +53,44 @@ function BalancePanel:createChildren()
 end
 
 function BalancePanel:prerender()
-    self.balanceText:setText("$100000000")
+
+    local balance
+    if self.personalAccount then
+        balance = "$" .. tostring(self.personalAccount.balance)
+    else
+        balance = "$0"
+    end
+
+    self.balanceText:setText(balance)
     self.balanceText.textDirty = true
+end
+
+function BalancePanel:setPosition(x, y)
+    self:setX(x)
+    self:setY(y)
 end
 
 ------------------------------------------------- 
 
+
+---@param account bankPlayerTable
+function BalancePanel.SetPersonalAccount(account)
+    if BalancePanel.instance then
+        BalancePanel.instance.personalAccount = account
+
+
+    end
+end
 function BalancePanel.Open()
     if BalancePanel.instance then
         BalancePanel.instance:close()
     end
 
-    debugPrint("Opening up timer")
     local width = 300
-    local height = 100
-    local padding = 50
+    local height = 50
+    local padding = 100
     local posX = getCore():getScreenWidth() - width - padding
-    local posY = height + padding
+    local posY = 0
 
     local panel = BalancePanel:new(posX, posY, width, height)
     panel:initialise()
@@ -77,6 +99,27 @@ function BalancePanel.Open()
 
     return panel
 end
+
+function BalancePanel.Close()
+    if BalancePanel.instance then
+        BalancePanel.instance:close()
+    end
+end
+
+function BalancePanel.HandleResolutionChange(oldW, oldH, w, h)
+    if BalancePanel.instance and BalancePanel.instance:isVisible() then
+        local width = 300
+        local padding = 100
+        local posX = w - width - padding
+        local posY = 0
+        BalancePanel.instance:setPosition(posX, posY)
+    end
+end
+
+Events.OnResolutionChange.Add(BalancePanel.HandleResolutionChange)
+
+
+
 
 
 --return BalancePanel

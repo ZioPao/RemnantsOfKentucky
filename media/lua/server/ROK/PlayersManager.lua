@@ -75,7 +75,7 @@ function PlayersCommands.CheckPlayer(playerObj, args)
 
 
     -- Missing in action check
-    local isMIA = true --plData.isMIA
+    local isMIA = plData.isMIA
 
     if isMIA and SandboxVars.RemnantsOfKentucky.PunishCrashedPlayers then
         debugPrint("Player was set as Missing in Action, doing something that they won't forget!")

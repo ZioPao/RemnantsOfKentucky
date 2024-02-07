@@ -72,12 +72,17 @@ function BankCommands.GetBankAccount(args)
     md.bankAccount = args.account
 end
 
---- Receive the updated bank accounts from the server, to be used in the leaderboard
----@param args {accounts : table}
+--- Receive the updated bank accounts from the server, to be used in the leaderboard and balance screen
+---@param args {accounts : bankAccountsTable}
  function BankCommands.GetAllBankAccounts(args)
     if args.accounts then
         debugPrint("Setting accounts")
         LeaderboardPanel.SetBankAccounts(args.accounts)
+
+        local plUsername = getPlayer():getUsername()
+        local personalAccount = args.accounts[plUsername]
+
+        BalancePanel.SetPersonalAccount(personalAccount)
     end
 end
 

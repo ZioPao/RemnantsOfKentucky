@@ -73,16 +73,11 @@ function TimePanel:render()
     self.timePanel.textDirty = true
 
     if self.isStartingMatch then return end
-
-    -- todo In game timer will fade out after some seconds
-    -- TODO if we do it via update it could be faster depending on the framerate. Keep this in mind
-
     --self.color.a = self.timeText.color.a - 0.0001
 end
 
 ---Show a description on tye upper part of the time panel
 function TimePanel:setDescription(description)
-    -- TODO This doesn't work reliably
     self.textLabel:setName(description)
 end
 
