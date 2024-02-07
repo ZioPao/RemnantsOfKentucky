@@ -83,11 +83,13 @@ function PlayersCommands.CheckPlayer(playerObj, args)
         Delay:set(3, function()
             sendServerCommand(playerObj, EFT_MODULES.Common, "WipeInventory", {})
             PlayersManager.SetData(username, {isMIA = false})
-        end)
-        -- Delay:set(5,function()
-        --     --fixme after this players need to log back in again. Not optimal
 
-        -- end)
+            -- Get some money away from the player
+            -- TODO Use percentages instead of fixed values
+            ServerBankManager.ProcessTransaction(playerObj:getUsername(), -1000)
+            ServerBankManager.SendBankAccount(playerObj, args.updateCratesValue)
+        end)
+
 
     end
 end

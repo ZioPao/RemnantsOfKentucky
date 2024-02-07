@@ -55,6 +55,19 @@ function ServerBankManager.ProcessTransaction(username, amount)
     return {success = true, account = bankAccounts[username]}
 end
 
+---@param playerObj IsoPlayer
+---@param updateCratesValue boolean
+function ServerBankManager.SendBankAccount(playerObj, updateCratesValue)
+    local username = playerObj:getUsername()
+    local account = ServerBankManager.GetOrCreateAccount(username)
+    --debugPrint("Running SendBankAccount")
+
+    if updateCratesValue == true then
+        account.cratesValue = CratesValueCalculator.CalculateValueAllItems(username)
+    end
+    --PZEFT_UTILS.PrintTable(account)
+    sendServerCommand(playerObj, EFT_MODULES.Bank, 'GetBankAccount', {account=account})
+end
 ------------------------------------------------------------------------
 --* COMMANDS FROM CLIENTS *--
 ------------------------------------------------------------------------
@@ -72,15 +85,7 @@ end
 ---@param args {updateCratesValue : boolean}
 ---@param playerObj IsoPlayer
 function BankCommands.SendBankAccount(playerObj, args)
-    local username = playerObj:getUsername()
-    local account = ServerBankManager.GetOrCreateAccount(username)
-    --debugPrint("Running SendBankAccount")
-
-    if args and args.updateCratesValue == true then
-        account.cratesValue = CratesValueCalculator.CalculateValueAllItems(username)
-    end
-    --PZEFT_UTILS.PrintTable(account)
-    sendServerCommand(playerObj, EFT_MODULES.Bank, 'GetBankAccount', {account=account})
+    ServerBankManager.SendBankAccount(playerObj, args.updateCratesValue)
 end
 
 function BankCommands.UpdateCratesValue(playerObj)
@@ -112,7 +117,7 @@ function BankCommands.ProcessTransaction(playerObj, args)
     end
 
     --Send updated bank account details to player
-    BankCommands.SendBankAccount(playerObj)
+    BankCommands.SendBankAccount(playerObj, {updateCratesValue=false})
 end
 
 --- Sends the full table of Bank accounts to a client, to be used in the leaderboard
