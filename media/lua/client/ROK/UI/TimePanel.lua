@@ -98,7 +98,6 @@ function TimePanel.Open(description)
         TimePanel.instance:close()
     end
 
-    -- TODO description doesn't always show
     debugPrint("Opening up timer")
     local width = 300
     local height = 100
