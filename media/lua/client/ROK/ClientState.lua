@@ -85,11 +85,9 @@ function ClientStateCommands.CommitDieIfInRaid()
 
     if ClientState.GetIsInRaid() == false then return end
 
-
-
     ClientState.extractionStatus = {}
-    local pl = getPlayer()
-    pl:Kill(pl)
+    local ClientCommon = require("ROK/ClientCommon")
+    ClientCommon.ForceKill()
 
     ClientState.SetIsInRaid(false)
 end

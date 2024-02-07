@@ -1,9 +1,7 @@
+-- Based on Konijima - Kill All Zombies mod.
 
 local function DespawnZombies(zombie)
-    --if not SafehouseInstanceHandler.IsInSafehouse() then return end
-
     local onlineID = zombie:getOnlineID()
-    debugPrint("NoZombiesAllowed: Sending removeZombie ID: " .. onlineID)
     sendClientCommand(EFT_MODULES.Match, "KillZombies", { id = onlineID })
     zombie:removeFromWorld()
     zombie:removeFromSquare()

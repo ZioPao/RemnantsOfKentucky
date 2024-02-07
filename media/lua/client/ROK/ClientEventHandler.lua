@@ -40,6 +40,9 @@ local function OnPlayerInit()
             sendClientCommand(EFT_MODULES.Match, 'CheckIsRunningMatch', {})
         end
 
+        --* Ask server about previous player status
+        sendClientCommand(EFT_MODULES.Player, "CheckPlayer", {})
+
         LoadingScreen.Close()
     end)
 

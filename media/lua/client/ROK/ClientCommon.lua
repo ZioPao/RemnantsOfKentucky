@@ -49,6 +49,20 @@ function ClientCommon.Teleport(coords)
     Events.OnTick.Add(CheckTeleportStatus)
 
 end
+
+function ClientCommon.ForceKill()
+    local pl = getPlayer()
+    pl:Kill(pl)
+end
+
+function ClientCommon.ForceRemove()
+    local pl = getPlayer()
+    pl:Kill(pl)
+
+    pl:removeFromSquare()
+    pl:removeFromWorld()
+end
+
 ------------------------------------------------------------------------
 --* COMMANDS FROM SERVER *--
 ------------------------------------------------------------------------
@@ -60,6 +74,14 @@ local CommonCommands = {}
 ---@param args coords
 function CommonCommands.Teleport(args)
     ClientCommon.Teleport(args)
+end
+
+function CommonCommands.ForceKill()
+    ClientCommon.ForceKill()
+end
+
+function CommonCommands.ForceRemove()
+    ClientCommon.ForceRemove()
 end
 
 ------------------------------------

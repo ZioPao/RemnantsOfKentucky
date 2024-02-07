@@ -1,3 +1,5 @@
+if not isServer() then return end
+
 local SafehouseInstanceManager = require("ROK/SafehouseInstanceManager")
 local ServerBankManager = require("ROK/Economy/ServerBankManager")
 
@@ -6,15 +8,33 @@ local ServerBankManager = require("ROK/Economy/ServerBankManager")
 
 local PlayersManager = {}
 
+
+function PlayersManager.GetOrCreateData(username)
+    local cData = ServerData.Players.GetPlayersData()
+
+    if cData[username] == nil then
+        cData[username] = {
+            isMIA = false
+        }
+        ServerData.Players.SetPlayersData(cData)
+    end
+
+    return cData[username]
+end
+
+
+
 ---@private
 ---@param username string
 ---@param attrs {isMIA : boolean}
 function PlayersManager.SetData(username, attrs)
-    local cData = ServerData.Players.GetPlayersData()
+    local plData = PlayersManager.GetOrCreateData(username)
+    if attrs.isMIA ~= nil then
+        plData.isMIA = attrs.isMIA
+    end
 
-    cData[username] = {
-        isMIA = attrs.isMIA or cData[username].isMIA or false
-    }
+    local cData = ServerData.Players.GetPlayersData()
+    cData[username] = plData
 
     ServerData.Players.SetPlayersData(cData)
 
@@ -45,20 +65,35 @@ end
 ---@param playerObj IsoPlayer
 ---@param args any
 function PlayersCommands.CheckPlayer(playerObj, args)
+    debugPrint("Checking player Status...")
+
+    local Delay = require("ROK/Delay")
+    Delay.Initialize()
+
+    -- TODO Add SandboxVars to activate this stuff
     local username = playerObj:getUsername()
-    PlayersManager.SetData(username, {})
-    local cData = ServerData.Players.GetPlayersData()
+    local plData = PlayersManager.GetOrCreateData(username)
 
 
     -- Missing in action check
-    local isMIA = cData[username].isMIA
+    local isMIA = plData.isMIA
 
     if isMIA then
-        debugPrint("Player was set as Missing in Action, doing something that he won't forger!")
+        debugPrint("Player was set as Missing in Action, doing something that he won't forget!")
+
+        Delay:set(1,function()
+            --fixme after this players need to log back in again. Not optimal
+            sendServerCommand(playerObj, EFT_MODULES.Common, "ForceRemove", {})
+            PlayersManager.SetData(username, {isMIA = false})
+        end)
+
+        -- -- Teleport to an invalid zone first
+        -- Delay:set(2, function()
+        --     --sendServerCommand(playerObj, EFT_MODULES.Common, "Teleport", {x=3000,y=3000,z=0})
+
+        -- end)
 
     end
-
-
 end
 
 
