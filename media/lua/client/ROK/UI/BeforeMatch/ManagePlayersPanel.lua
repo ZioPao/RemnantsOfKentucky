@@ -202,23 +202,23 @@ function ManagePlayersPanel:initialise()
     self:addChild(self.btnStarterKit)
 
 
-    local xPadding = 20
-    local normalBtnWidth = self:getWidth() - xPadding * 2
-    local normalBtnHeight = 25
+    -- local xPadding = 20
+    -- local normalBtnWidth = self:getWidth() - xPadding * 2
+    -- local normalBtnHeight = 25
 
-    self.btnWipeEverything = ISButton:new(xPadding, self:getHeight() - normalBtnHeight - 10, normalBtnWidth,
-        normalBtnHeight / 1.2, getText("IGUI_EFT_AdminPanel_WipeEverything"), self, ManagePlayersPanel.onClick)
-    self.btnWipeEverything.internal = "WIPE_EVERYTHING"
-    self.btnWipeEverything:setTooltip(getText("IGUI_EFT_AdminPanel_Tooltip_WipeEverything"))
-    self.btnWipeEverything:setImage(deleteDataIco)
-    self.btnWipeEverything:setBorderRGBA(1, 1, 1, 1)
-    self.btnWipeEverything:setTextureRGBA(1, 1, 1, 1)
-    self.btnWipeEverything.anchorTop = false
-    self.btnWipeEverything.anchorBottom = true
-    self.btnWipeEverything:initialise()
-    self.btnWipeEverything:instantiate()
-    self.btnWipeEverything.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
-    self:addChild(self.btnWipeEverything)
+    -- self.btnWipeEverything = ISButton:new(xPadding, self:getHeight() - normalBtnHeight - 10, normalBtnWidth,
+    --     normalBtnHeight / 1.2, getText("IGUI_EFT_AdminPanel_WipeEverything"), self, ManagePlayersPanel.onClick)
+    -- self.btnWipeEverything.internal = "WIPE_EVERYTHING"
+    -- self.btnWipeEverything:setTooltip(getText("IGUI_EFT_AdminPanel_Tooltip_WipeEverything"))
+    -- self.btnWipeEverything:setImage(deleteDataIco)
+    -- self.btnWipeEverything:setBorderRGBA(1, 1, 1, 1)
+    -- self.btnWipeEverything:setTextureRGBA(1, 1, 1, 1)
+    -- self.btnWipeEverything.anchorTop = false
+    -- self.btnWipeEverything.anchorBottom = true
+    -- self.btnWipeEverything:initialise()
+    -- self.btnWipeEverything:instantiate()
+    -- self.btnWipeEverything.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
+    -- self:addChild(self.btnWipeEverything)
 
 
     self.mainCategory = ManagePlayersScrollingTable:new(0, 0, self.panel.width, self.panel.height, self)
@@ -253,13 +253,13 @@ function ManagePlayersPanel:onClick(button)
 
     if button.internal == 'REFRESH' then
         self:fillList()
-    elseif button.internal == 'WIPE_EVERYTHING' then
-        local function OnConfirmWipeEverything()
-            debugPrint("Wipe everything")
-            -- FIXME Implement wiping everything
-        end
-        local text = getText("IGUI_EFT_AdminPanel_Confirmation_WipeEverything")
-        self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, self, OnConfirmWipeEverything)
+    -- elseif button.internal == 'WIPE_EVERYTHING' then
+    --     local function OnConfirmWipeEverything()
+    --         debugPrint("Wipe everything")
+    --         -- FIXME Implement wiping everything
+    --     end
+    --     local text = getText("IGUI_EFT_AdminPanel_Confirmation_WipeEverything")
+    --     self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, self, OnConfirmWipeEverything)
     else
         ---@type IsoPlayer
         local selectedPlayer = self.mainCategory.datas.items[self.mainCategory.datas.selected].item
@@ -278,6 +278,8 @@ function ManagePlayersPanel:onClick(button)
         elseif button.internal == 'WIPE_PLAYER' then
             local function OnConfirmWipePlayer()
                 sendClientCommand(EFT_MODULES.Safehouse, "ResetSafehouseAllocation", {playerID = plID})
+
+                -- TODO Add wipe player inv remotely
                 local text = getText("UI_EFT_Say_WipePlayer", plUsername)
                 getPlayer():Say(text)
             end

@@ -155,11 +155,15 @@ end
 ---@param pl IsoPlayer
 function SafehouseInstanceManager.ResetPlayerSafehouse(pl)
 
+    -- FIXME This is wrong conceptually. This will just re-assign the old safehouse at the end of the day.
+
     debugPrint("ResetSafehouseAllocation")
     local key = SafehouseInstanceManager.GetPlayerSafehouseKey(pl:getUsername())
     sendServerCommand(pl, EFT_MODULES.Safehouse, 'CleanStorage', {})
 
     if key == nil then error("key is nil while trying to reset safehouse instance") end
+
+    -- TODO We need to map the original safehouse and compare it with this, check what objects are correct and what are not. All placeable items should be removed
 
     SafehouseInstanceManager.UnassignSafehouseInstance(key)
     local safehouseKey = SafehouseInstanceManager.GetOrAssignSafehouse(pl)
