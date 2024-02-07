@@ -78,11 +78,6 @@ end
     if args.accounts then
         debugPrint("Setting accounts")
         LeaderboardPanel.SetBankAccounts(args.accounts)
-
-        local plUsername = getPlayer():getUsername()
-        local personalAccount = args.accounts[plUsername]
-
-        BalancePanel.SetPersonalAccount(personalAccount)
     end
 end
 

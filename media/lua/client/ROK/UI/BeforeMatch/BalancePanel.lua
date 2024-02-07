@@ -1,14 +1,10 @@
--- Used in conjuction with a BaseTimer\TimerHandler\CountdownHandler
 require "ISUI/ISPanel"
 require "ISUI/ISRichTextPanel"
 require "ISUI/ISButton"
-local ClientState = require("ROK/ClientState")
-local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 ---------------------------
 
 ---@class BalancePanel : ISPanel
----@field personalAccount bankPlayerTable
-BalancePanel = ISPanel:derive("BalancePanel")
+local BalancePanel = ISPanel:derive("BalancePanel")
 
 ---@param x number
 ---@param y number
@@ -53,12 +49,12 @@ function BalancePanel:createChildren()
 end
 
 function BalancePanel:prerender()
-
+    local md = PZEFT_UTILS.GetPlayerModData()
     local balance
-    if self.personalAccount then
-        balance = "$" .. tostring(self.personalAccount.balance)
+    if md.bankAccount then
+        balance = "$" .. tostring(md.bankAccount.balance)
     else
-        balance = "$0"
+        balance = "..."
     end
 
     self.balanceText:setText(balance)
@@ -73,14 +69,6 @@ end
 ------------------------------------------------- 
 
 
----@param account bankPlayerTable
-function BalancePanel.SetPersonalAccount(account)
-    if BalancePanel.instance then
-        BalancePanel.instance.personalAccount = account
-
-
-    end
-end
 function BalancePanel.Open()
     if BalancePanel.instance then
         BalancePanel.instance:close()
@@ -122,4 +110,4 @@ Events.OnResolutionChange.Add(BalancePanel.HandleResolutionChange)
 
 
 
---return BalancePanel
+return BalancePanel
