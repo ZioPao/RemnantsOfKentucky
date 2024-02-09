@@ -34,7 +34,7 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
         local Delay = require("ROK/Delay")
 
         Delay:set(2, function()
-            debugPrint("TEST: EXTRACTION!")
+            --debugPrint("TEST: EXTRACTION!")
             local ExtractionHandler = require("ROK/Match/ExtractionHandler")
             ExtractionHandler.DoExtraction()
 

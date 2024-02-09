@@ -8,10 +8,6 @@ local PlayersManager = require("ROK/PlayersManager")
 
 ---------------------------------------------------
 
---FIXME Dead players (that haven't respawned) get counted
-
--- FIXME Handle players that crash during the match and delete their loot. Or kill them? Track it somehow
-
 ---@class MatchController
 ---@field pvpInstance pvpInstanceTable
 ---@field playersInMatch table<number,{playerId : number, username : string}>        Table of player ids and usernames

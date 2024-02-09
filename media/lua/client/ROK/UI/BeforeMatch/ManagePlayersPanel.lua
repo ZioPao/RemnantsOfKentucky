@@ -253,13 +253,6 @@ function ManagePlayersPanel:onClick(button)
 
     if button.internal == 'REFRESH' then
         self:fillList()
-    -- elseif button.internal == 'WIPE_EVERYTHING' then
-    --     local function OnConfirmWipeEverything()
-    --         debugPrint("Wipe everything")
-    --         -- FIXME Implement wiping everything
-    --     end
-    --     local text = getText("IGUI_EFT_AdminPanel_Confirmation_WipeEverything")
-    --     self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, self, OnConfirmWipeEverything)
     else
         ---@type IsoPlayer
         local selectedPlayer = self.mainCategory.datas.items[self.mainCategory.datas.selected].item
