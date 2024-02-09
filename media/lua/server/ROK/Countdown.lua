@@ -81,7 +81,12 @@ function Countdown.Update()
 	if currTime >= Countdown.stopTime then
 		Events.OnTickEvenPaused.Remove(Countdown.Update)
 		debugPrint("STOP COUNTDOWN! Running func!")
-		Countdown.fun()
+
+		if Countdown.fun then
+			Countdown.fun()
+		else
+			debugPrint("Function not found, countdown probably finished")
+		end
 	end
 end
 
