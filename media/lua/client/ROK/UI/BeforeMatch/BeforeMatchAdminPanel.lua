@@ -14,9 +14,6 @@ BeforeMatchAdminPanel.instance = nil
 local MATCH_START_TEXT = getText("IGUI_EFT_AdminPanel_StartMatch")
 local MATCH_STOP_TEXT = getText("IGUI_EFT_AdminPanel_Stop")
 local AVAILABLE_INSTANCES_STR = getText("IGUI_EFT_AdminPanel_InstancesAvailable")
-local ASSIGNED_SAFEHOUSES_STR = getText("IGUI_EFT_AdminPanel_SafehousesAssigned")
-
-
 
 ---@param x number
 ---@param y number

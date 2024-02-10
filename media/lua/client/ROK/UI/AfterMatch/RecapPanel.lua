@@ -13,8 +13,6 @@ local screens = {
 }
 
 
-
-
 ---@class RecapPanel : TextureScreen
 ---@field text string
 ---@field textX number

@@ -76,7 +76,7 @@ function MatchController:startMatch()
 
 
     -- Start timer and the event handling zombie spawning
-    Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.roundTime, function()
+    Countdown.Setup(SandboxVars.RemnantsOfKentucky.RoundTime, function()
         debugPrint("Overtime!")
         self:startOvertime()
     end, true)
@@ -117,7 +117,7 @@ end
 --* Overtime
 
 function MatchController:startOvertime()
-    Countdown.Setup(PZ_EFT_CONFIG.MatchSettings.roundOvertime, function()
+    Countdown.Setup(SandboxVars.RemnantsOfKentucky.RoundOvertime, function()
         self:stopOvertime()
     end, true, "Overtime")
 end

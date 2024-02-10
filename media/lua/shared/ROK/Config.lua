@@ -130,16 +130,12 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
 --- STATIC ONLY SETTINGS!
 PZ_EFT_CONFIG.MatchSettings = {
     -- Time related stuff, in seconds. Handled on the client
-    startMatchTime = 5,     -- TODO 1 Minute
+    startMatchTime = 5,
     loadWaitTime = 5,
     endMatchTime = 5,
 
     -- Client
-    extractionTime = SandboxVars.RemnantsOfKentucky.ExtractionTime,        -- TODO Set it to 10 sec
-
-    -- Server only
-    roundTime = SandboxVars.RemnantsOfKentucky.RoundTime,
-    roundOvertime = SandboxVars.RemnantsOfKentucky.RoundOvertime,
+    extractionTime = SandboxVars.RemnantsOfKentucky.ExtractionTime,
 
     zombieIncreaseTime = 60,
     checkAlivePlayersTime = 10,      -- Every 10 seconds, we check if there are players alive in the match

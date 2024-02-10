@@ -92,7 +92,7 @@ end
 function ExtractionHandler.DoExtraction()
     --local currentInstanceData = ClientData.PVPInstances.GetCurrentInstance()
 
-    ExtractionHandler.stopTime = os_time() + PZ_EFT_CONFIG.MatchSettings.extractionTime
+    ExtractionHandler.stopTime = os_time() + SandboxVars.RemnantsOfKentucky.ExtractionTime      -- FIXME Should be set from server, not from client!!!
     -- + currentInstanceData.extractionPoints[ExtractionHandler.key].time
     Events.OnTick.Add(ExtractionHandler.HandleTimer)
 end
