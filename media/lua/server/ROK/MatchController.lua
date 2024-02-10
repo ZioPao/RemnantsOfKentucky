@@ -45,26 +45,31 @@ function MatchController:initialise()
     -- Init players in match
     local playersArray = getOnlinePlayers()
     for i = 0, playersArray:size() - 1 do
+        ---@type IsoPlayer
         local player = playersArray:get(i)
         local plUsername = player:getUsername()
-        debugPrint("Adding " .. plUsername .. " to match")
 
-        -- Add them to the list to keep track of them
-        local plId = player:getOnlineID()
-        if plId then
-            self:addPlayerToMatchList(plId, plUsername)
+        if player:isAlive() then
+            debugPrint("Adding " .. plUsername .. " to match")
 
-            -- Teleport the player
-            local spawnPoint = PvpInstanceManager.PopRandomSpawnPoint()
-            if not spawnPoint then
-                debugPrint("No more spawnpoints! Can't teleport player!")
-                return
+            -- Add them to the list to keep track of them
+            local plId = player:getOnlineID()
+            if plId then
+                self:addPlayerToMatchList(plId, plUsername)
+
+                -- Teleport the player
+                local spawnPoint = PvpInstanceManager.PopRandomSpawnPoint()
+                if not spawnPoint then
+                    debugPrint("No more spawnpoints! Can't teleport player!")
+                    return
+                end
+
+                debugPrint("Teleporting " .. plUsername .. " to " .. spawnPoint.name)
+                sendServerCommand(player, EFT_MODULES.Match, "TeleportToInstance", spawnPoint)
+
             end
-
-            debugPrint("Teleporting " .. plUsername .. " to " .. spawnPoint.name)
-            sendServerCommand(player, EFT_MODULES.Match, "TeleportToInstance", spawnPoint)
-
         end
+
     end
     -- Default value for the zombie multiplier
     self:setZombieSpawnMultiplier(PZ_EFT_CONFIG.MatchSettings.zombieSpawnMultiplier)
