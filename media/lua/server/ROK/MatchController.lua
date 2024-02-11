@@ -39,8 +39,8 @@ function MatchController:initialise()
         return
     end
 
-    -- Opens the loading screen for everyone
-    sendServerCommand(EFT_MODULES.UI, "OpenLoadingScreen", {})
+    -- Opens the loading screen for everyone and start the boat sound
+    sendServerCommand(EFT_MODULES.UI, "OpenLoadingScreen", {sound = "BoatSound"})
 
     -- Init players in match
     local playersArray = getOnlinePlayers()
@@ -79,22 +79,28 @@ end
 function MatchController:startMatch()
     debugPrint("Starting match!")
 
+    -- Delay to let the clients load the map in its entirity
 
-    -- Start timer and the event handling zombie spawning
-    Countdown.Setup(SandboxVars.RemnantsOfKentucky.RoundTime, function()
-        debugPrint("Overtime!")
-        self:startOvertime()
-    end, true)
+    local Delay = require("ROK/Delay")
 
-    -- Setup Zombie handling
-    Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.zombieIncreaseTime, MatchController.HandleZombieSpawns)
 
-    -- Setup checking alive players to stop the match and such things
-    Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.checkAlivePlayersTime, MatchController.CheckAlivePlayers)
+    Delay:set(2, function()
+        -- Start timer and the event handling zombie spawning
+        Countdown.Setup(SandboxVars.RemnantsOfKentucky.RoundTime, function()
+            debugPrint("Overtime!")
+            self:startOvertime()
+        end, true)
 
-    sendServerCommand(EFT_MODULES.UI, "CloseLoadingScreen", {})
+        -- Setup Zombie handling
+        Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.zombieIncreaseTime, MatchController.HandleZombieSpawns)
 
-    triggerEvent("PZEFT_OnMatchStart")
+        -- Setup checking alive players to stop the match and such things
+        Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.checkAlivePlayersTime, MatchController.CheckAlivePlayers)
+
+        sendServerCommand(EFT_MODULES.UI, "CloseLoadingScreen", {})
+
+        triggerEvent("PZEFT_OnMatchStart")
+    end)
 
 end
 

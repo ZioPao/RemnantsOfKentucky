@@ -35,9 +35,11 @@ end
 
 
 --* Loading Screen commands *--
-function InterfaceCommands.OpenLoadingScreen()
+
+---@param args {sound : string}
+function InterfaceCommands.OpenLoadingScreen(args)
     local LoadingScreen = require("ROK/UI/LoadingScreen")
-    LoadingScreen.Open()
+    LoadingScreen.Open(args.sound)
 end
 
 function InterfaceCommands.CloseLoadingScreen()

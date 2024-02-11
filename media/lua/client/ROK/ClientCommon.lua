@@ -21,9 +21,6 @@ function ClientCommon.Teleport(coords)
     pl:setLy(coords.y)
     pl:setLz(coords.z)
 
-
-
-
     local function CheckTeleportStatus()
         debugPrint("Checking is teleport is successful")
         local x = pl:getX()

@@ -1,4 +1,6 @@
 local TextureScreen = require("ROK/UI/BaseComponents/TextureScreen")
+local ClientState = require("ROK/ClientState")
+
 --------------
 
 
@@ -23,6 +25,15 @@ function LoadingScreen:new()
     return o
 end
 
+---@param sound string?
+function LoadingScreen:initialise(sound)
+    TextureScreen.initialise(self)
+
+    if sound then
+        getSoundManager():playUISound(sound)    -- "BoatSound"
+    end
+
+end
 function LoadingScreen:renderTexture(alpha)
     TextureScreen.renderTexture(self, alpha)
     self:drawText(self.text, self.textX, self.textY, 1, 1, 1, alpha, UIFont.Massive)
@@ -35,12 +46,13 @@ end
 
 -----
 
-function LoadingScreen.Open()
+---@param sound string?
+function LoadingScreen.Open(sound)
     if getPlayer():isDead() then return end -- Workaround to prevent issues when player is dead
     if LoadingScreen.instance ~= nil then return end
     debugPrint("Opening Loading screen")
     local loadginScreen = LoadingScreen:new()
-    loadginScreen:initialise()
+    loadginScreen:initialise(sound)
     loadginScreen:addToUIManager()
 end
 
@@ -53,7 +65,8 @@ end
 
 -- TODO Breaks Recap Panel somehow.
 Events.PZEFT_OnSuccessfulTeleport.Add(function()
-
+    -- If player is in raid, closing the loading screen is handled differently
+    if ClientState.GetIsInRaid() then return end
     debugPrint("Trying to close Loading Screen after teleport")
     LoadingScreen.Close()
 end)

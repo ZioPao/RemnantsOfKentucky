@@ -1,0 +1,17 @@
+module ROK
+{
+	imports
+	{
+		Base
+	}
+
+	sound BoatSound
+	{
+		category = UI,
+        clip { 
+          file = media/sound/BoatSound.ogg, 
+          distanceMax = 3,
+          volume = 1.0,
+        }
+	}
+}
