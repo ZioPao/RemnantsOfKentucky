@@ -91,19 +91,17 @@ Events.OnDisconnect.Add(OnPlayerExit)
 
 function CratesHandling.UpdateContainersValue()
     -- TODO Stupid heavy, figure out a better way to check when a container status changes instead of this crap
-    --sendClientCommand(EFT_MODULES.Bank, 'UpdateCratesValue', {})
     --debugPrint("Update containers value, requesting bank account again")
     local ClientBankManager = require("ROK/Economy/ClientBankManager")
     ClientBankManager.RequestBankAccountFromServer(true)
-
 end
 
----comment
 ---@param isInRaid boolean
 function CratesHandling.ToggleContainersValueUpdate(isInRaid)
     debugPrint("Toggling UpdateCratesValue")
 
-    -- TODO Will get triggered even with Overtime. Doesn't really cause issues, but keep this in mind
+    -- Will get triggered even with Overtime.
+    -- Doesn't really cause issues, but keep this in mind
     if not isInRaid then
         Events.EveryOneMinute.Remove(CratesHandling.UpdateContainersValue)
         Events.EveryOneMinute.Add(CratesHandling.UpdateContainersValue)
@@ -111,7 +109,5 @@ function CratesHandling.ToggleContainersValueUpdate(isInRaid)
         Events.EveryOneMinute.Remove(CratesHandling.UpdateContainersValue)
     end
 end
-
-
 
 Events.PZEFT_UpdateClientStatus.Add(CratesHandling.ToggleContainersValueUpdate)

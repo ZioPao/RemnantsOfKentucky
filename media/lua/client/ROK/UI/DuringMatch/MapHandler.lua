@@ -89,21 +89,16 @@ function ISWorldMap.HandleEFTExits(cleanOnly)
 end
 
 
--- TODO Rework init
 
 -- If we're in a raid, we need to reset the correct symbols. If we're not, we're gonna just clean them off the map
-
 Events.PZEFT_OnMatchEnd.Add(function()
     debugPrint("Match ended, cleaning map")
     ISWorldMap.HandleEFTExits(true)
 end)
 
 
-
 Events.PZEFT_ClientModDataReady.Add(function(key)
     if key == EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID then
-        -- TODO Check if isInRaid
-
         ISWorldMap.HandleEFTExits(false)
     end
 end)

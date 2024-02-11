@@ -31,7 +31,6 @@ function BaseScrollItemsPanel:initialiseList(itemsTable)
     if itemsTable == nil then return end
     local sortedItems = {}
 
-    -- TODO workaroundy
     for k,v in pairs(itemsTable) do
         v.actualItem = getScriptManager():getItem(v.fullType)
         if v.actualItem ~= nil then

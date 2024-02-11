@@ -1,10 +1,8 @@
 
 local ClientShopManager = require("ROK/Economy/ClientShopManager")
 local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
-local ShopItemsManager = require("ROK/ShopItemsManager")
 ------------------------
 
--- TODO ADD remove Item from list
 
 -- TODO Use getText
 local notificationsTable = {}

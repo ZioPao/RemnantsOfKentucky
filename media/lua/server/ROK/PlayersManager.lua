@@ -69,7 +69,6 @@ function PlayersCommands.CheckPlayer(playerObj, args)
 
     local Delay = require("ROK/Delay")
     Delay.Initialize()
-    -- TODO Add SandboxVars to activate this stuffs
     local username = playerObj:getUsername()
     local plData = PlayersManager.GetOrCreateData(username)
 

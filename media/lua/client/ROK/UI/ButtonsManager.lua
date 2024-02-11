@@ -47,8 +47,9 @@ ButtonManager.firstInit = true
 ButtonManager.additionalY = 10
 
 local function OpenAdminMenu()
+    -- TODO This could mean that the admin needs to open it up multiple times
+    sendClientCommand(EFT_MODULES.Match, 'CheckIsRunningMatch', {})
 
-    -- TODO Fix this, if the admin is not in a raid they should be able to open the during match menu anyway
     if not ClientState.isMatchRunning then
         BeforeMatchAdminPanel.OnOpenPanel()
     else
