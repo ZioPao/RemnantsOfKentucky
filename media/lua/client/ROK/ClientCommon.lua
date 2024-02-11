@@ -43,8 +43,8 @@ function ClientCommon.Teleport(coords)
         Events.OnTick.Remove(CheckTeleportStatus)
     end
 
-    -- Remove the check after 10 seconds if nothing changes.
-    Delay:set(10, StopTeleportCheck)
+    -- Remove the check after 5 seconds if nothing changes.
+    Delay:set(5, StopTeleportCheck)
 
     Events.OnTick.Add(CheckTeleportStatus)
 

@@ -28,6 +28,8 @@ end
 --* Recap Panel commands *--
 function InterfaceCommands.OpenRecapPanel()
     local RecapPanel = require("ROK/UI/AfterMatch/RecapPanel")
+
+    -- TODO Check if there is data to fill the recap panel before opening it
     RecapPanel.Open()
 end
 

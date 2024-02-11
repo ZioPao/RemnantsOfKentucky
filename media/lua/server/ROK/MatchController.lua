@@ -308,6 +308,11 @@ local MODULE = EFT_MODULES.Match
 local MatchCommands = {}
 
 
+function MatchCommands.SendExtractionTime(playerObj, _)
+    local extTime = SandboxVars.RemnantsOfKentucky.ExtractionTime
+    sendServerCommand(playerObj, EFT_MODULES.State, 'SetExtractionTime', {extractionTime = extTime})
+end
+
 function MatchCommands.CheckIsRunningMatch(playerObj, _)
     debugPrint("Client asked if match is running")
     local handler = MatchController.GetHandler()

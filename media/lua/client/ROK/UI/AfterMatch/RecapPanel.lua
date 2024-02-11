@@ -19,6 +19,7 @@ local screens = {
 ---@field textY number
 ---@field isClosing boolean
 ---@field closingTime number
+---@field itemsList table
 local RecapPanel = TextureScreen:derive("RecapPanel")
 
 ---@return RecapPanel
@@ -68,6 +69,10 @@ function RecapPanel:createChildren()
     self.itemsBox:initalise()
     self.mainContainerPanel:addChild(self.itemsBox)
 
+    if self.itemsList then
+        self.itemsBox:initialiseList(self.itemsList)
+    end
+
     local remainingX = self.itemsBox:getWidth()
     local killedPlayersBoxWidth = self.mainContainerPanel:getWidth() - self.itemsBox:getWidth() - marginX
     -- List of players that the current player has killed
@@ -77,7 +82,9 @@ function RecapPanel:createChildren()
 
 end
 
-
+function RecapPanel:setItemsList(list)
+    self.itemsList = list
+end
 function RecapPanel.OnSpacePressed(key)
     if key ~= Keyboard.KEY_SPACE then return end
     RecapPanel.Close()
@@ -88,10 +95,11 @@ Events.OnKeyStartPressed.Add(RecapPanel.OnSpacePressed)
 ---@param list table<string, {actualItem : Item, fullType : string}>
 function RecapPanel.SetupItemsList(list)
     if RecapPanel.instance == nil then return end
+    RecapPanel.instance:setItemsList(list)
     RecapPanel.instance.itemsBox:initialiseList(list)
 end
 
-Events.PZEFT_LootRecapReady.Add(RecapPanel.SetupItemsList)
+--Events.PZEFT_LootRecapReady.Add(RecapPanel.SetupItemsList)
 
 function RecapPanel:prerender()
 
@@ -109,24 +117,23 @@ end
 
 
 function RecapPanel:close()
+    debugPrint("Closing RecapPanel")
     TextureScreen.close(self)
     RecapPanel.instance = nil
 end
 -----
 
-local Delay = require("ROK/Delay")
 
 function RecapPanel.Open()
-    if not isClient() then return end       -- SP workaround
     if getPlayer():isDead() then return end -- Workaround to prevent issues when player is dead
     if RecapPanel.instance ~= nil then return end
     debugPrint("Opening recap screen")
-    local recapScreen = RecapPanel:new()
-    recapScreen:initialise()
+    local lootedItems = LootRecapHandler.CompareWithOldInventory()
 
-    Delay:set(2, function ()
-        LootRecapHandler.CompareWithOldInventory()
-    end)
+
+    local recapScreen = RecapPanel:new()
+    recapScreen:setItemsList(lootedItems)
+    recapScreen:initialise()
     recapScreen:addToUIManager()
 end
 

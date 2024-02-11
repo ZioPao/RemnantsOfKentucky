@@ -69,7 +69,9 @@ function LootRecapHandler.CompareWithOldInventory()
         end
     end
 
-    triggerEvent("PZEFT_LootRecapReady", actualNewItems)
+    return actualNewItems
+
+    --triggerEvent("PZEFT_LootRecapReady", actualNewItems)
 end
 
 

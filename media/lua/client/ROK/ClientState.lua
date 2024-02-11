@@ -3,6 +3,7 @@
 ---@field isStartingMatch boolean
 ---@field currentTime number
 ---@field extractionStatus table
+---@field extractionTime number
 ---@field isAdminMode boolean Admin only
 local ClientState = {
     isInRaid = false,
@@ -12,6 +13,7 @@ local ClientState = {
 
 
     isMatchRunning = false,
+    extractionTime = -1,
 
 }
 
@@ -34,8 +36,16 @@ function ClientState.SetCurrentTime(val)
     ClientState.currentTime = val
 end
 
+---@param val number
+function ClientState.SetExtractionTime(val)
+    ClientState.extractionTime = val
+end
 
 --* Getters
+
+function ClientState.GetExtractionTime()
+    return ClientState.extractionTime
+end
 
 function ClientState.GetIsInRaid()
     return ClientState.isInRaid
@@ -68,6 +78,12 @@ end)
 
 local ClientStateCommands = {}
 local MODULE = EFT_MODULES.State
+
+
+---@param args {extractionTime : number}
+function ClientStateCommands.SetExtractionTime(args)
+    ClientState.SetExtractionTime(args.extractionTime)
+end
 
 ---Set client state if is in a raid or not
 ---@param args {value : boolean}

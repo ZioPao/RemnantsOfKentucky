@@ -135,8 +135,6 @@ PZ_EFT_CONFIG.MatchSettings = {
     endMatchTime = 5,
 
     -- Client
-    extractionTime = SandboxVars.RemnantsOfKentucky.ExtractionTime,
-
     zombieIncreaseTime = 60,
     checkAlivePlayersTime = 10,      -- Every 10 seconds, we check if there are players alive in the match
 

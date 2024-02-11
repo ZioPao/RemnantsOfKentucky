@@ -1,6 +1,8 @@
 ---@class ClientData
 ClientData = {}
 
+ClientData.extractionTime = -1
+
 
 function ClientData.RequestPvpInstances()
     ModData.request(EFT_ModDataKeys.PVP_INSTANCES)

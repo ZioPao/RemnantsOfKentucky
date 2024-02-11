@@ -16,7 +16,7 @@ local function OnPlayerInit()
     Delay.Initialize()
 
     -- Zomboid is a huge piece of shit. We can't use sendClientCommand right after player init since the player isn't actually in game.
-    -- Huge workaround, but just delay this function to run 2 seconds after the player  has been "created".
+    -- Huge workaround, but just delay this function to run 2 seconds after the player has been "created".
     Delay:set(2, function()
         --* Safehouse handling
         -- Request safe house allocation (or just teleport, if it was already done), which in turn will teleport the player to the assigned safehouse
@@ -35,13 +35,16 @@ local function OnPlayerInit()
         --* Request the list of PVP Instances from the server
         ClientData.RequestPvpInstances()
 
+        --* Ask server about previous player status
+        sendClientCommand(EFT_MODULES.Player, "CheckPlayer", {})
+
+        --* Request extraction time from the server
+        sendClientCommand(EFT_MODULES.Match, "SendExtractionTime", {})
+
         --* Request current running match, if there is some set the correct UI
         if isAdmin() then
             sendClientCommand(EFT_MODULES.Match, 'CheckIsRunningMatch', {})
         end
-
-        --* Ask server about previous player status
-        sendClientCommand(EFT_MODULES.Player, "CheckPlayer", {})
 
         LoadingScreen.Close()
     end)
