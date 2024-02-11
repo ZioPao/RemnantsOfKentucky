@@ -1,3 +1,5 @@
+Events.OnGameBoot.Remove(BaseGameCharacterDetails.DoProfessions)
+
 
 
 local function SetEFTProfessionDescription(prof)
@@ -31,10 +33,7 @@ local function SetEFTProfessionDescription(prof)
 
 end
 
-
--- TODO When player dies, these do not appear anymore
-
-Events.OnGameBoot.Add(function()
+local function CreateEFTProfessions()
     local sharpShooter = ProfessionFactory.addProfession("SharpShooter", getText("UI_EFT_Profession_SharpShooter"), "profession_veteran2", -4)
     sharpShooter:addFreeTrait("Desensitized")
     sharpShooter:addXPBoost(Perks.Aiming, 2)
@@ -77,6 +76,14 @@ Events.OnGameBoot.Add(function()
     scavenger:addXPBoost(Perks.Nimble, -3)
     scavenger:addXPBoost(Perks.Sprinting, -1)
     SetEFTProfessionDescription(scavenger)
+end
+--Events.OnGameBoot.Add(CreateEFTProfessions)
 
 
-end)
+local og_BaseGameCharacterDetailsDoProfessions = BaseGameCharacterDetails.DoProfessions
+function BaseGameCharacterDetails.DoProfessions()
+    og_BaseGameCharacterDetailsDoProfessions()
+    CreateEFTProfessions()
+end
+
+Events.OnGameBoot.Add(BaseGameCharacterDetails.DoProfessions)
