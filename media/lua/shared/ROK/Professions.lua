@@ -1,7 +1,5 @@
 Events.OnGameBoot.Remove(BaseGameCharacterDetails.DoProfessions)
 
-
-
 local function SetEFTProfessionDescription(prof)
 	local desc = getTextOrNull("UI_EFT_Profession_" .. prof:getType() .. "_Desc") or ""
 	local boost = transformIntoKahluaTable(prof:getXPBoostMap())
@@ -34,7 +32,9 @@ local function SetEFTProfessionDescription(prof)
 end
 
 local function CreateEFTProfessions()
-    local sharpShooter = ProfessionFactory.addProfession("SharpShooter", getText("UI_EFT_Profession_SharpShooter"), "profession_veteran2", -4)
+    
+    -- Icon by Voysla on Flaticon
+    local sharpShooter = ProfessionFactory.addProfession("SharpShooter", getText("UI_EFT_Profession_SharpShooter"), "Professions/sharpShooter", -4)
     sharpShooter:addFreeTrait("Desensitized")
     sharpShooter:addXPBoost(Perks.Aiming, 2)
     sharpShooter:addXPBoost(Perks.Reloading, 2)
@@ -43,7 +43,8 @@ local function CreateEFTProfessions()
     sharpShooter:addXPBoost(Perks.Maintenance, -1)
     SetEFTProfessionDescription(sharpShooter)
 
-    local brawler = ProfessionFactory.addProfession("Brawler", getText("UI_EFT_Profession_Brawler"), "profession_chef2", -4)
+    -- LAFS on FlatIcon
+    local brawler = ProfessionFactory.addProfession("Brawler", getText("UI_EFT_Profession_Brawler"), "Professions/brawler", -4)
     brawler:addFreeTrait("Desensitized")
     brawler:addXPBoost(Perks.Strength, 1)
     brawler:addXPBoost(Perks.Fitness, 1)
@@ -56,7 +57,8 @@ local function CreateEFTProfessions()
     brawler:addXPBoost(Perks.Maintenance, 2)
     SetEFTProfessionDescription(brawler)
 
-    local medic = ProfessionFactory.addProfession("Medic", getText("UI_EFT_Profession_Medic"), "profession_doctor2", -4)
+    -- SumberRejeki on FlatIcon
+    local medic = ProfessionFactory.addProfession("Medic", getText("UI_EFT_Profession_Medic"), "Professions/medic", -4)
     medic:addXPBoost(Perks.Fitness, 2)
     medic:addXPBoost(Perks.Aiming, -3)
     medic:addXPBoost(Perks.Reloading, -1)
@@ -66,7 +68,8 @@ local function CreateEFTProfessions()
     medic:addXPBoost(Perks.Lightfoot, -2)
     SetEFTProfessionDescription(medic)
 
-    local scavenger = ProfessionFactory.addProfession("Scavenger", getText("UI_EFT_Profession_Scavenger"), "profession_chef2", -4)
+    -- Frepik on FlatIcon
+    local scavenger = ProfessionFactory.addProfession("Scavenger", getText("UI_EFT_Profession_Scavenger"), "Professions/scavenger", -4)
     scavenger:addXPBoost(Perks.Strength, 2)
     scavenger:addXPBoost(Perks.Fitness, 1)
     scavenger:addXPBoost(Perks.Aiming, -2)
@@ -77,7 +80,6 @@ local function CreateEFTProfessions()
     scavenger:addXPBoost(Perks.Sprinting, -1)
     SetEFTProfessionDescription(scavenger)
 end
---Events.OnGameBoot.Add(CreateEFTProfessions)
 
 
 local og_BaseGameCharacterDetailsDoProfessions = BaseGameCharacterDetails.DoProfessions
