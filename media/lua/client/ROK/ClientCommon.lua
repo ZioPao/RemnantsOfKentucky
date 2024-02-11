@@ -14,6 +14,9 @@ end
 function ClientCommon.Teleport(coords)
     local pl = getPlayer()
 
+    -- Don't teleport dead players
+    if pl:isDead() then return end
+
     pl:setX(coords.x)
     pl:setY(coords.y)
     pl:setZ(coords.z)
@@ -42,9 +45,7 @@ function ClientCommon.Teleport(coords)
 
     -- Remove the check after 5 seconds if nothing changes.
     Delay:set(5, StopTeleportCheck)
-
     Events.OnTick.Add(CheckTeleportStatus)
-
 end
 
 ---Cleans the inventory of a player

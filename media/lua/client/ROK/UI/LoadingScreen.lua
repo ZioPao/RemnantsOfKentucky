@@ -44,7 +44,8 @@ function LoadingScreen:close()
     LoadingScreen.instance = nil
 end
 
------
+--------------------------------
+
 
 ---@param sound string?
 function LoadingScreen.Open(sound)
