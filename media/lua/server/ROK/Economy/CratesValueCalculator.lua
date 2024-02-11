@@ -1,7 +1,7 @@
 local SafehouseInstanceManager = require("ROK/SafehouseInstanceManager")
 local ShopItemsManager = require("ROK/ShopItemsManager")
+------------------------------------------
 
--- TODO Add to the bank account I guess?
 local CratesValueCalculator = {}
 
 
@@ -61,12 +61,10 @@ function CratesValueCalculator.CalculateValueAllItems(username)
             local item = crateItems:get(j)
             value = value + CratesValueCalculator.GetValue(item)
         end
-        -- TODO Get Items inside and calculate value
+        -- TODO This doesn't calculate items inside items
     end
 
     return value
-
-    -- TODO save it somewhere
 end
 
 return CratesValueCalculator
