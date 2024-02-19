@@ -1,35 +1,8 @@
 -- TODO do it
 local TextureScreen = require("ROK/UI/BaseComponents/TextureScreen")
 
-local credits = [[
-    <CENTRE> <RED> <SIZE:large> Original Concept by <RGB:1,1,1> 
-    <SIZE:medium> BigBadBeaver
-    
-    <SIZE:large> <RED> Coding  <RGB:1,1,1> 
-    <SIZE:medium> Pao, Monkey
-    
-    <SIZE:large> <RED> Map <RGB:1,1,1> 
-    <SIZE:medium> Oppolla
-    
-    
-    <SIZE:large> <RED> Alpha Testers <RGB:1,1,1> 
-    <SIZE:medium> NoxKono
-    <SIZE:medium> Reincarnation
-    <SIZE:medium> Michaelcosio
-    <SIZE:medium> W0LF_QC
-    <SIZE:medium> VRGladiator1341
-    <SIZE:medium> Bob
-    <SIZE:medium> Kanjis
-    <SIZE:medium> Sentile
-    <SIZE:medium> Moisty
-]]
 
-
--- local credits2 = {
---     ahahah
--- }
-
-local credits2 = {
+local credits = {
     [1] = {
         title = "Original Concept By",
         names = {"BigBadBeaver"}
@@ -61,9 +34,9 @@ local credits2 = {
 
 ---@return string
 local function GetFullString()
-    local richString = ""
+    local richString = "<CENTRE> REMNANTS OF KENTUCKY\n\n\n"
 
-    for k,v in ipairs(credits2) do
+    for k,v in ipairs(credits) do
         local title = v.title
 
         richString = richString .. "<CENTRE> <SIZE:large>" .. title .. "\n"
@@ -113,7 +86,7 @@ function CreditsScreen:createChildren()
     self.textPanel = ISRichTextPanel:new(0, 0, self.width, self.height)
     self.textPanel:initialise()
     self:addChild(self.textPanel)
-    self.textPanel.defaultFont = UIFont.Medium
+    self.textPanel.defaultFont = UIFont.Massive
     self.textPanel.anchorTop = true
     self.textPanel.anchorLeft = false
     self.textPanel.anchorBottom = true
@@ -124,21 +97,31 @@ function CreditsScreen:createChildren()
     self.textPanel.autosetheight = false
     self.textPanel.background = true
 
-    local fullString = GetFullString()
-    self.textPanel:setText(fullString)
+    self.fullString = GetFullString()
+    self.textPanel:setText(self.fullString)
 
-    local creditsStrY = getTextManager():MeasureStringY(UIFont.Medium, fullString)
-    local creditsStrX = getTextManager():MeasureStringX(UIFont.Large, fullString)
+    self.creditsStrY = getTextManager():MeasureStringY(UIFont.Medium, self.fullString)
+    local creditsStrX = getTextManager():MeasureStringX(UIFont.Large, self.fullString)
 
     local midX = (self.width - creditsStrX)/2
 
 
     self.textPanel:setX(midX)
-    self.textPanel:setWidth(creditsStrX)
-    self.textPanel.marginTop = creditsStrY/2
+    self.textPanel:setWidth(creditsStrX * 1.25)
+    self.textPanel.marginTop = self.height
     self.textPanel:paginate()
 end
 
+
+function CreditsScreen:prerender()
+    TextureScreen.prerender(self)
+    self.textPanel.marginTop = self.textPanel.marginTop - 3
+
+    if self.textPanel.marginTop > - self.creditsStrY then
+        CreditsScreen.Close()
+    end
+
+end
 
 function CreditsScreen.OnSpacePressed(key)
     if key ~= Keyboard.KEY_SPACE then return end
@@ -160,6 +143,8 @@ function CreditsScreen.Close()
     if CreditsScreen.instance then
         CreditsScreen.instance:close()
     end
+
+    CreditsScreen.instance = nil
 end
 
 
@@ -172,26 +157,48 @@ function CreditsScreen.HandleResolutionChange(oldW, oldH, w, h)
 end
 
 Events.OnResolutionChange.Add(CreditsScreen.HandleResolutionChange)
--- Original Concept by
--- BigBadBeaver
-
--- Coding
--- Pao, Monkey
-
--- Map 
--- Oppolla
 
 
--- Alpha Testers
--- NoxKono
--- Reincarnation
--- Michaelcosio
--- W0LF_QC
--- VRGladiator1341
--- Bob
--- Kanjis
--- Sentile
--- Moisty
+
+local ServerPointsUI = require "ServerPointsUI"
+
+local old_MainScreen_render = MainScreen.render
+local function MainScreenRender(self)
+    old_MainScreen_render(self)
+
+    if self.inGame and isClient() then
+        self.bottomPanel:setHeight(self.creditsROK:getBottom())
+    end
+end
+
+local old_MainScreen_instantiate = MainScreen.instantiate
+function MainScreen:instantiate()
+    old_MainScreen_instantiate(self)
+
+    if self.inGame and isClient() then
+        local labelHgt = getTextManager():getFontHeight(UIFont.Large) + 8 * 2
+        self.creditsROK = ISLabel:new(self.quitToDesktop.x, self.quitToDesktop.y + labelHgt + 16, labelHgt, "ROK CREDITS", 1, 1, 1, 1, UIFont.Large, true)
+        self.creditsROK.internal = "ROK_CREDITS"
+        self.creditsROK:initialise()
+        self.bottomPanel:addChild(self.creditsROK)
+        self.render = MainScreenRender
+        self.creditsROK.onMouseDown = function()
+            getSoundManager():playUISound("UIActivateMainMenuItem")
+            CreditsScreen.Open()
+        end
+        self.creditsROK.onMouseMove = function(self)
+            self.fade:setFadeIn(true)
+        end
+        self.creditsROK.onMouseMoveOutside = function(self)
+            self.fade:setFadeIn(false)
+        end
+        self.creditsROK:setWidth(self.quitToDesktop.width)
+        self.creditsROK.fade = UITransition.new()
+        self.creditsROK.fade:setFadeIn(false)
+        self.creditsROK.prerender = self.prerenderBottomPanelLabel
+    end
+end
+
 
 
 --return CreditsScreen
