@@ -1,9 +1,5 @@
 require "ISUI/ISTabPanel"
 
-
--- TODO Fix alignment
-
-
 --- A simple modification of the original ISTabPanel
 ---@class CustomTabPanel : ISTabPanel
 local CustomTabPanel = ISTabPanel:derive("CustomTabPanel")

@@ -1,3 +1,8 @@
+--[[
+    -- TODO Modded Organized Trait, add inventory tetris cells to player invenotry
+
+]]
+
 -- local traitsStats = {}
 -- table.insert(traitsStats, {name = "BigPockets", points = 4})
 -- table.insert(traitsStats, {name = "Charismatic", points = 4})
@@ -32,8 +37,6 @@
 --     end
 
 
---     -- TODO Modded Organized, add cells
---     -- TODO Modded disorganized
 -- end
 
 

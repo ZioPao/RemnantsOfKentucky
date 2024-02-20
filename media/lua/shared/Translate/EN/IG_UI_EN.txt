@@ -65,6 +65,11 @@ IG_UI_EN = {
     IGUI_Shop_Buy_Confirmation_Success = "<GREEN> Successful buy! Check your crates.",
     IGUI_Shop_Buy_Refund = "<RED> No space available in your crates! You've been refunded.",
 
+    IGUI_Shop_Sell_HaveToBeTransferred = "it needs to be transferred",
+    IGUI_Shop_Sell_IsEquipped = "it's equipped",
+    IGUI_Shop_Sell_IsFavorite = "it's a favorite",
+    
+
 
     //LEADERBOARD
     

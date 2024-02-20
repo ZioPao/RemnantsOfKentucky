@@ -123,11 +123,11 @@ function CreditsScreen:prerender()
 
 end
 
-function CreditsScreen.OnSpacePressed(key)
-    if key ~= Keyboard.KEY_SPACE then return end
+function CreditsScreen.OnPressKey(key)
+    if key ~= Keyboard.KEY_SPACE or key ~= Keyboard.KEY_ESCAPE then return end
     CreditsScreen.Close()
 end
-Events.OnKeyStartPressed.Add(CreditsScreen.OnSpacePressed)
+Events.OnKeyStartPressed.Add(CreditsScreen.OnPressKey)
 
 function CreditsScreen.Open()
     if CreditsScreen.instance ~= nil then

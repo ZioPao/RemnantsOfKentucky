@@ -1,13 +1,10 @@
 if not isServer() then return end
-
 local SafehouseInstanceManager = require("ROK/SafehouseInstanceManager")
 local ServerBankManager = require("ROK/Economy/ServerBankManager")
+------------------------
 
-
--- TODO System to reset player who alt + f4 (or crashes I guess?)
-
+---@class PlayersManager
 local PlayersManager = {}
-
 
 function PlayersManager.GetOrCreateData(username)
     local cData = ServerData.Players.GetPlayersData()
@@ -21,8 +18,6 @@ function PlayersManager.GetOrCreateData(username)
 
     return cData[username]
 end
-
-
 
 ---@private
 ---@param username string
@@ -44,11 +39,6 @@ end
 function PlayersManager.MarkPlayerAsMIA(username)
     PlayersManager.SetData(username, {isMIA = true})
 end
-
-
-
-
---Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
 
 
 ----------------------------------------------------------------
@@ -93,21 +83,17 @@ function PlayersCommands.CheckPlayer(playerObj, args)
     end
 end
 
-
-
-
--- TODO NOT IMPLEMENTED!
 function PlayersCommands.ResetPlayer(_, args)
     local playerToWipe = getPlayerByOnlineID(args.playerID)
 
-    -- TODO Safehouse Handling
+    -- TODO Safehouse Handling, missing actual cleaning
     SafehouseInstanceManager.ResetPlayerSafehouse(playerToWipe)
 
-    -- TODO Bank Handling
+    -- Bank Handling
     ServerBankManager.ResetBankAccount(playerToWipe:getUsername())
 
-    -- TODO Inventory handling
-
+    -- Inventory handling
+    sendClientCommand(EFT_MODULES.Common, "WipeInventory", {})
 
 end
 

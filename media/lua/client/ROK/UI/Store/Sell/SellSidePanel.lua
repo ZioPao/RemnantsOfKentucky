@@ -3,13 +3,12 @@ local ClientShopManager = require("ROK/Economy/ClientShopManager")
 local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
 ------------------------
 
-
--- TODO Use getText
-local notificationsTable = {}
-notificationsTable["haveToBeTransferred"] = "it needs to be transferred"
-notificationsTable["isEquipped"] = "it's equipped"
-notificationsTable["isFavorite"] = "it's a favorite"
-notificationsTable["successful"] = getText("IGUI_Shop_Sell_Confirmation_Success")
+local notificationsTable = {
+    haveToBeTransfered = getText("IGUI_Shop_Sell_HaveToBeTransferred"),
+    isEquipped = getText("IGUI_Shop_Sell_IsEquipped"),
+    isFavorite =  getText("IGUI_Shop_Sell_IsFavorite"),
+    successful = getText("IGUI_Shop_Sell_Confirmation_Success")
+}
 
 ---@class SellSidePanel : RightSidePanel
 ---@field showNotification boolean

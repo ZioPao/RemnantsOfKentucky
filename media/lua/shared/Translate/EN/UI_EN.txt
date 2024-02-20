@@ -10,6 +10,9 @@ UI_EN = {
     UI_EFT_Say_WipePlayer = "Wiping safehouse and assigning a new one to %1",
     UI_EFT_Say_ReceivedStartedKit = "I received a Starter Kit, I should check my crates.",
 
+    
+
+    // Traits
 
     UI_EFT_Trait_BigPockets = "Big Pockets",
     UI_EFT_Trait_BigPockets_Desc = "Increases carry capacity on your body",
