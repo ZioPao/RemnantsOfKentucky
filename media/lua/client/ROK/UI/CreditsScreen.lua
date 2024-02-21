@@ -123,8 +123,9 @@ function CreditsScreen:prerender()
 end
 
 function CreditsScreen.OnPressKey(key)
-    if key ~= Keyboard.KEY_SPACE or key ~= Keyboard.KEY_ESCAPE then return end
-    CreditsScreen.Close()
+    if key == Keyboard.KEY_SPACE or key == Keyboard.KEY_ESCAPE then
+        CreditsScreen.Close()
+    end
 end
 Events.OnKeyStartPressed.Add(CreditsScreen.OnPressKey)
 
@@ -136,6 +137,7 @@ function CreditsScreen.Open()
     local creditsScreen = CreditsScreen:new()
     creditsScreen:initialise()
     creditsScreen:addToUIManager()
+    creditsScreen:setAlwaysOnTop(true)
 end
 
 function CreditsScreen.Close()
@@ -156,10 +158,6 @@ function CreditsScreen.HandleResolutionChange(oldW, oldH, w, h)
 end
 
 Events.OnResolutionChange.Add(CreditsScreen.HandleResolutionChange)
-
-
-
-local ServerPointsUI = require "ServerPointsUI"
 
 local old_MainScreen_render = MainScreen.render
 local function MainScreenRender(self)
