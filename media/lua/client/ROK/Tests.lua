@@ -8,7 +8,7 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
     local Tests = {}
     local function StartMatch()
         local TimePanel = require("ROK/UI/TimePanel")
-        sendClientCommand(EFT_MODULES.Match, "StartCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.startMatchTime })
+        sendClientCommand(EFT_MODULES.Match, "StartCountdown", { stopTime = PZ_EFT_CONFIG.Client.Match.startMatchTime })
         TimePanel.Open("Starting match in...")
     end
 
@@ -52,7 +52,7 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
 
 
         local function StopMatch()
-            sendClientCommand(EFT_MODULES.Match, "StartMatchEndCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.endMatchTime })
+            sendClientCommand(EFT_MODULES.Match, "StartMatchEndCountdown", { stopTime = PZ_EFT_CONFIG.Client.Match.endMatchTime })
         end
 
         StartMatch()
@@ -164,6 +164,8 @@ TestFramework.registerTestModule("UI", "Debug", function()
     function Tests.CloseRecapPanel()
         RecapPanel.Close()
     end
+
+    local CreditsScreen = require("ROK/UI/CreditsScreen")
 
     function Tests.OpenCreditsScreen()
         CreditsScreen.Open()

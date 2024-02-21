@@ -185,8 +185,6 @@ function LeaderboardPanel:createChildren()
 
     yOffset = yOffset + self.filterEntry:getHeight() + yMargin
 
-
-    -- TODO Test if this thing actually scrolls
     self.panel = ISTabPanel:new(xOffset, yOffset, self:getWidth() - xOffset * 2, self:getHeight())
     self.panel:initialise()
     self.panel.borderColor = { r = 0, g = 0, b = 0, a = 0 }

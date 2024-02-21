@@ -72,7 +72,7 @@ function MatchController:initialise()
 
     end
     -- Default value for the zombie multiplier
-    self:setZombieSpawnMultiplier(PZ_EFT_CONFIG.MatchSettings.zombieSpawnMultiplier)
+    self:setZombieSpawnMultiplier(PZ_EFT_CONFIG.Server.Match.zombieSpawnMultiplier)
 end
 
 ---Setup teleporting players to their spawn points
@@ -92,10 +92,10 @@ function MatchController:startMatch()
         end, true)
 
         -- Setup Zombie handling
-        Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.zombieIncreaseTime, MatchController.HandleZombieSpawns)
+        Countdown.AddIntervalFunc(PZ_EFT_CONFIG.Server.Match.zombieIncreaseTime, MatchController.HandleZombieSpawns)
 
         -- Setup checking alive players to stop the match and such things
-        Countdown.AddIntervalFunc(PZ_EFT_CONFIG.MatchSettings.checkAlivePlayersTime, MatchController.CheckAlivePlayers)
+        Countdown.AddIntervalFunc(PZ_EFT_CONFIG.Server.Match.checkAlivePlayersTime, MatchController.CheckAlivePlayers)
 
         sendServerCommand(EFT_MODULES.UI, "CloseLoadingScreen", {})
 
@@ -197,12 +197,12 @@ function MatchController.HandleZombieSpawns(loops)
                 -- Amount of zombies should scale based on players amount too, to prevent from killing the server
                 -- The more players there are, the more zombies will spawn in total, but less per player
                 -- (Base amount * loop) / players in match 
-                local zombiesAmount = math.ceil((PZ_EFT_CONFIG.MatchSettings.zombiesAmountBase * loops * instance:getZombieSpawnMultiplier())/instance:getAmountAlivePlayers())
+                local zombiesAmount = math.ceil((PZ_EFT_CONFIG.Server.Match.zombiesAmountBase * loops * instance:getZombieSpawnMultiplier())/instance:getAmountAlivePlayers())
                 debugPrint("spawning " .. zombiesAmount .. " near " .. player:getUsername())
                 addZombiesInOutfit(sq:getX(), sq:getY(), 0, zombiesAmount, "", 50, false, false, false, false, 1)
 
                 -- Get random players to send audio to
-                if ZombRand(0, 100) > PZ_EFT_CONFIG.MatchSettings.chanceRandomSoundOnZombieSpawn then
+                if ZombRand(0, 100) > PZ_EFT_CONFIG.Server.Match.chanceRandomSoundOnZombieSpawn then
                     table.insert(randomPlayers, {player = player, x = x, y = y})
                 end
             else

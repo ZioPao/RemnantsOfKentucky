@@ -109,7 +109,7 @@ end
 function DuringMatchAdminPanel:onConfirmStop()
     --print("Confirm! Teleporting back everyone")
     self:setIsMatchEnded(true)
-    sendClientCommand(EFT_MODULES.Match, "StartMatchEndCountdown", { stopTime = PZ_EFT_CONFIG.MatchSettings.endMatchTime })
+    sendClientCommand(EFT_MODULES.Match, "StartMatchEndCountdown", { stopTime = PZ_EFT_CONFIG.Client.Match.endMatchTime })
 end
 
 function DuringMatchAdminPanel:onClick(btn)
