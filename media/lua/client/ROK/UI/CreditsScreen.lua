@@ -1,6 +1,5 @@
--- TODO do it
 local TextureScreen = require("ROK/UI/BaseComponents/TextureScreen")
-
+----------------------
 
 local credits = {
     [1] = {
@@ -117,7 +116,7 @@ function CreditsScreen:prerender()
     TextureScreen.prerender(self)
     self.textPanel.marginTop = self.textPanel.marginTop - 3
 
-    if self.textPanel.marginTop > - self.creditsStrY then
+    if self.textPanel.marginTop < -self.creditsStrY then
         CreditsScreen.Close()
     end
 
