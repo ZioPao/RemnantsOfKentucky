@@ -35,6 +35,7 @@ local function OnPlayerInit()
         --* Request the list of PVP Instances from the server
         ClientData.RequestPvpInstances()
 
+        -- TODO Add toggle for admin
         --* Ask server about previous player status
         sendClientCommand(EFT_MODULES.Player, "CheckPlayer", {})
 

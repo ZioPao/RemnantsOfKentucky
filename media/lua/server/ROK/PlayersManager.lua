@@ -83,6 +83,7 @@ function PlayersCommands.CheckPlayer(playerObj, args)
     end
 end
 
+---@param args {playerID : number}
 function PlayersCommands.ResetPlayer(_, args)
     local playerToWipe = getPlayerByOnlineID(args.playerID)
 

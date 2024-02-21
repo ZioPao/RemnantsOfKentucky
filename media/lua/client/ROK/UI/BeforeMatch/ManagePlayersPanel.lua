@@ -270,9 +270,7 @@ function ManagePlayersPanel:onClick(button)
             self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, self, OnConfirmGiveStarterKit)
         elseif button.internal == 'WIPE_PLAYER' then
             local function OnConfirmWipePlayer()
-                sendClientCommand(EFT_MODULES.Safehouse, "ResetSafehouseAllocation", {playerID = plID})
-
-                -- TODO Add wipe player inv remotely
+                sendClientCommand(EFT_MODULES.Player, "ResetPlayer", {playerID = plID})
                 local text = getText("UI_EFT_Say_WipePlayer", plUsername)
                 getPlayer():Say(text)
             end

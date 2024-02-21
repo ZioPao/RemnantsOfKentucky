@@ -64,7 +64,7 @@ end
 ---@field textY number
 ---@field isClosing boolean
 ---@field closingTime number
-CreditsScreen = TextureScreen:derive("CreditsScreen")
+local CreditsScreen = TextureScreen:derive("CreditsScreen")
 function CreditsScreen:new()
     local o = TextureScreen:new()
     setmetatable(o, self)
