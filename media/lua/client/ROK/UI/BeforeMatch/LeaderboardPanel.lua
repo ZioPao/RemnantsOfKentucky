@@ -225,7 +225,6 @@ end
 
 --************************************************************************--
 function LeaderboardPanel.Open(x, y)
-    -- TODO Find a better way to handle icons
     if LeaderboardPanel.instance and LeaderboardPanel.instance:getIsVisible() then
         LeaderboardPanel.instance:close()
         ButtonManager["Leaderboard"]:setImage(BUTTONS_DATA_TEXTURES["Leaderboard"].OFF)
@@ -265,12 +264,9 @@ function LeaderboardPanel.SetBankAccounts(accounts)
     table.sort(sortedAccounts, SortByBalance)
 
 
-    -- TODO This is crap
+    -- This is a bit crap
     LeaderboardPanel.bankAccounts = sortedAccounts
     LeaderboardPanel.instance.mainCategory:initList(LeaderboardPanel.bankAccounts)
-
-    --debugPrint(sortedAccounts)
-   -- PZEFT_UTILS.PrintTable(sortedAccounts)
 end
 
 

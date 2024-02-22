@@ -37,11 +37,6 @@ PZ_EFT_CONFIG.Server.Match = {
     checkAlivePlayersTime = 10
 }
 
---* BANK
-
-
-
-
 
 --* SAFEHOUSES
 --Cells containing safehouses for initialisation

@@ -64,7 +64,8 @@ function LoadingScreen.Close()
 end
 
 
--- TODO Breaks Recap Panel somehow.
+-- Can break Recap Panel if things are too fast (teleport + loading + recap rapidly in succession).
+-- This is caused by the delayed teleport check
 Events.PZEFT_OnSuccessfulTeleport.Add(function()
     -- If player is in raid, closing the loading screen is handled differently
     if ClientState.GetIsInRaid() then return end
