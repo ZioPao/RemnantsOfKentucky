@@ -70,7 +70,7 @@ function CreditsScreen:new()
     setmetatable(o, self)
     self.__index = self
 
-    o.backgroundTexture = getTexture("media/textures/ROK_LoadingScreen.png")
+    o.backgroundTexture = getTexture("media/textures/ROK_CreditsScreen.png")
 
     ---@cast o LoadingScreen
     CreditsScreen.instance = o
