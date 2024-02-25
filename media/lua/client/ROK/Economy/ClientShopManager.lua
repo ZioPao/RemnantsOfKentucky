@@ -207,10 +207,9 @@ function ShopCommands.SellItems(transactionData)
                 local wornItems = pl:getWornItems()
                 for j=0, wornItems:size() - 1 do
                     debugPrint("Looping container, index="..tostring(j))
-                    local contInv = wornItems:get(j):getItem():getInventory()
-                    --if wornItem then
-                    --    local contInv = wornItem:
-
+                    local wornItem = wornItems:get(j):getItem()
+                    if wornItem then
+                        local contInv = wornItem.getInventory and wornItem:getInventory()
                         if contInv then
                             local itemInInv = contInv:FindAndReturn(data.fullType)
                             if itemInInv then
@@ -219,7 +218,7 @@ function ShopCommands.SellItems(transactionData)
                                 break
                             end
                         end
-                    --end
+                    end
                 end
             end
         end
