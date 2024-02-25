@@ -11,7 +11,7 @@ module ROK
         clip { 
           file = media/sound/BoatSound.ogg, 
           distanceMax = 3,
-          volume = 1.0,
+          volume = 0.25,
         }
 	}
 }

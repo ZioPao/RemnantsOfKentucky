@@ -34,13 +34,9 @@ local credits = {
 ---@return string
 local function GetFullString()
     local richString = "<CENTRE> REMNANTS OF KENTUCKY\n\n\n"
-
-    for k,v in ipairs(credits) do
+    for _,v in ipairs(credits) do
         local title = v.title
-
         richString = richString .. "<CENTRE> <SIZE:large>" .. title .. "\n"
-
-
         local names = v.names
 
         for i=1, #names do
@@ -151,6 +147,7 @@ end
 
 
 function CreditsScreen.HandleResolutionChange(oldW, oldH, w, h)
+    -- FIXME This will reset the credits, re-starting them
     if CreditsScreen.instance then
         CreditsScreen.Close()
         CreditsScreen.Open()

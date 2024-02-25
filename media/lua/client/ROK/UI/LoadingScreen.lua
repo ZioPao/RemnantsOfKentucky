@@ -29,9 +29,9 @@ end
 function LoadingScreen:initialise(sound)
     TextureScreen.initialise(self)
 
-    if sound then
-        getSoundManager():playUISound(sound)    -- "BoatSound"
-    end
+    -- if sound then
+    --     getSoundManager():playUISound(sound)    -- "BoatSound"
+    -- end
 
 end
 function LoadingScreen:renderTexture(alpha)

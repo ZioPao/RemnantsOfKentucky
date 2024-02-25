@@ -82,6 +82,8 @@ end
 
 function ExtractionHandler.ExecuteExtraction()
     debugPrint("Extract now!")
+    getSoundManager():playUISound("BoatSound")    -- "BoatSound"
+
     ExtractionHandler.key = nil     -- Set this to nil for next match. If it stays it's gonna break stuff next round
     sendClientCommand(EFT_MODULES.Match, "RequestExtraction", {})
     ExtractionPanel.Close()

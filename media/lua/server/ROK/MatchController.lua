@@ -39,8 +39,8 @@ function MatchController:initialise()
         return
     end
 
-    -- Opens the loading screen for everyone and start the boat sound
-    sendServerCommand(EFT_MODULES.UI, "OpenLoadingScreen", {sound = "BoatSound"})
+    -- Opens the loading screen for everyone
+    sendServerCommand(EFT_MODULES.UI, "OpenLoadingScreen", {})
 
     -- Init players in match
     local playersArray = getOnlinePlayers()
