@@ -14,4 +14,14 @@ module ROK
           volume = 0.25,
         }
 	}
+
+	sound BoomSound
+	{
+		category = UI,
+        clip { 
+          file = media/sound/BoomSound.ogg, 
+          distanceMax = 3,
+          volume = 1,
+        }
+	}
 }

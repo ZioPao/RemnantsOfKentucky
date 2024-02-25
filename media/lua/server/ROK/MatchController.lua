@@ -39,8 +39,8 @@ function MatchController:initialise()
         return
     end
 
-    -- Opens the loading screen for everyone
-    sendServerCommand(EFT_MODULES.UI, "OpenLoadingScreen", {})
+    -- Opens the loading screen for everyone and add boom sound
+    sendServerCommand(EFT_MODULES.UI, "OpenLoadingScreen", {sound = "BoomSound"})       -- Boom sound by Garuda1982
 
     -- Init players in match
     local playersArray = getOnlinePlayers()
