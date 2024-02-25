@@ -13,7 +13,6 @@ function ClientShopManager.BuyInstaHeal()
     BankManager.TryProcessTransaction(-2500, EFT_MODULES.Shop, "BuyInstaHeal", {}, EFT_MODULES.Shop, "BuyFailed", {})
 end
 
-
 --- Try buy an item for quantity. Let's assume that it's valid if we process the transaction
 ---@param itemData shopItemElement
 ---@param quantity number
@@ -35,7 +34,6 @@ function ClientShopManager.TryBuy(itemData, quantity, shopCat)
     BankManager.TryProcessTransaction(-totalPrice, EFT_MODULES.Shop, "BuyItem", data, EFT_MODULES.Shop, "BuyFailed", data)
 end
 
-
 ---@alias transactionDataType table<integer, {fullType : string, quantity : string}>
 
 --- Try sell items for quantity
@@ -43,7 +41,6 @@ end
 ---@param sellData sellData
 ---@return boolean
 function ClientShopManager.TrySell(sellData)
-
     if ClientShopManager.CanSell(sellData) == false then
         return false
     end
@@ -56,10 +53,11 @@ function ClientShopManager.TrySell(sellData)
         local pr = data.itemData.basePrice * data.itemData.sellMultiplier * data.quantity * data.quality
         totalPrice = totalPrice + pr
 
-        table.insert(transactionData, {fullType = data.itemData.fullType, quantity = data.quantity})
+        table.insert(transactionData, { fullType = data.itemData.fullType, quantity = data.quantity })
     end
 
-    BankManager.TryProcessTransaction(totalPrice, EFT_MODULES.Shop, "SellItems", transactionData, EFT_MODULES.Shop, "SellFailed", transactionData)
+    BankManager.TryProcessTransaction(totalPrice, EFT_MODULES.Shop, "SellItems", transactionData, EFT_MODULES.Shop,
+        "SellFailed", transactionData)
     return true
 end
 
@@ -123,6 +121,7 @@ function ClientShopManager.GetEssentialItems()
         return {}
     end
 end
+
 ------------------------------------------------------------------------
 --* COMMANDS FROM SERVER *--
 ------------------------------------------------------------------------
@@ -138,7 +137,6 @@ function ShopCommands.GetShopItems(items)
         ModData.add(KEY_SHOP_ITEMS, items)
     end
 end
-
 
 ---@param args {itemData : shopItemElement, quantity : number, shopCat : string}
 function ShopCommands.BuyItem(args)
@@ -158,74 +156,75 @@ function ShopCommands.BuyItem(args)
     if instanceof(item, "Moveable") then
         SafehouseInstanceHandler.TryToPlaceMoveable(item)
     else
-
         local usedCrates = {}
         local isRefund = false
 
-        for i=1, args.quantity do
+        for i = 1, args.quantity do
             local crate = SafehouseInstanceHandler.TryToAddToCrate(args.itemData.fullType)
             if crate then
                 usedCrates[crate] = true
             else
                 -- if no crates were available, a refund will be given to the player
                 isRefund = true
-                sendClientCommand(EFT_MODULES.Bank, "ProcessTransaction", {amount = args.itemData.basePrice})
+                sendClientCommand(EFT_MODULES.Bank, "ProcessTransaction", { amount = args.itemData.basePrice })
             end
         end
         triggerEvent("PZEFT_OnSuccessfulBuy", args.shopCat, usedCrates, isRefund)
     end
-
 end
-
 
 function ShopCommands.BuyInstaHeal()
     ClientCommon.InstaHeal()
 end
 
-
 ---@param transactionData transactionDataType
 function ShopCommands.SellItems(transactionData)
-
     -- FIXME This can fetch the wrong item since we're just checking by FullType. We'd want an id to be more precise
+
+
+    ---@param pl IsoPlayer
+    ---@param data {fullType : string}
+    local function FindItemInWornItems(pl, data)
+        local wornItems = pl:getWornItems()
+
+        local function CheckWornItem(wornItem)
+            if wornItem == nil then return false end
+            local contInv = wornItem.getInventory and wornItem:getInventory()
+            if contInv == nil then return false end
+            local itemInInv = contInv:FindAndReturn(data.fullType)
+            if itemInInv == nil then return false end
+            debugPrint("Removing item in Container")
+            ISRemoveItemTool.removeItem(itemInInv, pl)
+            return true
+        end
+
+        for j = 0, wornItems:size() - 1 do
+            local wornItem = wornItems:get(j):getItem()
+            if CheckWornItem(wornItem) then return end
+        end
+    end
 
     debugPrint("SellItemsSuccess")
 
     local pl = getPlayer()
     local plInv = pl:getInventory()
 
-    for i=1, #transactionData do
+    for i = 1, #transactionData do
         local data = transactionData[i]
 
-        for _=1, data.quantity do
+        for _ = 1, data.quantity do
             local item = plInv:FindAndReturn(data.fullType)
 
             if item then
                 ISRemoveItemTool.removeItem(item, pl)
-
             else
                 -- Search inside other inventory containers
-                local wornItems = pl:getWornItems()
-                for j=0, wornItems:size() - 1 do
-                    debugPrint("Looping container, index="..tostring(j))
-                    local wornItem = wornItems:get(j):getItem()
-                    if wornItem then
-                        local contInv = wornItem.getInventory and wornItem:getInventory()
-                        if contInv then
-                            local itemInInv = contInv:FindAndReturn(data.fullType)
-                            if itemInInv then
-                                debugPrint("Removing item in Container")
-                                ISRemoveItemTool.removeItem(itemInInv, pl)
-                                break
-                            end
-                        end
-                    end
-                end
+                FindItemInWornItems(pl, data)
             end
         end
     end
     triggerEvent("PZEFT_OnSuccessfulSell", "successful")
 end
-
 
 ---@param args table
 function ShopCommands.BuyFailed(args)
