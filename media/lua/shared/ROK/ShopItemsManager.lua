@@ -3095,6 +3095,10 @@ if isServer() then
         return t2
       end
 
+    
+    ---@param percentage number
+    ---@param items any
+    ---@param tag string
     local function FetchNRandomItems(percentage, items, tag)
         local amount = PZ_EFT_CONFIG.Shop.dailyItemsAmount * (percentage/100)
         local currentAmount = 0
@@ -3107,9 +3111,15 @@ if isServer() then
             local randIndex = ZombRand(#keys) + 1
             local fType = keys[randIndex]
             debugPrint("Adding to daily: fType=" .. fType)
-            ShopItemsManager.SetTagToItem(fType, "DAILY", true)
+
+            -- Check if Item actually exists, in case mod wasn't loaded
+            local item = InventoryItemFactory.CreateItem(fullType)
+            if item then
+                ShopItemsManager.SetTagToItem(fType, "DAILY", true)
+                currentAmount = currentAmount + 1
+            end
             table.remove(keys, randIndex)
-            currentAmount = currentAmount + 1
+
         end
     end
 
