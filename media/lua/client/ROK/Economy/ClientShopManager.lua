@@ -1,7 +1,6 @@
 require "ROK/ClientData"
 local BankManager = require("ROK/Economy/ClientBankManager")
 local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
-local ShopItemsManager = require("ROK/ShopItemsManager")
 local ClientCommon = require("ROK/ClientCommon")
 ------------------
 

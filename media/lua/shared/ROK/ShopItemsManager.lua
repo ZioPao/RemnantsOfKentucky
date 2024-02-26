@@ -16,11 +16,6 @@ function ShopItemsManager.AddItem(fullType, tags, basePrice, initialMultiplier, 
     ShopItemsManager.data[fullType] = {fullType = fullType, tags = tags, basePrice = basePrice, multiplier = initialMultiplier or 1, sellMultiplier = sellMultiplier or 1 }
 end
 
-function ShopItemsManager.SetItemAsDaily(fullType)
-
-
-end
-
 function ShopItemsManager.SetTagToItem(fullType, tag, isActive)
     ShopItemsManager.data[fullType].tags[tag] = isActive
 end

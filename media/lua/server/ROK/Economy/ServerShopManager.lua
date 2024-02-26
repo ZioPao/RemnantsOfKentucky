@@ -52,13 +52,7 @@ function ServerShopManager.LoadShopPrices()
 
     for i, v in pairs(ShopItemsManager.data) do
         shopItemsData = DoTags(shopItemsData, i, v)
-        shopItemsData.items[i] = {
-            fullType = v.fullType,
-            tags = v.tags,
-            basePrice = v.basePrice,
-            multiplier = v.initialMultiplier,
-            sellMultiplier = v.sellMultiplier
-        }
+        shopItemsData.items[i] = ShopItemsManager.GetItem(v.fullType)
     end
 
 
