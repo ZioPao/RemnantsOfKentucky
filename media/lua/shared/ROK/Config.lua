@@ -11,6 +11,7 @@ PZ_EFT_CONFIG.Debug = isDebugEnabled()
 PZ_EFT_CONFIG.SupportedMods = {
 
     ["ROK"] = true,
+    ["INVENTORY_TETRIS"] = true,
     ["tsarslib"] = true,
     ["TMC_TrueActions"] = true,
     ["TrueActionsDancing"] = true,

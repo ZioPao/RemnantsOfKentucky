@@ -59,8 +59,6 @@ end
 
 -------------------------
 
----@param x any
----@param y any
 ---@return NotificationPanel
 function NotificationPanel.Open(text)
     local width = 500
