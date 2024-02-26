@@ -31,10 +31,10 @@ def setStartFiles(b_string):
 
 def copyLoop(base_string, start_x, start_y):
     original_file = base_string.format(x=start_x, y=start_y)
-    original_file_path = os.path.join(input_dir, original_file)
+    original_file_path = temp_dir / original_file
     print("Copy Loop: " + base_string)
     print("original_file: " + original_file)
-    print("original_file_path: " + original_file_path)
+    print("original_file_path: " + str(original_file_path))
 
     curr_x = 0
     curr_y = 0
@@ -44,7 +44,7 @@ def copyLoop(base_string, start_x, start_y):
         for y in range(0, y_grid_len * inc_y, inc_y):
             curr_y = start_y + y
             curr_file = base_string.format(x=curr_x, y=curr_y)
-            curr_file_path = os.path.join(output_dir, curr_file)
+            curr_file_path = output_dir /curr_file
 
             shutil.copyfile(original_file_path, curr_file_path)
 
