@@ -5,6 +5,7 @@ local CratesHandling = {}
 
 --* Startup handling
 
+
 --- On player initialise, request safehouse allocation of player from server
 local function OnPlayerInit()
     debugPrint("Initializing player")
@@ -12,8 +13,28 @@ local function OnPlayerInit()
     local Delay = require("ROK/Delay")
 
     LoadingScreen.Open()
-
     Delay.Initialize()
+
+    local function CheckMods()
+        local unsModsStr = "<CENTRE> <SIZE:large> Unsupported mods found: <LINE> <LINE> <SIZE:medium>"
+        local hasUnsupportedMods = false
+		local activeModIDs = getActivatedMods()
+		for i=1,activeModIDs:size() do
+			local modID = activeModIDs:get(i-1)
+            if PZ_EFT_CONFIG.SupportedMods[modID] == nil then
+                unsModsStr = unsModsStr .. tostring(modID) .. ", "
+                hasUnsupportedMods = true
+            end
+        end
+
+
+        if hasUnsupportedMods then
+            unsModsStr = unsModsStr:sub(1, -3)      -- Removes last ,
+            NotificationPanel.Open(unsModsStr)
+        end
+
+
+    end
 
     -- Zomboid is a huge piece of shit. We can't use sendClientCommand right after player init since the player isn't actually in game.
     -- Huge workaround, but just delay this function to run 2 seconds after the player has been "created".
@@ -45,6 +66,8 @@ local function OnPlayerInit()
         --* Request current running match, if there is some set the correct UI
         if isAdmin() then
             sendClientCommand(EFT_MODULES.Match, 'CheckIsRunningMatch', {})
+
+            CheckMods()
         end
 
         LoadingScreen.Close()

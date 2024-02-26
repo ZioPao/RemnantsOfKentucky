@@ -8,6 +8,42 @@ PZ_EFT_CONFIG.Server = {}
 --* COMMON *--
 PZ_EFT_CONFIG.Debug = isDebugEnabled()
 
+PZ_EFT_CONFIG.SupportedMods = {
+
+    ["ROK"] = true,
+    ["tsarslib"] = true,
+    ["TMC_TrueActions"] = true,
+    ["TrueActionsDancing"] = true,
+    ["MoodleFramework"] = true,
+    ["ToadTraits"] = true,
+    ["modoptions"] = true,
+    ["BasicCrafting"] = true,
+    ["OutTheWindow"] = true,
+    ["RainWash"] = true,
+    ["TheStar"] = true,
+    ["DylansZombieLoot"] = true,
+    ["BetterFlashlights"] = true,
+    ["DRAW_ON_MAP"] = true,
+    ["VISIBLE_BACKPACK_BACKGROUND"] = true,
+    ["BecomeDesensitized"] = true,
+    ["GeneratorTimeRemaining"] = true,
+    ["FuelAPI"] = true,
+    ["Brita_2"] = true,
+    ["BigBadBeaverMerch"] = true,
+    ["P4HasBeenRead"] = true,
+    ["BCGRareWeapons"] = true,
+    ["MoreDescriptionForTraits4166"] = true,
+    ["Skizots Visible Boxes and Garbage2"] = true,
+    ["FancyHandwork"] = true,
+    ["OneHandedSODBShotgun"] = true,
+    ["fuelsideindicator"] = true,
+    ["Gun Stock Attack Remaster"] = true,
+    ["ZombiesHearYourMicrophone"] = true,
+    ["eris_nightvision_goggles"] = true,
+    ["NightVisionChucked"] = true,
+    ["EQUIPMENT_UI"] = true,
+}
+
 --* MATCH
 
 PZ_EFT_CONFIG.Client.Match = {
@@ -48,7 +84,7 @@ PZ_EFT_CONFIG.SafehouseCells = {
     {
         x = 100,
         y = 101
-    } 
+    }
 }
 
 
@@ -173,7 +209,7 @@ PZ_EFT_CONFIG.Shop = {
 -- World coordinates if PVP instance starts at cell 0,0
 
 local function InsertGenericSpawnpoint(tab, name, x, y, z)
-    table.insert(tab, {name=name, x=x, y=y, z=z})
+    table.insert(tab, { name = name, x = x, y = y, z = z })
 end
 
 ---@alias spawnPointsType {name : string, x : integer, y : integer, z : integer}
@@ -182,7 +218,7 @@ end
 PZ_EFT_CONFIG.Spawnpoints = {}
 
 local function InsertSpawnpoint(name, x, y, z)
-    table.insert(PZ_EFT_CONFIG.Spawnpoints, {name=name, x=x, y=y, z=z})
+    table.insert(PZ_EFT_CONFIG.Spawnpoints, { name = name, x = x, y = y, z = z })
 end
 
 InsertSpawnpoint("SOUTHERN SHORE SPAWN #1", 525, 559, 0)
@@ -223,7 +259,8 @@ InsertSpawnpoint("STORAGE CENTER SPAWN", 571, 397, 0)
 ---@param z2 number
 ---@param isRandom boolean
 local function InsertGenericExtractionPoint(tab, name, x1, y1, z1, x2, y2, z2, isRandom)
-    table.insert(tab, {name=name, x1=x1, y1=y1, z1=z1, x2=x2, y2=y2, z2=z2, time=10, isRandom=isRandom})
+    table.insert(tab,
+        { name = name, x1 = x1, y1 = y1, z1 = z1, x2 = x2, y2 = y2, z2 = z2, time = 10, isRandom = isRandom })
 end
 
 --- Time taken to extract
@@ -237,12 +274,12 @@ InsertGenericExtractionPoint(PZ_EFT_CONFIG.PermanentExtractionPoints, "HELIPAD",
 Extraction point that won't always be available
 (PZ_EFT_CONFIG.PVPInstanceSettings.randomExtractionPointCount), assuming PVP instance North Eastern point is at cell 0,0
 ]]
- 
+
 --- Time taken to extract
 PZ_EFT_CONFIG.RandomExtractionPoints = {}
 
-local function InsertRandomExtractionPoint(name, x1,y1,z1, x2,y2,z2)
-    InsertGenericExtractionPoint(PZ_EFT_CONFIG.RandomExtractionPoints, name, x1,y1,z1, x2,y2,z2, true)
+local function InsertRandomExtractionPoint(name, x1, y1, z1, x2, y2, z2)
+    InsertGenericExtractionPoint(PZ_EFT_CONFIG.RandomExtractionPoints, name, x1, y1, z1, x2, y2, z2, true)
 end
 
 InsertRandomExtractionPoint("SOUTH WEST DOCK", 42, 525, 0, 64, 550, 0)
