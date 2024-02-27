@@ -119,32 +119,29 @@ end
 --* Starter kit 
 
 ---@param playerObj IsoPlayer
----@param ordered boolean
-function SafehouseInstanceHandler.GiveStarterKit(playerObj, ordered)
+function SafehouseInstanceHandler.GiveStarterKit(playerObj)
 
     -- 10 x 10 with tetris inventory
-
     function RunGiveStarterKit()
         for i=1, #PZ_EFT_CONFIG.StarterKit do
-            ---@type starterKitType
+
+            ---@type starterKitElement
             local element = PZ_EFT_CONFIG.StarterKit[i]
-
-            if ordered then
-
-                local loc = PZ_EFT_CONFIG.StarterKitLocations[element.fullType]
-                for j=1, element.amount do
-                    SafehouseInstanceHandler.AddToCrateOrdered(element.fullType, loc.crateIndex, loc[j].x, loc[j].y, loc[j].isRotated)
-                end
-            else
-                for _=1, element.amount do
-                    SafehouseInstanceHandler.TryToAddToCrate(element.fullType)
-                end
+            for j=1, #element.positions do
+                local loc = element.positions[j]
+                SafehouseInstanceHandler.AddToCrateOrdered(
+                    element.fullType,
+                    element.crateIndex,
+                    loc[j].x,
+                    loc[j].y,
+                    loc[j].isRotated)
             end
         end
-
         -- Notify the player
         playerObj:Say(getText("UI_EFT_Say_ReceivedStartedKit"))
     end
+
+
     SafehouseInstanceHandler.WaitForSafehouseAndRun(RunGiveStarterKit, {})
 end
 
@@ -321,12 +318,12 @@ end
 ---Wipes the crates of the new instanced safehouse and give the starter kit to the player
 function SafehouseInstanceCommands.PrepareNewSafehouse()
     SafehouseInstanceHandler.WipeCrates()
-    SafehouseInstanceHandler.GiveStarterKit(getPlayer(), true)
+    SafehouseInstanceHandler.GiveStarterKit(getPlayer())
 end
 
 function SafehouseInstanceCommands.ReceiveStarterKit()
     debugPrint("ReceiveStarterKit")
-    SafehouseInstanceHandler.GiveStarterKit(getPlayer(), true)
+    SafehouseInstanceHandler.GiveStarterKit(getPlayer())
 end
 
 ------------------------
