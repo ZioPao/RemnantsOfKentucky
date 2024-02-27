@@ -12,6 +12,8 @@ PZ_EFT_CONFIG.SupportedMods = {
 
     ["ROK"] = true,
     ["INVENTORY_TETRIS"] = true,
+    ["Advanced_trajectory"] = true,
+    ["diveThroughWindows"] = true,
     ["tsarslib"] = true,
     ["TMC_TrueActions"] = true,
     ["TrueActionsDancing"] = true,
@@ -473,6 +475,17 @@ table.insert(PZ_EFT_CONFIG.StarterKit,{
         [2] = { x = 4, y = 8, isRotated = false },
         [3] = { x = 5, y = 8, isRotated = false },
         [4] = { x = 6, y = 8, isRotated = false },
+    }
+})
+
+table.insert(PZ_EFT_CONFIG.StarterKit, {
+    fullType = "Base.HolsterSimple ",
+    crateIndex = 2,
+    positions = {
+        [1] = {x=5, y=4, isRotated = false},
+        [2] = {x=5, y=5, isRotated = false},
+        [3] = {x=5, y=6, isRotated = false},
+        [4] = {x=5, y=7, isRotated = false}
     }
 })
 
