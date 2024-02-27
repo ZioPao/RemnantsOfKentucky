@@ -74,6 +74,11 @@ PZ_EFT_CONFIG.Server.Match = {
     checkAlivePlayersTime = 10
 }
 
+--* PLAYER DEFAULT VALUES
+
+PZ_EFT_CONFIG.DefaultPlayer = {
+    balance = 10000
+}
 
 --* SAFEHOUSES
 --Cells containing safehouses for initialisation

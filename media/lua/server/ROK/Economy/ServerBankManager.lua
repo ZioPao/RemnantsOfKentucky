@@ -9,7 +9,7 @@ local ServerBankManager =  {}
 ---@param username string
 ---@return bankPlayerTable
 local function CreateAccountTable(username)
-    local tab = {username = username, balance = 0, cratesValue = 0}
+    local tab = {username = username, balance = PZ_EFT_CONFIG.DefaultPlayer.balance, cratesValue = 0}
     return tab
 end
 
