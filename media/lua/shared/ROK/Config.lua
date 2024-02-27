@@ -10,6 +10,7 @@ PZ_EFT_CONFIG.Debug = isDebugEnabled()
 
 PZ_EFT_CONFIG.SupportedMods = {
 
+    -- TODO Add VFEExpansion
     ["ROK"] = true,
     ["INVENTORY_TETRIS"] = true,
     ["Advanced_trajectory"] = true,
@@ -319,185 +320,134 @@ InsertRandomExtractionPoint("NORTH WEST DOCK", 212, 85, 0, 217, 110, 0)
 -- table.insert(PZ_EFT_CONFIG.StarterKit, { fullType = "Base.Bandage", amount = 8 })
 
 
+---@alias starterKitPosition table<integer,{x:number, y:number, isRotated:boolean}>
 
----@alias starterKitElement {fullType : string, crateIndex : number, positions : table<integer,{x:number, y:number, isRotated:boolean}>}
-
+---@alias starterKitElement {fullType : string, crateIndex : number, positions : starterKitPosition}
 ---@alias starterKitType table<integer, starterKitElement>
 
 ---@type starterKitType
 PZ_EFT_CONFIG.StarterKit = {}
 
-table.insert(PZ_EFT_CONFIG.StarterKit, {
-    fullType = "Base.Pistol",
-    crateIndex = 1,
-    positions = {
-        [1] = { x = 0, y = 4, isRotated = false },
-        [2] = { x = 2, y = 4, isRotated = false },
-        [3] = { x = 4, y = 4, isRotated = false },
-        [4] = { x = 6, y = 4, isRotated = false },
-    }
+---@param fullType string
+---@param crateIndex number
+---@param positions starterKitPosition
+local function AddToStarterKit(fullType, crateIndex, positions)
+    table.insert(PZ_EFT_CONFIG.StarterKit, {
+        fullType = fullType,
+        crateIndex = crateIndex,
+        positions = positions
+    })
+end
 
+AddToStarterKit("Base.Pistol", 1, {
+    [1] = { x = 0, y = 4, isRotated = false },
+    [2] = { x = 2, y = 4, isRotated = false },
+    [3] = { x = 4, y = 4, isRotated = false },
+    [4] = { x = 6, y = 4, isRotated = false },
 })
 
-table.insert(PZ_EFT_CONFIG.StarterKit, {
-    fullType = "Base.DoubleBarrelShotgun",
-    crateIndex = 1,
-    positions = {
-        [1] = { x = 0, y = 0, isRotated = false },
-        [2] = { x = 5, y = 0, isRotated = false },
-        [3] = { x = 0, y = 2, isRotated = false },
-        [4] = { x = 5, y = 2, isRotated = false },
-    }
+AddToStarterKit("Base.DoubleBarrelShotgun", 1, {
+    [1] = { x = 0, y = 0, isRotated = false },
+    [2] = { x = 5, y = 0, isRotated = false },
+    [3] = { x = 0, y = 2, isRotated = false },
+    [4] = { x = 5, y = 2, isRotated = false },
 })
 
-table.insert(PZ_EFT_CONFIG.StarterKit,{
-    fullType = "Base.Bullets9mmBox",
-    crateIndex = 1,
-    positions = {
-        [1] = { x = 8, y = 4, isRotated = false },
-        [2] = { x = 8, y = 4, isRotated = false },
-        [3] = { x = 8, y = 4, isRotated = false },
-        [4] = { x = 8, y = 4, isRotated = false },
-    }
+AddToStarterKit("Base.Bullets9mmBox", 1, {
+    [1] = { x = 8, y = 4, isRotated = false },
+    [2] = { x = 8, y = 4, isRotated = false },
+    [3] = { x = 8, y = 4, isRotated = false },
+    [4] = { x = 8, y = 4, isRotated = false },
 })
 
-table.insert(PZ_EFT_CONFIG.StarterKit, {
-    fullType = "Base.ShotgunShellsBox",
-    crateIndex = 1,
-    positions = {
-        [1] = { x = 9, y = 4, isRotated = false },
-        [2] = { x = 9, y = 4, isRotated = false },
-        [3] = { x = 9, y = 4, isRotated = false },
-        [4] = { x = 9, y = 4, isRotated = false },
-    }
+AddToStarterKit("Base.ShotgunShellsBox", 1, {
+    [1] = { x = 9, y = 4, isRotated = false },
+    [2] = { x = 9, y = 4, isRotated = false },
+    [3] = { x = 9, y = 4, isRotated = false },
+    [4] = { x = 9, y = 4, isRotated = false },
 })
 
-table.insert(PZ_EFT_CONFIG.StarterKit, {
-    fullType = "Base.HuntingKnife",
-    crateIndex = 1,
-    positions = {
-        [1] = { x = 8, y = 5, isRotated = true },
-        [2] = { x = 8, y = 6, isRotated = true },
-        [3] = { x = 8, y = 7, isRotated = true },
-        [4] = { x = 8, y = 8, isRotated = true },
-    }
+AddToStarterKit("Base.HuntingKnife", 1, {
+    [1] = { x = 8, y = 5, isRotated = true },
+    [2] = { x = 8, y = 6, isRotated = true },
+    [3] = { x = 8, y = 7, isRotated = true },
+    [4] = { x = 8, y = 8, isRotated = true },
 })
 
-table.insert(PZ_EFT_CONFIG.StarterKit,{
-    fullTye = "Base.9mmClip",
-    crateIndex = 1,
-    positions = {
-        [1] = { x = 0, y = 5, isRotated = true },
-        [2] = { x = 2, y = 5, isRotated = true },
-        [3] = { x = 4, y = 5, isRotated = true },
-        [4] = { x = 6, y = 5, isRotated = true },
-        [5] = { x = 0, y = 6, isRotated = true },
-        [6] = { x = 2, y = 6, isRotated = true },
-        [7] = { x = 4, y = 6, isRotated = true },
-        [8] = { x = 6, y = 6, isRotated = true },
-    }
+AddToStarterKit("Base.9mmClip", 1, {
+    [1] = { x = 0, y = 5, isRotated = true },
+    [2] = { x = 2, y = 5, isRotated = true },
+    [3] = { x = 4, y = 5, isRotated = true },
+    [4] = { x = 6, y = 5, isRotated = true },
+    [5] = { x = 0, y = 6, isRotated = true },
+    [6] = { x = 2, y = 6, isRotated = true },
+    [7] = { x = 4, y = 6, isRotated = true },
+    [8] = { x = 6, y = 6, isRotated = true },
 })
 
-table.insert(PZ_EFT_CONFIG.StarterKit,{
-    fullType = "Base.WaterBottleFull",
-    crateIndex = 2,
-    positions = {
-        [1] = { x = 0, y = 0, isRotated = true },
-        [2] = { x = 2, y = 0, isRotated = true },
-        [3] = { x = 4, y = 0, isRotated = true },
-        [4] = { x = 6, y = 0, isRotated = true },
-    }
+AddToStarterKit("Base.WaterBottleFull", 2, {
+    [1] = { x = 0, y = 0, isRotated = true },
+    [2] = { x = 2, y = 0, isRotated = true },
+    [3] = { x = 4, y = 0, isRotated = true },
+    [4] = { x = 6, y = 0, isRotated = true },
 })
 
-table.insert(PZ_EFT_CONFIG.StarterKit,{
-    fullType = "Base.Crisps",
-    crateIndex = 2,
-    positions = {
-        [1] = { x = 8, y = 0, isRotated = false },
-        [2] = { x = 8, y = 1, isRotated = false },
-        [3] = { x = 8, y = 2, isRotated = false },
-        [4] = { x = 8, y = 3, isRotated = false },
-    }
+AddToStarterKit("Base.Crisps", 2, {
+    [1] = { x = 8, y = 0, isRotated = false },
+    [2] = { x = 8, y = 1, isRotated = false },
+    [3] = { x = 8, y = 2, isRotated = false },
+    [4] = { x = 8, y = 3, isRotated = false },
 })
 
-table.insert(PZ_EFT_CONFIG.StarterKit,{
-    fullType = "Base.Cereal",
-    crateIndex = 2,
-    positions = {
-        [1] = { x = 6, y = 1, isRotated = false },
-        [2] = { x = 6, y = 3, isRotated = false },
-    }
+AddToStarterKit("Base.Cereal", 2, {
+    [1] = { x = 6, y = 1, isRotated = false },
+    [2] = { x = 6, y = 3, isRotated = false },
 })
 
-table.insert(PZ_EFT_CONFIG.StarterKit,{
-    fullType = "Base.Bandage",
-    crateIndex = 2,
-    positions = {
-        [1] = { x = 9, y = 0, isRotated = true },
-        [2] = { x = 9, y = 1, isRotated = true },
-        [3] = { x = 9, y = 2, isRotated = true },
-        [4] = { x = 9, y = 3, isRotated = true },
-        [5] = { x = 9, y = 4, isRotated = true },
-        [6] = { x = 9, y = 5, isRotated = true },
-        [7] = { x = 9, y = 6, isRotated = true },
-        [8] = { x = 9, y = 7, isRotated = true },
-    }
+AddToStarterKit("Base.Bandage", 2, {
+    [1] = { x = 9, y = 0, isRotated = true },
+    [2] = { x = 9, y = 1, isRotated = true },
+    [3] = { x = 9, y = 2, isRotated = true },
+    [4] = { x = 9, y = 3, isRotated = true },
+    [5] = { x = 9, y = 4, isRotated = true },
+    [6] = { x = 9, y = 5, isRotated = true },
+    [7] = { x = 9, y = 6, isRotated = true },
+    [8] = { x = 9, y = 7, isRotated = true },
 })
 
-table.insert(PZ_EFT_CONFIG.StarterKit,{
-    fullType = "Base.Vest_BulletPolice",
-    crateIndex = 2,
-    positions = {
-        [1] = { x = 0, y = 1, isRotated = false },
-        [2] = { x = 3, y = 1, isRotated = false },
-        [3] = { x = 0, y = 4, isRotated = false },
-        [4] = { x = 0, y = 7, isRotated = false },
-    }
-
+AddToStarterKit("Base.Vest_BulletPolice", 2, {
+    [1] = { x = 0, y = 1, isRotated = false },
+    [2] = { x = 3, y = 1, isRotated = false },
+    [3] = { x = 0, y = 4, isRotated = false },
+    [4] = { x = 0, y = 7, isRotated = false },
 })
 
-table.insert(PZ_EFT_CONFIG.StarterKit,{
-    fullType = "Base.Hat_Army",
-    crateIndex = 2,
-    positions = {
-        [1] = { x = 3, y = 4, isRotated = false },
-        [2] = { x = 3, y = 4, isRotated = false },
-        [3] = { x = 3, y = 6, isRotated = false },
-        [4] = { x = 3, y = 6, isRotated = false },
-    }
+AddToStarterKit("Base.Hat_Army", 2, {
+    [1] = { x = 3, y = 4, isRotated = false },
+    [2] = { x = 3, y = 4, isRotated = false },
+    [3] = { x = 3, y = 6, isRotated = false },
+    [4] = { x = 3, y = 6, isRotated = false },
 })
 
-table.insert(PZ_EFT_CONFIG.StarterKit,{
-    fullType = "Base.Shoes_ArmyBoots",
-    crateIndex = 2,
-    positions = {
-        [1] = { x = 3, y = 8, isRotated = false },
-        [2] = { x = 4, y = 8, isRotated = false },
-        [3] = { x = 5, y = 8, isRotated = false },
-        [4] = { x = 6, y = 8, isRotated = false },
-    }
+AddToStarterKit("Base.Shoes_ArmyBoots", 2, {
+    [1] = { x = 3, y = 8, isRotated = false },
+    [2] = { x = 4, y = 8, isRotated = false },
+    [3] = { x = 5, y = 8, isRotated = false },
+    [4] = { x = 6, y = 8, isRotated = false },
 })
 
-table.insert(PZ_EFT_CONFIG.StarterKit, {
-    fullType = "Base.HolsterSimple ",
-    crateIndex = 2,
-    positions = {
-        [1] = {x=5, y=4, isRotated = false},
-        [2] = {x=5, y=5, isRotated = false},
-        [3] = {x=5, y=6, isRotated = false},
-        [4] = {x=5, y=7, isRotated = false}
-    }
+AddToStarterKit("Base.HolsterSimple ", 2, {
+    [1] = { x = 5, y = 4, isRotated = false },
+    [2] = { x = 5, y = 5, isRotated = false },
+    [3] = { x = 5, y = 6, isRotated = false },
+    [4] = { x = 5, y = 7, isRotated = false }
 })
 
-table.insert(PZ_EFT_CONFIG.StarterKit,{
-    fullType = "Base.Bag_DuffelBag",
-    crateIndex = 3,
-    positions = {
-        [1] = { x = 0, y = 0, isRotated = false },
-        [2] = { x = 3, y = 0, isRotated = false },
-        [3] = { x = 0, y = 4, isRotated = false },
-        [4] = { x = 3, y = 4, isRotated = false },
-    }
+AddToStarterKit("Base.Bag_DuffelBag", 3, {
+    [1] = { x = 0, y = 0, isRotated = false },
+    [2] = { x = 3, y = 0, isRotated = false },
+    [3] = { x = 0, y = 4, isRotated = false },
+    [4] = { x = 3, y = 4, isRotated = false },
 })
 
 ---------------------------------------------------

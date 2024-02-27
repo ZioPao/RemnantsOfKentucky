@@ -127,14 +127,16 @@ function SafehouseInstanceHandler.GiveStarterKit(playerObj)
 
             ---@type starterKitElement
             local element = PZ_EFT_CONFIG.StarterKit[i]
+            debugPrint("Adding " .. element.fullType)
             for j=1, #element.positions do
                 local loc = element.positions[j]
+                debugPrint("Positions: x=" .. tostring(loc.x) .. ", y=" .. tostring(loc.y))
                 SafehouseInstanceHandler.AddToCrateOrdered(
                     element.fullType,
                     element.crateIndex,
-                    loc[j].x,
-                    loc[j].y,
-                    loc[j].isRotated)
+                    loc.x,
+                    loc.y,
+                    loc.isRotated)
             end
         end
         -- Notify the player

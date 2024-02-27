@@ -67,7 +67,7 @@ function debugPrintAllItems()
     end
 
     jsonStr = json.stringify(items)
-    writer = getModFileWriter('ROK_Test', STR_JSON_FOLDER .. STR_ITEMS_JSON, true, false)
+    writer = getModFileWriter('ROK', STR_JSON_FOLDER .. STR_ITEMS_JSON, true, false)
     writer:write(jsonStr)
     writer:close()
 end
