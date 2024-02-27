@@ -13,11 +13,16 @@ local credits = {
     },
 
     [3] = {
+        title = "Art",
+        names = {"Staticbrain_TV"}
+    },
+
+    [4] = {
         title = "Map",
         names = {"Oppolla"}
     },
 
-    [4] = {
+    [5] = {
         title = "Alpha Testers",
         names = {"NoxKono",
         "Reincarnation",
