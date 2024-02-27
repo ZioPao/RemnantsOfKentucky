@@ -436,7 +436,7 @@ AddToStarterKit("Base.Shoes_ArmyBoots", 2, {
     [4] = { x = 6, y = 8, isRotated = false },
 })
 
-AddToStarterKit("Base.HolsterSimple ", 2, {
+AddToStarterKit("Base.HolsterSimple", 2, {
     [1] = { x = 5, y = 4, isRotated = false },
     [2] = { x = 5, y = 5, isRotated = false },
     [3] = { x = 5, y = 6, isRotated = false },
