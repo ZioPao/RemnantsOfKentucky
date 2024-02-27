@@ -19,7 +19,7 @@ IG_UI_EN = {
     IGUI_EFT_AdminPanel_Tooltip_WipePlayer = "Wipes everything about this player",
     
     IGUI_EFT_AdminPanel_StarterKit = "Give Starter Kit",
-    IGUI_EFT_AdminPanel_Confirmation_StarterKit = "Are you sure you want to wipe %1 data?",
+    IGUI_EFT_AdminPanel_Confirmation_StarterKit = "Are you sure you want to send %1 a starter kit?",
     IGUI_EFT_AdminPanel_Tooltip_StarterKit = "Give Starter Kit",
     
     IGUI_EFT_AdminPanel_WipeEverything = "WIPE EVERYTHING",
