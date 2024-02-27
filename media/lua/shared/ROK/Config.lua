@@ -13,6 +13,7 @@ PZ_EFT_CONFIG.SupportedMods = {
     -- TODO Add VFEExpansion
     ["ROK"] = true,
     ["INVENTORY_TETRIS"] = true,
+    ["VFExpansion1"] = true,
     ["Advanced_trajectory"] = true,
     ["diveThroughWindows"] = true,
     ["tsarslib"] = true,
