@@ -1,6 +1,0 @@
-version=1
-id=3161952259
-title=Remnants of Kentucky - Release Candidate
-description=RC
-tags=Build 41
-visibility=unlisted

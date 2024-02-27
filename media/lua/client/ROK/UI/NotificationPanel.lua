@@ -25,7 +25,12 @@ function NotificationPanel:createChildren()
     ISPanel.createChildren(self)
     self.borderColor = { r = 1, g = 0, b = 0, a = 1 }
 
-    self.textPanel = ISRichTextPanel:new(0, 0, self.width, self.height)
+    local xPadding = 10
+    local yPadding = 10
+
+    local textPanelWidth = self.width - xPadding*2
+
+    self.textPanel = ISRichTextPanel:new(xPadding, yPadding, textPanelWidth, self.height)
     self.textPanel:initialise()
     self:addChild(self.textPanel)
     self.textPanel.defaultFont = UIFont.Medium
@@ -42,15 +47,13 @@ function NotificationPanel:createChildren()
     self.textPanel:setText(self.text)
     self.textPanel:paginate()
 
-    local yPadding = 10
-    local xPadding = self:getWidth() / 3
+
     local btnWidth = 100
     local btnHeight = 25
+    local xBtn = self:getWidth() / 3
+    local yBtn = self:getHeight() - yPadding - btnHeight
 
-
-    local yButton = self:getHeight() - yPadding - btnHeight
-
-    self.btnOk = ISButton:new(xPadding, yButton, btnWidth, btnHeight, "OK", self, NotificationPanel.close)
+    self.btnOk = ISButton:new(xBtn, yBtn, btnWidth, btnHeight, "OK", self, NotificationPanel.close)
     self.btnOk:initialise()
     self.btnOk.borderColor = { r = 1, g = 0, b = 0, a = 1 }
     self.btnOk:setEnable(true)

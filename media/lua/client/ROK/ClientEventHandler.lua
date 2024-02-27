@@ -16,7 +16,7 @@ local function OnPlayerInit()
     Delay.Initialize()
 
     local function CheckMods()
-        local unsModsStr = "<CENTRE> <SIZE:large> Unsupported mods found, problems with the economy will arise: <LINE> <LINE> <SIZE:medium>"
+        local unsModsStr = "<CENTRE> <SIZE:large> Unsupported mods found, problems with the economy may arise: <LINE> <LINE> <SIZE:medium>"
         local hasUnsupportedMods = false
 		local activeModIDs = getActivatedMods()
 		for i=1,activeModIDs:size() do
