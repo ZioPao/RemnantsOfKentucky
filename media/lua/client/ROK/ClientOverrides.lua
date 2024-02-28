@@ -25,5 +25,3 @@ function ISMoveablesAction:isValid()
 
     return ogReturn
 end
-
--- test
