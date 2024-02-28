@@ -18,7 +18,7 @@ end
 
 
 --* Activate it at startup
-Events.OnGameStart.Add(ActivateZombieDespawner)
+Events.PZEFT_OnPlayerInitDone.Add(ActivateZombieDespawner)
 Events.PZEFT_OnMatchEnd.Add(ActivateZombieDespawner)
 Events.PZEFT_OnSuccessfulTeleport.Add(function()
     debugPrint("Teleported, despawning zombies near player")

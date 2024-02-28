@@ -32,8 +32,6 @@ local function OnPlayerInit()
             unsModsStr = unsModsStr:sub(1, -3)      -- Removes last ,
             NotificationPanel.Open(unsModsStr)
         end
-
-
     end
 
     -- Zomboid is a huge piece of shit. We can't use sendClientCommand right after player init since the player isn't actually in game.
@@ -69,6 +67,9 @@ local function OnPlayerInit()
 
             CheckMods()
         end
+
+        -- todo maybe migrate a bunch of these functions to events?
+        triggerEvent("PZEFT_OnPlayerInitDone")
 
         LoadingScreen.Close()
     end)

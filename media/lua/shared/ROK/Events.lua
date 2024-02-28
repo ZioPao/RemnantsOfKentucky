@@ -3,6 +3,9 @@ LuaEventManager.AddEvent("PZEFT_OnMatchEnd")
 
 if isClient() then
 
+    --* ClientEventHandler.lua
+    LuaEventManager.AddEvent("PZEFT_OnPlayerInitDone")
+
     --* ClientCommon.lua
     LuaEventManager.AddEvent("PZEFT_OnSuccessfulTeleport")
 

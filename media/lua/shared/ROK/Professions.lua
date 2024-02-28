@@ -32,29 +32,37 @@ local function SetEFTProfessionDescription(prof)
 end
 
 local function CreateEFTProfessions()
-    
+
     -- Icon by Voysla on Flaticon
-    local sharpShooter = ProfessionFactory.addProfession("SharpShooter", getText("UI_EFT_Profession_SharpShooter"), "Professions/sharpShooter", -4)
+    local sharpShooter = ProfessionFactory.addProfession("SharpShooter", getText("UI_EFT_Profession_SharpShooter"), "Professions/sharpShooter", -14)
     sharpShooter:addFreeTrait("Desensitized")
     sharpShooter:addXPBoost(Perks.Aiming, 2)
     sharpShooter:addXPBoost(Perks.Reloading, 2)
+
+    sharpShooter:addXPBoost(Perks.Sprinting, -3)
+
     sharpShooter:addXPBoost(Perks.SmallBlade, -3)
     sharpShooter:addXPBoost(Perks.Blunt, -3)
+
     sharpShooter:addXPBoost(Perks.Maintenance, -1)
+
     SetEFTProfessionDescription(sharpShooter)
 
     -- LAFS on FlatIcon
-    local brawler = ProfessionFactory.addProfession("Brawler", getText("UI_EFT_Profession_Brawler"), "Professions/brawler", -4)
+    local brawler = ProfessionFactory.addProfession("Brawler", getText("UI_EFT_Profession_Brawler"), "Professions/brawler", -8)
     brawler:addFreeTrait("Desensitized")
     brawler:addXPBoost(Perks.Strength, 1)
     brawler:addXPBoost(Perks.Fitness, 1)
+
     brawler:addXPBoost(Perks.Aiming, -2)
     brawler:addXPBoost(Perks.Reloading, -3)
+
     brawler:addXPBoost(Perks.SmallBlade, -2)
     brawler:addXPBoost(Perks.SmallBlunt, -2)
     brawler:addXPBoost(Perks.Spear, -2)
     brawler:addXPBoost(Perks.Axe, -2)
     brawler:addXPBoost(Perks.Maintenance, 2)
+
     SetEFTProfessionDescription(brawler)
 
     -- SumberRejeki on FlatIcon
@@ -69,7 +77,7 @@ local function CreateEFTProfessions()
     SetEFTProfessionDescription(medic)
 
     -- Frepik on FlatIcon
-    local scavenger = ProfessionFactory.addProfession("Scavenger", getText("UI_EFT_Profession_Scavenger"), "Professions/scavenger", -4)
+    local scavenger = ProfessionFactory.addProfession("Scavenger", getText("UI_EFT_Profession_Scavenger"), "Professions/scavenger", -6)
     scavenger:addXPBoost(Perks.Strength, 2)
     scavenger:addXPBoost(Perks.Fitness, 1)
     scavenger:addXPBoost(Perks.Aiming, -2)
