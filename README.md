@@ -5,7 +5,7 @@
 
 It's been countless years since the Knox Event. With nearly everyone transformed into monsters by the virus, those left standing consider themselves the Remnants of Kentucky - survivors loosely strung together by a collection of settlements and all vying for the last bit of food and supplies.
 
-With rumors of an untouched stockpile of gear at nearby Bria Isle, the very balance of power is up for grabs. Each settlement uses the last bit of their resources to send scavengers down, tasked with collecting as many supplies as possible- [b]by any means necessary...[/b]
+With rumors of an untouched stockpile of gear at nearby Bria Isle, the very balance of power is up for grabs. Each settlement uses the last bit of their resources to send scavengers down, tasked with collecting as many supplies as possible- **by any means necessary...**
 
 ## A Multiplayer PvPvE Extraction Gamemode for Project Zomboid
 
