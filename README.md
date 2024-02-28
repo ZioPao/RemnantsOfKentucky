@@ -1,7 +1,7 @@
 
 # You're not the only one left...
 
-![ROK Logo](/dev/photoshop_files/ROK_logo_v1_white.png)
+<img src="/dev/photoshop_files/ROK_logo_v1_white.png" width=50% height=50%>
 
 It's been countless years since the Knox Event. With nearly everyone transformed into monsters by the virus, those left standing consider themselves the Remnants of Kentucky - survivors loosely strung together by a collection of settlements and all vying for the last bit of food and supplies.
 
