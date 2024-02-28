@@ -32,7 +32,8 @@ local credits = {
         "Bob",
         "Kanjis",
         "Sentile",
-        "Moisty"}
+        "Moisty",
+        "Jorgs",}
     }
 }
 

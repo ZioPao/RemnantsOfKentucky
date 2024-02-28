@@ -15,6 +15,8 @@ function NotificationPanel:new(x, y, width, height, text)
 
     o:initialise()
     o.text = text
+    o.backgroundColor = {r=0,g=0,b=0, a=0.95}
+
     NotificationPanel.instance = o
 
     ---@cast o NotificationPanel
@@ -26,9 +28,9 @@ function NotificationPanel:createChildren()
     self.borderColor = { r = 1, g = 0, b = 0, a = 1 }
 
     local xPadding = 10
-    local yPadding = 10
+    local yPadding = 5
 
-    local textPanelWidth = self.width - xPadding*2
+    local textPanelWidth = self:getWidth() - xPadding*2
 
     self.textPanel = ISRichTextPanel:new(xPadding, yPadding, textPanelWidth, self.height)
     self.textPanel:initialise()
@@ -50,8 +52,8 @@ function NotificationPanel:createChildren()
 
     local btnWidth = 100
     local btnHeight = 25
-    local xBtn = self:getWidth() / 3
-    local yBtn = self:getHeight() - yPadding - btnHeight
+    local xBtn = (self:getWidth() - btnWidth)/2
+    local yBtn = self:getHeight() - btnHeight - yPadding*2
 
     self.btnOk = ISButton:new(xBtn, yBtn, btnWidth, btnHeight, "OK", self, NotificationPanel.close)
     self.btnOk:initialise()
