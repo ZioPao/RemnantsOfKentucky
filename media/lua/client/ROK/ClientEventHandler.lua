@@ -61,10 +61,12 @@ local function OnPlayerInit()
         --* Request extraction time from the server
         sendClientCommand(EFT_MODULES.Match, "SendExtractionTime", {})
 
-        --* Request current running match, if there is some set the correct UI
+
         if isAdmin() then
+            -- Request current running match, if there is some set the correct UI
             sendClientCommand(EFT_MODULES.Match, 'CheckIsRunningMatch', {})
 
+            -- Notify admins about potentially incompatible mods
             CheckMods()
         end
 
