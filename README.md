@@ -50,13 +50,13 @@ Follow me on [Twitch](twitch.tv/bigbadbeaver) and [Youtube](youtube.com/@biggest
 
 ### Developed by
 
-Pao
-Monkey
-Oppolla
+- Pao
+- Monkey
+- Oppolla
 
 ### Art by
 
-StaticBrain_TV
+- StaticBrain_TV
 
 ### Special thanks
 
