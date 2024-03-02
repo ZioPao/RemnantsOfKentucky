@@ -94,8 +94,12 @@ function ClientShopManager.GetDailyItems()
     if shopItems and shopItems.tags and shopItems.tags['DAILY'] then
         local dailyList = {}
         for itemType, _ in pairs(shopItems.tags['DAILY']) do
-            dailyList[itemType] = nil
-            dailyList[itemType] = shopItems.items[itemType]
+
+            -- Check if daily tag is active
+            if shopItems.items[itemType].tags['DAILY'] then
+                dailyList[itemType] = nil
+                dailyList[itemType] = shopItems.items[itemType]  
+            end
         end
 
         return dailyList

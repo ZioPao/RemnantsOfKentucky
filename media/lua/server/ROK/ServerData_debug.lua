@@ -17,6 +17,10 @@ ClientCommands.calculateCratesValue = function(playerObj)
     debugPrint(tostring(x))
 end
 
+function ClientCommands.retransmitItems()
+    ServerShopManager.RetransmitDailyItems()
+end
+
 ClientCommands.loadNewInstances = function()
     PvpInstanceManager.LoadPvpInstances()
 end

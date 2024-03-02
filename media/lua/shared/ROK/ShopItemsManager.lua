@@ -3202,12 +3202,13 @@ if isServer() then
         return t2
       end
 
-    
     ---@param percentage number
     ---@param items any
     ---@param tag string
     local function FetchNRandomItems(percentage, items, tag)
-        local amount = PZ_EFT_CONFIG.Shop.dailyItemsAmount * (percentage/100)
+        local amount = math.floor(PZ_EFT_CONFIG.Shop.dailyItemsAmount * (percentage/100))
+
+        debugPrint("Adding " .. tostring(amount) .." for " .. tag)
         local currentAmount = 0
 
         -- We want to pop stuff from here
