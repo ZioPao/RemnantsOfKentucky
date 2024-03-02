@@ -1,0 +1,54 @@
+[h1]You're not the only one left...[/h1]
+It's been countless years since the Knox Event. With nearly everyone transformed into monsters by the virus, those left standing consider themselves the Remnants of Kentucky - survivors loosely strung together by a collection of settlements and all vying for the last bit of food and supplies.
+
+With rumors of an untouched stockpile of gear at nearby Bria Isle, the very balance of power is up for grabs. Each settlement uses the last bit of their resources to send scavengers down, tasked with collecting as many supplies as possible- [b]by any means necessary...[/b]
+
+[h2]A Multiplayer PvPvE Extraction Gamemode for Project Zomboid[/h2]
+Inspired heavily by games like Escape from Tarkov, Remnants of Kentucky combines tense PvP encounters with Project Zomboid's existing survival, crafting and sandbox mechanics.
+
+With support for up to 20 players in a single round, along with the ability to host your own Remnants of Kentucky servers, you can enjoy this mod as a competitive experience, or a fun side activity with friends!
+
+[h2]How To Play[/h2]
+Before stepping foot onto Bria Isle, survivors will start in their safehouse- their own private space away from the horrors of the apocalypse. Here, you can customize your loadout, organize your stash, purchase and sell items through the in-game shop, and prepare for the battle ahead.
+
+When the round begins, you'll appear in a random location on the island, with 20 minutes on the clock. Your goal is to collect as much gear as possible- ranging from essentials like food and medicine, to more frivolous goods like furniture or toy plushies. Each location on the island has something unique to offer, like the military bases, loaded with ammunition and weaponry. Plan your route carefully and make sure you bring a bag!
+
+Time is not on your side. The longer you stay on the island, the more zombies will come. Make sure you check your map for the marked extraction zones and leave before the timer hits zero. [i]You don't want to be there when the horde arrives...[/i]
+
+Throughout all of this, zombies won't be the only threat out there. Other survivors from rival settlements are here for the same goal. While you don't need to fight other players, the question remains: [b]will you trust your fellow man, or will you take no chances?[/b]
+
+[h2]Features[/h2]
+[list]
+[*][b]Bria Island[/b] - a custom arena built specifically for PvPvE encounters, with tons of loot to collect and several districts to explore.
+[*][b]Player Safehouses[/b] - a place for each survivor to sort their gear, buy or sell items, and prepare for the fight ahead.
+[*][b]Extraction Zones[/b] - randomized extraction zones make each round unique to play.
+[*][b]Online Shop[/b] - despite it being the apocalypse, easily sell items you collect for money and purchase new weapons and supplies through your safehouse terminal. Even features same day delivery!
+[*][b]In-Game Leaderboard[/b] - see who's topping the charts and who you need to watch out for through the in-game leaderboard.
+[*][b]Customization[/b] - spec your character out for combat using our custom occupations, and decorate your safehouse with furniture, constructables, or other items you collect on Bria Isle.
+[*][b]Administrative Tools[/b] - easily host your own Remnants of Kentucky server, customize round settings, and moderate matches using the built-in admin panel.
+[*][b]And more![/b]
+[/list]
+
+[h2]Join the Remnants of Kentucky Discord server![/h2]
+Discuss everything Remnants of Kentucky, join official events, find players to queue up with, access tutorials, report bugs, and more! [url=https://discord.gg/Xc9KVkhCdd]Join the community here![/url]
+
+[h2]Created by Big Bad Beaver[/h2]
+Follow me on [url=twitch.tv/bigbadbeaver]Twitch[/url] and [url=youtube.com/@biggestbaddestbeaver]YouTube[/url] for more Project Zomboid content!
+
+[h3]Developed by:[/h3]
+Pao
+Monkey
+Oppolla
+
+[h3]Art by:[/h3]
+StaticBrain_TV
+
+Special thanks to NoxKono, Reincarnation, Michaelcosio, W0LF_QC, VRGladiator1341, Bob, kenjiss, Sentile, Jorgs, and Moisty for assisting as alpha testers! Another big thanks to those who participated as beta testers!
+
+[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3167094901]See the supported mod list.[/url]
+Hosting your own Remnants of Kentucky server? Click here!
+Check our FAQ here.
+
+Workshop ID: 3161952259
+Mod ID: ROK
+Map Folder: PZ-EFT
