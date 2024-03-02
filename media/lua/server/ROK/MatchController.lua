@@ -84,6 +84,7 @@ function MatchController:startMatch()
     local Delay = require("ROK/Delay")
 
 
+    -- TODO Make delay dynamic based on player teleportation status from the server side...?
     Delay:set(2, function()
         -- Start timer and the event handling zombie spawning
         Countdown.Setup(SandboxVars.RemnantsOfKentucky.RoundTime, function()

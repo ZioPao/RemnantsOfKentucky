@@ -72,7 +72,7 @@ end
 ---------------
 local OnClientCommand = function(module, command, playerObj, args)
     if module == MODULE and ClientCommands[command] then
-        debugPrint("Client Command - " .. MODULE .. "." .. command)
+        debugPrint("Client Debug Command - " .. MODULE .. "." .. command)
         ClientCommands[command](playerObj, args)
     end
 end

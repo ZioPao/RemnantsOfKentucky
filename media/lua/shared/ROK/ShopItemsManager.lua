@@ -3216,11 +3216,11 @@ if isServer() then
 
         while currentAmount < amount do
             local randIndex = ZombRand(#keys) + 1
-            local fType = keys[randIndex]
+            local fType = keys[randIndex]-- FIXME Can cause issue
             debugPrint("Adding to daily: fType=" .. fType)
 
             -- Check if Item actually exists, in case mod wasn't loaded
-            local item = InventoryItemFactory.CreateItem(fullType)
+            local item = InventoryItemFactory.CreateItem(fType)
             if item then
                 ShopItemsManager.SetTagToItem(fType, "DAILY", true)
                 currentAmount = currentAmount + 1
