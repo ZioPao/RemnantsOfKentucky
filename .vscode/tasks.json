@@ -1,0 +1,109 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Create Workshop folder",
+            "type": "shell",
+            "options": {"statusbar": {"label": "$(combine) Assemble Mod"}},
+            "command": "python ${config:zomboid_user_folder}/PaosCrap/make_workshop_pack.py picch ${workspaceFolderBasename}",
+        },
+        {
+            "label": "Run Zomboid No Steam",
+            "type": "shell",
+            "command": "\"${config:zomboid_folder}\\ProjectZomboid64 - nosteam.bat\"",
+            "options": {"statusbar": {"label": "$(run) Zomboid client"}},
+            "problemMatcher": [
+                "$eslint-stylish"
+            ]
+        },
+        {
+            "label": "Run Zomboid Debug No Steam",
+            "type": "shell",
+            "command": "\"${config:zomboid_folder}\\ProjectZomboid64 - nosteam-debug.bat\"",
+            "options": {"statusbar": {"label": "$(run) Zomboid client (DEBUG)"}},
+            "problemMatcher": [
+                "$eslint-stylish"
+            ]
+        },
+
+        {
+            "label": "Run Zomboid Debug No Steam 2",
+            "type": "shell",
+            "command": "\"${config:zomboid_folder}\\ProjectZomboid64 - nosteam-debug.bat\"",
+            "options": {"statusbar": {"hide": true}},
+
+            "problemMatcher": [
+                "$eslint-stylish"
+            ]
+        },
+        {
+            "label": "Run Zomboid Debug No Steam 3",
+            "type": "shell",
+            "command": "\"${config:zomboid_folder}\\ProjectZomboid64 - nosteam-debug.bat\"",
+            "options": {"statusbar": {"hide": true}},
+
+            "problemMatcher": [
+                "$eslint-stylish"
+            ]
+        },
+        {
+            "label": "Run Zomboid Debug No Steam 4",
+            "type": "shell",
+            "command": "\"${config:zomboid_folder}\\ProjectZomboid64 - nosteam-debug.bat\"",
+            "options": {"statusbar": {"hide": true}},
+
+            "problemMatcher": [
+                "$eslint-stylish"
+            ]
+        },
+        {
+            "label": "Run two instances of Zomboid Debug No Steam",
+            "options": {"statusbar": {"label": "$(run-all) Two Zomboid Clients"}},
+
+            "dependsOn": [
+                "Run Zomboid Debug No Steam", "Run Zomboid Debug No Steam 2"],
+            "problemMatcher": []
+        },
+        {
+            "label": "Run four instances of Zomboid Debug No Steam",
+            "options": {"statusbar": {"label": "$(run-all) Four Zomboid Clients"}},
+            "type": "shell",
+            "command": "\"${config:zomboid_user_folder}\\PaosCrap\\start.bat\"",
+
+            //"dependsOn": [
+            //    "Run Zomboid Debug No Steam", "Run Zomboid Debug No Steam 2", "Run Zomboid Debug No Steam 3", "Run Zomboid Debug No Steam 4"],
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Zomboid Test Server",
+            "options": {"statusbar": {"label": "$(run) Zomboid Server (PZ-EFT)"}},
+            "type": "shell",
+            "command":"\"${config:zomboid_server_folder}\\StartServer64_nosteam_custom.bat\" pzeft",
+            "problemMatcher": [
+                "$eslint-stylish"
+            ]
+        },
+
+        // {
+        //     "label": "Run Zomboid Test Server - Low Ram",
+        //     "options": {"statusbar": {"label": "$(run) Zomboid Server With Low Ram (PZ-EFT)"}},
+        //     "type": "shell",
+        //     "command":"\"${config:zomboid_server_folder}\\StartServer64_custom_lowram.bat\" pzeft_steam",
+        //     "problemMatcher": [
+        //         "$eslint-stylish"
+        //     ]
+        // },
+        {
+            "label": "Run Zomboid Test Server - Steam",
+            "options": {"statusbar": {"label": "$(run) Zomboid Steam Server (PZ-EFT)"}},
+            "type": "shell",
+            "command":"\"${config:zomboid_server_folder}\\StartServer64_custom.bat\" pzeft_steam",
+            "problemMatcher": [
+                "$eslint-stylish"
+            ]
+        }
+
+    ]
+}
