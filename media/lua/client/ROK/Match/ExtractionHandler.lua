@@ -39,6 +39,11 @@ function ExtractionHandler.RunEvent()
         for key ,area in ipairs(extractionPoints) do
             local isInArea = PZEFT_UTILS.IsInRectangle(playerPosition, area)
             ClientState.extractionStatus[key] = isInArea
+
+            if isInArea then
+                debugPrint("Player in area: " .. key)
+            end
+            
             triggerEvent("PZEFT_UpdateExtractionZoneState", key)
         end
     end
