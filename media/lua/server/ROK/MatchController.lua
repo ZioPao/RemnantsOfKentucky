@@ -172,6 +172,18 @@ end
 ---Run it every once, depending on the Config, spawns zombies for each player
 ---@param loops number amount of time that this function has been called by Countdown
 function MatchController.HandleZombieSpawns(loops)
+
+
+    ---@param nearbyPlayers table<integer,{x : number, y : number}>
+    ---@param x number
+    ---@param y number
+    local function IsSpawnNearPlayer(nearbyPlayers, x,y)
+        for i=1, #nearbyPlayers do
+            
+        end
+    end
+
+
     local instance = MatchController.GetHandler()
     if instance == nil then return end
 
@@ -186,6 +198,27 @@ function MatchController.HandleZombieSpawns(loops)
                 local x = player:getX()
                 local y = player:getY()
 
+
+                -- JANK Heavy heavy heavy
+                -- map players position
+                local nearPlayers = {}
+                for k2, v2 in pairs(instance.playersInMatch) do
+                    if v ~= nil then
+                        local otherPlId = v.playerId
+                        local otherPlayer = getPlayerByOnlineID(otherPlId)
+                        local opX = otherPlayer:getX()
+                        local opY = otherPlayer:getY()
+
+                        local dist = IsoUtils.DistanceTo(x, y, opX, opY)
+
+                        if dist < 50 then
+                            table.insert(nearPlayers, {plId = otherPlId, x = opX, y = opY})
+                        end
+
+                    end
+                end
+
+
                 -- We can't go overboard with addedX or addedY
                 local sq
                 repeat
@@ -194,6 +227,7 @@ function MatchController.HandleZombieSpawns(loops)
                     sq = getSquare(x + randomX, y + randomY, 0)
                     ---@diagnostic disable-next-line: param-type-mismatch
                 until sq and not sq:getFloor():getSprite():getProperties():Is(IsoFlagType.water)
+                -- TODO Add check to prevent zombies from spawning right in front of other players
 
                 -- Amount of zombies should scale based on players amount too, to prevent from killing the server
                 -- The more players there are, the more zombies will spawn in total, but less per player
