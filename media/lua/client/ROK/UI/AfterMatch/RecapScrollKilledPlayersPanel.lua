@@ -1,3 +1,6 @@
+-- TODO Add header!!!
+
+
 local KillTrackerHandler = require("ROK/Match/KillTrackerHandler")
 local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 
@@ -131,13 +134,14 @@ function RecapScrollKilledPlayersPanel.DrawItem(playersBox, y, item, rowElementN
     playersBox:drawText(username, x + 6, y + 2, 1, 1, 1, a, playersBox.font)
 
     --* TIMESTAMP *--
-    local timeStr = GenericUI.FormatTime(timestamp, false)
-    local timeStrY = getTextManager():MeasureStringY(playersBox.font, timeStr)
-    local timeStrX = getTextManager():MeasureStringX(playersBox.font, timeStr)
+    -- TODO Timestamps are still completely fucked up
+    -- local timeStr = GenericUI.FormatTime(timestamp, false)
+    -- local timeStrY = getTextManager():MeasureStringY(playersBox.font, timeStr)
+    -- local timeStrX = getTextManager():MeasureStringX(playersBox.font, timeStr)
 
-    local timeStrStartX = playersBox:getWidth() - timeStrX - 10
+    --local timeStrStartX = playersBox:getWidth() - timeStrX - 10
 
-    playersBox:drawText(timeStr, timeStrStartX, y + 2 + 2, 1, 1, 1, a, playersBox.font)
+    --playersBox:drawText(timeStr, timeStrStartX, y + 2 + 2, 1, 1, 1, a, playersBox.font)
     playersBox:clearStencilRect()
 
     return y + item.height
