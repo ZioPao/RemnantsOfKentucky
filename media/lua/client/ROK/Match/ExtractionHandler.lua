@@ -13,8 +13,10 @@ local ExtractionHandler = {}
 ---@param isInRaid boolean
 function ExtractionHandler.ToggleEvent(isInRaid)
     if isInRaid == true then
+        debugPrint("Adding ExtractionHandler event")
         Events.OnTick.Add(ExtractionHandler.RunEvent)
     else
+        debugPrint("Disabling ExtractionHandler event")
         -- Close it forcefully here
         ExtractionPanel.Close()
         Events.OnTick.Remove(ExtractionHandler.RunEvent)
