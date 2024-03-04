@@ -37,27 +37,30 @@ end
 
 --- Try sell items for quantity
 --- See PZ_EFT_ShopItems_Config.addItem for item value
----@param sellData sellData
+---@param sellData sellItemsDataType
 ---@return boolean
 function ClientShopManager.TrySell(sellData)
-    if ClientShopManager.CanSell(sellData) == false then
-        return false
-    end
+    local ShopItemsManager = require("ROK/ShopItemsManager")
 
-    ---@type transactionDataType
-    local transactionData = {}
+
+    -- TODO Readd cansell
+    -- if ClientShopManager.CanSell(sellData) == false then
+    --     return false
+    -- end
     local totalPrice = 0
+    for fullType, data in pairs(sellData) do
+        local eftShopData = ShopItemsManager.GetItem(fullType)
 
-    for k, data in pairs(sellData) do
-        local pr = data.itemData.basePrice * data.itemData.sellMultiplier * data.quantity * data.quality
-        totalPrice = totalPrice + pr
-
-        table.insert(transactionData, { fullType = data.itemData.fullType, quantity = data.quantity })
+        for i=1, #data do
+            local itemData = data[i]
+            totalPrice = totalPrice + (eftShopData.basePrice * eftShopData.sellMultiplier * itemData.quality)
+        end
     end
 
-    BankManager.TryProcessTransaction(totalPrice, EFT_MODULES.Shop, "SellItems", transactionData, EFT_MODULES.Shop,
-        "SellFailed", transactionData)
+    BankManager.TryProcessTransaction(totalPrice, EFT_MODULES.Shop, "SellItems", sellData, EFT_MODULES.Shop,
+        "SellFailed", {})
     return true
+
 end
 
 ---@param totalPrice number
@@ -180,52 +183,35 @@ function ShopCommands.BuyInstaHeal()
     ClientCommon.InstaHeal()
 end
 
----@param transactionData transactionDataType
-function ShopCommands.SellItems(transactionData)
-    -- FIXME This can fetch the wrong item since we're just checking by FullType. We'd want an id to be more precise
-
-
-    ---@param pl IsoPlayer
-    ---@param data {fullType : string}
-    local function FindItemInWornItems(pl, data)
-        local wornItems = pl:getWornItems()
-
-        local function CheckWornItem(wornItem)
-            if wornItem == nil then return false end
-            local contInv = wornItem.getInventory and wornItem:getInventory()
-            if contInv == nil then return false end
-            local itemInInv = contInv:FindAndReturn(data.fullType)
-            if itemInInv == nil then return false end
-            debugPrint("Removing item in Container")
-            ISRemoveItemTool.removeItem(itemInInv, pl)
-            return true
+---@param sellItemsData sellItemsDataType
+function ShopCommands.SellItems(sellItemsData)
+    ---@param item InventoryItem
+    ---@param plObj any
+    local function predicateFindItemWithId(item, plObj)
+        for fullType, dataTable in pairs(sellItemsData) do
+            if item:getFullType() == fullType then
+                for j=1, #dataTable do
+                    local data = dataTable[j]
+                    if item:getID() == data.id then
+                        return true
+                    end
+                end
+            end
         end
-
-        for j = 0, wornItems:size() - 1 do
-            local wornItem = wornItems:get(j):getItem()
-            if CheckWornItem(wornItem) then return end
-        end
+        return false
     end
-
-    debugPrint("SellItemsSuccess")
 
     local pl = getPlayer()
     local plInv = pl:getInventory()
+    local t = plInv:getAllEvalRecurse(predicateFindItemWithId)
+    debugPrint("___________________________________")
+    debugPrint(t)
 
-    for i = 1, #transactionData do
-        local data = transactionData[i]
-
-        for _ = 1, data.quantity do
-            local item = plInv:FindAndReturn(data.fullType)
-
-            if item then
-                ISRemoveItemTool.removeItem(item, pl)
-            else
-                -- Search inside other inventory containers
-                FindItemInWornItems(pl, data)
-            end
-        end
+    for i=0, t:size() - 1 do
+        local item = t:get(i)
+        ISRemoveItemTool.removeItem(item, pl)
     end
+
     triggerEvent("PZEFT_OnSuccessfulSell", "successful")
 end
 

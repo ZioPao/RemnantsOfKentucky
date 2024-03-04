@@ -19,9 +19,11 @@ local function CheckPlayerContainersForItem(pl, item)
     return false
 end
 
+
+---@param item InventoryItem
+---@return boolean
 local function CheckCanPutInSellTab(item)
     local pl = getPlayer()
-
 
     if pl:isEquipped(item) or pl:isEquippedClothing(item) then
         triggerEvent("PZEFT_OnFailedSellTransfer", "isEquipped")
@@ -98,39 +100,50 @@ local function SellDoDrawItem(self, y, item, alt)
 
     --* Price
     local itemFullType = item.item[1]:getFullType()
-    local itemData = ShopItemsManager.data[itemFullType]
+    local itemData = ShopItemsManager.GetItem(itemFullType)
 
+    -- If an item doesn't exist in the DB, create a fake one here
     if itemData == nil then
         itemData = { basePrice = 100, sellMultiplier = 0.5 }
     end
 
+    -- TODO Reimplement quality, we need to change the UI for this to work.
+    --local sellData = self.sellItemsData[itemFullType]
 
-    -- TODO Horrendous workaround, for playtest
-
-    ---@param iData any
-    ---@return {itemData : any, quantity : number, quality  : number}
-    local function GetSellItemsData(iData)
-
-        for i=1, #self.sellItemsData do
-            local cSellItemData = self.sellItemsData[i]
-            if cSellItemData.itemData == iData then
-                return cSellItemData
-            end
-        end
-        return {}
-    end
-
-    local cSellItemData = GetSellItemsData(itemData)
-    local sellPrice = itemData.basePrice * itemData.sellMultiplier * cSellItemData.quality
-
+    local sellPrice = itemData.basePrice * itemData.sellMultiplier
     local sellPriceStr = string.format("$%.2f x %d", tostring(sellPrice), tostring(amount))
-    --local sellpriceStr = "$" .. tostring(sellPrice) .. " x " .. tostring(amount)
     local sellPriceX = self:getWidth() - getTextManager():MeasureStringX(self.font, sellPriceStr) - 6
 
     self:drawText(sellPriceStr, sellPriceX - 5, y + 2, 1, 1, 1, a, self.font)
 
 
     return y + self.itemheight
+end
+
+
+
+function StructureSellDataTest(items)
+    ---@alias sellItemsDataType table<string, table<integer, {id : number, fullType : string, quality : number}>>
+
+    ---@type sellItemsDataType
+    local sellItemsData = {}
+    for i=1, #items do
+        ---@type table<integer, InventoryItem>
+        local it = items[i].item
+        local fType = it[1]:getFullType()
+
+        sellItemsData[fType] = {}
+        for j=1, #it do
+            ---@type InventoryItem
+            local it2 = it[j]
+            table.insert(sellItemsData[fType], {
+                id = it2:getID(),
+                fullType = fType,
+                quality = 1})
+        end
+    end
+
+    return sellItemsData
 end
 
 ---Inside of scrollingListBox, this means we're overriding ScrollItemsPanel
@@ -143,12 +156,11 @@ local function SellOnDragItem(self, x, y)
     end
 
 
-    local t = ISMouseDrag.dragging
-
     if ISMouseDrag.dragging then
         for i = 1, #ISMouseDrag.dragging do
             local itemTab = ISMouseDrag.dragging[i]
             for j = 1, #itemTab.items do
+                ---@type InventoryItem
                 local item = itemTab.items[j]
                 if item and CheckCanPutInSellTab(item) then
                     self.parent:addItem(item)
@@ -158,12 +170,10 @@ local function SellOnDragItem(self, x, y)
     end
 
     -- Cycle through the items and structure them in the correct way.
-    -- Save them in this table
-    self.sellItemsData = ShopItemsManager.StructureSellData(self.items)
-
+    self.sellItemsData = StructureSellDataTest(self.items)
 end
 
-local function SellPrender(self)
+local function SellPrerender(self)
     if #self.items == 0 then
         local text = getText("IGUI_Shop_Sell_Tooltip")
         local textX = (self.width - getTextManager():MeasureStringX(UIFont.Medium, text)) / 4
@@ -178,7 +188,7 @@ function SellScrollItemsPanel:createChildren()
 
     self.scrollingListBox.doDrawItem = SellDoDrawItem
     self.scrollingListBox.onMouseUp = SellOnDragItem
-    self.scrollingListBox.prerender = SellPrender
+    self.scrollingListBox.prerender = SellPrerender
     --self.scrollingListBox.onMouseMove = SellOnMouseMove
 
     self.scrollingListBox.itemheight = self.scrollingListBox.fontHgt + self.scrollingListBox.itemPadY * 2
