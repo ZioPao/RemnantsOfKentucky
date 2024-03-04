@@ -24,7 +24,10 @@ function PvpInstanceManager.Reset()
     debugPrint("Resetting PVP Instances")
     ServerData.PVPInstances.SetPvpInstances({})
     ServerData.PVPInstances.SetPvpUsedInstances({})
-    ServerData.PVPInstances.SetPvpCurrentInstance({}, false)
+    ServerData.PVPInstances.SetPvpCurrentInstance({})
+
+
+
     PvpInstanceManager.LoadPvpInstances()
 end
 
@@ -101,7 +104,10 @@ function PvpInstanceManager.GetNextInstance()
     end
 
     ServerData.PVPInstances.SetPvpUsedInstances(usedInstances)
-    ServerData.PVPInstances.SetPvpCurrentInstance(currentInstance, true)
+
+    -- Set and transmit current instance to the players
+    ServerData.PVPInstances.SetPvpCurrentInstance(currentInstance)
+    ServerData.PVPInstances.TransmitPvpCurrentInstance()
 
     debugPrint("Selected next instance, ID = " .. tostring(currentInstance.id))
 
@@ -220,7 +226,7 @@ end
 
 local function OnInitGlobalModData()
     debugPrint("INITIALIZING PVP INSTANCES MOD DATA")
-    ServerData.PVPInstances.SetPvpCurrentInstance({}, false)
+    ServerData.PVPInstances.SetPvpCurrentInstance({})
     PvpInstanceManager.LoadPvpInstances()
 end
 

@@ -40,7 +40,7 @@ function MatchController:initialise()
     end
 
     -- Opens the loading screen for everyone and add boom sound
-    sendServerCommand(EFT_MODULES.UI, "OpenLoadingScreen", {sound = "BoomSound"})       -- Boom sound by Garuda1982
+    sendServerCommand(EFT_MODULES.UI, "OpenLoadingScreen", { sound = "BoomSound" }) -- Boom sound by Garuda1982
 
     -- Init players in match
     local playersArray = getOnlinePlayers()
@@ -61,15 +61,14 @@ function MatchController:initialise()
                 local spawnPoint = PvpInstanceManager.PopRandomSpawnPoint()
                 if not spawnPoint then
                     debugPrint("No more spawnpoints! Can't teleport player!")
+                    -- FIXME This should be made more clear to the users, can break a lot of stuff
                     return
                 end
 
                 debugPrint("Teleporting " .. plUsername .. " to " .. spawnPoint.name)
                 sendServerCommand(player, EFT_MODULES.Match, "TeleportToInstance", spawnPoint)
-
             end
         end
-
     end
     -- Default value for the zombie multiplier
     self:setZombieSpawnMultiplier(PZ_EFT_CONFIG.Server.Match.zombieSpawnMultiplier)
@@ -102,7 +101,6 @@ function MatchController:startMatch()
 
         triggerEvent("PZEFT_OnMatchStart")
     end)
-
 end
 
 function MatchController:stopMatch()
@@ -124,7 +122,6 @@ function MatchController:extractPlayer(playerObj)
     self:removePlayerFromMatchList(playerObj:getOnlineID())
     sendServerCommand(playerObj, EFT_MODULES.UI, "OpenRecapPanel", {})
 end
-
 
 --* Overtime
 
@@ -151,7 +148,6 @@ function MatchController:killAlivePlayers()
     end
 end
 
-
 --* Getter/Setters
 
 ---@param val number
@@ -172,16 +168,15 @@ end
 ---Run it every once, depending on the Config, spawns zombies for each player
 ---@param loops number amount of time that this function has been called by Countdown
 function MatchController.HandleZombieSpawns(loops)
+    -- TODO Implement check to prevent zombies from spawning near other players
+    -- ---@param nearbyPlayers table<integer,{x : number, y : number}>
+    -- ---@param x number
+    -- ---@param y number
+    -- local function IsSpawnNearPlayer(nearbyPlayers, x,y)
+    --     for i=1, #nearbyPlayers do
 
-
-    ---@param nearbyPlayers table<integer,{x : number, y : number}>
-    ---@param x number
-    ---@param y number
-    local function IsSpawnNearPlayer(nearbyPlayers, x,y)
-        for i=1, #nearbyPlayers do
-            
-        end
-    end
+    --     end
+    -- end
 
 
     local instance = MatchController.GetHandler()
@@ -212,9 +207,8 @@ function MatchController.HandleZombieSpawns(loops)
                         local dist = IsoUtils.DistanceTo(x, y, opX, opY)
 
                         if dist < 50 then
-                            table.insert(nearPlayers, {plId = otherPlId, x = opX, y = opY})
+                            table.insert(nearPlayers, { plId = otherPlId, x = opX, y = opY })
                         end
-
                     end
                 end
 
@@ -227,18 +221,18 @@ function MatchController.HandleZombieSpawns(loops)
                     sq = getSquare(x + randomX, y + randomY, 0)
                     ---@diagnostic disable-next-line: param-type-mismatch
                 until sq and not sq:getFloor():getSprite():getProperties():Is(IsoFlagType.water)
-                -- TODO Add check to prevent zombies from spawning right in front of other players
 
                 -- Amount of zombies should scale based on players amount too, to prevent from killing the server
                 -- The more players there are, the more zombies will spawn in total, but less per player
-                -- (Base amount * loop) / players in match 
-                local zombiesAmount = math.ceil((PZ_EFT_CONFIG.Server.Match.zombiesAmountBase * loops * instance:getZombieSpawnMultiplier())/instance:getAmountAlivePlayers())
+                -- (Base amount * loop) / players in match
+                local zombiesAmount = math.ceil((PZ_EFT_CONFIG.Server.Match.zombiesAmountBase * loops * instance:getZombieSpawnMultiplier()) /
+                instance:getAmountAlivePlayers())
                 debugPrint("spawning " .. zombiesAmount .. " near " .. player:getUsername())
                 addZombiesInOutfit(sq:getX(), sq:getY(), 0, zombiesAmount, "", 50, false, false, false, false, 1)
 
                 -- Get random players to send audio to
                 if ZombRand(0, 100) > PZ_EFT_CONFIG.Server.Match.chanceRandomSoundOnZombieSpawn then
-                    table.insert(randomPlayers, {player = player, x = x, y = y})
+                    table.insert(randomPlayers, { player = player, x = x, y = y })
                 end
             else
                 debugPrint("player was nil")
@@ -257,7 +251,7 @@ function MatchController.HandleZombieSpawns(loops)
     local function WaitAndSendSound()
         local cTime = os_time()
         if cTime < eTime then return end
-        for i=1, #randomPlayers do
+        for i = 1, #randomPlayers do
             ---@type {player : IsoPlayer, x : number, y : number}
             local playerTab = randomPlayers[i]
             debugPrint("Sending sound near player: " .. playerTab.player:getUsername())
@@ -277,7 +271,7 @@ function MatchController.HandlePlayerDeath(playerObj)
 
     if killerObj and killerObj ~= playerObj then
         -- Add to kill count, send it back to client
-        sendServerCommand(killerObj, EFT_MODULES.Match, 'AddKill', {victimUsername = playerObj:getUsername()})
+        sendServerCommand(killerObj, EFT_MODULES.Match, 'AddKill', { victimUsername = playerObj:getUsername() })
     end
 end
 
@@ -306,9 +300,6 @@ end
 ---Checks if there are players still alive in a match. When it gets to 0, stop the match
 ---We have to check it periodically to account for crashes
 function MatchController.CheckAlivePlayers()
-
-    -- TODO Mark the player as to be wiped at relog... Or something
-
     --debugPrint("checking alive players")
     local instance = MatchController.GetHandler()
     if instance == nil then return end
@@ -331,15 +322,12 @@ function MatchController.CheckAlivePlayers()
     end
 end
 
-
-
 --------------------------------------------------
 --- Get the instance of MatchController
 ---@return MatchController
 function MatchController.GetHandler()
     return MatchController.instance
 end
-
 
 ------------------------------------------------------------------------
 --* COMMANDS FROM CLIENTS *--
@@ -351,7 +339,7 @@ local MatchCommands = {}
 
 function MatchCommands.SendExtractionTime(playerObj, _)
     local extTime = SandboxVars.RemnantsOfKentucky.ExtractionTime
-    sendServerCommand(playerObj, EFT_MODULES.State, 'SetExtractionTime', {extractionTime = extTime})
+    sendServerCommand(playerObj, EFT_MODULES.State, 'SetExtractionTime', { extractionTime = extTime })
 end
 
 function MatchCommands.CheckIsRunningMatch(playerObj, _)
@@ -359,8 +347,7 @@ function MatchCommands.CheckIsRunningMatch(playerObj, _)
     local handler = MatchController.GetHandler()
 
     local isMatchRunning = handler ~= nil
-    sendServerCommand(playerObj, EFT_MODULES.State, 'SetClientStateIsMatchRunning', {value = isMatchRunning})
-
+    sendServerCommand(playerObj, EFT_MODULES.State, 'SetClientStateIsMatchRunning', { value = isMatchRunning })
 end
 
 ---@param args {id : number}
@@ -370,7 +357,7 @@ function MatchCommands.KillZombies(_, args)
     for i = 0, zombies:size() - 1 do
         local zombie = zombies:get(i)
         if instanceof(zombie, "IsoZombie") and zombie:getOnlineID() == id then
-            debugPrint("Removing zombie with id="..tostring(id))
+            debugPrint("Removing zombie with id=" .. tostring(id))
             zombie:removeFromWorld()
             zombie:removeFromSquare()
             return
@@ -388,10 +375,10 @@ function MatchCommands.StartCountdown(playerObj, args)
         handler:startMatch()
 
         -- Closes automatically the admin panel\switch it to the during match one
-        sendServerCommand(playerObj, EFT_MODULES.UI, 'SwitchMatchAdminUI', {startingState='BEFORE'})
+        sendServerCommand(playerObj, EFT_MODULES.UI, 'SwitchMatchAdminUI', { startingState = 'BEFORE' })
     end
 
-    -- TODO Can't load getText from here for some reason. Workaround
+    -- TODO Add getText
     local matchStartingText = "The match is starting"
     Countdown.Setup(args.stopTime, StartMatch, true, matchStartingText)
 end
@@ -403,12 +390,11 @@ end
 ---@param playerObj IsoPlayer
 ---@param args {stopTime : number}
 function MatchCommands.StartMatchEndCountdown(playerObj, args)
-
     local function StopMatch()
         local handler = MatchController.GetHandler()
         if handler then handler:forceStopMatch() end
 
-        sendServerCommand(playerObj, EFT_MODULES.UI, 'SwitchMatchAdminUI', {startingState='DURING'})
+        sendServerCommand(playerObj, EFT_MODULES.UI, 'SwitchMatchAdminUI', { startingState = 'DURING' })
     end
 
     local text = "The match has ended"
@@ -429,8 +415,8 @@ function MatchCommands.SendZombieSpawnMultiplier(playerObj)
     debugPrint("Player asked for Zombie Spawn Multiplayer")
     if instance == nil then return end
     local spawnZombieMultiplier = instance:getZombieSpawnMultiplier()
-    sendServerCommand(playerObj, EFT_MODULES.UI, "ReceiveCurrentZombieSpawnMultiplier", {spawnZombieMultiplier = spawnZombieMultiplier})
-
+    sendServerCommand(playerObj, EFT_MODULES.UI, "ReceiveCurrentZombieSpawnMultiplier",
+        { spawnZombieMultiplier = spawnZombieMultiplier })
 end
 
 ---A client has sent an extraction request
@@ -447,7 +433,7 @@ function MatchCommands.RemovePlayer(playerObj)
     local instance = MatchController.GetHandler()
     if instance == nil then return end
     instance:removePlayerFromMatchList(playerObj:getOnlineID())
-    sendServerCommand(playerObj, EFT_MODULES.State, "SetClientStateIsInRaid", {value = false})
+    sendServerCommand(playerObj, EFT_MODULES.State, "SetClientStateIsInRaid", { value = false })
 end
 
 ---@param playerObj IsoPlayer
@@ -457,9 +443,9 @@ function MatchCommands.SendAlivePlayersAmount(playerObj)
     if instance == nil then return end
     local counter = instance:getAmountAlivePlayers()
     --debugPrint("Alive players in match: " .. tostring(counter))
-    sendServerCommand(playerObj, EFT_MODULES.UI, "ReceiveAlivePlayersAmount", {amount = counter})
-
+    sendServerCommand(playerObj, EFT_MODULES.UI, "ReceiveAlivePlayersAmount", { amount = counter })
 end
+
 ---------------------------------
 local function OnMatchCommand(module, command, playerObj, args)
     if module == MODULE and MatchCommands[command] then

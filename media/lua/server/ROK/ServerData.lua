@@ -78,14 +78,13 @@ end
 
 --- Set PVP current instance data
 ---@param data pvpInstanceTable
-function ServerData.PVPInstances.SetPvpCurrentInstance(data, doTransmit)
+function ServerData.PVPInstances.SetPvpCurrentInstance(data)
     ModData.add(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID, data)
-
-    if doTransmit then
-        ModData.transmit(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID)
-    end
 end
 
+function ServerData.PVPInstances.TransmitPvpCurrentInstance()
+    ModData.transmit(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID)
+end
 ------------------------------------------------
 ---@alias worldStringCoords string worldx-worldy-worldz
 ---@alias assignedSafehousesTable table<worldStringCoords, string>      value is username
