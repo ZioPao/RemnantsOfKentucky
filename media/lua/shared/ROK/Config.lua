@@ -4,8 +4,6 @@ PZ_EFT_CONFIG.Client = {}
 PZ_EFT_CONFIG.Server = {}
 
 
-
---* COMMON *--
 PZ_EFT_CONFIG.Debug = true
 
 

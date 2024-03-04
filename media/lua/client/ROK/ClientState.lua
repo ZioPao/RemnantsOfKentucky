@@ -28,6 +28,9 @@ function ClientState.SetIsInRaid(val)
         triggerEvent("PZEFT_OnMatchEnd")
     end
 
+
+
+    -- TODO Maybe too violent?
     triggerEvent("PZEFT_UpdateClientStatus", val)
 end
 

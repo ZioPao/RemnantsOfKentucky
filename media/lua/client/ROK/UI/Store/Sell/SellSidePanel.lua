@@ -1,5 +1,6 @@
 
 local ClientShopManager = require("ROK/Economy/ClientShopManager")
+local ShopItemsManager = require("ROK/ShopItemsManager")
 local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
 ------------------------
 
@@ -44,16 +45,14 @@ end
 function SellSidePanel:render()
     RightSidePanel.render(self)
 
-    ---@type sellData
+    ---@type sellItemsDataType
     local sellItemsData = self.parent.scrollPanel.scrollingListBox.sellItemsData
-    local itemsAmount = #sellItemsData
-    local text
+    local text = ""
+    local price = self:getTotalSellPrice(sellItemsData)
 
-    if itemsAmount > 0 then
-        local price = self:getTotalSellPrice(sellItemsData)
+
+    if price > 0 then
         text = string.format("<CENTRE> You will receive: $%.2f", tostring(price))
-    else
-        text = ""
     end
 
     if self.showNotification then
@@ -100,10 +99,9 @@ function SellSidePanel:onConfirmSell()
 
     ---@type SellMainPanel
     local parent = self.parent
-    local itemsToSell = parent:getSellItemsData()
 
     -- Try to sell it and removes item on the client
-    ClientShopManager.TrySell(itemsToSell)
+    ClientShopManager.TrySell(parent:getSellItemsData())
 
     -- Clean stuff
     self.textPanel:setText("")
@@ -122,18 +120,19 @@ function SellSidePanel:updateNotification(val, cat)
     self.timeShowNotification = os.time() + 3
 end
 
----@param sellItemsData sellData
+---@param sellItemsData sellItemsDataType
 ---@return number
 function SellSidePanel:getTotalSellPrice(sellItemsData)
     local price = 0
-    for i=1, #sellItemsData do
-        local data = sellItemsData[i]
-        local bPrice = data.itemData.basePrice
-        local sellMult = data.itemData.sellMultiplier
-        local quantity = data.quantity
-        local quality = data.quality
-        price = price + (bPrice * sellMult * quantity * quality)
+    for fullType, dataTable in pairs(sellItemsData) do
+        local itemData = ShopItemsManager.GetItem(fullType)
+        local bPrice = itemData.basePrice
+        local sellMult = itemData.sellMultiplier
+        local quantity = #dataTable
+        -- TODO Reimplement quality
+        price = price + (bPrice * sellMult * quantity)
     end
+
 
     return price
 end

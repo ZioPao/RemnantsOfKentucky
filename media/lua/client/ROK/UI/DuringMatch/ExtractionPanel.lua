@@ -87,17 +87,19 @@ function ExtractionPanel.Open()
     local height = 100
     local pos = ExtractionPanel.GetPosition()
     if ExtractionPanel.instance == nil then
-        local panel = ExtractionPanel:new(pos.x, pos.y, width, height)
-        panel:initialise()
-        panel:addToUIManager()
-        panel:bringToTop()
+        ExtractionPanel.instance = ExtractionPanel:new(pos.x, pos.y, width, height)
+        ExtractionPanel.instance:initialise()
     end
 
+    ExtractionPanel.instance:addToUIManager()
+    ExtractionPanel.instance:setVisible(true)
+    ExtractionPanel.instance:bringToTop()
 end
 
 function ExtractionPanel.Close()
     if ExtractionPanel.instance then
         ExtractionPanel.instance:close()
+        ExtractionPanel.instance:removeFromUIManager()
         ExtractionPanel.instance = nil
     end
 end

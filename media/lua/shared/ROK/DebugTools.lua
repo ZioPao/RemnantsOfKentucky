@@ -34,6 +34,7 @@ function debugPrintAllItems()
 
             if item:getDisplayCategory() then
                 cat = cat .. item:getDisplayCategory() .. "]"
+                debugPrint(item:getDisplayCategory())
             else
                 cat = cat .. "]"
             end
@@ -45,22 +46,34 @@ function debugPrintAllItems()
                 name = item:getDisplayName(),
                 category = tostring(cat),
                 weight = item:getActualWeight(),
+                additionalData = {
+                
+                },
             }
 
 
             it = InventoryItemFactory.CreateItem(fType)
-            
 
+            --* Clothing handling
             if instanceof(it, "Clothing") then
                 ---@cast it Clothing
-                itemTab['bulletDefense'] = it:getBulletDefense()
+                itemTab.additionalData['bulletDefense'] = it:getBulletDefense()
             end
 
+            --* Weapons handling
             if instanceof(it, "HandWeapon") then
                 ---@cast it HandWeapon
 
-                itemTab['damage'] = (it:getMinDamage() + it:getMaxDamage())/2
+                itemTab.additionalData['damage'] = (it:getMinDamage() + it:getMaxDamage())/2
             end
+
+
+            --* Ammo handling
+
+            -- TODO For boxes we need to fetch the associated recipe and get how many bullets there are inside of it
+            -- max ammo for clips?
+
+
 
             table.insert(items, itemTab)
         end
