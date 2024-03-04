@@ -6,11 +6,8 @@ PZ_EFT_CONFIG.Server = {}
 
 
 --* COMMON *--
-if isServer() then
-    PZ_EFT_CONFIG.Debug = true
-else
-    PZ_EFT_CONFIG.Debug = isDebugEnabled()
-end
+PZ_EFT_CONFIG.Debug = true
+
 
 PZ_EFT_CONFIG.SupportedMods = {
 
