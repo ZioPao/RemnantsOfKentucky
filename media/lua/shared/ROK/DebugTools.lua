@@ -49,7 +49,7 @@ function debugPrintAllItems()
 
 
             it = InventoryItemFactory.CreateItem(fType)
-            
+
 
             if instanceof(it, "Clothing") then
                 ---@cast it Clothing
@@ -61,6 +61,13 @@ function debugPrintAllItems()
 
                 itemTab['damage'] = (it:getMinDamage() + it:getMaxDamage())/2
             end
+
+
+
+            -- TODO Implement Ammo boxes stuff
+
+
+
 
             table.insert(items, itemTab)
         end
