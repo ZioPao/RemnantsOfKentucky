@@ -83,6 +83,8 @@ function ServerData.PVPInstances.SetPvpCurrentInstance(data)
 end
 
 function ServerData.PVPInstances.TransmitPvpCurrentInstance()
+
+    -- TODO Not 100% reliable?
     ModData.transmit(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID)
 end
 ------------------------------------------------
