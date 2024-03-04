@@ -7,6 +7,35 @@ local ClientCommon = require("ROK/ClientCommon")
 ---@class ClientShopManager
 local ClientShopManager = {}
 
+---@param sellItemsData sellItemsDataType
+function ClientShopManager.GetSellableItemsInInventory(sellItemsData)
+    ---@param item InventoryItem
+    ---@param plObj any
+    local function predicateFindItemWithId(item, plObj)
+        for fullType, dataTable in pairs(sellItemsData) do
+            if item:getFullType() == fullType then
+                for j=1, #dataTable do
+                    local data = dataTable[j]
+                    if item:getID() == data.id then
+                        return true
+                    end
+                end
+            end
+        end
+        return false
+    end
+
+    local pl = getPlayer()
+    local plInv = pl:getInventory()
+    local t = plInv:getAllEvalRecurse(predicateFindItemWithId)
+    -- debugPrint("___________________________________")
+    -- debugPrint(t)
+
+    return t
+end
+
+
+
 
 function ClientShopManager.BuyInstaHeal()
     BankManager.TryProcessTransaction(-2500, EFT_MODULES.Shop, "BuyInstaHeal", {}, EFT_MODULES.Shop, "BuyFailed", {})
@@ -41,12 +70,8 @@ end
 ---@return boolean
 function ClientShopManager.TrySell(sellData)
     local ShopItemsManager = require("ROK/ShopItemsManager")
+    if not ClientShopManager.CanSell(sellData) then return false end
 
-
-    -- TODO Readd cansell
-    -- if ClientShopManager.CanSell(sellData) == false then
-    --     return false
-    -- end
     local totalPrice = 0
     for fullType, data in pairs(sellData) do
         local eftShopData = ShopItemsManager.GetItem(fullType)
@@ -76,14 +101,13 @@ function ClientShopManager.CanBuy(totalPrice)
     return false
 end
 
----@param items sellData
+---@param items sellItemsDataType
 ---@return boolean
 function ClientShopManager.CanSell(items)
-    local player = getPlayer()
-    local inventory = player:getInventory()
+    local inv = getPlayer():getInventory()
 
-    for _, itemData in ipairs(items) do
-        if inventory:getItemCountRecurse(itemData.itemData.fullType) < itemData.quantity then
+    for fullType, itemData in pairs(items) do
+        if inv:getItemCountRecurse(fullType) < #itemData then
             return false
         end
     end
@@ -185,30 +209,10 @@ end
 
 ---@param sellItemsData sellItemsDataType
 function ShopCommands.SellItems(sellItemsData)
-    ---@param item InventoryItem
-    ---@param plObj any
-    local function predicateFindItemWithId(item, plObj)
-        for fullType, dataTable in pairs(sellItemsData) do
-            if item:getFullType() == fullType then
-                for j=1, #dataTable do
-                    local data = dataTable[j]
-                    if item:getID() == data.id then
-                        return true
-                    end
-                end
-            end
-        end
-        return false
-    end
 
-    local pl = getPlayer()
-    local plInv = pl:getInventory()
-    local t = plInv:getAllEvalRecurse(predicateFindItemWithId)
-    debugPrint("___________________________________")
-    debugPrint(t)
-
-    for i=0, t:size() - 1 do
-        local item = t:get(i)
+    local itemsInInventoryArray = ClientShopManager.GetSellableItemsInInventory(sellItemsData)
+    for i=0, itemsInInventoryArray:size() - 1 do
+        local item = itemsInInventoryArray:get(i)
         ISRemoveItemTool.removeItem(item, pl)
     end
 
