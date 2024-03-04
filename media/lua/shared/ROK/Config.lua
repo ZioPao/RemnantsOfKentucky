@@ -4,15 +4,10 @@ PZ_EFT_CONFIG.Client = {}
 PZ_EFT_CONFIG.Server = {}
 
 
-
---* COMMON *--
-
 PZ_EFT_CONFIG.Debug = true
 
 
 PZ_EFT_CONFIG.SupportedMods = {
-
-    -- TODO Add VFEExpansion
     ["ROK"] = true,
     ["INVENTORY_TETRIS"] = true,
     ["VFExpansion1"] = true,
