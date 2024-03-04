@@ -23,6 +23,7 @@ function ExtractionHandler.ToggleEvent(isInRaid)
     end
 
 end
+
 Events.PZEFT_UpdateClientStatus.Add(ExtractionHandler.ToggleEvent)
 
 ---Triggers PZEFT_UpdateExtractionZoneState if player is in an extraction zone
@@ -45,7 +46,6 @@ function ExtractionHandler.RunEvent()
             if isInArea then
                 debugPrint("Player in area: " .. key)
             end
-            
             triggerEvent("PZEFT_UpdateExtractionZoneState", key)
         end
     end
