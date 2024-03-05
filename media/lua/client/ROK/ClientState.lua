@@ -2,18 +2,22 @@
 ---@field isInRaid boolean
 ---@field isStartingMatch boolean
 ---@field currentTime number
----@field extractionStatus table
 ---@field extractionTime number
----@field isAdminMode boolean Admin only
+---@field previousExtractionPointsStatus table
+---@field extractionPointsStatus table
 local ClientState = {
     isInRaid = false,
     isStartingMatch = false,
     currentTime = -1,
-    extractionStatus = {},
 
 
     isMatchRunning = false,
     extractionTime = -1,
+
+
+    -- Extraction stuff
+    previousExtractionPointsStatus = {},
+    extractionPointsStatus = {}
 
 }
 
@@ -61,8 +65,10 @@ end
 
 function ClientState.ResetMatchValues()
     ClientState.isStartingMatch = false
-    ClientState.extractionStatus = {}
     ClientState.isMatchRunning = false
+
+    ClientState.previousExtractionPointsStatus = {}
+    ClientState.extractionPointsStatus = {}
 end
 Events.PZEFT_OnMatchEnd.Add(ClientState.ResetMatchValues)
 
