@@ -83,6 +83,7 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnResetUsedInstances:initialise()
     self.btnResetUsedInstances:setEnable(false)
     self.btnResetUsedInstances:setTitle(getText("IGUI_EFT_AdminPanel_ResetUsedInstances"))
+    self:addChild(self.btnResetUsedInstances)
 
     --------------------
     -- INFO PANEL, TOP ONE
