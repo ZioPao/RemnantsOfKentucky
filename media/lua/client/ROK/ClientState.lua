@@ -32,9 +32,7 @@ function ClientState.SetIsInRaid(val)
         triggerEvent("PZEFT_IsInRaidChanged")
 
 
-
         -- More specific events
-
         if val == true then
             triggerEvent("PZEFT_ClientNowInRaid")
         else
@@ -43,19 +41,6 @@ function ClientState.SetIsInRaid(val)
 
     end
 
-
-
-
-
-
-    -- if val == true then
-    --     debugPrint("OnMatchStart event triggered")
-    --     triggerEvent("PZEFT_OnMatchStart")
-    -- else
-    --     -- FIXME This triggers when the player extract and when the match actually ends. Separate these two cases
-    --     debugPrint("OnMatchEnd event triggered")
-    --     triggerEvent("PZEFT_OnMatchEnd")
-    -- end
 end
 
 ---@param val number

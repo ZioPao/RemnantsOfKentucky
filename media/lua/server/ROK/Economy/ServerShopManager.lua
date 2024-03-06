@@ -62,7 +62,7 @@ function ServerShopManager.LoadShopPrices()
     --!!!!!!!!!!!!!!!
     ShopItemsManager.GenerateDailyItems()
 
-    -- TODO Awful, but it'll do for now
+    -- UGLY Awful, but it'll do for now
     shopItemsData = ServerData.Shop.GetShopItemsData()
     for i,v in pairs(ShopItemsManager.data) do
         shopItemsData = DoTags(shopItemsData, i, v)

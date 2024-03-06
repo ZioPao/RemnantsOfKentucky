@@ -233,7 +233,7 @@ InsertSpawnpoint("SOUTHERN SHORE SPAWN #2", 219, 540, 0)
 InsertSpawnpoint("SOUTHERN SHORE SPAWN #3", 34, 524, 0)
 InsertSpawnpoint("RADIO TOWER SPAWN", 715, 503, 0)
 InsertSpawnpoint("WESTERN SHORE SPAWN #1", 848, 445, 0)
---InsertSpawnpoint("WESTERN SHORE SPAWN #2", 854, 226, 0) --FIXME Broken spawnpoint
+--InsertSpawnpoint("WESTERN SHORE SPAWN #2", 854, 226, 0) --FIX Broken spawnpoint
 InsertSpawnpoint("MEDICAL CENTER BATHROOMS SPAWN", 153, 425, 0)
 InsertSpawnpoint("EASTERN SHORE SPAWN #1", 29, 412, 0)
 InsertSpawnpoint("EASTERN SHORE SPAWN #2", 57, 331, 0)

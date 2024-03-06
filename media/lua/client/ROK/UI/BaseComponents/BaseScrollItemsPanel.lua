@@ -34,7 +34,8 @@ function BaseScrollItemsPanel:initialiseList(itemsTable)
     for k,v in pairs(itemsTable) do
         v.actualItem = getScriptManager():getItem(v.fullType)
         if v.actualItem ~= nil then
-            table.insert(sortedItems, v)        -- FIXME Workaround, it could prevent from reaching the desired amount of daily items
+            -- TODO Workaround, it could prevent from reaching the desired amount of daily items
+            table.insert(sortedItems, v)
         end
     end
 

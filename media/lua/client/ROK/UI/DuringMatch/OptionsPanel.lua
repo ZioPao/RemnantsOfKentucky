@@ -47,7 +47,6 @@ function OptionsPanel:initialise()
     self.counterOptions = 0
     self.options = {}
 
-    -- TODO Fetch config from server
 end
 function OptionsPanel:createChildren()
     ISCollapsableWindow.createChildren(self)
@@ -141,9 +140,7 @@ end
 function OptionsPanel:update()
     ISCollapsableWindow.update(self)
 
-    -- TODO We can handle this on a OnTextChange
     -- Check if all the options are valid or not
-
     local canApply = true
 
     for i=1, #self.options do

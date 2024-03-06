@@ -153,7 +153,7 @@ end
 
 
 function CreditsScreen.HandleResolutionChange(oldW, oldH, w, h)
-    -- FIXME This will reset the credits, re-starting them
+    -- FIX This will reset the credits, re-starting them
     if CreditsScreen.instance then
         CreditsScreen.Close()
         CreditsScreen.Open()
@@ -172,6 +172,7 @@ local function MainScreenRender(self)
 end
 
 local old_MainScreen_instantiate = MainScreen.instantiate
+---@diagnostic disable-next-line: duplicate-set-field
 function MainScreen:instantiate()
     old_MainScreen_instantiate(self)
 
@@ -186,9 +187,11 @@ function MainScreen:instantiate()
             getSoundManager():playUISound("UIActivateMainMenuItem")
             CreditsScreen.Open()
         end
+---@diagnostic disable-next-line: duplicate-set-field
         self.creditsROK.onMouseMove = function(self)
             self.fade:setFadeIn(true)
         end
+---@diagnostic disable-next-line: duplicate-set-field
         self.creditsROK.onMouseMoveOutside = function(self)
             self.fade:setFadeIn(false)
         end

@@ -5,7 +5,6 @@ local Delay = require("ROK/Delay")
 local ClientCommon = {}
 
 function ClientCommon.InstaHeal()
-    -- FIXME Confirmation for instaheal
     local pl = getPlayer()
     pl:getBodyDamage():RestoreToFullHealth()
     pl:Say("I feel better now!")
@@ -18,7 +17,7 @@ function ClientCommon.Teleport(coords)
     -- Don't teleport dead players
     if pl:isDead() then return end
 
-    -- FIXME Breaks when players get damaged during extraction!
+    -- FIX Breaks when players get damaged during extraction!
     pl:setX(coords.x)
     pl:setY(coords.y)
     pl:setZ(coords.z)

@@ -6,6 +6,7 @@ local LeaderboardPanel = require("ROK/UI/BeforeMatch/LeaderboardPanel")
 
 local og_ISEquippedItem_initialise = ISEquippedItem.initialise
 
+---@diagnostic disable-next-line: duplicate-set-field
 function ISEquippedItem:initialise()
     og_ISEquippedItem_initialise(self)
     debugPrint("initializing ISEquippedItem")
@@ -47,7 +48,7 @@ ButtonManager.firstInit = true
 ButtonManager.additionalY = 10
 
 local function OpenAdminMenu()
-    -- TODO This could mean that the admin needs to open it up multiple times
+    -- UGLY This could mean that the admin needs to open it up multiple times
     sendClientCommand(EFT_MODULES.Match, 'CheckIsRunningMatch', {})
 
     if not ClientState.isMatchRunning then

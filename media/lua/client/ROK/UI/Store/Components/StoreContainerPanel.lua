@@ -35,8 +35,7 @@ end
 
 function StoreContainerPanel:createChildren()
 
-    -- TODO Left panel should be bigger compared to the right one
-
+    -- Left panel should be bigger compared to the right one
     local scrollPanelWidth = self.width*0.65 - 20
     local paneY = GenericUI.SMALL_FONT_HGT + 2 * 2
     local paneHeight = self.height - paneY - 10

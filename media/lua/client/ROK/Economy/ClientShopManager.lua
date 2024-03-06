@@ -42,7 +42,7 @@ function ClientShopManager.AskToBuyInstaHeal()
     local text = getText("IGUI_Shop_InstaHeal_Confirmation")
     local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
 
-    -- TODO Jank, 500 is the width but it's handled inside ConfirmationPanel.
+    -- UGLY Jank, 500 is the width but it's handled inside ConfirmationPanel.
     local x = (getCore():getScreenWidth() - 500)/2
     local y = getCore():getScreenHeight()/2
 
@@ -226,8 +226,8 @@ end
 
 ---@param sellItemsData sellItemsDataType
 function ShopCommands.SellItems(sellItemsData)
-
     local itemsInInventoryArray = ClientShopManager.GetSellableItemsInInventory(sellItemsData)
+    local pl = getPlayer()
     for i=0, itemsInInventoryArray:size() - 1 do
         local item = itemsInInventoryArray:get(i)
         ISRemoveItemTool.removeItem(item, pl)

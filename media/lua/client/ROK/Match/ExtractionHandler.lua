@@ -10,7 +10,6 @@ local os_time = os.time
 local ExtractionHandler = {}
 
 ---Starts the loop to handle the event
----@param isInRaid boolean
 function ExtractionHandler.ToggleEvent()
     if ClientState.GetIsInRaid() == true then
         debugPrint("Adding ExtractionHandler event")

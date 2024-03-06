@@ -61,7 +61,7 @@ end
 local BankCommands = {}
 
 --- Update bank account information with data from server
----@param args {account : any}      -- TODO Set the correct param
+---@param args {account : any}
 function BankCommands.GetBankAccount(args)
     if not args then
         debugPrint('ERROR: ServerCommands.GetBankAccount - Tried to update bank account without ARGS')

@@ -8,6 +8,11 @@ local PlayersManager = require("ROK/PlayersManager")
 
 ---------------------------------------------------
 
+local MATCH_STARTING_STR = getText("IGUI_TimePanel_MatchStarting")
+
+
+----------------
+
 ---@class MatchController
 ---@field pvpInstance pvpInstanceTable
 ---@field playersInMatch table<number,{playerId : number, username : string}>        Table of player ids and usernames
@@ -61,7 +66,7 @@ function MatchController:initialise()
                 local spawnPoint = PvpInstanceManager.PopRandomSpawnPoint()
                 if not spawnPoint then
                     debugPrint("No more spawnpoints! Can't teleport player!")
-                    -- FIXME This should be made more clear to the users, can break a lot of stuff
+                    -- FIX This should be made more clear to the users, can break a lot of stuff
                     return
                 end
 
@@ -266,8 +271,8 @@ end
 ---@param playerObj IsoPlayer
 function MatchController.HandlePlayerDeath(playerObj)
     if playerObj:isZombie() then return end
-    ---@type IsoPlayer
     local killerObj = playerObj:getAttackedBy()
+    ---@cast killerObj IsoPlayer
 
     if killerObj and killerObj ~= playerObj then
         -- Add to kill count, send it back to client
@@ -378,9 +383,7 @@ function MatchCommands.StartCountdown(playerObj, args)
         sendServerCommand(playerObj, EFT_MODULES.UI, 'SwitchMatchAdminUI', { startingState = 'BEFORE' })
     end
 
-    -- TODO Add getText
-    local matchStartingText = "The match is starting"
-    Countdown.Setup(args.stopTime, StartMatch, true, matchStartingText)
+    Countdown.Setup(args.stopTime, StartMatch, true, MATCH_STARTING_STR)
 end
 
 function MatchCommands.StopCountdown()

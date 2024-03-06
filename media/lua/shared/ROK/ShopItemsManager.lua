@@ -3219,7 +3219,7 @@ if isServer() then
 
         while currentAmount < amount do
             local randIndex = ZombRand(#keys) + 1
-            local fType = keys[randIndex]-- FIXME Can cause issue
+            local fType = keys[randIndex]   -- FIX Can cause issue
             debugPrint("Adding to daily: fType=" .. fType)
 
             -- Check if Item actually exists, in case mod wasn't loaded
