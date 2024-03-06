@@ -217,7 +217,7 @@ local function AddShopMenu(playerNum, context, worldObjects, test)
             context:addOption(getText("ContextMenu_EFT_OpenShop"), playerObj, MainShopPanel.Open, coords)
 
             local instaHealCost = PZ_EFT_CONFIG.Shop.instaHealCost
-            local instaHealOption = context:addOption(getText("ContextMenu_EFT_InstaHeal", instaHealCost), playerObj, ClientShopManager.BuyInstaHeal)
+            local instaHealOption = context:addOption(getText("ContextMenu_EFT_InstaHeal", instaHealCost), playerObj, ClientShopManager.AskToBuyInstaHeal)
             instaHealOption.notAvailable = not ClientShopManager.CanBuy(instaHealCost)
         end
     end

@@ -35,11 +35,28 @@ function ClientShopManager.GetSellableItemsInInventory(sellItemsData)
 end
 
 
+---------------------------------
+--* Instaheal section
+
+function ClientShopManager.AskToBuyInstaHeal()
+    local text = getText("IGUI_Shop_InstaHeal_Confirmation")
+    local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
+
+    -- TODO Jank, 500 is the width but it's handled inside ConfirmationPanel.
+    local x = (getCore():getScreenWidth() - 500)/2
+    local y = getCore():getScreenHeight()/2
+
+    ConfirmationPanel.Open(text, x, y, nil, ClientShopManager.BuyInstaHeal)
+end
 
 
 function ClientShopManager.BuyInstaHeal()
     BankManager.TryProcessTransaction(-2500, EFT_MODULES.Shop, "BuyInstaHeal", {}, EFT_MODULES.Shop, "BuyFailed", {})
 end
+
+
+-------------------------------
+
 
 --- Try buy an item for quantity. Let's assume that it's valid if we process the transaction
 ---@param itemData shopItemElement
