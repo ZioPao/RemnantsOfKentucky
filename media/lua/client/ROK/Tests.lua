@@ -56,7 +56,7 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
     -- COMMON
 
     local function ExtractAtRandomTime()
-        Delay:set(ZombRand(10,20), ExecuteExtraction)
+        Delay:set(ZombRand(5,25), ExecuteExtraction)
     end
 
     -- function Tests.LoopStartEndMatch()

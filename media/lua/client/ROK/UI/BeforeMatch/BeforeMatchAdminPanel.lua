@@ -5,6 +5,7 @@ local ClientState = require("ROK/ClientState")
 --------------------------------
 
 ---@class BeforeMatchAdminPanel : BaseAdminPanel
+---@field availableInstancesAmount integer
 local BeforeMatchAdminPanel = BaseAdminPanel:derive("BeforeMatchAdminPanel")
 BeforeMatchAdminPanel.instance = nil
 
@@ -23,8 +24,10 @@ function BeforeMatchAdminPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
 
-    ---@cast o BeforeMatchAdminPanel
+    self.availableInstancesAmount = -1      -- init
 
+    ---@cast o BeforeMatchAdminPanel
+    
     BeforeMatchAdminPanel.instance = o
     return o
 end
@@ -158,6 +161,12 @@ function BeforeMatchAdminPanel:update()
 
     sendClientCommand(EFT_MODULES.PvpInstances, "GetAmountAvailableInstances", {})
 
+    local valInstancesAvailableText = " <CENTRE> " .. tostring(self.availableInstancesAmount)
+    self.labelValInstancesAvailable:setText(valInstancesAvailableText)
+    self.labelValInstancesAvailable.textDirty = true
+
+    self.btnToggleMatch:setEnable(self.availableInstancesAmount > 0)
+
     -- When starting the match, we'll disable the default close button
     self.closeButton:setEnable(not ClientState.isStartingMatch)
     self.btnManagePlayers:setEnable(not ClientState.isStartingMatch)
@@ -190,6 +199,12 @@ function BeforeMatchAdminPanel:update()
     end
 
 end
+
+---@param amount integer
+function BeforeMatchAdminPanel:setAvailableInstancesAmount(amount)
+    self.availableInstancesAmount = amount
+end
+
 
 function BeforeMatchAdminPanel:setAvailableInstancesText(text)
     local valInstancesAvailableText = " <CENTRE> " .. tostring(text)
