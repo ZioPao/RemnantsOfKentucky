@@ -1,7 +1,15 @@
 
 # You're not the only one left...
+<p align='center'>
+  <img src="/dev/photoshop_files/ROK_logo_v1_white.png" width=50% height=50%>
+</p>
 
-<img src="/dev/photoshop_files/ROK_logo_v1_white.png" width=50% height=50%>
+<p align='center'>
+<a href='https://steamcommunity.com/sharedfiles/filedetails/?id=3161952259&tscn=1709688905'>
+  <img src='https://img.shields.io/badge/Steam-000000?style=for-the-badge&logo=steam&logoColor=white' />        
+</a>
+</p>
+
 
 It's been countless years since the Knox Event. With nearly everyone transformed into monsters by the virus, those left standing consider themselves the Remnants of Kentucky - survivors loosely strung together by a collection of settlements and all vying for the last bit of food and supplies.
 
