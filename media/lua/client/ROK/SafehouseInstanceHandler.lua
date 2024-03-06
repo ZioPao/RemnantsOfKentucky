@@ -301,8 +301,6 @@ function SafehouseInstanceCommands.TeleportToSafehouse(coords)
     local ClientCommon = require("ROK/ClientCommon")
     local ClientState = require("ROK/ClientState")
     ClientCommon.Teleport(coords)
-
-    -- FIXME This would trigger OnMatchEnd 2 times, since SetIsInRaid is handled from the server when removing the player. Check if this breaks anything
     ClientState.SetIsInRaid(false)
 end
 

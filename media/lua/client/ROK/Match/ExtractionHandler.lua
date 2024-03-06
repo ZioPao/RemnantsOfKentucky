@@ -11,8 +11,8 @@ local ExtractionHandler = {}
 
 ---Starts the loop to handle the event
 ---@param isInRaid boolean
-function ExtractionHandler.ToggleEvent(isInRaid)
-    if isInRaid == true then
+function ExtractionHandler.ToggleEvent()
+    if ClientState.GetIsInRaid() == true then
         debugPrint("Adding ExtractionHandler event")
         Events.OnTick.Add(ExtractionHandler.RunEvent)
     else
@@ -23,7 +23,7 @@ function ExtractionHandler.ToggleEvent(isInRaid)
     end
 
 end
-Events.PZEFT_UpdateClientStatus.Add(ExtractionHandler.ToggleEvent)
+Events.PZEFT_IsInRaidChanged.Add(ExtractionHandler.ToggleEvent)
 
 ---Triggers PZEFT_UpdateExtractionZoneState if player is in an extraction zone
 function ExtractionHandler.RunEvent()
@@ -66,8 +66,6 @@ end
 ---Runs the timer for the ExtractionHandler. Can be closed and disabled from RunEvent
 function ExtractionHandler.HandleTimer()
     local cTime = os_time()
-    --print(cTime)
-    --debugPrint(ClientState.extractionStatus[ExtractionHandler.key])
 
     local formattedTime = string.format("%d", ExtractionHandler.stopTime - cTime)
     ExtractionPanel.instance:setExtractButtonTitle(formattedTime)
@@ -82,7 +80,6 @@ function ExtractionHandler.ExecuteExtraction()
     debugPrint("Extract now!")
     getSoundManager():playUISound("BoatSound")    -- "BoatSound"
 
-    ExtractionHandler.key = nil     -- Set this to nil for next match. If it stays it's gonna break stuff next round
     sendClientCommand(EFT_MODULES.Match, "RequestExtraction", {})
     ExtractionPanel.Close()
     Events.OnTick.Remove(ExtractionHandler.HandleTimer)
@@ -93,7 +90,6 @@ function ExtractionHandler.DoExtraction()
     --local currentInstanceData = ClientData.PVPInstances.GetCurrentInstance()
 
     ExtractionHandler.stopTime = os_time() + ClientState.GetExtractionTime()
-    -- + currentInstanceData.extractionPoints[ExtractionHandler.key].time
     Events.OnTick.Add(ExtractionHandler.HandleTimer)
 end
 

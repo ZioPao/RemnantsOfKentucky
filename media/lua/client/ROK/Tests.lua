@@ -15,6 +15,7 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
 
     local TimePanel = require("ROK/UI/TimePanel")
     local RecapPanel = require("ROK/UI/AfterMatch/RecapPanel")
+    local ExtractionHandler = require("ROK/Match/ExtractionHandler")
 
 
     local function StartMatch()
@@ -44,7 +45,6 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
 
         Delay:set(2, function()
             --debugPrint("TEST: EXTRACTION!")
-            local ExtractionHandler = require("ROK/Match/ExtractionHandler")
             ExtractionHandler.DoExtraction()
 
 
@@ -59,24 +59,24 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
         Delay:set(ZombRand(10,20), ExecuteExtraction)
     end
 
-    function Tests.LoopStartEndMatch()
-        local function StopMatch()
-            sendClientCommand(EFT_MODULES.Match, "StartMatchEndCountdown", { stopTime = PZ_EFT_CONFIG.Client.Match.endMatchTime })
-        end
+    -- function Tests.LoopStartEndMatch()
+    --     local function StopMatch()
+    --         sendClientCommand(EFT_MODULES.Match, "StartMatchEndCountdown", { stopTime = PZ_EFT_CONFIG.Client.Match.endMatchTime })
+    --     end
 
-        StartMatch()
+    --     StartMatch()
 
-        Events.PZEFT_OnMatchStart.Add(function()
-            -- Stop Match
-            StopMatch()
-        end)
+    --     Events.PZEFT_OnMatchStart.Add(function()
+    --         -- Stop Match
+    --         StopMatch()
+    --     end)
 
 
-        Events.PZEFT_OnMatchEnd.Add(function()
-            -- Start match
-            StartMatch()
-        end)
-    end
+    --     Events.PZEFT_OnMatchEnd.Add(function()
+    --         -- Start match
+    --         StartMatch()
+    --     end)
+    -- end
 
     function Tests.StartMatch()
         StartMatch()
@@ -125,20 +125,18 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
         ExtractAtRandomTime()
 
         local function InnerLoop()
-            if ClientState.isInRaid then return end
-
             testDebugPrint("OnMatchEnd triggered")
             LoopCheckAndRunAndExtract()
         end
 
 
-        Events.PZEFT_OnSuccessfulTeleport.Add(InnerLoop)
+        Events.PZEFT_ClientNotInRaidAnymore.Add(InnerLoop)
     end
 
 
     --* PLAYERS
     function Tests.LoopExtractAtRandomTime()
-        Events.PZEFT_OnMatchStart.Add(function()
+        Events.PZEFT_ClientNowInRaid.Add(function()
             ExtractAtRandomTime()
         end)
     end
