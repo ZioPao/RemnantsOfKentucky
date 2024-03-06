@@ -106,11 +106,11 @@ end
 function MatchController:stopMatch()
     Countdown.Stop()
     MatchController.instance = nil
-    triggerEvent("PZEFT_OnMatchEnd")
+    triggerEvent("PZEFT_OnMatchEnd")        -- OnMatchEnd on the server
 end
 
 --- Stop the match and teleport back everyone. Triggered manually by an admin
-function MatchController:forceStopMatch()
+function MatchController:manualStopMatch()
     self:stopMatch()
     SafehouseInstanceManager.SendAllPlayersToSafehouses()
 end
@@ -318,7 +318,7 @@ function MatchController.CheckAlivePlayers()
 
     if instance.amountPlayersInMatch == 0 then
         debugPrint("no alive players in match, stopping it")
-        MatchController.instance:forceStopMatch()
+        MatchController.instance:stopMatch()
     end
 end
 
@@ -392,7 +392,7 @@ end
 function MatchCommands.StartMatchEndCountdown(playerObj, args)
     local function StopMatch()
         local handler = MatchController.GetHandler()
-        if handler then handler:forceStopMatch() end
+        if handler then handler:manualStopMatch() end
 
         sendServerCommand(playerObj, EFT_MODULES.UI, 'SwitchMatchAdminUI', { startingState = 'DURING' })
     end

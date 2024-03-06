@@ -123,13 +123,12 @@ function CratesHandling.UpdateContainersValue()
     ClientBankManager.RequestBankAccountFromServer(true)
 end
 
----@param isInRaid boolean
-function CratesHandling.ToggleContainersValueUpdate(isInRaid)
+function CratesHandling.ToggleContainersValueUpdate()
     debugPrint("Toggling UpdateCratesValue")
 
     -- Will get triggered even with Overtime.
     -- Doesn't really cause issues, but keep this in mind
-    if not isInRaid then
+    if ClientState.GetIsInRaid() then
         Events.EveryOneMinute.Remove(CratesHandling.UpdateContainersValue)
         Events.EveryOneMinute.Add(CratesHandling.UpdateContainersValue)
     else
@@ -137,4 +136,4 @@ function CratesHandling.ToggleContainersValueUpdate(isInRaid)
     end
 end
 
-Events.PZEFT_UpdateClientStatus.Add(CratesHandling.ToggleContainersValueUpdate)
+Events.PZEFT_IsInRaidChanged.Add(CratesHandling.ToggleContainersValueUpdate)

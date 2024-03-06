@@ -2,18 +2,29 @@ if not getActivatedMods():contains("TEST_FRAMEWORK") or not isDebugEnabled() the
 local TestFramework = require("TestFramework/TestFramework")
 local TestUtils = require("TestFramework/TestUtils")
 local LootRecapHandler = require("ROK/Match/LootRecapHandler")
+local Delay = require("ROK/Delay")
+
+local function testDebugPrint(text)
+    debugPrint("!!!!!!!!!!TESTFRAMEWORK!!!!!!!!!!!!! - " .. text)
+end
+
 
 
 TestFramework.registerTestModule("Gameplay", "Debug", function()
     local Tests = {}
+
+    local TimePanel = require("ROK/UI/TimePanel")
+    local RecapPanel = require("ROK/UI/AfterMatch/RecapPanel")
+
+
     local function StartMatch()
-        local TimePanel = require("ROK/UI/TimePanel")
+        testDebugPrint("Starting match")
         sendClientCommand(EFT_MODULES.Match, "StartCountdown", { stopTime = PZ_EFT_CONFIG.Client.Match.startMatchTime })
-        TimePanel.Open("Starting match in...")
+        TimePanel.Open("TEST Starting match in...")
     end
 
     local function CloseRecapScreen()
-        local RecapPanel = require("ROK/UI/AfterMatch/RecapPanel")
+        testDebugPrint("Closing recap panel")
         RecapPanel.Close()
     end
 
@@ -30,7 +41,6 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
         pl:setY(y)
         pl:setLx(x)
         pl:setLy(y)
-        local Delay = require("ROK/Delay")
 
         Delay:set(2, function()
             --debugPrint("TEST: EXTRACTION!")
@@ -38,19 +48,18 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
             ExtractionHandler.DoExtraction()
 
 
-            Delay:set(2, CloseRecapScreen)
+            Delay:set(5, CloseRecapScreen)
 
 
         end)
     end
+    -- COMMON
 
-
-
-    
+    local function ExtractAtRandomTime()
+        Delay:set(ZombRand(10,20), ExecuteExtraction)
+    end
 
     function Tests.LoopStartEndMatch()
-
-
         local function StopMatch()
             sendClientCommand(EFT_MODULES.Match, "StartMatchEndCountdown", { stopTime = PZ_EFT_CONFIG.Client.Match.endMatchTime })
         end
@@ -79,25 +88,63 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
 
     function Tests.StartMatchAndExtract()
         StartMatch()
-
-        local Delay = require("ROK/Delay")
-        Delay:set(10, ExecuteExtraction)
-
+        ExtractAtRandomTime()
     end
 
+
+
+    --* ADMIN WHO STARTS MATCH HANDLING
+
+    local ClientState = require("ROK/ClientState")
+
+    local function LoopCheckAndRunAndExtract()
+        local function CheckAndRunMatch()
+            if not ClientState.isMatchRunning then
+                testDebugPrint("Match ended, restarting it and rerunning extraction")
+                Events.EveryOneMinute.Remove(CheckAndRunMatch)
+
+                Delay:set(5, function()
+                    StartMatch()
+                    Delay:set(ZombRand(10,20), function()
+                        ExecuteExtraction()
+                    end)
+                end)
+            end
+            sendClientCommand(EFT_MODULES.Match, 'CheckIsRunningMatch', {})
+
+        end
+
+        ClientState.isMatchRunning = true       -- Assume that it's true for now
+        Events.EveryOneMinute.Remove(CheckAndRunMatch)
+        Events.EveryOneMinute.Add(CheckAndRunMatch)
+    end
 
     function Tests.LoopStartMatchAndExtract()
+        -- First run
         StartMatch()
-        local Delay = require("ROK/Delay")
-        Delay:set(10, ExecuteExtraction)
+        ExtractAtRandomTime()
 
-        Events.PZEFT_OnMatchEnd.Add(function()
-            -- Start match
-            StartMatch()
-            Delay:set(10, ExecuteExtraction)
-        end)
+        local function InnerLoop()
+            if ClientState.isInRaid then return end
 
+            testDebugPrint("OnMatchEnd triggered")
+            LoopCheckAndRunAndExtract()
+        end
+
+
+        Events.PZEFT_OnSuccessfulTeleport.Add(InnerLoop)
     end
+
+
+    --* PLAYERS
+    function Tests.LoopExtractAtRandomTime()
+        Events.PZEFT_OnMatchStart.Add(function()
+            ExtractAtRandomTime()
+        end)
+    end
+
+
+
 
     return Tests
 

@@ -109,11 +109,11 @@ function ButtonManager.CreateButtons()
     ISEquippedItem.instance:shrinkWrap()
 end
 
-function ButtonManager.Hide(isInRaid)
-    ButtonManager["Leaderboard"]:setVisible(not isInRaid)
-    ButtonManager["Leaderboard"]:setEnabled(not isInRaid)
+function ButtonManager.Hide()
+    ButtonManager["Leaderboard"]:setVisible(not ClientState.GetIsInRaid())
+    ButtonManager["Leaderboard"]:setEnabled(not ClientState.GetIsInRaid())
 end
 
 
 Events.PZEFT_PostISEquippedItemInitialization.Add(ButtonManager.CreateButtons)
-Events.PZEFT_UpdateClientStatus.Add(ButtonManager.Hide)
+Events.PZEFT_IsInRaidChanged.Add(ButtonManager.Hide)

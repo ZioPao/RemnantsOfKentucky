@@ -24,18 +24,38 @@ local ClientState = {
 --* Setters
 ---@param val boolean
 function ClientState.SetIsInRaid(val)
+    local prev = ClientState.isInRaid
     ClientState.isInRaid = val
 
-    if val == true then
-        triggerEvent("PZEFT_OnMatchStart")
-    else
-        triggerEvent("PZEFT_OnMatchEnd")
+    if prev ~= ClientState.isInRaid then
+        -- Notify that isInRaid has changed
+        triggerEvent("PZEFT_IsInRaidChanged")
+
+
+
+        -- More specific events
+
+        if val == true then
+            triggerEvent("PZEFT_ClientNowInRaid")
+        else
+            triggerEvent("PZEFT_ClientNotInRaidAnymore")
+        end
+
     end
 
 
 
-    -- TODO Maybe too violent?
-    triggerEvent("PZEFT_UpdateClientStatus", val)
+
+
+
+    -- if val == true then
+    --     debugPrint("OnMatchStart event triggered")
+    --     triggerEvent("PZEFT_OnMatchStart")
+    -- else
+    --     -- FIXME This triggers when the player extract and when the match actually ends. Separate these two cases
+    --     debugPrint("OnMatchEnd event triggered")
+    --     triggerEvent("PZEFT_OnMatchEnd")
+    -- end
 end
 
 ---@param val number
@@ -70,16 +90,20 @@ function ClientState.ResetMatchValues()
     ClientState.previousExtractionPointsStatus = {}
     ClientState.extractionPointsStatus = {}
 end
-Events.PZEFT_OnMatchEnd.Add(ClientState.ResetMatchValues)
+Events.PZEFT_ClientNotInRaidAnymore.Add(ClientState.ResetMatchValues)
 
 
 function ClientState.SetIsMatchRunning(value)
     ClientState.isMatchRunning = value
 end
 
-Events.PZEFT_OnMatchStart.Add(function ()
+
+
+-- If the client is in a raid, force set that the match is running
+Events.PZEFT_ClientNowInRaid.Add(function()
     ClientState.SetIsMatchRunning(true)
 end)
+
 
 
 -----------------------------------

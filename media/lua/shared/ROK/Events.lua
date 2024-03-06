@@ -1,7 +1,10 @@
-LuaEventManager.AddEvent("PZEFT_OnMatchStart")
-LuaEventManager.AddEvent("PZEFT_OnMatchEnd")
-
 if isClient() then
+
+    --* ClientState.lua
+    LuaEventManager.AddEvent("PZEFT_IsInRaidChanged")
+    LuaEventManager.AddEvent("PZEFT_ClientNowInRaid")
+    LuaEventManager.AddEvent("PZEFT_ClientNotInRaidAnymore")
+
 
     --* ClientEventHandler.lua
     LuaEventManager.AddEvent("PZEFT_OnPlayerInitDone")
@@ -11,7 +14,6 @@ if isClient() then
 
     --* ClientData.lua
     LuaEventManager.AddEvent("PZEFT_ClientModDataReady")
-    LuaEventManager.AddEvent("PZEFT_UpdateClientStatus")
 
     LuaEventManager.AddEvent("PZEFT_LootRecapReady")
 
@@ -34,6 +36,8 @@ if isClient() then
     LuaEventManager.AddEvent("PZEFT_OnFailedSellTransfer")
 
 elseif isServer() then
+    LuaEventManager.AddEvent("PZEFT_OnMatchStart")
+    LuaEventManager.AddEvent("PZEFT_OnMatchEnd")
 
     --* ServerData.lua    
     LuaEventManager.AddEvent("PZEFT_ServerModDataReady")
