@@ -93,6 +93,8 @@ ShopItemsManager.AddItem("Base.9mmClip", {["ESSENTIALS"] = true}, 250, 1, 0.5)
 ShopItemsManager.AddItem("Base.Bullets9mmBox", {["ESSENTIALS"] = true}, 250, 1, 0.5)
 ShopItemsManager.AddItem("Base.Bandage", {["ESSENTIALS"] = true}, 100, 1, 0.5)
 
+
+-- FIX FIX TAGS!!!
 -------------------------
 ShopItemsManager.AddItem("ATA2.ATA2ItemContainer", {["VARIOUS"] = true}, 500, 1, 0.25)
 ShopItemsManager.AddItem("ATA2.ATABullbar1Item", {["VARIOUS"] = true}, 150, 1, 0.25)

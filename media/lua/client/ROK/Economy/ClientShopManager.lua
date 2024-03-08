@@ -200,7 +200,7 @@ function ShopCommands.BuyItem(args)
 
     local item = InventoryItemFactory.CreateItem(args.itemData.fullType)
 
-    if instanceof(item, "Moveable") then
+    if instanceof(item, "Moveable") and item:getSpriteGrid() == nil then
         SafehouseInstanceHandler.TryToPlaceMoveable(item)
     else
         local usedCrates = {}
