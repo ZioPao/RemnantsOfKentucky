@@ -21,7 +21,7 @@ end
 local function DoTags(shopItems, id, item)
 
     local tags = {
-        "WEAPON",
+        "WEAPON", 'TOOL',
         "CLOTHING", "MILITARY_CLOTHING",
         "FOOD", "FIRST_AID",
         "SKILL_BOOK", "VARIOUS", "FURNITURE",
