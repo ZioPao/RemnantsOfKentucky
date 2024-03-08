@@ -21,7 +21,7 @@ end
 local function DoTags(shopItems, id, item)
 
     local tags = {
-        "WEAPON",
+        "WEAPON", 'TOOL',
         "CLOTHING", "MILITARY_CLOTHING",
         "FOOD", "FIRST_AID",
         "SKILL_BOOK", "VARIOUS", "FURNITURE",
@@ -62,7 +62,7 @@ function ServerShopManager.LoadShopPrices()
     --!!!!!!!!!!!!!!!
     ShopItemsManager.GenerateDailyItems()
 
-    -- TODO Awful, but it'll do for now
+    -- UGLY Awful, but it'll do for now
     shopItemsData = ServerData.Shop.GetShopItemsData()
     for i,v in pairs(ShopItemsManager.data) do
         shopItemsData = DoTags(shopItemsData, i, v)

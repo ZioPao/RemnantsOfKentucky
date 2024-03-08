@@ -231,7 +231,6 @@ function LeaderboardPanel.Open(x, y)
         return
     end
 
-    -- TODO Too big in some parts
     local width = 400 * GenericUI.FONT_SCALE
     local height = 600 * GenericUI.FONT_SCALE
 

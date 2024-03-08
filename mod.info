@@ -1,12 +1,12 @@
 id=ROK
-name=Remnants of Kentucky - Test Version
+name=Remnants of Kentucky
 description=ROK
 poster=poster.png
 authors=Pao, Monkey, Oppolla
 icon=icon.png
 tags=Build 41
 versionMin=41.0
-modversion=1.0.6
+modversion=1.0.7
 require=INVENTORY_TETRIS
 pack=ROKPoster
 tiledef=PZ_EFT_Posters 353

@@ -11,12 +11,12 @@ LootRecapHandler.newItems = {}
 function LootRecapHandler.SaveBeforeMatchInventory()
     LootRecapHandler.SaveInventory(true)
 end
-Events.PZEFT_OnMatchStart.Add(LootRecapHandler.SaveBeforeMatchInventory)
+Events.PZEFT_ClientNowInRaid.Add(LootRecapHandler.SaveBeforeMatchInventory)
 
 function LootRecapHandler.SaveAfterMatchInventory()
     LootRecapHandler.SaveInventory(false)
 end
-Events.PZEFT_OnMatchEnd.Add(LootRecapHandler.SaveAfterMatchInventory)
+Events.PZEFT_ClientNotInRaidAnymore.Add(LootRecapHandler.SaveAfterMatchInventory)
 
 ---@param isStartingRaid boolean
 ---@private

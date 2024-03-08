@@ -70,7 +70,7 @@ end
 ---@param args {amount : integer}
 function InterfaceCommands.ReceiveAmountAvailableInstances(args)
     if BeforeMatchAdminPanel.instance == nil then return end
-    BeforeMatchAdminPanel.instance:setAvailableInstancesText(tostring(args.amount))
+    BeforeMatchAdminPanel.instance:setAvailableInstancesAmount(args.amount)
 end
 
 function InterfaceCommands.ReceiveFailStartingMatch(args)

@@ -1,4 +1,4 @@
--- TODO Add header!!!
+-- TODO Add headers!!!!
 
 
 local KillTrackerHandler = require("ROK/Match/KillTrackerHandler")
@@ -134,7 +134,7 @@ function RecapScrollKilledPlayersPanel.DrawItem(playersBox, y, item, rowElementN
     playersBox:drawText(username, x + 6, y + 2, 1, 1, 1, a, playersBox.font)
 
     --* TIMESTAMP *--
-    -- TODO Timestamps are still completely fucked up
+    -- FIX Timestamps are still completely fucked up
     -- local timeStr = GenericUI.FormatTime(timestamp, false)
     -- local timeStrY = getTextManager():MeasureStringY(playersBox.font, timeStr)
     -- local timeStrX = getTextManager():MeasureStringX(playersBox.font, timeStr)

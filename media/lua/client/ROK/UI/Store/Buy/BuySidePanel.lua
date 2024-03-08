@@ -110,7 +110,9 @@ function BuySidePanel:update()
             local isConfirmationClosed = self.confirmationPanelRef == nil or not self.confirmationPanelRef:isVisible()
             -- Second check, if it's a moveable we want to use the delivery point instead of the crates
             local testItem = InventoryItemFactory.CreateItem(selectedItem.fullType)
-            if instanceof(testItem, "Moveable") then
+            
+            -- Check if it can be dropped. If so, put, if so, it should be considere as a normal item
+            if instanceof(testItem, "Moveable") and testItem:getSpriteGrid() == nil then
                 isConfirmationClosed = isConfirmationClosed and SafehouseInstanceHandler.IsDeliveryPointClear()
             end
 

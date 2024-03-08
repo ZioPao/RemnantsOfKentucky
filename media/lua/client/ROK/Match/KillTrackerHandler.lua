@@ -9,7 +9,7 @@ function KillTrackerHandler.Init()
     --  Reset it
     KillTrackerHandler.data = {}
 end
-Events.PZEFT_OnMatchStart.Add(KillTrackerHandler.Init)
+Events.PZEFT_ClientNowInRaid.Add(KillTrackerHandler.Init)
 
 function KillTrackerHandler.GetData()
     return KillTrackerHandler.data

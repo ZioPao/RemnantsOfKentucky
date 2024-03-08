@@ -46,7 +46,7 @@ local function OnPlayerInit()
         sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', {})
 
         --* Request bank account and request bank account periodically.
-        CratesHandling.ToggleContainersValueUpdate(false)
+        CratesHandling.ToggleContainersValueUpdate()
 
         --* Clean map
         ISWorldMap.HandleEFTExits(true)
@@ -54,7 +54,7 @@ local function OnPlayerInit()
         --* Request the list of PVP Instances from the server
         ClientData.RequestPvpInstances()
 
-        -- TODO Add toggle for admin
+        -- IDEA Add toggle for admin to prevent them from dying\getting punished
         --* Ask server about previous player status
         sendClientCommand(EFT_MODULES.Player, "CheckPlayer", {})
 
@@ -70,7 +70,7 @@ local function OnPlayerInit()
             CheckMods()
         end
 
-        -- todo maybe migrate a bunch of these functions to events?
+        -- IDEA maybe migrate a bunch of these functions to events?
         triggerEvent("PZEFT_OnPlayerInitDone")
 
         LoadingScreen.Close()
@@ -117,19 +117,18 @@ Events.OnDisconnect.Add(OnPlayerExit)
 
 
 function CratesHandling.UpdateContainersValue()
-    -- TODO Stupid heavy, figure out a better way to check when a container status changes instead of this crap
+    -- UGLY Stupid heavy, figure out a better way to check when a container status changes instead of this crap
     --debugPrint("Update containers value, requesting bank account again")
     local ClientBankManager = require("ROK/Economy/ClientBankManager")
     ClientBankManager.RequestBankAccountFromServer(true)
 end
 
----@param isInRaid boolean
-function CratesHandling.ToggleContainersValueUpdate(isInRaid)
+function CratesHandling.ToggleContainersValueUpdate()
     debugPrint("Toggling UpdateCratesValue")
 
     -- Will get triggered even with Overtime.
     -- Doesn't really cause issues, but keep this in mind
-    if not isInRaid then
+    if ClientState.GetIsInRaid() then
         Events.EveryOneMinute.Remove(CratesHandling.UpdateContainersValue)
         Events.EveryOneMinute.Add(CratesHandling.UpdateContainersValue)
     else
@@ -137,4 +136,4 @@ function CratesHandling.ToggleContainersValueUpdate(isInRaid)
     end
 end
 
-Events.PZEFT_UpdateClientStatus.Add(CratesHandling.ToggleContainersValueUpdate)
+Events.PZEFT_IsInRaidChanged.Add(CratesHandling.ToggleContainersValueUpdate)

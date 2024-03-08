@@ -2,36 +2,45 @@
 ---@field isInRaid boolean
 ---@field isStartingMatch boolean
 ---@field currentTime number
----@field extractionStatus table
 ---@field extractionTime number
----@field isAdminMode boolean Admin only
+---@field previousExtractionPointsStatus table
+---@field extractionPointsStatus table
 local ClientState = {
     isInRaid = false,
     isStartingMatch = false,
     currentTime = -1,
-    extractionStatus = {},
 
 
     isMatchRunning = false,
     extractionTime = -1,
+
+
+    -- Extraction stuff
+    previousExtractionPointsStatus = {},
+    extractionPointsStatus = {}
 
 }
 
 --* Setters
 ---@param val boolean
 function ClientState.SetIsInRaid(val)
+    local prev = ClientState.isInRaid
     ClientState.isInRaid = val
 
-    if val == true then
-        triggerEvent("PZEFT_OnMatchStart")
-    else
-        triggerEvent("PZEFT_OnMatchEnd")
+    if prev ~= ClientState.isInRaid then
+        -- Notify that isInRaid has changed
+        triggerEvent("PZEFT_IsInRaidChanged")
+
+
+        -- More specific events
+        if val == true then
+            triggerEvent("PZEFT_ClientNowInRaid")
+        else
+            triggerEvent("PZEFT_ClientNotInRaidAnymore")
+        end
+
     end
 
-
-
-    -- TODO Maybe too violent?
-    triggerEvent("PZEFT_UpdateClientStatus", val)
 end
 
 ---@param val number
@@ -61,19 +70,25 @@ end
 
 function ClientState.ResetMatchValues()
     ClientState.isStartingMatch = false
-    ClientState.extractionStatus = {}
     ClientState.isMatchRunning = false
+
+    ClientState.previousExtractionPointsStatus = {}
+    ClientState.extractionPointsStatus = {}
 end
-Events.PZEFT_OnMatchEnd.Add(ClientState.ResetMatchValues)
+Events.PZEFT_ClientNotInRaidAnymore.Add(ClientState.ResetMatchValues)
 
 
 function ClientState.SetIsMatchRunning(value)
     ClientState.isMatchRunning = value
 end
 
-Events.PZEFT_OnMatchStart.Add(function ()
+
+
+-- If the client is in a raid, force set that the match is running
+Events.PZEFT_ClientNowInRaid.Add(function()
     ClientState.SetIsMatchRunning(true)
 end)
+
 
 
 -----------------------------------

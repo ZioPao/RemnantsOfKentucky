@@ -91,8 +91,8 @@ end
 
 
 -- If we're in a raid, we need to reset the correct symbols. If we're not, we're gonna just clean them off the map
-Events.PZEFT_OnMatchEnd.Add(function()
-    debugPrint("Match ended, cleaning map")
+Events.PZEFT_ClientNotInRaidAnymore.Add(function()
+    debugPrint("Player not in raid anymore, cleaning map")
     ISWorldMap.HandleEFTExits(true)
 end)
 

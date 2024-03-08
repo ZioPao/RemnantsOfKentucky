@@ -155,7 +155,7 @@ end
 ---@param pl IsoPlayer
 function SafehouseInstanceManager.ResetPlayerSafehouse(pl)
 
-    -- FIXME This is wrong conceptually. This will just re-assign the old safehouse at the end of the day.
+    -- FIX This is wrong conceptually. This will just re-assign the old safehouse at the end of the day.
 
     debugPrint("ResetSafehouseAllocation")
     local key = SafehouseInstanceManager.GetPlayerSafehouseKey(pl:getUsername())

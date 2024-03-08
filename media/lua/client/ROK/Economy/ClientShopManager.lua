@@ -35,11 +35,28 @@ function ClientShopManager.GetSellableItemsInInventory(sellItemsData)
 end
 
 
+---------------------------------
+--* Instaheal section
+
+function ClientShopManager.AskToBuyInstaHeal()
+    local text = getText("IGUI_Shop_InstaHeal_Confirmation")
+    local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
+
+    -- UGLY Jank, 500 is the width but it's handled inside ConfirmationPanel.
+    local x = (getCore():getScreenWidth() - 500)/2
+    local y = getCore():getScreenHeight()/2
+
+    ConfirmationPanel.Open(text, x, y, nil, ClientShopManager.BuyInstaHeal)
+end
 
 
 function ClientShopManager.BuyInstaHeal()
     BankManager.TryProcessTransaction(-2500, EFT_MODULES.Shop, "BuyInstaHeal", {}, EFT_MODULES.Shop, "BuyFailed", {})
 end
+
+
+-------------------------------
+
 
 --- Try buy an item for quantity. Let's assume that it's valid if we process the transaction
 ---@param itemData shopItemElement
@@ -183,7 +200,7 @@ function ShopCommands.BuyItem(args)
 
     local item = InventoryItemFactory.CreateItem(args.itemData.fullType)
 
-    if instanceof(item, "Moveable") then
+    if instanceof(item, "Moveable") and item:getSpriteGrid() == nil then
         SafehouseInstanceHandler.TryToPlaceMoveable(item)
     else
         local usedCrates = {}
@@ -209,8 +226,8 @@ end
 
 ---@param sellItemsData sellItemsDataType
 function ShopCommands.SellItems(sellItemsData)
-
     local itemsInInventoryArray = ClientShopManager.GetSellableItemsInInventory(sellItemsData)
+    local pl = getPlayer()
     for i=0, itemsInInventoryArray:size() - 1 do
         local item = itemsInInventoryArray:get(i)
         ISRemoveItemTool.removeItem(item, pl)
