@@ -84,7 +84,7 @@ function ISWorldMap.HandleEFTExits(cleanOnly)
 
         -- Handle autocentering and zooming on the zone
         local settings = WorldMapSettings.getInstance()
-        local zoom = settings:getDouble("WorldMap.Zoom", 20.0)
+        local zoom = settings:getDouble("WorldMap.Zoom", 50.0)
         ISWorldMap_instance:onCenterOnPlayer()
         ISWorldMap_instance.mapAPI:setZoom(zoom)
 
