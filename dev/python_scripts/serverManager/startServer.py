@@ -30,9 +30,9 @@ def reset_instances(path):
     counter = 0
 
     start_X = 3000
-    start_Y = 3000
-    end_X = 3100
-    end_Y = 3100
+    start_Y = 0
+    end_X = 3600
+    end_Y = 100
 
     for file in files:
         #print(file)
