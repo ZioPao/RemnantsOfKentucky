@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "D:/Development/IntelligentPriceGen"
+		},
+		{
+			"path": "E:/Steam/steamapps/common/ProjectZomboid"
 		}
 	],
 	"settings": {
@@ -15,6 +18,10 @@
 		"Lua.workspace.library": [
 			"C:\\Users\\picch\\Zomboid\\mods\\InventoryTetris",
 			"C:\\Users\\picch\\Zomboid\\Umbrella"
-		]
+		],
+		"debug.closeReadonlyTabsOnEnd": false,
+		"files.readonlyInclude": {
+			"E:/Steam/steamapps/common/ProjectZomboid/**": true
+		}
 	}
 }
