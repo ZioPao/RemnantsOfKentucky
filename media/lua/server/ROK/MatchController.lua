@@ -8,7 +8,7 @@ local PlayersManager = require("ROK/PlayersManager")
 
 ---------------------------------------------------
 
-local MATCH_STARTING_STR = getText("IGUI_TimePanel_MatchStarting")
+local MATCH_STARTING_STR = "The match is starting"
 
 
 ----------------

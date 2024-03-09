@@ -1,3 +1,6 @@
+local ClientState = require("ROK/ClientState")
+
+
 ---@diagnostic disable: undefined-field, undefined-global
 ---@class MapHandler
 ---@field symbolsAPI WorldMapSymbols
@@ -78,6 +81,14 @@ function ISWorldMap.HandleEFTExits(cleanOnly)
         if cleanOnly~= nil and cleanOnly == false then
             mapHandler:write()
         end
+
+        -- Handle autocentering and zooming on the zone
+        local settings = WorldMapSettings.getInstance()
+        local zoom = settings:getDouble("WorldMap.Zoom", 50.0)
+        ISWorldMap_instance:onCenterOnPlayer()
+        ISWorldMap_instance.mapAPI:setZoom(zoom)
+
+
         ISWorldMap.HideWorldMap(playerNum)
 
         Events.OnTickEvenPaused.Remove(TryHandleMapSymbols)
@@ -90,11 +101,10 @@ end
 
 
 
--- If we're in a raid, we need to reset the correct symbols. If we're not, we're gonna just clean them off the map
-Events.PZEFT_ClientNotInRaidAnymore.Add(function()
-    debugPrint("Player not in raid anymore, cleaning map")
-    ISWorldMap.HandleEFTExits(true)
-end)
+-- Events.PZEFT_ClientNotInRaidAnymore.Add(function()
+--     debugPrint("Player not in raid anymore, cleaning map")
+--     ISWorldMap.HandleEFTExits(true)
+-- end)
 
 
 Events.PZEFT_ClientModDataReady.Add(function(key)
@@ -103,3 +113,8 @@ Events.PZEFT_ClientModDataReady.Add(function(key)
     end
 end)
 
+Events.PZEFT_OnSuccessfulTeleport.Add(function()
+    -- If we're in a raid, we need to reset the correct symbols.
+    -- If we're not, we're gonna just clean them off the map
+    ISWorldMap.HandleEFTExits(not ClientState.GetIsInRaid())
+end)

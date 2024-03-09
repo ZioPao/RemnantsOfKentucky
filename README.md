@@ -46,11 +46,9 @@ Throughout all of this, zombies won't be the only threat out there. Other surviv
 
 [See the supported mod list here](https://steamcommunity.com/sharedfiles/filedetails/?id=3167094901)
 
+Hosting your own Remnants of Kentucky server? [Click here!](https://steamcommunity.com/sharedfiles/filedetails/?id=3170093655)
 
-Hosting your own Remnants of Kentucky server? Click here!
-
-
-Check our FAQ here.
+Check our FAQ [here](https://steamcommunity.com/workshop/filedetails/discussion/3161952259/4297067919531394734/).
 
 ## Join the Remnants of Kentucky Discord server!
 
