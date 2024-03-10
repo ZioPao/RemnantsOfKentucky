@@ -130,7 +130,7 @@ function CratesHandling.ToggleContainersValueUpdate()
     -- Doesn't really cause issues, but keep this in mind
 
 
-    debugPrint("Toggling crates handling, isInRaid=" .. ClientState.GetIsInRaid())
+    --debugPrint("Toggling crates handling, isInRaid=" .. ClientState.GetIsInRaid())
 
     if not ClientState.GetIsInRaid() then
         Events.EveryOneMinute.Remove(CratesHandling.UpdateContainersValue)
