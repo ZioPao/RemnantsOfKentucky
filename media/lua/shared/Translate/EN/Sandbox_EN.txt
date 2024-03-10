@@ -6,4 +6,7 @@ Sandbox_EN = {
     Sandbox_ROK_ExtractionTime = "Extraction Time",
     Sandbox_ROK_PunishCrashedPlayers = "Punish Crashed Players",
 
+    Sandbox_ROK_AutomaticStartCountdownTime = "Automatic Start Countdown Time",
+    Sandbox_ROK_IsAutomaticStartEnabled = "Automatic Start?",
+
 }
