@@ -4,6 +4,7 @@
 
 from os import listdir, remove, getcwd
 from os.path import split as path_split, abspath, join, isfile
+from pathlib import Path
 import subprocess
 import json
 
@@ -29,29 +30,35 @@ def reset_instances(path):
     files = listdir(path)
     counter = 0
 
-    start_X = 3000
+    # map_x_y => x*300, y*300
+
+
+    # FIXED NUMBERS FOR REWORK!!
+    start_X = 0
     start_Y = 0
-    end_X = 3600
+    end_X = 600
     end_Y = 100
 
     for file in files:
         #print(file)
         current_item = file[:-4].split('_')
-
         if len(current_item) == 3:
             type = current_item[0]
             if type == 'map' or type == 'chunkdata' or type == 'zpop':
                 #print("checking boundary")
-                if not in_boundary(current_item[1], current_item[2], start_X, start_Y, end_X, end_Y):
+                if in_boundary(current_item[1], current_item[2], start_X, start_Y, end_X, end_Y):
                     counter += 1
-                    remove(join(path, file))
+                    # print(path)
+                    # print(file)
+
+                    remove(Path(path) / file)
                     print("Removed " + file)
     print("Removed " + str(counter) + " in total" )
 
 ################################
 
 # Load json
-config_path = getcwd() + '\config.json'
+config_path = Path(__file__).parent / 'config.json'
 
 with open(config_path) as config_data:
     data = json.load(config_data)
@@ -61,5 +68,5 @@ save_path = data.get("savePath")
 reset_instances(save_path)
 
 # Run the actual server
-sh_path = data.get("serverStartPath")
-subprocess.call(['sh', sh_path])
+#sh_path = data.get("serverStartPath")
+#subprocess.call(['sh', sh_path])
