@@ -128,7 +128,13 @@ function CratesHandling.ToggleContainersValueUpdate()
 
     -- Will get triggered even with Overtime.
     -- Doesn't really cause issues, but keep this in mind
-    if ClientState.GetIsInRaid() then
+
+
+
+    --debugPrint("Toggling crates handling, isInRaid=" .. tostring(ClientState.GetIsInRaid()))
+
+
+    if not ClientState.GetIsInRaid() then
         Events.EveryOneMinute.Remove(CratesHandling.UpdateContainersValue)
         Events.EveryOneMinute.Add(CratesHandling.UpdateContainersValue)
     else

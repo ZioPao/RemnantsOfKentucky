@@ -1,35 +1,27 @@
 function SpawnPoints()
-  return {
-    constructionworker = {
-      { worldX = 1, worldY = 1, posX = 97, posY = 26, posZ = 0 }
-    },
-    fireofficer = {
-      { worldX = 1, worldY = 1, posX = 97, posY = 26, posZ = 0 }
-    },
-    parkranger = {
-      { worldX = 1, worldY = 1, posX = 97, posY = 26, posZ = 0 }
-    },
-    policeofficer = {
-      { worldX = 1, worldY = 1, posX = 97, posY = 26, posZ = 0 }
-    },
-    securityguard = {
-      { worldX = 1, worldY = 1, posX = 97, posY = 26, posZ = 0 }
-    },
-    unemployed = {
-      { worldX = 1, worldY = 1, posX = 97, posY = 26, posZ = 0 }
-    }
+
+  --todo REMOVE the main map from .ini
+
+
+  local spawns = {
+      { worldX = 0, worldY = 100, posX = 10, posY = 10, posZ = 0 },
   }
-end
+  return {
+      chef = spawns,
+      constructionworker = spawns,
+      doctor = spawns,
+      fireofficer = spawns,
+      parkranger = spawns,
+      policeofficer = spawns,
+      repairman = spawns,
+      securityguard = spawns,
+      unemployed = spawns,
 
-function SpawnRegions()
-	return {
-		-- { name = "Muldraugh, KY", file = "media/maps/Muldraugh, KY/spawnpoints.lua" },
-		-- { name = "West Point, KY", file = "media/maps/West Point, KY/spawnpoints.lua" },
-		-- { name = "Rosewood, KY", file = "media/maps/Rosewood, KY/spawnpoints.lua" },
-		-- { name = "Riverside, KY", file = "media/maps/Riverside, KY/spawnpoints.lua" },
 
-		{name = "Remnants of Kentucky", file = "media/maps/PZ-EFT/spawnpoints.lua"}
-		-- Uncomment the line below to add a custom spawnpoint for this server.
---		{ name = "Twiggy's Bar", serverfile = "pandegehenna_spawnpoints.lua" },
-	}
+      -- Custom professions
+      SharpShooter = spawns,
+      Brawler = spawns,
+      Medic = spawns,
+      Scavenger = spawns
+  }
 end
