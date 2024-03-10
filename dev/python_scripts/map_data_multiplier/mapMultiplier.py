@@ -56,8 +56,8 @@ base_lotpack = "world_{x}_{y}.lotpack"
 
 
 # Preprocess, set files to the correct name
-start_x = 0
-end_x = 4
+start_x = 100
+end_x = 104
 start_y = 0
 end_y = 2
 
