@@ -27,7 +27,7 @@ function BeforeMatchAdminPanel:new(x, y, width, height)
     self.availableInstancesAmount = -1      -- init
 
     ---@cast o BeforeMatchAdminPanel
-    
+
     BeforeMatchAdminPanel.instance = o
     return o
 end
@@ -48,6 +48,16 @@ function BeforeMatchAdminPanel:createChildren()
     self:addChild(self.btnToggleMatch)
 
     y = y - btnHeight - yPadding * 1.5      -- More padding from this
+
+    self.btnToggleAutomaticStart = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
+    self.btnToggleAutomaticStart.internal = "TOGGLE_AUTOMATIC_START"
+    self.btnToggleAutomaticStart:initialise()
+    self.btnToggleAutomaticStart:setEnable(true)
+    self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_ActivateAutomaticStart"))
+    self:addChild(self.btnToggleAutomaticStart)
+
+    y = y - btnHeight - yPadding
+
     self.btnManagePlayers = ISButton:new(xPadding, y, btnWidth, btnHeight,
         getText("IGUI_EFT_AdminPanel_ManagePlayers"), self, self.onClick)
     self.btnManagePlayers.internal = "MANAGE_PLAYERS"
@@ -124,6 +134,11 @@ function BeforeMatchAdminPanel:onClick(btn)
         -- Start timer. Show it on screen
         sendClientCommand(EFT_MODULES.Match, "StartCountdown", { stopTime = PZ_EFT_CONFIG.Client.Match.startMatchTime })
         TimePanel.Open("Starting match in...")
+    elseif btn.internal == 'TOGGLE_AUTOMATIC_START' then
+        sendClientCommand(EFT_MODULES.Match, "ToggleAutomaticStart", {})
+
+        -- Let's assume that everything is working fine on the server, and let's just toggle it from here.
+        ClientState.SetIsAutomaticStart(not ClientState.GetIsAutomaticStart())
     elseif btn.internal == "STOP" then
         ClientState.isStartingMatch = false
         btn.internal = "START"
@@ -159,13 +174,12 @@ end
 function BeforeMatchAdminPanel:update()
     BaseAdminPanel.update(self)
 
-    sendClientCommand(EFT_MODULES.PvpInstances, "GetAmountAvailableInstances", {})
 
     local valInstancesAvailableText = " <CENTRE> " .. tostring(self.availableInstancesAmount)
     self.labelValInstancesAvailable:setText(valInstancesAvailableText)
     self.labelValInstancesAvailable.textDirty = true
 
-    self.btnToggleMatch:setEnable(self.availableInstancesAmount > 0)
+    self.btnToggleMatch:setEnable(self.availableInstancesAmount > 0 and not ClientState.GetIsAutomaticStart())
 
     -- When starting the match, we'll disable the default close button
     self.closeButton:setEnable(not ClientState.isStartingMatch)
@@ -198,6 +212,14 @@ function BeforeMatchAdminPanel:update()
         self.btnSetTime:setEnable(not ClientState.isStartingMatch)
     end
 
+
+    -- Set the toggle match thing
+    if ClientState.GetIsAutomaticStart() then
+        self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_DeactivateAutomaticStart"))
+    else
+        self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_ActivateAutomaticStart"))
+
+    end
 end
 
 ---@param amount integer
@@ -231,6 +253,10 @@ end
 --*****************************************--
 ---@return ISCollapsableWindow?
 function BeforeMatchAdminPanel.OnOpenPanel()
+    sendClientCommand(EFT_MODULES.PvpInstances, "GetAmountAvailableInstances", {})
+    sendClientCommand(EFT_MODULES.Match, "CheckIsAutomaticStart", {})
+    
+
     return BaseAdminPanel.OnOpenPanel(BeforeMatchAdminPanel)
 end
 

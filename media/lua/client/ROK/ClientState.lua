@@ -1,6 +1,7 @@
 ---@class ClientState
 ---@field isInRaid boolean
 ---@field isStartingMatch boolean
+---@field isAutomaticStart boolean
 ---@field currentTime number
 ---@field extractionTime number
 ---@field previousExtractionPointsStatus table
@@ -8,6 +9,7 @@
 local ClientState = {
     isInRaid = false,
     isStartingMatch = false,
+    isAutomaticStart = false,
     currentTime = -1,
 
 
@@ -65,7 +67,10 @@ end
 
 function ClientState.GetIsMatchRunning()
     return ClientState.isMatchRunning
+end
 
+function ClientState.GetIsAutomaticStart()
+    return ClientState.isAutomaticStart
 end
 
 function ClientState.ResetMatchValues()
@@ -80,6 +85,10 @@ Events.PZEFT_ClientNotInRaidAnymore.Add(ClientState.ResetMatchValues)
 
 function ClientState.SetIsMatchRunning(value)
     ClientState.isMatchRunning = value
+end
+
+function ClientState.SetIsAutomaticStart(value)
+    ClientState.isAutomaticStart = value
 end
 
 
@@ -112,8 +121,12 @@ end
 
 function ClientStateCommands.SetClientStateIsMatchRunning(args)
     ClientState.isMatchRunning = args.value
-
 end
+
+function ClientStateCommands.SetClientStateIsAutomaticStart(args)
+    ClientState.SetIsAutomaticStart(args.value)
+end
+
 
 function ClientStateCommands.CommitDieIfInRaid()
 

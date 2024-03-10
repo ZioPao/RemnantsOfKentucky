@@ -18,7 +18,11 @@ local MATCH_STARTING_STR = "The match is starting"
 ---@field playersInMatch table<number,{playerId : number, username : string}>        Table of player ids and usernames
 ---@field amountPlayersInMatch number
 ---@field zombieSpawnMultiplier number
-local MatchController = {}
+local MatchController = {
+
+    -- Static attributes
+    isAutomaticStart = false
+}
 
 ---Creates new MatchController
 ---@return MatchController
@@ -283,6 +287,34 @@ end
 Events.OnCharacterDeath.Add(MatchController.HandlePlayerDeath)
 
 
+--* Automatic Startup
+
+function MatchController.AutoStartMatch()
+    Countdown.Setup(SandboxVars.RemnantsOfKentucky.AutomaticStartCountdownTime, function()
+        local handler = MatchController:new()
+        handler:initialise()
+        handler:startMatch()
+    end, true, MATCH_STARTING_STR)
+end
+
+function MatchController.ToggleAutomaticStart()
+    MatchController.isAutomaticStart = not MatchController.isAutomaticStart
+    if MatchController.isAutomaticStart then
+        -- Add event
+        Events.PZEFT_OnMatchEnd.Remove(MatchController.AutoStartMatch)
+        Events.PZEFT_OnMatchEnd.Add(MatchController.AutoStartMatch)
+
+        -- Trigger start
+        MatchController.AutoStartMatch()
+    else
+        -- Disable event
+        Events.PZEFT_OnMatchEnd.Remove(MatchController.AutoStartMatch)
+
+        -- Force stop the countdown
+        Countdown.Stop()
+    end
+end
+
 ------------------------
 --* Match List
 
@@ -347,12 +379,21 @@ function MatchCommands.SendExtractionTime(playerObj, _)
     sendServerCommand(playerObj, EFT_MODULES.State, 'SetExtractionTime', { extractionTime = extTime })
 end
 
+---Client is asking if a match is running
+---@param playerObj IsoPlayer
 function MatchCommands.CheckIsRunningMatch(playerObj, _)
     debugPrint("Client asked if match is running")
     local handler = MatchController.GetHandler()
 
     local isMatchRunning = handler ~= nil
     sendServerCommand(playerObj, EFT_MODULES.State, 'SetClientStateIsMatchRunning', { value = isMatchRunning })
+end
+
+---Client is asking if automatic matches are active
+---@param playerObj IsoPlayer
+function MatchCommands.CheckIsAutomaticStart(playerObj, _)
+    debugPrint("Client asked if match is running")
+    sendServerCommand(playerObj, EFT_MODULES.State, 'SetClientStateIsAutomaticStart', { value = MatchController.isAutomaticStart })
 end
 
 ---@param args {id : number}
@@ -368,6 +409,11 @@ function MatchCommands.KillZombies(_, args)
             return
         end
     end
+end
+
+
+function MatchCommands.ToggleAutomaticStart(playerObj, _)
+    MatchController.ToggleAutomaticStart()
 end
 
 ---@param playerObj IsoPlayer
