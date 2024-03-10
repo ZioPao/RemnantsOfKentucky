@@ -49,54 +49,95 @@ function BeforeMatchAdminPanel:createChildren()
 
     y = y - btnHeight - yPadding * 1.5      -- More padding from this
 
-    self.btnToggleAutomaticStart = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
-    self.btnToggleAutomaticStart.internal = "TOGGLE_AUTOMATIC_START"
-    self.btnToggleAutomaticStart:initialise()
-    self.btnToggleAutomaticStart:setEnable(true)
-    self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_ActivateAutomaticStart"))
-    self:addChild(self.btnToggleAutomaticStart)
+
+
+    --* Main buttons, ordererd as a grid
+    ----------------
+
+    -- Top line
+
+    self.btnMatchOptions = ISButton:new(xPadding, y, btnWidth/2, btnHeight, "", self, self.onClick)
+    self.btnMatchOptions.internal = "OPEN_MATCH_OPTIONS"
+    self.btnMatchOptions:initialise()
+    self.btnMatchOptions:setEnable(true)
+    self.btnMatchOptions:setTitle("Match Options")
+    self:addChild(self.btnMatchOptions)
+
+    self.btnManagePlayersOption = ISButton:new(xPadding + btnWidth/2, y, btnWidth/2, btnHeight, "", self, self.onClick)
+    self.btnManagePlayersOption.internal = "OPEN_PLAYERS_OPTIONS"
+    self.btnManagePlayersOption:initialise()
+    self.btnManagePlayersOption:setEnable(true)
+    self.btnManagePlayersOption:setTitle("Players Options")
+    self:addChild(self.btnManagePlayersOption)
+
 
     y = y - btnHeight - yPadding
 
-    self.btnManagePlayers = ISButton:new(xPadding, y, btnWidth, btnHeight,
-        getText("IGUI_EFT_AdminPanel_ManagePlayers"), self, self.onClick)
-    self.btnManagePlayers.internal = "MANAGE_PLAYERS"
-    self.btnManagePlayers:initialise()
-    self.btnManagePlayers:setEnable(false)
-    self:addChild(self.btnManagePlayers)
+
+    -- Bottom Line
+    self.btnManagementOption = ISButton:new(xPadding, y, btnWidth/2, btnHeight, "", self, self.onClick)
+    self.btnManagementOption.internal = "OPEN_MANAGEMENT_OPTION"
+    self.btnManagementOption:initialise()
+    self.btnManagementOption:setEnable(true)
+    self.btnManagementOption:setTitle("Mod Management")
+    self:addChild(self.btnManagementOption)
+
+    self.btnOtherOption = ISButton:new(xPadding + btnWidth/2, y, btnWidth/2, btnHeight, "", self, self.onClick)
+    self.btnOtherOption.internal = "OPEN_OTHERS_OPTION"
+    self.btnOtherOption:initialise()
+    self.btnOtherOption:setEnable(true)
+    self.btnOtherOption:setTitle("Other options")
+    self:addChild(self.btnOtherOption)
+
+
+    -- self.btnToggleAutomaticStart = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
+    -- self.btnToggleAutomaticStart.internal = "TOGGLE_AUTOMATIC_START"
+    -- self.btnToggleAutomaticStart:initialise()
+    -- self.btnToggleAutomaticStart:setEnable(true)
+    -- self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_ActivateAutomaticStart"))
+    -- self:addChild(self.btnToggleAutomaticStart)
 
     y = y - btnHeight - yPadding
 
-    -- Additional handling for the btnSetTime
-    self.btnSetTimeTab = {
-        prevInt = "",
-        isChanging = false
-    }
+    -- self.btnManagePlayers = ISButton:new(xPadding, y, btnWidth, btnHeight,
+    --     getText("IGUI_EFT_AdminPanel_ManagePlayers"), self, self.onClick)
+    -- self.btnManagePlayers.internal = "MANAGE_PLAYERS"
+    -- self.btnManagePlayers:initialise()
+    -- self.btnManagePlayers:setEnable(false)
+    -- self:addChild(self.btnManagePlayers)
+
+    -- y = y - btnHeight - yPadding
+
+    -- -- Additional handling for the btnSetTime
+    -- self.btnSetTimeTab = {
+    --     prevInt = "",
+    --     isChanging = false
+    -- }
 
 
-    self.btnTeleportToSafehouse = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
-    self.btnTeleportToSafehouse.internal = "TELEPORT_SAFEHOUSE"
-    self.btnTeleportToSafehouse:initialise()
-    self.btnTeleportToSafehouse:setEnable(true)
-    self.btnTeleportToSafehouse:setTitle(getText("IGUI_EFT_AdminPanel_TeleportToSafehouse"))
-    self:addChild(self.btnTeleportToSafehouse)
+    -- self.btnTeleportToSafehouse = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
+    -- self.btnTeleportToSafehouse.internal = "TELEPORT_SAFEHOUSE"
+    -- self.btnTeleportToSafehouse:initialise()
+    -- self.btnTeleportToSafehouse:setEnable(true)
+    -- self.btnTeleportToSafehouse:setTitle(getText("IGUI_EFT_AdminPanel_TeleportToSafehouse"))
+    -- self:addChild(self.btnTeleportToSafehouse)
 
-    y = y - btnHeight - yPadding
+    -- y = y - btnHeight - yPadding
 
-    self.btnSetTime = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
-    self.btnSetTime.internal = "SET_TIME"
-    self.btnSetTime:initialise()
-    self.btnSetTime:setEnable(false)
-    self:addChild(self.btnSetTime)
+    -- self.btnSetTime = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
+    -- self.btnSetTime.internal = "SET_TIME"
+    -- self.btnSetTime:initialise()
+    -- self.btnSetTime:setEnable(false)
+    -- self:addChild(self.btnSetTime)
 
-    y = y - btnHeight - yPadding
+    -- y = y - btnHeight - yPadding
 
-    self.btnResetUsedInstances = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
-    self.btnResetUsedInstances.internal = "RESET_USED_INSTANCES"
-    self.btnResetUsedInstances:initialise()
-    self.btnResetUsedInstances:setEnable(false)
-    self.btnResetUsedInstances:setTitle(getText("IGUI_EFT_AdminPanel_ResetUsedInstances"))
-    self:addChild(self.btnResetUsedInstances)
+    -- self.btnResetUsedInstances = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
+    -- self.btnResetUsedInstances.internal = "RESET_USED_INSTANCES"
+    -- self.btnResetUsedInstances:initialise()
+    -- self.btnResetUsedInstances:setEnable(false)
+    -- self.btnResetUsedInstances:setTitle(getText("IGUI_EFT_AdminPanel_ResetUsedInstances"))
+    -- self:addChild(self.btnResetUsedInstances)
 
     --------------------
     -- INFO PANEL, TOP ONE
@@ -179,47 +220,46 @@ function BeforeMatchAdminPanel:update()
     self.labelValInstancesAvailable:setText(valInstancesAvailableText)
     self.labelValInstancesAvailable.textDirty = true
 
-    self.btnToggleMatch:setEnable(self.availableInstancesAmount > 0 and not ClientState.GetIsAutomaticStart())
+    --self.btnToggleMatch:setEnable(self.availableInstancesAmount > 0 and not ClientState.GetIsAutomaticStart())
 
     -- When starting the match, we'll disable the default close button
     self.closeButton:setEnable(not ClientState.isStartingMatch)
-    self.btnManagePlayers:setEnable(not ClientState.isStartingMatch)
-    self.btnResetUsedInstances:setEnable(not ClientState.isStartingMatch)
+    --self.btnManagePlayers:setEnable(not ClientState.isStartingMatch)
+    --self.btnResetUsedInstances:setEnable(not ClientState.isStartingMatch)
 
     -- Check hour 
     local time = getGameTime():getTimeOfDay()
     --debugPrint(time)
     if time > 9 and time < 21 then
-        self.btnSetTime.internal = "SET_TIME_NIGHT"
-        self.btnSetTime.title = getText("IGUI_EFT_AdminPanel_SetNightTime")
+        --self.btnSetTime.internal = "SET_TIME_NIGHT"
+        --self.btnSetTime.title = getText("IGUI_EFT_AdminPanel_SetNightTime")
     else
-        self.btnSetTime.internal = "SET_TIME_DAY"
-        self.btnSetTime.title = getText("IGUI_EFT_AdminPanel_SetDayTime")
+        --self.btnSetTime.internal = "SET_TIME_DAY"
+        --self.btnSetTime.title = getText("IGUI_EFT_AdminPanel_SetDayTime")
     end
 
     -- Reactivates the btnSetTime only when the internal has changed
-    if self.btnSetTimeTab.isChanging then
-        if self.btnSetTimeTab.prevInt ~= self.btnSetTime.internal then
-            self.btnSetTime:setEnable(not ClientState.isStartingMatch)
+    -- if self.btnSetTimeTab.isChanging then
+    --     if self.btnSetTimeTab.prevInt ~= self.btnSetTime.internal then
+    --         self.btnSetTime:setEnable(not ClientState.isStartingMatch)
 
-            -- Reset the table
-            self.btnSetTimeTab.prevInt = ""
-            self.btnSetTimeTab.isChanging = false
-        else
-            self.btnSetTime:setEnable(false)
-        end
-    else
-        self.btnSetTime:setEnable(not ClientState.isStartingMatch)
-    end
+    --         -- Reset the table
+    --         self.btnSetTimeTab.prevInt = ""
+    --         self.btnSetTimeTab.isChanging = false
+    --     else
+    --         self.btnSetTime:setEnable(false)
+    --     end
+    -- else
+    --     self.btnSetTime:setEnable(not ClientState.isStartingMatch)
+    -- end
 
 
     -- Set the toggle match thing
-    if ClientState.GetIsAutomaticStart() then
-        self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_DeactivateAutomaticStart"))
-    else
-        self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_ActivateAutomaticStart"))
-
-    end
+    -- if ClientState.GetIsAutomaticStart() then
+    --     self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_DeactivateAutomaticStart"))
+    -- else
+    --     self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_ActivateAutomaticStart"))
+    -- end
 end
 
 ---@param amount integer
