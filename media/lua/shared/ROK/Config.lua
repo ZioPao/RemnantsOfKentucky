@@ -78,7 +78,7 @@ PZ_EFT_CONFIG.Server.Match = {
 --* PLAYER DEFAULT VALUES
 
 PZ_EFT_CONFIG.DefaultPlayer = {
-    balance = 10000
+    balance = 10000    -- TODO Make it customizable via a sandboxvar
 }
 
 --* SAFEHOUSES
