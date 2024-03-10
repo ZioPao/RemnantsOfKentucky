@@ -1,4 +1,8 @@
 function SpawnPoints()
+
+  --todo REMOVE the main map from .ini
+
+
   local spawns = {
       { worldX = 100, worldY = 0, posX = 10, posY = 10, posZ = 0 },
   }
