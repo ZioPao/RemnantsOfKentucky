@@ -63,7 +63,7 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnMatchOptions:setTitle("Match Options")
     self:addChild(self.btnMatchOptions)
 
-    self.btnManagePlayersOption = ISButton:new(xPadding + btnWidth/2, y, btnWidth/2, btnHeight, "", self, self.onClick)
+    self.btnManagePlayersOption = ISButton:new(btnWidth/2 + xPadding, y, btnWidth/2, btnHeight, "", self, self.onClick)
     self.btnManagePlayersOption.internal = "OPEN_PLAYERS_OPTIONS"
     self.btnManagePlayersOption:initialise()
     self.btnManagePlayersOption:setEnable(true)
@@ -82,12 +82,13 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnManagementOption:setTitle("Mod Management")
     self:addChild(self.btnManagementOption)
 
-    self.btnOtherOption = ISButton:new(xPadding + btnWidth/2, y, btnWidth/2, btnHeight, "", self, self.onClick)
+    self.btnOtherOption = ISButton:new(btnWidth/2 + xPadding, y, btnWidth/2, btnHeight, "", self, self.onClick)
     self.btnOtherOption.internal = "OPEN_OTHERS_OPTION"
     self.btnOtherOption:initialise()
     self.btnOtherOption:setEnable(true)
     self.btnOtherOption:setTitle("Other options")
     self:addChild(self.btnOtherOption)
+
 
 
     -- self.btnToggleAutomaticStart = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
