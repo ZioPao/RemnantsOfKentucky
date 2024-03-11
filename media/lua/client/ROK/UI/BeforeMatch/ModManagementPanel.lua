@@ -1,4 +1,6 @@
 local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
+local ClientState = require("ROK/ClientState")
+
 ---------------------------------------
 
 ---@class ModManagementPanel : ISCollapsableWindow
@@ -36,7 +38,42 @@ function ModManagementPanel:initialise()
     ISCollapsableWindow.initialise(self)
 end
 
+function ModManagementPanel:createChildren()
+    local btnHeight = 50
+    local xPadding = 20
 
+    local btnWidth = self:getWidth() - xPadding * 2
+    local yPadding = 10
+
+
+    --* Start from the mid point and work from there
+
+    ------------
+    --* Top Part
+    local y = (self:getHeight() - btnHeight - yPadding)/2
+
+
+    self.btnToggleAutomaticStart = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
+    self.btnToggleAutomaticStart.internal = "TOGGLE_AUTOMATIC_START"
+    self.btnToggleAutomaticStart:initialise()
+    self.btnToggleAutomaticStart:setEnable(true)
+    self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_ActivateAutomaticStart"))
+    self:addChild(self.btnToggleAutomaticStart)
+
+    ------------
+    --* Bottom part 
+
+    y = (self:getHeight() + btnHeight + yPadding)/2
+
+    self.btnResetUsedInstances = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
+    self.btnResetUsedInstances.internal = "RESET_USED_INSTANCES"
+    self.btnResetUsedInstances:initialise()
+    self.btnResetUsedInstances:setEnable(false)
+    self.btnResetUsedInstances:setTitle(getText("IGUI_EFT_AdminPanel_ResetUsedInstances"))
+    self:addChild(self.btnResetUsedInstances)
+
+
+end
 function ModManagementPanel:prerender()
     self:drawRect(0, 0, self.width, self.height, self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g,
         self.backgroundColor.b)
@@ -45,10 +82,31 @@ function ModManagementPanel:prerender()
 end
 
 
+function ModManagementPanel:onClick(btn)
 
+    if btn.internal == 'TOGGLE_AUTOMATIC_START' then
+        sendClientCommand(EFT_MODULES.Match, "ToggleAutomaticStart", {})
+
+        -- Let's assume that everything is working fine on the server, and let's just toggle it from here.
+        ClientState.SetIsAutomaticStart(not ClientState.GetIsAutomaticStart())
+    elseif btn.internal == 'RESET_USED_INSTANCES' then
+        debugPrint("Resetting used instances to base values")
+        sendClientCommand(EFT_MODULES.PvpInstances, 'ResetPVPInstances', {})
+    end
+end
 
 function ModManagementPanel:update()
     ISCollapsableWindow.update(self)
+
+    --Set the toggle match thing
+    if ClientState.GetIsAutomaticStart() then
+        self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_DeactivateAutomaticStart"))
+    else
+        self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_ActivateAutomaticStart"))
+    end
+
+    self.btnResetUsedInstances:setEnable(not ClientState.GetIsStartingMatch())
+    
 end
 
 function ModManagementPanel:render()

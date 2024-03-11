@@ -2,6 +2,12 @@ local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 local ClientState = require("ROK/ClientState")
 ---------------------------------------
 
+
+-- TODO add icons
+-- Safehouse icon: https://www.freepik.com/icon/home_4991416#fromView=search&page=1&position=15&uuid=2e938c43-90d6-4390-abee-c5749cd9cdc9
+-- Set time: https://www.freepik.com/icon/moon_13167111#fromView=search&page=1&position=3&uuid=f54312db-93bc-4a5b-a71e-0a14078f215f
+
+
 ---@class OtherOptionsPanel : ISCollapsableWindow
 local OtherOptionsPanel = ISCollapsableWindow:derive("OtherOptionsPanel")
 
@@ -36,8 +42,17 @@ end
 function OtherOptionsPanel:createChildren()
     local btnHeight = 50
     local xPadding = 20
-    local y = self:getHeight()/2 - btnHeight/2
+
     local btnWidth = self:getWidth() - xPadding * 2
+    local yPadding = 10
+
+
+    --* Start from the mid point and work from there
+
+    ------------
+    --* Top Part
+    local y = self:getHeight()/2 - btnHeight/2 - yPadding/2
+
 
     self.btnSetTime = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
     self.btnSetTime.internal = "SET_TIME"
@@ -50,6 +65,22 @@ function OtherOptionsPanel:createChildren()
         prevInt = "",
         isChanging = false
     }
+
+
+    ------------
+    --* Bottom part 
+
+
+    y = self:getHeight()/2 + btnHeight/2 + yPadding/2
+
+    self.btnTeleportToSafehouse = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
+    self.btnTeleportToSafehouse.internal = "TELEPORT_SAFEHOUSE"
+    self.btnTeleportToSafehouse:initialise()
+    self.btnTeleportToSafehouse:setEnable(true)
+    self.btnTeleportToSafehouse:setTitle(getText("IGUI_EFT_AdminPanel_TeleportToSafehouse"))
+    self:addChild(self.btnTeleportToSafehouse)
+
+
 end
 
 function OtherOptionsPanel:initialise()
@@ -78,6 +109,8 @@ function OtherOptionsPanel:onClick(btn)
         btn:setEnable(false)
         self.btnSetTimeTab.isChanging = true
         self.btnSetTimeTab.prevInt = 'SET_TIME_NIGHT'
+    elseif btn.internal == 'TELEPORT_SAFEHOUSE' then
+        sendClientCommand(EFT_MODULES.Safehouse, "RequestSafehouseAllocation", {teleport = true})
     end
 end
 

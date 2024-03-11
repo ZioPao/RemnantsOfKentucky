@@ -131,7 +131,7 @@ function ManagePlayersPanel:new(x, y, width, height)
     return o
 end
 
-function ManagePlayersPanel:initialise()
+function ManagePlayersPanel:createChildren()
     local top = 40
 
     local entryHgt = GenericUI.SMALL_FONT_HGT + 2 * 2
