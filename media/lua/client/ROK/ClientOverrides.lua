@@ -46,9 +46,16 @@ end
 
 --* REPLACE MAP WITH CUSTOM MAP
 
+local ClientState = require("ROK/ClientState")
+
 function ISWorldMap.ToggleWorldMap(playerNum)
+    if not ClientState.GetIsInRaid() then return end
+
     --  Get map from inv
-    local pl = getPlayer()
-    local mapItem = pl:getInventory():FindAndReturn("ROK.BriaIslandMap")
-    ISInventoryPaneContextMenu.onCheckMap(mapItem, pl)
+    local mapItem = getPlayer():getInventory():FindAndReturn("ROK.BriaIslandMap")
+    ISInventoryPaneContextMenu.onCheckMap(mapItem, playerNum)
+
+    -- TODO If it's already open, close it
+
+
 end
