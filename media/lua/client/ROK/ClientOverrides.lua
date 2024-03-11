@@ -42,3 +42,13 @@ function ISMoveablesAction:isValid()
 
     return ogReturn
 end
+
+
+--* REPLACE MAP WITH CUSTOM MAP
+
+function ISWorldMap.ToggleWorldMap(playerNum)
+    --  Get map from inv
+    local pl = getPlayer()
+    local mapItem = pl:getInventory():FindAndReturn("ROK.BriaIslandMap")
+    ISInventoryPaneContextMenu.onCheckMap(mapItem, pl)
+end

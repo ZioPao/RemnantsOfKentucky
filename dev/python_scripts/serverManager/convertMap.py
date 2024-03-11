@@ -16,3 +16,16 @@ new_start_x = 0
 new_start_y = 3000
 new_end_x = ...
 new_end_y = ...
+
+
+Safehouses are in
+0_100
+0_101
+
+
+Scale by 30 (Don't remember why, but it's correct this way)
+
+
+
+30
+
