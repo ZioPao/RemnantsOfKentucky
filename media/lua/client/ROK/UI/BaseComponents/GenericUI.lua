@@ -7,7 +7,10 @@ GenericUI.SMALL_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Small):getLin
 GenericUI.MEDIUM_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Medium):getLineHeight()
 GenericUI.LARGE_FONT_HGT = getTextManager():getFontHeight(UIFont.Large)
 
-GenericUI.FONT_SCALE = GenericUI.MEDIUM_FONT_HGT / 14
+GenericUI.FONT_SCALE = GenericUI.SMALL_FONT_HGT / 16
+
+if GenericUI.FONT_SCALE < 1 then GenericUI.FONT_SCALE = 1 end
+
 GenericUI.HEADER_HGT = GenericUI.MEDIUM_FONT_HGT + 2 * 2
 GenericUI.ENTRY_HGT = GenericUI.HEADER_HGT
 
@@ -38,6 +41,22 @@ function GenericUI.FormatTime(time, useRichText)
     end
 
     return finalString
+end
+
+function GenericUI.ToggleSidePanel(parent, NewPanel)
+
+    -- Check if side panel is already open
+    if parent.openedPanel then
+        if parent.openedPanel:getIsVisible() then
+            parent.openedPanel:close()
+            if parent.openedPanel.Type == NewPanel.Type then
+                return
+            end
+        end
+    end
+
+    parent.openedPanel = NewPanel.Open(parent:getRight(), parent:getBottom() - parent:getHeight())
+
 end
 
 return GenericUI

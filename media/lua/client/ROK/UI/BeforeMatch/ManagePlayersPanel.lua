@@ -1,12 +1,16 @@
-local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
-local FONT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium)
-local FONT_HGT_LARGE = getTextManager():getFontHeight(UIFont.Large)
-local HEADER_HGT = FONT_HGT_MEDIUM + 2 * 2
-local ENTRY_HGT = FONT_HGT_MEDIUM + 2 * 2
-local FONT_SCALE = FONT_HGT_SMALL / 16
-if FONT_SCALE < 1 then
-    FONT_SCALE = 1
-end
+local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
+---------------------------------------
+
+
+-- local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
+-- local FONT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium)
+-- local FONT_HGT_LARGE = getTextManager():getFontHeight(UIFont.Large)
+-- local HEADER_HGT = FONT_HGT_MEDIUM + 2 * 2
+-- local ENTRY_HGT = FONT_HGT_MEDIUM + 2 * 2
+-- local FONT_SCALE = FONT_HGT_SMALL / 16
+-- if FONT_SCALE < 1 then
+--     FONT_SCALE = 1
+-- end
 
 -------------------------------
 
@@ -39,13 +43,13 @@ function ManagePlayersScrollingTable:new(x, y, width, height, viewer)
 end
 
 function ManagePlayersScrollingTable:createChildren()
-    local btnHgt = math.max(25, FONT_HGT_SMALL + 3 * 2)
-    local bottomHgt = 5 + FONT_HGT_SMALL * 2 + 5 + btnHgt + 20 + FONT_HGT_LARGE + HEADER_HGT + ENTRY_HGT
+    local btnHgt = math.max(25, GenericUI.SMALL_FONT_HGT + 3 * 2)
+    local bottomHgt = 5 + GenericUI.SMALL_FONT_HGT * 2 + 5 + btnHgt + 20 + GenericUI.LARGE_FONT_HGT + GenericUI.HEADER_HGT + GenericUI.ENTRY_HGT
 
-    self.datas = ISScrollingListBox:new(0, HEADER_HGT, self.width, self.height - bottomHgt + 10)
+    self.datas = ISScrollingListBox:new(0, GenericUI.HEADER_HGT, self.width, self.height - bottomHgt + 10)
     self.datas:initialise()
     self.datas:instantiate()
-    self.datas.itemheight = FONT_HGT_SMALL + 4 * 2
+    self.datas.itemheight = GenericUI.SMALL_FONT_HGT + 4 * 2
     self.datas.selected = 0
     self.datas.joypadParent = self
     self.datas.font = UIFont.NewSmall
@@ -104,7 +108,7 @@ function ManagePlayersPanel.Open(x, y)
         ManagePlayersPanel.instance:close()
     end
 
-    local modal = ManagePlayersPanel:new(x, y, 350 * FONT_SCALE, 500)
+    local modal = ManagePlayersPanel:new(x, y, 350 * GenericUI.FONT_SCALE, 500)
     modal:initialise()
     modal:addToUIManager()
     modal.instance:setKeyboardFocus()
@@ -130,7 +134,7 @@ end
 function ManagePlayersPanel:initialise()
     local top = 40
 
-    local entryHgt = FONT_HGT_SMALL + 2 * 2
+    local entryHgt = GenericUI.SMALL_FONT_HGT + 2 * 2
     self.filterEntry = ISTextEntryBox:new("Players", 10, top, (self.width - 10 * 2) / 1.5, entryHgt)
     self.filterEntry:initialise()
     self.filterEntry:instantiate()
@@ -313,9 +317,6 @@ function ManagePlayersPanel:close()
     end
     ISCollapsableWindow.close(self)
 end
-
-
-
 
 
 return ManagePlayersPanel

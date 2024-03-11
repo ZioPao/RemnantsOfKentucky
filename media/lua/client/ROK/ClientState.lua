@@ -72,6 +72,9 @@ end
 function ClientState.GetIsAutomaticStart()
     return ClientState.isAutomaticStart
 end
+function ClientState.GetIsStartingMatch()
+    return ClientState.isStartingMatch
+end
 
 function ClientState.ResetMatchValues()
     ClientState.isStartingMatch = false

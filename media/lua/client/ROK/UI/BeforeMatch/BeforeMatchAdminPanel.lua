@@ -1,7 +1,14 @@
 local BaseAdminPanel = require("ROK/UI/BaseComponents/BaseAdminPanel")
-local ManagePlayersPanel = require("ROK/UI/BeforeMatch/ManagePlayersPanel")
 local TimePanel = require("ROK/UI/TimePanel")
 local ClientState = require("ROK/ClientState")
+
+local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
+
+local MatchOptionsPanel = require("ROK/UI/BeforeMatch/MatchOptionsPanel")
+local ManagePlayersPanel = require("ROK/UI/BeforeMatch/ManagePlayersPanel")
+local ModManagementPanel = require("ROK/UI/BeforeMatch/ModManagementPanel")
+local OtherOptionsPanel = require("ROK/UI/BeforeMatch/OtherOptionsPanel")
+
 --------------------------------
 
 ---@class BeforeMatchAdminPanel : BaseAdminPanel
@@ -47,7 +54,7 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnToggleMatch:initialise()
     self:addChild(self.btnToggleMatch)
 
-    y = y - btnHeight - yPadding * 1.5      -- More padding from this
+    y = y - btnHeight - yPadding * 2      -- More padding from this
 
 
 
@@ -168,7 +175,39 @@ function BeforeMatchAdminPanel:createChildren()
 end
 
 
+
+
+
 function BeforeMatchAdminPanel:onClick(btn)
+
+    --*Match options
+    if btn.internal == "OPEN_MATCH_OPTIONS" then
+        GenericUI.ToggleSidePanel(self, MatchOptionsPanel)
+        return
+    end
+
+
+    --* Players Options
+    if btn.internal == "OPEN_PLAYERS_OPTIONS" then
+        GenericUI.ToggleSidePanel(self, ManagePlayersPanel)
+        return
+    end
+
+    --* Mod management Options
+    if btn.internal == "OPEN_MANAGEMENT_OPTION" then
+        GenericUI.ToggleSidePanel(self, ModManagementPanel)
+        return
+    end
+
+    --* Other Options
+    if btn.internal == "OPEN_OTHERS_OPTION" then
+        GenericUI.ToggleSidePanel(self, OtherOptionsPanel)
+        return
+    end
+
+
+
+    -- BOTTOM PART
     if btn.internal == 'START' then
         ClientState.isStartingMatch = true
         btn.internal = "STOP"
@@ -187,30 +226,52 @@ function BeforeMatchAdminPanel:onClick(btn)
         btn:setTitle(MATCH_START_TEXT)
         sendClientCommand(EFT_MODULES.Match, "StopCountdown", {})
         TimePanel.Close()
-    elseif btn.internal == 'MANAGE_PLAYERS' then
-        if self.openedPanel and self.openedPanel:getIsVisible() then
-            self.openedPanel:close()
-        else
-            self.openedPanel = ManagePlayersPanel.Open(self:getRight(), self:getBottom() - self:getHeight())
-        end
-    elseif btn.internal == 'SET_TIME_DAY' then
-        debugPrint("Setting Day Time")
-        sendClientCommand(EFT_MODULES.UI, "SetDayTime", {})
-        btn:setEnable(false)
-        self.btnSetTimeTab.isChanging = true
-        self.btnSetTimeTab.prevInt = 'SET_TIME_DAY'
-    elseif btn.internal == 'SET_TIME_NIGHT' then
-        debugPrint("Setting Night Time")
-        sendClientCommand(EFT_MODULES.UI, "SetNightTime", {})
-        btn:setEnable(false)
-        self.btnSetTimeTab.isChanging = true
-        self.btnSetTimeTab.prevInt = 'SET_TIME_NIGHT'
-    elseif btn.internal == 'RESET_USED_INSTANCES' then
-        debugPrint("Resetting used instances to base values")
-        sendClientCommand(EFT_MODULES.PvpInstances, 'ResetPVPInstances', {})
-    elseif btn.internal == 'TELEPORT_SAFEHOUSE' then
-        sendClientCommand(EFT_MODULES.Safehouse, "RequestSafehouseAllocation", {teleport = true})
     end
+
+
+
+    -- if btn.internal == 'START' then
+    --     ClientState.isStartingMatch = true
+    --     btn.internal = "STOP"
+    --     btn:setTitle(MATCH_STOP_TEXT)
+    --     -- Start timer. Show it on screen
+    --     sendClientCommand(EFT_MODULES.Match, "StartCountdown", { stopTime = PZ_EFT_CONFIG.Client.Match.startMatchTime })
+    --     TimePanel.Open("Starting match in...")
+    -- elseif btn.internal == 'TOGGLE_AUTOMATIC_START' then
+    --     sendClientCommand(EFT_MODULES.Match, "ToggleAutomaticStart", {})
+
+    --     -- Let's assume that everything is working fine on the server, and let's just toggle it from here.
+    --     ClientState.SetIsAutomaticStart(not ClientState.GetIsAutomaticStart())
+    -- elseif btn.internal == "STOP" then
+    --     ClientState.isStartingMatch = false
+    --     btn.internal = "START"
+    --     btn:setTitle(MATCH_START_TEXT)
+    --     sendClientCommand(EFT_MODULES.Match, "StopCountdown", {})
+    --     TimePanel.Close()
+    -- elseif btn.internal == 'MANAGE_PLAYERS' then
+    --     if self.openedPanel and self.openedPanel:getIsVisible() then
+    --         self.openedPanel:close()
+    --     else
+    --         self.openedPanel = ManagePlayersPanel.Open(self:getRight(), self:getBottom() - self:getHeight())
+    --     end
+    -- elseif btn.internal == 'SET_TIME_DAY' then
+    --     debugPrint("Setting Day Time")
+    --     sendClientCommand(EFT_MODULES.UI, "SetDayTime", {})
+    --     btn:setEnable(false)
+    --     self.btnSetTimeTab.isChanging = true
+    --     self.btnSetTimeTab.prevInt = 'SET_TIME_DAY'
+    -- elseif btn.internal == 'SET_TIME_NIGHT' then
+    --     debugPrint("Setting Night Time")
+    --     sendClientCommand(EFT_MODULES.UI, "SetNightTime", {})
+    --     btn:setEnable(false)
+    --     self.btnSetTimeTab.isChanging = true
+    --     self.btnSetTimeTab.prevInt = 'SET_TIME_NIGHT'
+    -- elseif btn.internal == 'RESET_USED_INSTANCES' then
+    --     debugPrint("Resetting used instances to base values")
+    --     sendClientCommand(EFT_MODULES.PvpInstances, 'ResetPVPInstances', {})
+    -- elseif btn.internal == 'TELEPORT_SAFEHOUSE' then
+    --     sendClientCommand(EFT_MODULES.Safehouse, "RequestSafehouseAllocation", {teleport = true})
+    -- end
 end
 
 function BeforeMatchAdminPanel:update()
