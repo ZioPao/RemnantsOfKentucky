@@ -55,7 +55,9 @@ function GenericUI.ToggleSidePanel(parent, NewPanel)
         end
     end
 
-    parent.openedPanel = NewPanel.Open(parent:getRight(), parent:getBottom() - parent:getHeight())
+    local width = 350 * GenericUI.FONT_SCALE        -- SHITTY Fix this
+    local height = parent:getHeight()
+    parent.openedPanel = NewPanel.Open(parent:getRight(), parent:getBottom() - parent:getHeight(), width, height)
 
 end
 

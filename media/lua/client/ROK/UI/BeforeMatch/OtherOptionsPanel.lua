@@ -14,12 +14,12 @@ local TELEPORT_SAFEHOUSE_ICON = getTexture("media/textures/BeforeMatchPanel/Tele
 ---@class OtherOptionsPanel : ISCollapsableWindow
 local OtherOptionsPanel = ISCollapsableWindow:derive("OtherOptionsPanel")
 
-function OtherOptionsPanel.Open(x, y)
+function OtherOptionsPanel.Open(x, y, width, height)
     if OtherOptionsPanel.instance then
         OtherOptionsPanel.instance:close()
     end
 
-    local modal = OtherOptionsPanel:new(x, y, 350 * GenericUI.FONT_SCALE, 500)
+    local modal = OtherOptionsPanel:new(x, y, width, height)
     modal:initialise()
     modal:addToUIManager()
     --modal.instance:setKeyboardFocus()
@@ -45,16 +45,20 @@ end
 function OtherOptionsPanel:createChildren()
     local btnHeight = 50
     local xPadding = 20
-
     local btnWidth = self:getWidth() - xPadding * 2
     local yPadding = 10
+
+    local label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_OtherOptions"), 1, 1, 1, 1, UIFont.NewLarge, true)
+    label:initialise()
+    label:instantiate()
+    self:addChild(label)
 
 
     --* Start from the mid point and work from there
 
     ------------
     --* Top Part
-    local y = self:getHeight()/2 - btnHeight/2 - yPadding/2
+    local y = (self:getHeight() - btnHeight - yPadding)/2
 
 
     self.btnSetTime = IconButton:new(
@@ -76,8 +80,7 @@ function OtherOptionsPanel:createChildren()
     ------------
     --* Bottom part 
 
-
-    y = self:getHeight()/2 + btnHeight/2 + yPadding/2
+    y = (self:getHeight() + btnHeight + yPadding)/2
 
 
     self.btnTeleportToSafehouse = IconButton:new(

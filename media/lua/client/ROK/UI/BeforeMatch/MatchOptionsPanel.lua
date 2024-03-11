@@ -11,12 +11,12 @@ local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 ---@class MatchOptionsPanel : ISCollapsableWindow
 local MatchOptionsPanel = ISCollapsableWindow:derive("MatchOptionsPanel")
 
-function MatchOptionsPanel.Open(x, y)
+function MatchOptionsPanel.Open(x, y, width, height)
     if MatchOptionsPanel.instance then
         MatchOptionsPanel.instance:close()
     end
 
-    local modal = MatchOptionsPanel:new(x, y, 350 * GenericUI.FONT_SCALE, 500)
+    local modal = MatchOptionsPanel:new(x, y, width, height)
     modal:initialise()
     modal:addToUIManager()
     --modal.instance:setKeyboardFocus()
@@ -43,6 +43,17 @@ function MatchOptionsPanel:initialise()
     ISCollapsableWindow.initialise(self)
 end
 
+function MatchOptionsPanel:createChildren()
+    local btnHeight = 50
+    local xPadding = 20
+    local btnWidth = self:getWidth() - xPadding * 2
+    local yPadding = 10
+
+    local label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_MatchOptions"), 1, 1, 1, 1, UIFont.NewLarge, true)
+    label:initialise()
+    label:instantiate()
+    self:addChild(label)
+end
 
 function MatchOptionsPanel:prerender()
     self:drawRect(0, 0, self.width, self.height, self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g,
@@ -50,8 +61,6 @@ function MatchOptionsPanel:prerender()
     self:drawRectBorder(0, 0, self.width, self.height, self.borderColor.a, self.borderColor.r, self.borderColor.g,
         self.borderColor.b)
 end
-
-
 
 
 function MatchOptionsPanel:update()

@@ -30,6 +30,12 @@ IG_UI_EN = {
     IGUI_EFT_AdminPanel_SetDayTime = "Set Time - Day",
     IGUI_EFT_AdminPanel_SetNightTime = "Set Time - Night",
 
+
+    IGUI_EFT_AdminPanel_OtherOptions = "Other Options",
+    IGUI_EFT_AdminPanel_ModManagement = "Mod Management",
+    IGUI_EFT_AdminPanel_MatchOptions = "Match Options",
+    
+
     IGUI_EFT_AdminPanel_ResetUsedInstances = "Reset Used Instances",
     IGUI_EFT_AdminPanel_ToggleAutomaticStart = "Toggle Automatic Start",
     IGUI_EFT_AdminPanel_ActivateAutomaticStart = "Activate Automatic Start",

@@ -15,12 +15,12 @@ local RESET_USED_INSTANCES_ICON = getTexture("media/textures/BeforeMatchPanel/Re
 ---@class ModManagementPanel : ISCollapsableWindow
 local ModManagementPanel = ISCollapsableWindow:derive("ModManagementPanel")
 
-function ModManagementPanel.Open(x, y)
+function ModManagementPanel.Open(x, y, width, height)
     if ModManagementPanel.instance then
         ModManagementPanel.instance:close()
     end
 
-    local modal = ModManagementPanel:new(x, y, 350 * GenericUI.FONT_SCALE, 500)
+    local modal = ModManagementPanel:new(x, y, width, height)
     modal:initialise()
     modal:addToUIManager()
     --modal.instance:setKeyboardFocus()
@@ -50,10 +50,13 @@ end
 function ModManagementPanel:createChildren()
     local btnHeight = 50
     local xPadding = 20
-
     local btnWidth = self:getWidth() - xPadding * 2
     local yPadding = 10
 
+    local label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_ModManagement"), 1, 1, 1, 1, UIFont.NewLarge, true)
+    label:initialise()
+    label:instantiate()
+    self:addChild(label)
 
     --* Start from the mid point and work from there
 

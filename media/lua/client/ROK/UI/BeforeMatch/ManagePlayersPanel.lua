@@ -103,12 +103,12 @@ end
 ---@class ManagePlayersPanel : ISCollapsableWindow
 local ManagePlayersPanel = ISCollapsableWindow:derive("ManagePlayersPanel")
 
-function ManagePlayersPanel.Open(x, y)
+function ManagePlayersPanel.Open(x, y, width, height)
     if ManagePlayersPanel.instance then
         ManagePlayersPanel.instance:close()
     end
 
-    local modal = ManagePlayersPanel:new(x, y, 350 * GenericUI.FONT_SCALE, 500)
+    local modal = ManagePlayersPanel:new(x, y, width, height)
     modal:initialise()
     modal:addToUIManager()
     modal.instance:setKeyboardFocus()
@@ -132,6 +132,16 @@ function ManagePlayersPanel:new(x, y, width, height)
 end
 
 function ManagePlayersPanel:createChildren()
+
+    local xPadding = 20
+    local yPadding = 10
+
+    local label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_ManagePlayers"), 1, 1, 1, 1, UIFont.NewLarge, true)
+    label:initialise()
+    label:instantiate()
+    self:addChild(label)
+
+    -- TODO Clean this up
     local top = 40
 
     local entryHgt = GenericUI.SMALL_FONT_HGT + 2 * 2

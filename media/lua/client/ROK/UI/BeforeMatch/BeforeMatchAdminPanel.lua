@@ -64,22 +64,20 @@ function BeforeMatchAdminPanel:createChildren()
     local gridBtnWidth = (btnWidth - xPadding)/2
     local xRightPadding = self:getWidth()/2 + xPadding/2
 
-    --local xRightPadding = (gridBtnWidth + xPadding)
-
     -- Top line
 
     self.btnMatchOptions = ISButton:new(xPadding, y, gridBtnWidth, btnHeight, "", self, self.onClick)
     self.btnMatchOptions.internal = "OPEN_MATCH_OPTIONS"
     self.btnMatchOptions:initialise()
     self.btnMatchOptions:setEnable(true)
-    self.btnMatchOptions:setTitle("Match Options")
+    self.btnMatchOptions:setTitle(getText("IGUI_EFT_AdminPanel_MatchOptions"))
     self:addChild(self.btnMatchOptions)
 
     self.btnManagePlayersOption = ISButton:new(xRightPadding, y, gridBtnWidth, btnHeight, "", self, self.onClick)
     self.btnManagePlayersOption.internal = "OPEN_PLAYERS_OPTIONS"
     self.btnManagePlayersOption:initialise()
     self.btnManagePlayersOption:setEnable(true)
-    self.btnManagePlayersOption:setTitle("Players Options")
+    self.btnManagePlayersOption:setTitle(getText("IGUI_EFT_AdminPanel_ManagePlayers"))
     self:addChild(self.btnManagePlayersOption)
 
     y = y - btnHeight - yPadding
@@ -89,14 +87,14 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnManagementOption.internal = "OPEN_MANAGEMENT_OPTION"
     self.btnManagementOption:initialise()
     self.btnManagementOption:setEnable(true)
-    self.btnManagementOption:setTitle("Mod Management")
+    self.btnManagementOption:setTitle(getText("IGUI_EFT_AdminPanel_ModManagement"))
     self:addChild(self.btnManagementOption)
 
     self.btnOtherOption = ISButton:new(xRightPadding, y, gridBtnWidth, btnHeight, "", self, self.onClick)
     self.btnOtherOption.internal = "OPEN_OTHERS_OPTION"
     self.btnOtherOption:initialise()
     self.btnOtherOption:setEnable(true)
-    self.btnOtherOption:setTitle("Other options")
+    self.btnOtherOption:setTitle(getText("IGUI_EFT_AdminPanel_OtherOptions"))
     self:addChild(self.btnOtherOption)
 
 
