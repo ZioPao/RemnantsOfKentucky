@@ -2,6 +2,12 @@ local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 ---------------------------------------
 
 
+-- TODO Add options here too, like the During Match Panel
+-- TODO Add countdown setters
+
+
+
+
 ---@class MatchOptionsPanel : ISCollapsableWindow
 local MatchOptionsPanel = ISCollapsableWindow:derive("MatchOptionsPanel")
 

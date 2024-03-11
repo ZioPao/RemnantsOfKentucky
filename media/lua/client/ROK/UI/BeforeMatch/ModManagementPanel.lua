@@ -106,6 +106,7 @@ function ModManagementPanel:onClick(btn)
     elseif btn.internal == 'RESET_USED_INSTANCES' then
         debugPrint("Resetting used instances to base values")
         sendClientCommand(EFT_MODULES.PvpInstances, 'ResetPVPInstances', {})
+        
     end
 end
 
