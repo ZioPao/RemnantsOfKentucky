@@ -48,6 +48,9 @@ local function OnPlayerInit()
         --* Request bank account and request bank account periodically.
         CratesHandling.ToggleContainersValueUpdate()
 
+        --* Clean map
+        ISWorldMap.HandleEFTExits(true)
+
         --* Request the list of PVP Instances from the server
         ClientData.RequestPvpInstances()
 
@@ -127,9 +130,7 @@ function CratesHandling.ToggleContainersValueUpdate()
     -- Doesn't really cause issues, but keep this in mind
 
 
-
     --debugPrint("Toggling crates handling, isInRaid=" .. tostring(ClientState.GetIsInRaid()))
-
 
     if not ClientState.GetIsInRaid() then
         Events.EveryOneMinute.Remove(CratesHandling.UpdateContainersValue)
