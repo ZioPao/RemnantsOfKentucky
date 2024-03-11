@@ -63,12 +63,25 @@ function IconButton:initialise()
     self:addChild(self.btn)
 end
 
+
+--* Setters
 function IconButton:setEnable(val)
     self.btn:setEnable(val)
 end
 
 function IconButton:setTitle(title)
     self.btn:setTitle(title)
+end
+
+function IconButton:setInternal(internal)
+    self.btn.internal = internal
+end
+
+
+--* Getters
+
+function IconButton:getInternal()
+    return self.btn.internal
 end
 
 

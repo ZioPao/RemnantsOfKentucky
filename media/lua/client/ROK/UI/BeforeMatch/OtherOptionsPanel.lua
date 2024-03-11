@@ -4,8 +4,7 @@ local ClientState = require("ROK/ClientState")
 local IconButton = require("ROK/UI/BaseComponents/IconButton")
 ---------------------------------------
 
-
--- TODO add icons
+-- TODO add credits
 -- Safehouse icon: https://www.freepik.com/icon/home_4991416#fromView=search&page=1&position=15&uuid=2e938c43-90d6-4390-abee-c5749cd9cdc9
 -- Set time: https://www.freepik.com/icon/moon_13167111#fromView=search&page=1&position=3&uuid=f54312db-93bc-4a5b-a71e-0a14078f215f
 
@@ -129,16 +128,17 @@ function OtherOptionsPanel:updateSetTimeBtn()
     local time = getGameTime():getTimeOfDay()
     --debugPrint(time)
     if time > 9 and time < 21 then
-        self.btnSetTime.internal = "SET_TIME_NIGHT"
-        self.btnSetTime.title = getText("IGUI_EFT_AdminPanel_SetNightTime")
+        self.btnSetTime:setInternal("SET_TIME_NIGHT")
+        self.btnSetTime:setTitle(getText("IGUI_EFT_AdminPanel_SetNightTime"))
     else
-        self.btnSetTime.internal = "SET_TIME_DAY"
-        self.btnSetTime.title = getText("IGUI_EFT_AdminPanel_SetDayTime")
+        self.btnSetTime:setInternal("SET_TIME_DAY")
+        self.btnSetTime:setTitle(getText("IGUI_EFT_AdminPanel_SetDayTime"))
+
     end
 
     -- Reactivates the btnSetTime only when the internal has changed
     if self.btnSetTimeTab.isChanging then
-        if self.btnSetTimeTab.prevInt ~= self.btnSetTime.internal then
+        if self.btnSetTimeTab.prevInt ~= self.btnSetTime:getInternal() then
             self.btnSetTime:setEnable(not ClientState.GetIsStartingMatch())
 
             -- Reset the table
