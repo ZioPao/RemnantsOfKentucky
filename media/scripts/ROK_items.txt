@@ -25,4 +25,15 @@ module ROK
 		DisplayName = ROK Poster,
 		Icon = Poster,
 	}
+
+	item BriaIslandMap
+	{
+		DisplayCategory = Cartography,
+		Type = Map,
+		DisplayName = Bria Island Map,
+		Icon = Map,
+		Weight = 0.1,
+		Map = BriaIslandMap,
+		WorldStaticModel = Map,
+	}
 }
