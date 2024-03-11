@@ -1,7 +1,13 @@
 local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 local ClientState = require("ROK/ClientState")
 
+local IconButton = require("ROK/UI/BaseComponents/IconButton")
+
 ---------------------------------------
+
+local AUTO_START_ICON = getTexture("media/textures/BeforeMatchPanel/AutoStart.png")
+
+-- https://www.freepik.com/icon/repeat_13070070#fromView=search&page=1&position=9&uuid=b946dce5-3f7c-4c66-bd15-40276518138c
 
 ---@class ModManagementPanel : ISCollapsableWindow
 local ModManagementPanel = ISCollapsableWindow:derive("ModManagementPanel")
@@ -53,12 +59,27 @@ function ModManagementPanel:createChildren()
     local y = (self:getHeight() - btnHeight - yPadding)/2
 
 
-    self.btnToggleAutomaticStart = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
-    self.btnToggleAutomaticStart.internal = "TOGGLE_AUTOMATIC_START"
+    self.btnToggleAutomaticStart = IconButton:new(
+        xPadding, y, btnWidth, btnHeight,
+        AUTO_START_ICON, getText("IGUI_EFT_AdminPanel_ActivateAutomaticStart"), "TOGGLE_AUTOMATIC_START",
+        self, self.onClick
+    )
     self.btnToggleAutomaticStart:initialise()
     self.btnToggleAutomaticStart:setEnable(true)
-    self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_ActivateAutomaticStart"))
     self:addChild(self.btnToggleAutomaticStart)
+
+
+
+
+
+
+
+    -- self.btnToggleAutomaticStart = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
+    -- self.btnToggleAutomaticStart.internal = 
+    -- self.btnToggleAutomaticStart:initialise()
+    -- self.btnToggleAutomaticStart:setEnable(true)
+    -- self.btnToggleAutomaticStart:setTitle()
+    -- self:addChild(self.btnToggleAutomaticStart)
 
     ------------
     --* Bottom part 
