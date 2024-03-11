@@ -48,9 +48,6 @@ local function OnPlayerInit()
         --* Request bank account and request bank account periodically.
         CratesHandling.ToggleContainersValueUpdate()
 
-        --* Clean map
-        ISWorldMap.HandleEFTExits(true)
-
         --* Request the list of PVP Instances from the server
         ClientData.RequestPvpInstances()
 

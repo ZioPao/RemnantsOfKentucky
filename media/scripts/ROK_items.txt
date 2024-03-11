@@ -28,9 +28,9 @@ module ROK
 
 	item BriaIslandMap
 	{
+		// No display name to set it as hidden
 		DisplayCategory = Cartography,
 		Type = Map,
-		DisplayName = Bria Island Map,
 		Icon = Map,
 		Weight = 0.1,
 		Map = BriaIslandMap,

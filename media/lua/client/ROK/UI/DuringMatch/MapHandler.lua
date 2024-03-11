@@ -105,57 +105,55 @@ end
 
 -------------------
 
---- Handles writing symbols on the map to show the extraction points
----@param cleanOnly boolean Wheter or not to add the symbols after cleaning
-function ISWorldMap.HandleEFTExits(cleanOnly)
-    local playerNum = getPlayer():getPlayerNum()
-    ISWorldMap.ShowWorldMap(playerNum)
+-- --- Handles writing symbols on the map to show the extraction points
+-- ---@param cleanOnly boolean Wheter or not to add the symbols after cleaning
+-- function ISWorldMap.HandleEFTExits(cleanOnly)
+--     local playerNum = getPlayer():getPlayerNum()
+--     ISWorldMap.ShowWorldMap(playerNum)
 
-    local function TryHandleMapSymbols()
-        debugPrint("Trying to set the symbols and closing the map")
-        if ISWorldMap_instance == nil then return end
-        debugPrint("Found ISWorldMap_instance")
-        if ISWorldMap_instance.mapAPI == nil then return end
-        debugPrint("Found ISWorldMap_instance map API")
+--     local function TryHandleMapSymbols()
+--         debugPrint("Trying to set the symbols and closing the map")
+--         if ISWorldMap_instance == nil then return end
+--         debugPrint("Found ISWorldMap_instance")
+--         if ISWorldMap_instance.mapAPI == nil then return end
+--         debugPrint("Found ISWorldMap_instance map API")
 
-        local symbolsApi = ISWorldMap_instance.mapAPI:getSymbolsAPI()
-        local mapHandler = MapHandler:new(symbolsApi)
-        mapHandler:clear()
+--         local symbolsApi = ISWorldMap_instance.mapAPI:getSymbolsAPI()
+--         local mapHandler = MapHandler:new(symbolsApi)
+--         mapHandler:clear()
 
-        if cleanOnly~= nil and cleanOnly == false then
-            mapHandler:write()
-        end
+--         if cleanOnly~= nil and cleanOnly == false then
+--             mapHandler:write()
+--         end
 
-        -- Handle autocentering and zooming on the zone
-        local settings = WorldMapSettings.getInstance()
-        local zoom = settings:getDouble("WorldMap.Zoom", 50.0)
-        ISWorldMap_instance:onCenterOnPlayer()
-        ISWorldMap_instance.mapAPI:setZoom(zoom)
-
-
-        ISWorldMap.HideWorldMap(playerNum)
-
-        Events.OnTickEvenPaused.Remove(TryHandleMapSymbols)
-    end
+--         -- Handle autocentering and zooming on the zone
+--         local settings = WorldMapSettings.getInstance()
+--         local zoom = settings:getDouble("WorldMap.Zoom", 50.0)
+--         ISWorldMap_instance:onCenterOnPlayer()
+--         ISWorldMap_instance.mapAPI:setZoom(zoom)
 
 
-    Events.OnTickEvenPaused.Add(TryHandleMapSymbols)
+--         ISWorldMap.HideWorldMap(playerNum)
 
-end
+--         Events.OnTickEvenPaused.Remove(TryHandleMapSymbols)
+--     end
+
+--     Events.OnTickEvenPaused.Add(TryHandleMapSymbols)
+-- end
 
 
 
-Events.PZEFT_ClientModDataReady.Add(function(key)
-    if key == EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID then
-        ISWorldMap.HandleEFTExits(false)
-    end
-end)
+-- Events.PZEFT_ClientModDataReady.Add(function(key)
+--     if key == EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID then
+--         ISWorldMap.HandleEFTExits(false)
+--     end
+-- end)
 
-Events.PZEFT_OnSuccessfulTeleport.Add(function()
-    -- If we're in a raid, we need to reset the correct symbols.
-    -- If we're not, we're gonna just clean them off the map
-    ISWorldMap.HandleEFTExits(not ClientState.GetIsInRaid())
-end)
+-- Events.PZEFT_OnSuccessfulTeleport.Add(function()
+--     -- If we're in a raid, we need to reset the correct symbols.
+--     -- If we're not, we're gonna just clean them off the map
+--     ISWorldMap.HandleEFTExits(not ClientState.GetIsInRaid())
+-- end)
 
 
 
