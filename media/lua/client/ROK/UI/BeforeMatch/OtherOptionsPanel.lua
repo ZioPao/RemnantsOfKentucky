@@ -1,5 +1,7 @@
 local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 local ClientState = require("ROK/ClientState")
+
+local IconButton = require("ROK/UI/BaseComponents/IconButton")
 ---------------------------------------
 
 
@@ -7,6 +9,8 @@ local ClientState = require("ROK/ClientState")
 -- Safehouse icon: https://www.freepik.com/icon/home_4991416#fromView=search&page=1&position=15&uuid=2e938c43-90d6-4390-abee-c5749cd9cdc9
 -- Set time: https://www.freepik.com/icon/moon_13167111#fromView=search&page=1&position=3&uuid=f54312db-93bc-4a5b-a71e-0a14078f215f
 
+local SET_TIME_ICON = getTexture("media/textures/BeforeMatchPanel/SetTime.png")
+local TELEPORT_SAFEHOUSE_ICON = getTexture("media/textures/BeforeMatchPanel/TeleportSafehouse.png")
 
 ---@class OtherOptionsPanel : ISCollapsableWindow
 local OtherOptionsPanel = ISCollapsableWindow:derive("OtherOptionsPanel")
@@ -54,8 +58,11 @@ function OtherOptionsPanel:createChildren()
     local y = self:getHeight()/2 - btnHeight/2 - yPadding/2
 
 
-    self.btnSetTime = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
-    self.btnSetTime.internal = "SET_TIME"
+    self.btnSetTime = IconButton:new(
+        xPadding, y, btnWidth, btnHeight,
+        SET_TIME_ICON, "", "SET_TIME",
+        self, self.onClick
+    )
     self.btnSetTime:initialise()
     self.btnSetTime:setEnable(false)
     self:addChild(self.btnSetTime)
@@ -73,13 +80,15 @@ function OtherOptionsPanel:createChildren()
 
     y = self:getHeight()/2 + btnHeight/2 + yPadding/2
 
-    self.btnTeleportToSafehouse = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
-    self.btnTeleportToSafehouse.internal = "TELEPORT_SAFEHOUSE"
+
+    self.btnTeleportToSafehouse = IconButton:new(
+        xPadding, y, btnWidth, btnHeight,
+        TELEPORT_SAFEHOUSE_ICON, getText("IGUI_EFT_AdminPanel_TeleportToSafehouse"), "TELEPORT_SAFEHOUSE",
+        self, self.onClick
+    )
     self.btnTeleportToSafehouse:initialise()
     self.btnTeleportToSafehouse:setEnable(true)
-    self.btnTeleportToSafehouse:setTitle(getText("IGUI_EFT_AdminPanel_TeleportToSafehouse"))
     self:addChild(self.btnTeleportToSafehouse)
-
 
 end
 

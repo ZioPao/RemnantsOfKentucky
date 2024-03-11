@@ -9,6 +9,9 @@ local AUTO_START_ICON = getTexture("media/textures/BeforeMatchPanel/AutoStart.pn
 
 -- https://www.freepik.com/icon/repeat_13070070#fromView=search&page=1&position=9&uuid=b946dce5-3f7c-4c66-bd15-40276518138c
 
+
+local RESET_USED_INSTANCES_ICON = getTexture("media/textures/BeforeMatchPanel/ResetUsedInstances.png")
+--https://www.freepik.com/icon/refresh_3987207#fromView=search&page=1&position=20&uuid=6f714287-7ada-4ec8-896e-b5a944100b6b
 ---@class ModManagementPanel : ISCollapsableWindow
 local ModManagementPanel = ISCollapsableWindow:derive("ModManagementPanel")
 
@@ -68,33 +71,23 @@ function ModManagementPanel:createChildren()
     self.btnToggleAutomaticStart:setEnable(true)
     self:addChild(self.btnToggleAutomaticStart)
 
-
-
-
-
-
-
-    -- self.btnToggleAutomaticStart = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
-    -- self.btnToggleAutomaticStart.internal = 
-    -- self.btnToggleAutomaticStart:initialise()
-    -- self.btnToggleAutomaticStart:setEnable(true)
-    -- self.btnToggleAutomaticStart:setTitle()
-    -- self:addChild(self.btnToggleAutomaticStart)
-
     ------------
     --* Bottom part 
 
     y = (self:getHeight() + btnHeight + yPadding)/2
 
-    self.btnResetUsedInstances = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
-    self.btnResetUsedInstances.internal = "RESET_USED_INSTANCES"
+
+    self.btnResetUsedInstances = IconButton:new(
+        xPadding, y, btnWidth, btnHeight,
+        RESET_USED_INSTANCES_ICON, getText("IGUI_EFT_AdminPanel_ResetUsedInstances"), "RESET_USED_INSTANCES",
+        self, self.onClick
+    )
     self.btnResetUsedInstances:initialise()
-    self.btnResetUsedInstances:setEnable(false)
-    self.btnResetUsedInstances:setTitle(getText("IGUI_EFT_AdminPanel_ResetUsedInstances"))
+    self.btnResetUsedInstances:setEnable(true)
     self:addChild(self.btnResetUsedInstances)
 
-
 end
+
 function ModManagementPanel:prerender()
     self:drawRect(0, 0, self.width, self.height, self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g,
         self.backgroundColor.b)
