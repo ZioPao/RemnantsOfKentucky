@@ -9,6 +9,11 @@ local ManagePlayersPanel = require("ROK/UI/BeforeMatch/ManagePlayersPanel")
 local ModManagementPanel = require("ROK/UI/BeforeMatch/ModManagementPanel")
 local OtherOptionsPanel = require("ROK/UI/BeforeMatch/OtherOptionsPanel")
 
+
+--------------------------------
+local START_MATCH_ICON = "" -- https://www.freepik.com/icon/play_14441317#fromView=family&page=1&position=0&uuid=6c560048-e143-4f62-bae1-92319409fae7
+local STOP_MATCH_ICON = ""  -- https://www.freepik.com/icon/stop_13570077#fromView=family&page=1&position=2&uuid=6db48743-461d-4009-a1be-79aba60b71a3
+
 --------------------------------
 
 ---@class BeforeMatchAdminPanel : BaseAdminPanel

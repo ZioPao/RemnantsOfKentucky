@@ -460,10 +460,11 @@ function MatchCommands.SetZombieSpawnMultiplier(_, args)
 end
 
 function MatchCommands.SendZombieSpawnMultiplier(playerObj)
-    local instance = MatchController.GetHandler()
-    debugPrint("Player asked for Zombie Spawn Multiplayer")
-    if instance == nil then return end
-    local spawnZombieMultiplier = instance:getZombieSpawnMultiplier()
+    --local instance = MatchController.GetHandler()
+    debugPrint("Player " .. playerObj:getUsername() .. " asked for Zombie Spawn Multiplayer")
+    --if instance == nil then return end
+    --local spawnZombieMultiplier = instance:getZombieSpawnMultiplier()
+    local spawnZombieMultiplier = PZ_EFT_CONFIG.Server.Match.zombieSpawnMultiplier
     sendServerCommand(playerObj, EFT_MODULES.UI, "ReceiveCurrentZombieSpawnMultiplier",
         { spawnZombieMultiplier = spawnZombieMultiplier })
 end

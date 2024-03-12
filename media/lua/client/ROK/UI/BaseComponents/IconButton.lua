@@ -49,6 +49,8 @@ function IconButton:initialise()
 
     -- Icon is gonna be a square, 50x50
     self.icon = ISImage:new(xPadding, xPadding, elementHeight, elementHeight, self.texture)
+    self.icon.scaledWidth = elementHeight * 0.64
+	self.icon.scaledHeight = elementHeight * 0.64
     self.icon:setColor(1,1,1)
     self.icon:initialise()
     self.icon:instantiate()

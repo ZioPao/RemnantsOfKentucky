@@ -5,13 +5,12 @@ local IconButton = require("ROK/UI/BaseComponents/IconButton")
 
 ---------------------------------------
 
-local AUTO_START_ICON = getTexture("media/textures/BeforeMatchPanel/AutoStart.png")
+local AUTO_START_ICON = getTexture("media/textures/BeforeMatchPanel/AutoStart.png") -- https://www.freepik.com/icon/rotated_14441036#fromView=family&page=1&position=3&uuid=135de5a3-1019-46dd-bbef-fdbb2fd5b027
+local RESET_USED_INSTANCES_ICON = getTexture("media/textures/BeforeMatchPanel/ResetUsedInstances.png")  -- https://www.freepik.com/icon/loading_13570094#fromView=family&page=1&position=53&uuid=7960d82c-7aae-422b-b4ef-fe1338a807bf
 
--- https://www.freepik.com/icon/repeat_13070070#fromView=search&page=1&position=9&uuid=b946dce5-3f7c-4c66-bd15-40276518138c
+---------------------------------------
 
 
-local RESET_USED_INSTANCES_ICON = getTexture("media/textures/BeforeMatchPanel/ResetUsedInstances.png")
---https://www.freepik.com/icon/refresh_3987207#fromView=search&page=1&position=20&uuid=6f714287-7ada-4ec8-896e-b5a944100b6b
 ---@class ModManagementPanel : ISCollapsableWindow
 local ModManagementPanel = ISCollapsableWindow:derive("ModManagementPanel")
 

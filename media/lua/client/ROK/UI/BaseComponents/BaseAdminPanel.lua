@@ -63,7 +63,7 @@ function BaseAdminPanel.OnOpenPanel(type)
     end
 
     local width = 250 * GenericUI.FONT_SCALE
-    local height = 330 * GenericUI.FONT_SCALE
+    local height = 280 * GenericUI.FONT_SCALE
 
     local x = 100 --getCore():getScreenWidth() / 2 - width
     local y = getCore():getScreenHeight() / 2 - height

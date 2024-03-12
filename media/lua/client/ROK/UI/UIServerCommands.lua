@@ -86,10 +86,11 @@ function InterfaceCommands.ReceiveAlivePlayersAmount(args)
 
 end
 
+-- TODO Add support for BOTH before and during admin panel
 --- During Match Admin Panel -> Options Panel
 ---@param args { spawnZombieMultiplier : number }
 function InterfaceCommands.ReceiveCurrentZombieSpawnMultiplier(args)
-    local OptionsPanel = require("ROK/UI/DuringMatch/OptionsPanel")
+    local OptionsPanel = require("ROK/UI/BeforeMatch/MatchOptionsPanel")
     if OptionsPanel.instance == nil then return end
     local optRef = OptionsPanel.GetOptionsReference()
     local panelName = optRef.ZombieSpawnMultiplier.panelName

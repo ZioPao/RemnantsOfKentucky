@@ -4,12 +4,9 @@ local ClientState = require("ROK/ClientState")
 local IconButton = require("ROK/UI/BaseComponents/IconButton")
 ---------------------------------------
 
--- TODO add credits
--- Safehouse icon: https://www.freepik.com/icon/home_4991416#fromView=search&page=1&position=15&uuid=2e938c43-90d6-4390-abee-c5749cd9cdc9
--- Set time: https://www.freepik.com/icon/moon_13167111#fromView=search&page=1&position=3&uuid=f54312db-93bc-4a5b-a71e-0a14078f215f
-
-local SET_TIME_ICON = getTexture("media/textures/BeforeMatchPanel/SetTime.png")
-local TELEPORT_SAFEHOUSE_ICON = getTexture("media/textures/BeforeMatchPanel/TeleportSafehouse.png")
+-- TODO add credits for icons
+local SET_TIME_ICON = getTexture("media/textures/BeforeMatchPanel/SetTime.png")     -- https://www.freepik.com/icon/weather_12954793#fromView=family&page=1&position=2&uuid=e4dc941c-8a03-404a-897d-a58f9f2e6fe4
+local TELEPORT_SAFEHOUSE_ICON = getTexture("media/textures/BeforeMatchPanel/TeleportSafehouse.png") -- https://www.freepik.com/icon/home_12484335#fromView=family&page=1&position=1&uuid=3dba7879-de2d-400d-95e9-a8b1c6e83bf3
 
 ---@class OtherOptionsPanel : ISCollapsableWindow
 local OtherOptionsPanel = ISCollapsableWindow:derive("OtherOptionsPanel")
