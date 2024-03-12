@@ -110,7 +110,4 @@ end
 Events.OnResolutionChange.Add(BalancePanel.HandleResolutionChange)
 
 
-
-
-
 return BalancePanel
