@@ -3,16 +3,22 @@ local TimePanel = require("ROK/UI/TimePanel")
 local ClientState = require("ROK/ClientState")
 
 local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
+local IconButton = require("ROK/UI/BaseComponents/IconButton")
 
-local MatchOptionsPanel = require("ROK/UI/BeforeMatch/MatchOptionsPanel")
+local MatchOptionsPanel = require("ROK/UI/BaseComponents/MatchOptionsPanel")
 local ManagePlayersPanel = require("ROK/UI/BeforeMatch/ManagePlayersPanel")
 local ModManagementPanel = require("ROK/UI/BeforeMatch/ModManagementPanel")
 local OtherOptionsPanel = require("ROK/UI/BeforeMatch/OtherOptionsPanel")
 
 
 --------------------------------
-local START_MATCH_ICON = "" -- https://www.freepik.com/icon/play_14441317#fromView=family&page=1&position=0&uuid=6c560048-e143-4f62-bae1-92319409fae7
-local STOP_MATCH_ICON = ""  -- https://www.freepik.com/icon/stop_13570077#fromView=family&page=1&position=2&uuid=6db48743-461d-4009-a1be-79aba60b71a3
+local START_MATCH_TEXT = getText("IGUI_EFT_AdminPanel_StartMatch")
+local STOP_MATCH_TEXT = getText("IGUI_EFT_AdminPanel_Stop")
+local AVAILABLE_INSTANCES_STR = getText("IGUI_EFT_AdminPanel_InstancesAvailable")
+
+
+local START_MATCH_ICON = getTexture("media/textures/BeforeMatchPanel/StartMatch.png") -- https://www.freepik.com/icon/play_14441317#fromView=family&page=1&position=0&uuid=6c560048-e143-4f62-bae1-92319409fae7
+local STOP_MATCH_ICON = getTexture("media/textures/BeforeMatchPanel/StopMatch.png")  -- https://www.freepik.com/icon/stop_13570077#fromView=family&page=1&position=2&uuid=6db48743-461d-4009-a1be-79aba60b71a3
 
 --------------------------------
 
@@ -22,9 +28,7 @@ local BeforeMatchAdminPanel = BaseAdminPanel:derive("BeforeMatchAdminPanel")
 BeforeMatchAdminPanel.instance = nil
 
 
-local MATCH_START_TEXT = getText("IGUI_EFT_AdminPanel_StartMatch")
-local MATCH_STOP_TEXT = getText("IGUI_EFT_AdminPanel_Stop")
-local AVAILABLE_INSTANCES_STR = getText("IGUI_EFT_AdminPanel_InstancesAvailable")
+
 
 ---@param x number
 ---@param y number
@@ -54,8 +58,11 @@ function BeforeMatchAdminPanel:createChildren()
     local y = self:getHeight() - btnHeight - yPadding
     local btnWidth = self:getWidth() - xPadding * 2
 
-    self.btnToggleMatch = ISButton:new(xPadding, y, btnWidth, btnHeight, MATCH_START_TEXT, self, self.onClick)
-    self.btnToggleMatch.internal = "START"
+    self.btnToggleMatch = IconButton:new(
+        xPadding, y, btnWidth, btnHeight,
+        START_MATCH_ICON, START_MATCH_TEXT, "START",
+        self, self.onClick
+    )
     self.btnToggleMatch:initialise()
     self:addChild(self.btnToggleMatch)
 
@@ -160,16 +167,17 @@ function BeforeMatchAdminPanel:onClick(btn)
 
     -- BOTTOM PART
     if btn.internal == 'START' then
-        ClientState.isStartingMatch = true
+        ClientState.SetIsStartingMatch(true)
         btn.internal = "STOP"
-        btn:setTitle(MATCH_STOP_TEXT)
-        -- Start timer. Show it on screen
+        btn.parent:setTexture(STOP_MATCH_ICON)
+        btn:setTitle(STOP_MATCH_TEXT)        -- Start timer. Show it on screen
         sendClientCommand(EFT_MODULES.Match, "StartCountdown", { stopTime = PZ_EFT_CONFIG.Client.Match.startMatchTime })
         TimePanel.Open("Starting match in...")
     elseif btn.internal == "STOP" then
-        ClientState.isStartingMatch = false
+        ClientState.SetIsStartingMatch(false)
         btn.internal = "START"
-        btn:setTitle(MATCH_START_TEXT)
+        btn.parent:setTexture(START_MATCH_ICON)
+        btn:setTitle(START_MATCH_TEXT)
         sendClientCommand(EFT_MODULES.Match, "StopCountdown", {})
         TimePanel.Close()
     end

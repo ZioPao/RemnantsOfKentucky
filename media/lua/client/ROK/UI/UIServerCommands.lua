@@ -90,7 +90,7 @@ end
 --- During Match Admin Panel -> Options Panel
 ---@param args { spawnZombieMultiplier : number }
 function InterfaceCommands.ReceiveCurrentZombieSpawnMultiplier(args)
-    local OptionsPanel = require("ROK/UI/BeforeMatch/MatchOptionsPanel")
+    local OptionsPanel = require("ROK/UI/BaseComponents/MatchOptionsPanel")
     if OptionsPanel.instance == nil then return end
     local optRef = OptionsPanel.GetOptionsReference()
     local panelName = optRef.ZombieSpawnMultiplier.panelName

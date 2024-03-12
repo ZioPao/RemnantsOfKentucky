@@ -79,6 +79,10 @@ function IconButton:setInternal(internal)
     self.btn.internal = internal
 end
 
+---@param texture Texture
+function IconButton:setTexture(texture)
+    self.icon.texture = texture
+end
 
 --* Getters
 

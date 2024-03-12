@@ -2,7 +2,10 @@ local ClientState = require("ROK/ClientState")
 local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 local BaseAdminPanel = require("ROK/UI/BaseComponents/BaseAdminPanel")
 local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
-local OptionsPanel = require("ROK/UI/DuringMatch/OptionsPanel")
+
+
+
+local MatchOptionsPanel = require("ROK/UI/BaseComponents/MatchOptionsPanel")
 --------------------------------
 
 ---@class DuringMatchAdminPanel : BaseAdminPanel
@@ -123,7 +126,7 @@ function DuringMatchAdminPanel:onClick(btn)
         if self.openedPanel and self.openedPanel:getIsVisible() then
             self.openedPanel:close()
         else
-            self.openedPanel = OptionsPanel.Open(self:getRight(), self:getBottom() - self:getHeight())
+            self.openedPanel = MatchOptionsPanel.Open(self:getRight(), self:getBottom() - self:getHeight())
         end
     end
 end
