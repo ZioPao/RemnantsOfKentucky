@@ -52,7 +52,7 @@ function BeforeMatchAdminPanel:createChildren()
     BaseAdminPanel.createChildren(self)
 
     -- Start from the bottom and og up form that
-    local btnHeight = 25
+    local btnHeight = 50
     local xPadding = 15
     local yPadding = 10
     local y = self:getHeight() - btnHeight - yPadding
@@ -66,7 +66,7 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnToggleMatch:initialise()
     self:addChild(self.btnToggleMatch)
 
-    y = y - btnHeight - yPadding * 2      -- More padding from this
+    y = y - btnHeight - yPadding * 3      -- More padding from this
 
 
 
@@ -181,8 +181,6 @@ function BeforeMatchAdminPanel:onClick(btn)
         sendClientCommand(EFT_MODULES.Match, "StopCountdown", {})
         TimePanel.Close()
     end
-
-
 
 end
 
