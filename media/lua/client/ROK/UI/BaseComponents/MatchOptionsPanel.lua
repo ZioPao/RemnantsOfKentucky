@@ -62,7 +62,7 @@ end
 
 function MatchOptionsPanel:createChildren()
     local btnHeight = 50
-    local xPadding = 20
+    local xPadding = 10
     local btnWidth = self:getWidth() - xPadding * 2
     local yPadding = 10
 
@@ -113,7 +113,7 @@ function MatchOptionsPanel:createHorizontalPanel(startY, name, textLabel, setCom
 
     -- Label
     local xPadding = 10
-    self[name].label = ISLabel:new(xPadding, 0, height, textLabel, 1, 1, 1, 1, UIFont.Large, true)
+    self[name].label = ISLabel:new(xPadding, 0, height, textLabel, 1, 1, 1, 1, UIFont.Medium, true)
     self[name].label:initialise()
     self[name].label:instantiate()
     self[name]:addChild(self[name].label)
@@ -133,7 +133,7 @@ function MatchOptionsPanel:createHorizontalPanel(startY, name, textLabel, setCom
     self[name].entry:initialise()
     self[name].entry:instantiate()
     self[name].entry:setClearButton(false)
-    self[name].entry.font = UIFont.Large
+    self[name].entry.font = UIFont.Medium
     self[name].entry:setText("")
     self[name].entry:setOnlyNumbers(true)
     self[name].entry:setMaxTextLength(1)

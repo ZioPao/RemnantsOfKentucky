@@ -41,7 +41,7 @@ end
 
 function OtherOptionsPanel:createChildren()
     local btnHeight = 50
-    local xPadding = 20
+    local xPadding = 10
     local btnWidth = self:getWidth() - xPadding * 2
     local yPadding = 10
 
