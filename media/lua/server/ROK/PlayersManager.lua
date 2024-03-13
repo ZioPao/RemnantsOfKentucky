@@ -1,6 +1,7 @@
 if not isServer() then return end
 local SafehouseInstanceManager = require("ROK/SafehouseInstanceManager")
 local ServerBankManager = require("ROK/Economy/ServerBankManager")
+
 ------------------------
 
 ---@class PlayersManager
@@ -39,20 +40,6 @@ end
 function PlayersManager.MarkPlayerAsMIA(username)
     PlayersManager.SetData(username, {isMIA = true})
 end
-
-
-
----------------
-
--- Events.OnConnected.Add(function()
-
---     debugPrint("Test, player connected!!!!")
-
--- end)
-
-
-----------------
-
 
 
 ----------------------------------------------------------------

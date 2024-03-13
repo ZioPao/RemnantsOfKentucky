@@ -289,9 +289,21 @@ Events.OnCharacterDeath.Add(MatchController.HandlePlayerDeath)
 
 --* Automatic Startup
 
-Events.OnServerStarted.Add(function()
-    --     -- TODO Add event "WaitForFirstPlayer"
-    MatchController.isAutomaticStart = SandboxVars.RemnantsOfKentucky.IsAutomaticStartEnabled
+-- Events.OnServerStarted.Add(function()
+--     --     -- TODO Add event "WaitForFirstPlayer"
+--     MatchController.isAutomaticStart = SandboxVars.RemnantsOfKentucky.IsAutomaticStartEnabled
+-- end)
+
+-- Events.OnConnected.Add(function()
+
+
+-- end)
+
+Events.OnDisconnect.Add(function()
+    local onlinePlayers = getOnlinePlayers()
+    if onlinePlayers == 0 then
+        Countdown.Stop()
+    end
 end)
 
 
