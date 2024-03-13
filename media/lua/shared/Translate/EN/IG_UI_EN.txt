@@ -49,7 +49,9 @@ IG_UI_EN = {
     IGUI_EFT_AdminPanel_MatchOptions = "Match Options",
 
 
-    IGUI_TimePanel_MatchStarting = "The match is starting",
+    IGUI_TimePanel_MatchStartingManually = "The match is starting",
+    IGUI_TimePanel_MatchStartingAutomatically = "AUTO - Match is starting",
+
     IGUI_TimePanel_MatchEnded = "The match has ended",
     IGUI_TimePanel_Overtime = "Overtime",
 

@@ -156,6 +156,11 @@ end
 function TimeCommands.ReceiveTimeUpdate(args)
     ClientState.currentTime = args.time
     -- Locally, 1 player, about 4-5 ms of delay.
+
+    -- Check if TimePanel is closed, if so re-open it
+    if TimePanel.instance == nil or (TimePanel.instance and not TimePanel.instance:isVisible()) then
+        TimePanel.Open()        -- FIX This would miss the description!
+    end
 end
 
 ---------------------

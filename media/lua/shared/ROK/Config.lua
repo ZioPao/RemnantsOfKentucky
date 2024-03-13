@@ -95,6 +95,17 @@ PZ_EFT_CONFIG.SafehouseCells = {
 }
 
 
+--* COUNTDOWN STRINGS
+
+PZ_EFT_CONFIG.CountdownStrings = {
+    MatchStartingManually = getText("IGUI_TimePanel_MatchStarting"),
+    MatchStartingAutomatically = getText("IGUI_TimePanel_MatchStartingAutomatically"),
+
+    MatchEnded = getText("IGUI_TimePanel_MatchEnded"),
+    MatchOvertime = getText("IGUI_TimePanel_Overtime")
+}
+
+
 PZ_EFT_CONFIG.SpawnCell = {
     x = 150,
     y = 150

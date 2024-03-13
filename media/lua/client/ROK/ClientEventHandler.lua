@@ -1,10 +1,9 @@
 local ClientState = require("ROK/ClientState")
 -----------------------------
+
 local CratesHandling = {}
 
-
 --* Startup handling
-
 
 --- On player initialise, request safehouse allocation of player from server
 local function OnPlayerInit()
@@ -54,13 +53,15 @@ local function OnPlayerInit()
         --* Request the list of PVP Instances from the server
         ClientData.RequestPvpInstances()
 
+        --* Ask server if there's a countdown running right now and opens it if that's the case
+        sendClientCommand(EFT_MODULES.Countdown, "AskCurrentCountdown", {})
+
         -- IDEA Add toggle for admin to prevent them from dying\getting punished
         --* Ask server about previous player status
         sendClientCommand(EFT_MODULES.Player, "CheckPlayer", {})
 
         --* Request extraction time from the server
         sendClientCommand(EFT_MODULES.Match, "SendExtractionTime", {})
-
 
         if isAdmin() then
             -- Request current running match, if there is some set the correct UI

@@ -1,9 +1,7 @@
-------------------------------------------------------------------------
---* COMMANDS FROM CLIENTS *--
-------------------------------------------------------------------------
+-- TODO Add other random functions here
 
 local TimeCommands = {}
-local MODULE = EFT_MODULES.UI
+local MODULE = EFT_MODULES.Time
 
 ---* Setting time from client
 function TimeCommands.SetDayTime()
@@ -25,3 +23,8 @@ local function OnTimeCommand(module, command, playerObj, args)
 end
 
 Events.OnClientCommand.Add(OnTimeCommand)
+
+
+
+
+
