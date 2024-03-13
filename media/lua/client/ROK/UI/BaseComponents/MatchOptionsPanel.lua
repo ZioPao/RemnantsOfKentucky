@@ -5,12 +5,17 @@ local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 -- TODO Add options here too, like the During Match Panel
 -- TODO Add countdown setters
 local optionsReferenceTable = {
+
+    -- MATCH
     ZombieSpawnMultiplier = {
         panelName = "ZombieSpawnMultiplier",
         title = "Zombie Spawn Multiplier",
         setCommand = "SetZombieSpawnMultiplier",
         askCommand = "SendZombieSpawnMultiplier"
     },
+
+
+    
 }
 
 
@@ -63,7 +68,7 @@ end
 function MatchOptionsPanel:createChildren()
     local btnHeight = 50
     local xPadding = 10
-    local btnWidth = self:getWidth() - xPadding * 2
+    local elementWidth = self:getWidth() - xPadding * 2
     local yPadding = 10
 
     self.label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_MatchOptions"), 1, 1, 1, 1, UIFont.NewLarge, true)
@@ -71,15 +76,21 @@ function MatchOptionsPanel:createChildren()
     self.label:instantiate()
     self:addChild(self.label)
 
-    for k,v in pairs(optionsReferenceTable) do
-        self:createHorizontalPanel(self.label:getBottom() + yPadding, k, v.title, v.setCommand, v.askCommand)
-    end
 
+    local xHorizPanel = xPadding
+    local yHorizPanel = self.label:getBottom() + yPadding
+
+    for k,v in pairs(optionsReferenceTable) do
+        self:createHorizontalPanel(
+            xHorizPanel, yHorizPanel, elementWidth,
+            k, v.title, v.setCommand, v.askCommand
+        )
+        end
 
     local yBtnApply =  self:getHeight() - btnHeight - yPadding
 
     self.btnApply = ISButton:new(
-        xPadding, yBtnApply, btnWidth, btnHeight,
+        xPadding, yBtnApply, elementWidth, btnHeight,
         getText("IGUI_EFT_AdminPanel_Apply"), self, self.onClick)
     self.btnApply.internal = "APPLY"
     self.btnApply:initialise()
@@ -92,14 +103,12 @@ end
 ---@param textLabel string
 ---@param setCommand string
 ---@param askCommand string
-function MatchOptionsPanel:createHorizontalPanel(startY, name, textLabel, setCommand, askCommand)
+function MatchOptionsPanel:createHorizontalPanel(startX, startY, width, name, textLabel, setCommand, askCommand)
     --local height = 50
     local counter = #self.options + 1
 
-    --text entry stuff
-    local fontHgtSmall = getTextManager():getFontFromEnum(UIFont.Small):getLineHeight()
+    local fontHgtSmall = GenericUI.SMALL_FONT_HGT
     local height = fontHgtSmall + 2 * 2
-    -- EdgeSize must match UITextBox2.EdgeSize
 
     local y = startY + (height * counter)
     if counter == 1 then
@@ -107,13 +116,13 @@ function MatchOptionsPanel:createHorizontalPanel(startY, name, textLabel, setCom
         y = y + th
     end
 
-    self[name] = ISPanel:new(0, y, self.width, height)
+    self[name] = ISPanel:new(startX, y, width, height)
     self[name]:initialise()
     self:addChild(self[name])
 
     -- Label
     local xPadding = 10
-    self[name].label = ISLabel:new(xPadding, 0, height, textLabel, 1, 1, 1, 1, UIFont.Medium, true)
+    self[name].label = ISLabel:new(xPadding, 0, height, textLabel, 1, 1, 1, 1, UIFont.Small, true)
     self[name].label:initialise()
     self[name].label:instantiate()
     self[name]:addChild(self[name].label)
@@ -129,11 +138,11 @@ function MatchOptionsPanel:createHorizontalPanel(startY, name, textLabel, setCom
     --local optionY = self:getHeight() - 8 - inset - height
 
 
-    self[name].entry = ISTextEntryBox:new("", self.width - optionWidth, 0, optionWidth, height)
+    self[name].entry = ISTextEntryBox:new("", width - optionWidth, 0, optionWidth, height)
     self[name].entry:initialise()
     self[name].entry:instantiate()
     self[name].entry:setClearButton(false)
-    self[name].entry.font = UIFont.Medium
+    self[name].entry.font = UIFont.Small
     self[name].entry:setText("")
     self[name].entry:setOnlyNumbers(true)
     self[name].entry:setMaxTextLength(1)
