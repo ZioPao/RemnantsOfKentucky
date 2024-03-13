@@ -15,6 +15,9 @@ GenericUI.HEADER_HGT = GenericUI.MEDIUM_FONT_HGT + 2 * 2
 GenericUI.ENTRY_HGT = GenericUI.HEADER_HGT
 
 
+-- Padding is gonna be the same for every interface
+GenericUI.X_PADDING = 10
+
 ---Returns a string with the formatted time in minutes:seconds
 ---@param time number?
 ---@param useRichText boolean?

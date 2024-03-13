@@ -60,7 +60,7 @@ end
 function DuringMatchAdminPanel:createChildren()
     BaseAdminPanel.createChildren(self)
 
-    local xPadding = 20
+    local xPadding = GenericUI.X_PADDING
     local yPadding = 20
 
     local btnWidth = self:getWidth() - xPadding * 2

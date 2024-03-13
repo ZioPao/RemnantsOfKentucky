@@ -63,7 +63,7 @@ end
 
 function MatchOptionsPanel:createChildren()
     local btnHeight = 50
-    local xPadding = 10
+    local xPadding = GenericUI.X_PADDING
     local elementWidth = self:getWidth() - xPadding * 2
     local yPadding = 10
 
@@ -117,7 +117,7 @@ function MatchOptionsPanel:createHorizontalPanel(startX, startY, width, name, te
     self:addChild(self[name])
 
     -- Label
-    local xPadding = 10
+    local xPadding = GenericUI.X_PADDING
     self[name].label = ISLabel:new(xPadding, 0, height, textLabel, 1, 1, 1, 1, UIFont.Small, true)
     self[name].label:initialise()
     self[name].label:instantiate()

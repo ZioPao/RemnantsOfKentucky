@@ -35,17 +35,8 @@ function IconButton:prerender()
 end
 
 function IconButton:initialise()
-
-
     local elementHeight = self:getHeight()
     local xPadding = elementHeight/6
-
-
-    -- local elementHeight = 50
-    -- local xPadding = 10
-    -- local yPadding = (self:getHeight() + elementHeight)/2
-
-
 
     -- Icon is gonna be a square, 50x50
     self.icon = ISImage:new(xPadding, xPadding, elementHeight, elementHeight, self.texture)

@@ -125,7 +125,7 @@ end
 
 function ManagePlayersPanel:createChildren()
 
-    local xPadding = 10
+    local xPadding = GenericUI.X_PADDING
     local yPadding = 10
 
     self.label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_ManagePlayers"), 1, 1, 1, 1, UIFont.NewLarge, true)

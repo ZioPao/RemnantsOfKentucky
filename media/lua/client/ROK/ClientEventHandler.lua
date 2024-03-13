@@ -29,6 +29,7 @@ local function OnPlayerInit()
 
         if hasUnsupportedMods then
             unsModsStr = unsModsStr:sub(1, -3)      -- Removes last ,
+            local NotificationPanel = require("ROK/UI/NotificationPanel")
             NotificationPanel.Open(unsModsStr)
         end
     end

@@ -48,7 +48,7 @@ end
 
 function ModManagementPanel:createChildren()
     local btnHeight = 50
-    local xPadding = 10
+    local xPadding = GenericUI.X_PADDING
     local btnWidth = self:getWidth() - xPadding * 2
     local yPadding = 10
 

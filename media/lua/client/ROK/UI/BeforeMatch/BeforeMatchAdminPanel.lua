@@ -53,7 +53,7 @@ function BeforeMatchAdminPanel:createChildren()
 
     -- Start from the bottom and og up form that
     local btnHeight = 50
-    local xPadding = 15
+    local xPadding = GenericUI.X_PADDING
     local yPadding = 10
     local y = self:getHeight() - btnHeight - yPadding
     local btnWidth = self:getWidth() - xPadding * 2

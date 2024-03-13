@@ -1,4 +1,7 @@
 
+-- TODO Remove this and use the BaseComponent one
+
+
 local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
 local FONT_SCALE = FONT_HGT_SMALL / 16
 if FONT_SCALE < 1 then
