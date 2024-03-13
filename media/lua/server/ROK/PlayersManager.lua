@@ -41,6 +41,20 @@ function PlayersManager.MarkPlayerAsMIA(username)
 end
 
 
+
+---------------
+
+-- Events.OnConnected.Add(function()
+
+--     debugPrint("Test, player connected!!!!")
+
+-- end)
+
+
+----------------
+
+
+
 ----------------------------------------------------------------
 local MODULE = EFT_MODULES.Player
 local PlayersCommands = {}

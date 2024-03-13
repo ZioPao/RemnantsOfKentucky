@@ -198,26 +198,31 @@ function ShopCommands.BuyItem(args)
 
     -- Check if is moveable. if it is, send to specific point
 
+    local isRefund = false
     local item = InventoryItemFactory.CreateItem(args.itemData.fullType)
+    local objectsToHighligt = {}
 
     if instanceof(item, "Moveable") and item:getSpriteGrid() == nil then
-        SafehouseInstanceHandler.TryToPlaceMoveable(item)
-    else
-        local usedCrates = {}
-        local isRefund = false
 
+        -- TODO Refund stuff?
+        local tile = SafehouseInstanceHandler.TryToPlaceMoveable(item)
+        if tile then
+            objectsToHighligt[tile] = true
+        end
+    else
         for i = 1, args.quantity do
             local crate = SafehouseInstanceHandler.TryToAddToCrate(args.itemData.fullType)
             if crate then
-                usedCrates[crate] = true
+                objectsToHighligt[crate] = true
             else
                 -- if no crates were available, a refund will be given to the player
                 isRefund = true
                 sendClientCommand(EFT_MODULES.Bank, "ProcessTransaction", { amount = args.itemData.basePrice })
             end
         end
-        triggerEvent("PZEFT_OnSuccessfulBuy", args.shopCat, usedCrates, isRefund)
     end
+
+    triggerEvent("PZEFT_OnSuccessfulBuy", args.shopCat, objectsToHighligt, isRefund)
 end
 
 function ShopCommands.BuyInstaHeal()

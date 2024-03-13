@@ -14,11 +14,7 @@ local optionsReferenceTable = {
         askCommand = "SendZombieSpawnMultiplier"
     },
 
-
-    
 }
-
-
 
 
 ---@class MatchOptionsPanel : ISCollapsableWindow

@@ -289,7 +289,22 @@ Events.OnCharacterDeath.Add(MatchController.HandlePlayerDeath)
 
 --* Automatic Startup
 
+Events.OnServerStarted.Add(function()
+    --     -- TODO Add event "WaitForFirstPlayer"
+    MatchController.isAutomaticStart = SandboxVars.RemnantsOfKentucky.IsAutomaticStartEnabled
+end)
+
+
+    -- if MatchController.isAutomaticStart then
+
+    --     Events.PZEFT_OnMatchEnd.Add(MatchController.AutoStartMatch)
+    --     Events.PZEFT_ServerModDataReady.Add(MatchController.AutoStartMatch)
+    -- end
+
+
+
 function MatchController.AutoStartMatch()
+    debugPrint("AutoStartMatch function activated!")
     Countdown.Setup(SandboxVars.RemnantsOfKentucky.AutomaticStartCountdownTime, function()
         local handler = MatchController:new()
         handler:initialise()
