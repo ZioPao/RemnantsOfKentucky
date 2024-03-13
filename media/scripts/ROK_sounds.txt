@@ -31,7 +31,7 @@ module ROK
         clip { 
           file = media/sound/Beep.ogg, 
           distanceMax = 3,
-          volume = 1,
+          volume = 0.8,
         }
 	}
 }
