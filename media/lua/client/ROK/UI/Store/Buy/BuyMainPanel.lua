@@ -43,6 +43,7 @@ function BuyMainPanel:render()
 
     for obj, _ in pairs(self.objectsToHighlight) do
         ---@cast obj IsoObject
+        ---@diagnostic disable-next-line: redundant-parameter
         obj:setHighlighted(true, false)
         local OBJECT_HIGHLIGHT_COLOR = ColorInfo.new(0,1,0,1)
         obj:setHighlightColor(OBJECT_HIGHLIGHT_COLOR)
@@ -54,7 +55,7 @@ function BuyMainPanel:render()
 end
 
 ---@param category string
----@param usedCrates table<IsoObject,boolean>
+---@param objectsToHighlight table<IsoObject,boolean>
 function BuyMainPanel.SetSuccessfulBuyConfirmation(category, objectsToHighlight, isRefund)
     debugPrint("SetSuccessfulBuyConfirmation")
 

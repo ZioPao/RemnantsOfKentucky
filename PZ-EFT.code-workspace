@@ -8,9 +8,6 @@
 		},
 		{
 			"path": "D:/Development/IntelligentPriceGen"
-		},
-		{
-			"path": "E:/Steam/steamapps/common/ProjectZomboid"
 		}
 	],
 	"settings": {
@@ -22,6 +19,9 @@
 		"debug.closeReadonlyTabsOnEnd": false,
 		"files.readonlyInclude": {
 			"E:/Steam/steamapps/common/ProjectZomboid/**": true
+		},
+		"files.readonlyExclude": {
+			"E:/Steam/steamapps/common/ProjectZomboid/vscode/settings.json": true
 		}
 	}
 }

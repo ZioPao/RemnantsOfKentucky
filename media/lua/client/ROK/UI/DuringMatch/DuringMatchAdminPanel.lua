@@ -3,8 +3,6 @@ local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 local BaseAdminPanel = require("ROK/UI/BaseComponents/BaseAdminPanel")
 local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
 
-
-
 local MatchOptionsPanel = require("ROK/UI/BaseComponents/MatchOptionsPanel")
 --------------------------------
 
@@ -75,13 +73,13 @@ function DuringMatchAdminPanel:createChildren()
     self:addChild(self.btnStop)
 
     y = y - btnHeight - yPadding * 1.5      -- More padding from this
-    self.btnMatchOptions = ISButton:new(xPadding, y, btnWidth, btnHeight,
-    getText("IGUI_EFT_AdminPanel_MatchOptions"), self, self.onClick)
-    self.btnMatchOptions.internal = "MATCH_OPTIONS"
-    self.btnMatchOptions:initialise()
-    self.btnMatchOptions:setEnable(not self:getIsMatchEnded())
-    self:addChild(self.btnMatchOptions)
 
+    self.btnMatchOptions = ISButton:new(xPadding, y, btnWidth, btnHeight, "", self, self.onClick)
+    self.btnMatchOptions.internal = "OPEN_MATCH_OPTIONS"
+    self.btnMatchOptions:initialise()
+    self.btnMatchOptions:setEnable(true)
+    self.btnMatchOptions:setTitle(getText("IGUI_EFT_AdminPanel_MatchOptions"))
+    self:addChild(self.btnMatchOptions)
     -----------------------
 
     self.panelInfo = ISPanel:new(0, 20, self:getWidth(), self:getHeight() - y)
@@ -122,12 +120,9 @@ function DuringMatchAdminPanel:onClick(btn)
 
         self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), self:getY() + self:getHeight() + 20, self,
             self.onConfirmStop)
-    elseif btn.internal == "MATCH_OPTIONS" then
-        if self.openedPanel and self.openedPanel:getIsVisible() then
-            self.openedPanel:close()
-        else
-            self.openedPanel = MatchOptionsPanel.Open(self:getRight(), self:getBottom() - self:getHeight())
-        end
+    elseif btn.internal == "OPEN_MATCH_OPTIONS" then
+        GenericUI.ToggleSidePanel(self, MatchOptionsPanel)
+        return
     end
 end
 
