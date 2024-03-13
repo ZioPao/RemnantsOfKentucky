@@ -128,8 +128,6 @@ function ManagePlayersPanel:createChildren()
     local xPadding = 10
     local yPadding = 10
 
-
-
     self.label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_ManagePlayers"), 1, 1, 1, 1, UIFont.NewLarge, true)
     self.label:initialise()
     self.label:instantiate()
@@ -138,7 +136,7 @@ function ManagePlayersPanel:createChildren()
     -- TODO Clean this up
 
     local y = self.label:getBottom() + yPadding*2
-    local leftSideWidth = (self:getWidth() - xPadding*2) / 1.6
+    local leftSideWidth = (self:getWidth() - xPadding*2) / 1.25
 
     local entryHgt = GenericUI.SMALL_FONT_HGT + 2 * 2
     self.filterEntry = ISTextEntryBox:new("Players", 10, y, leftSideWidth, entryHgt)
@@ -175,13 +173,42 @@ function ManagePlayersPanel:createChildren()
     ---------------------------------
     -- Buttons
 
-    local btnY = self.panel:getHeight() / 2 -- - top
+    local btnY = self.filterEntry:getY()
     local btnX = self.panel:getRight() + 10
 
     local btnWidth = (self:getWidth() - self.panel:getWidth()) - xPadding*3
     local btnHeight = 64
 
-    -- Middle button
+
+    self.btnRefresh = ISButton:new(
+        btnX, btnY, btnWidth, btnHeight,
+        "", self, ManagePlayersPanel.onClick
+    )
+    self.btnRefresh.internal = "REFRESH"
+    self.btnRefresh:setImage(REFRESH_ICON)
+    self.btnRefresh:setTooltip(getText("IGUI_EFT_AdminPanel_Refresh"))
+    self.btnRefresh:initialise()
+    self.btnRefresh:instantiate()
+    self.btnRefresh.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
+    self:addChild(self.btnRefresh)
+
+
+    btnY = btnY + btnHeight + yPadding
+
+    self.btnStarterKit = ISButton:new(
+        btnX, btnY, btnWidth, btnHeight,
+        "" , self, ManagePlayersPanel.onClick
+    )
+    self.btnStarterKit.internal = "STARTER_KIT"
+    self.btnStarterKit:setImage(STARTER_KIT_ICON)
+    self.btnStarterKit:setTooltip(getText("IGUI_EFT_AdminPanel_Tooltip_StarterKit"))
+    self.btnStarterKit:initialise()
+    self.btnStarterKit:instantiate()
+    self.btnStarterKit.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
+    self:addChild(self.btnStarterKit)
+
+    btnY = btnY + btnHeight + yPadding
+
     self.btnWipePlayer = ISButton:new(
         btnX, btnY, btnWidth, btnHeight,
         "", self, ManagePlayersPanel.onClick
@@ -194,29 +221,6 @@ function ManagePlayersPanel:createChildren()
     self.btnWipePlayer.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
     self:addChild(self.btnWipePlayer)
 
-    self.btnRefresh = ISButton:new(
-        btnX, btnY - self.btnWipePlayer:getHeight() - 10, btnWidth, btnHeight,
-        "", self, ManagePlayersPanel.onClick
-    )
-    self.btnRefresh.internal = "REFRESH"
-    self.btnRefresh:setImage(REFRESH_ICON)
-    self.btnRefresh:setTooltip(getText("IGUI_EFT_AdminPanel_Refresh"))
-    self.btnRefresh:initialise()
-    self.btnRefresh:instantiate()
-    self.btnRefresh.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
-    self:addChild(self.btnRefresh)
-
-    self.btnStarterKit = ISButton:new(
-        btnX, btnY + self.btnWipePlayer:getHeight() + 10, btnWidth, btnHeight,
-        "" , self, ManagePlayersPanel.onClick
-    )
-    self.btnStarterKit.internal = "STARTER_KIT"
-    self.btnStarterKit:setImage(STARTER_KIT_ICON)
-    self.btnStarterKit:setTooltip(getText("IGUI_EFT_AdminPanel_Tooltip_StarterKit"))
-    self.btnStarterKit:initialise()
-    self.btnStarterKit:instantiate()
-    self.btnStarterKit.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
-    self:addChild(self.btnStarterKit)
 
 end
 
