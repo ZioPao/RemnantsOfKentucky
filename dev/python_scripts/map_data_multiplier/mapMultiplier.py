@@ -62,16 +62,15 @@ start_y = 100
 end_y = 200
 
 
-# for x in range(0, 0):
-#     for y in range(100, 11):
-#         setStartFiles(base_lotheader)
-#         setStartFiles(base_chunkdata)
-#         setStartFiles(base_lotpack)
+for x in range(0, 5):
+    for y in range(0, 2):
+        setStartFiles(base_lotheader)
+        setStartFiles(base_chunkdata)
+        setStartFiles(base_lotpack)
 
-#         print(x)
-#         print(y)
-#     print("_________")
-
+        print(x)
+        print(y)
+    print("_________")
 
 
 # Actual script running

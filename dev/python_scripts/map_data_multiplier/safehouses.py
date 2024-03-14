@@ -1,12 +1,5 @@
 from common import MapDataMultiplier
 
-
-start_x = 0
-end_x = 0
-
-start_y = 100
-end_y = 200
-
-
-mdm = MapDataMultiplier("safehouse", start_x=0, end_x=0, start_y=100, end_y=200)
-mdm.run()
+#fix this
+mdm = MapDataMultiplier("safehouse", x_len=0, y_len=0, x_rep=1, y_rep=4, buffer_x=0, buffer_y=0)
+mdm.run(0,100)
