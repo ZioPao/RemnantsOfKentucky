@@ -135,3 +135,18 @@ class MapDataMultiplier():
         self.__copy_loop__(BASE_LOTPACK, start_x, start_y)
 
 
+
+    def run_single(self, start_x, start_y, end_x, end_y):
+        
+        for st in [BASE_LOTHEADER, BASE_CHUNKDATA, BASE_LOTPACK]:
+            for x in range(start_x, end_x+1):
+                for y in range(start_y, end_y+1) :
+
+
+                    og_file = st.format(x=start_x, y=start_y)
+                    og_file_path = self.input_path / og_file
+
+                    curr_file = st.format(x=x, y=y)
+                    curr_file_path = self.output_path / curr_file
+                    shutil.copyfile(og_file_path, curr_file_path)
+
