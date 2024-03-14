@@ -57,26 +57,37 @@ base_lotpack = "world_{x}_{y}.lotpack"
 
 # Preprocess, set files to the correct name
 start_x = 0
-end_x = 4
-start_y = 0
-end_y = 2
+end_x = 0
+start_y = 100
+end_y = 200
 
 
-for x in range(0, 5):
-    for y in range(0, 2):
-        setStartFiles(base_lotheader)
-        setStartFiles(base_chunkdata)
-        setStartFiles(base_lotpack)
+# for x in range(0, 0):
+#     for y in range(100, 11):
+#         setStartFiles(base_lotheader)
+#         setStartFiles(base_chunkdata)
+#         setStartFiles(base_lotpack)
 
-        print(x)
-        print(y)
-    print("_________")
+#         print(x)
+#         print(y)
+#     print("_________")
 
 
 
 # Actual script running
-for x in range(start_x, end_x):
+for x in range(start_x, end_x+1):
     for y in range(start_y, end_y):
+
+        print(x)
+        print(y)
+
         copyLoop(base_lotheader, start_x=x ,start_y=y)
         copyLoop(base_chunkdata, start_x=x ,start_y=y)
         copyLoop(base_lotpack, start_x=x ,start_y=y)
+
+        print("__________")
+
+
+
+
+        
