@@ -129,7 +129,7 @@ end
 
 ---------------------------------
 local function OnCountdownCommands(module, command, playerObj, args)
-    if module == MODULE and OnCountdownCommands[command] then
+    if module == MODULE and CountdownCommands[command] then
         --debugPrint("Client Command - " .. MODULE .. "." .. command)
         CountdownCommands[command](playerObj, args)
     end
