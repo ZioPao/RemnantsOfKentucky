@@ -84,11 +84,19 @@ function ShopItemsManager.StructureSellData(itemsList)
 
  function ShopItemsManager.LoadData()
 
-    -- TODO Load default JSON, if there's no custom one in the cachedir
+    -- Load default JSON, if there's no custom one in the cachedir
+    local json = require("ROK/JSON")
+    local fileName = 'rok_prices.json'
+    local reader = nil -- getFileReader(fileName, false)
 
-
-
+    if reader == nil then
+        local writer = getFileWriter(fileName, true, false)
+        local itemsStr = json.readFile('ROK', 'media/data/default_prices.json')
+        writer:write(itemsStr)
+        writer:close()
+    end
  end
+ --Events.OnServerStarted.Add(ShopItemsManager.LoadData)
 
 ShopItemsManager.AddItem("Base.GranolaBar", {["ESSENTIALS"] = true}, 20)
 ShopItemsManager.AddItem("Base.WaterBottleFull", {["ESSENTIALS"] = true}, 50)
