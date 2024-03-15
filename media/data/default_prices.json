@@ -15391,62 +15391,62 @@
     },
     {
         "fullType": "Base.GranolaBar",
-        "tag": "ESSENTIAL",
+        "tag": "ESSENTIALS",
         "basePrice": 20
     },
     {
         "fullType": "Base.WaterBottleFull",
-        "tag": "ESSENTIAL",
+        "tag": "ESSENTIALS",
         "basePrice": 50
     },
     {
         "fullType": "Base.Cereal",
-        "tag": "ESSENTIAL",
+        "tag": "ESSENTIALS",
         "basePrice": 20
     },
     {
         "fullType": "Base.Butter",
-        "tag": "ESSENTIAL",
+        "tag": "ESSENTIALS",
         "basePrice": 500
     },
     {
         "fullType": "Base.BaseballBat",
-        "tag": "ESSENTIAL",
+        "tag": "ESSENTIALS",
         "basePrice": 200
     },
     {
         "fullType": "Base.Crowbar",
-        "tag": "ESSENTIAL",
+        "tag": "ESSENTIALS",
         "basePrice": 1000
     },
     {
         "fullType": "Base.ShotgunSawnoff",
-        "tag": "ESSENTIAL",
+        "tag": "ESSENTIALS",
         "basePrice": 1500
     },
     {
         "fullType": "Base.ShotgunShellsBox",
-        "tag": "ESSENTIAL",
+        "tag": "ESSENTIALS",
         "basePrice": 250
     },
     {
         "fullType": "Base.Pistol",
-        "tag": "ESSENTIAL",
+        "tag": "ESSENTIALS",
         "basePrice": 750
     },
     {
         "fullType": "Base.9mmClip",
-        "tag": "ESSENTIAL",
+        "tag": "ESSENTIALS",
         "basePrice": 250
     },
     {
         "fullType": "Base.Bullets9mmBox",
-        "tag": "ESSENTIAL",
+        "tag": "ESSENTIALS",
         "basePrice": 250
     },
     {
         "fullType": "Base.Bandage",
-        "tag": "ESSENTIAL",
+        "tag": "ESSENTIALS",
         "basePrice": 100
     }
 ]

@@ -43,8 +43,12 @@ local function DoTags(shopItems, id, item)
 end
 
 function ServerShopManager.LoadShopPrices()
-    local shopItemsData = ServerData.Shop.GetShopItemsData()
     local ShopItemsManager = require("ROK/ShopItemsManager")
+
+    -- Readd items from JSON
+    ShopItemsManager.LoadData()
+
+    local shopItemsData = ServerData.Shop.GetShopItemsData()
 
     -- Init
     shopItemsData.items = {}

@@ -380,10 +380,10 @@ end
 ---@param modID string
 ---@param path string
 ---@return string
-function json.readFile(modID, path)
+function json.readModFile(modID, path)
   local fullString = ""
   local file =  getModFileReader(modID, path, false)
-  if file == nil then return "" end
+  if not file then return false end
 
   local line = file:readLine()
   local count = 1
@@ -395,6 +395,24 @@ function json.readFile(modID, path)
   file:close()
   return fullString
 end
+
+
+function json.readFile(path)
+  local fullString = ""
+  local file = getFileReader(path, false)
+  if not file then return false end
+
+  local line = file:readLine()
+  local count = 1
+  while line ~= nil do
+      fullString = fullString .. line .. "\n"
+      line = file:readLine()
+      count = count + 1
+  end
+  file:close()
+  return fullString
+end
+
 
 
 return json
