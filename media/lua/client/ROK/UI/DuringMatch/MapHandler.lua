@@ -165,7 +165,7 @@ require 'ISUI/Maps/ISMapDefinitions'
 
 LootMaps.Init.BriaIslandMap = function(mapUI)
     local mapAPI = mapUI.javaObject:getAPIv1()
-    MapUtils.initDirectoryMapData(mapUI, 'media/maps/PZ-EFT')
+    MapUtils.initDirectoryMapData(mapUI, 'media/maps/ROK-BriaIsle')
     MapUtils.initDefaultStyleV1(mapUI)
     --replaceWaterStyle(mapUI)
     mapAPI:setBoundsInSquares(0, 0, 900, 600)
