@@ -4,6 +4,10 @@
     balance on that player account.
 ]]
 
+
+-- FIX Scaling is broken after we've changed GenericUI stuff!!!
+
+
 local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 
 -------------------------------------

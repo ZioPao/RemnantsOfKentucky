@@ -42,3 +42,14 @@ function ISMoveablesAction:isValid()
 
     return ogReturn
 end
+
+
+local og_ISWorldMenuElementsContextDisassemble = ISWorldMenuElements.ContextDisassemble
+function ISWorldMenuElements.ContextDisassemble()
+
+    if SafehouseInstanceHandler.IsInSafehouse() and SafehouseInstanceHandler.IsInStaticArea(getPlayer():getSquare()) then
+        return
+    end
+
+    og_ISWorldMenuElementsContextDisassemble()
+end
