@@ -12,6 +12,7 @@ IG_UI_EN = {
 
     IGUI_EFT_AdminPanel_ManagePlayers = "Manage Players",
     IGUI_EFT_AdminPanel_Refresh = "Refresh",
+    IGUI_EFT_AdminPanel_Apply = "Apply your changes",
     IGUI_EFT_AdminPanel_Tooltip_Refresh = "Refresh the players list",
 
     IGUI_EFT_AdminPanel_WipePlayer = "Wipe Player",

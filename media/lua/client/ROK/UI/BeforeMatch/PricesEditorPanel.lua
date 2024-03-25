@@ -3,11 +3,23 @@ local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
 
 ---------------------------------------
 
-local WIPE_PLAYER_ICON = getTexture("media/textures/BeforeMatchPanel/WipePlayer.png")     -- https://www.freepik.com/icon/close_14440874#fromView=family&page=1&position=0&uuid=e818dfad-684a-4567-9aca-43ed2667f4e1
+local APPLY_ICON = getTexture("media/textures/BeforeMatchPanel/Apply.png")     -- https://www.freepik.com/icon/close_14440874#fromView=family&page=1&position=0&uuid=e818dfad-684a-4567-9aca-43ed2667f4e1
 local REFRESH_ICON = getTexture("media/textures/BeforeMatchPanel/Loop.png")               -- https://www.freepik.com/icon/rotated_14441036#fromView=family&page=1&position=3&uuid=135de5a3-1019-46dd-bbef-fdbb2fd5b027
-local STARTER_KIT_ICON = getTexture("media/textures/BeforeMatchPanel/GiveStarterKit.png") -- https://www.freepik.com/icon/gift-box_12484717#fromView=family&page=1&position=4&uuid=6b0bb61f-b073-41c1-b474-32da7131c231
 
 -------------------------------
+
+
+
+
+-- TODO Save a local copy here and apply changes at runtime
+
+
+
+
+
+
+
+
 
 ---@class PricesEditorScrollingTable : ISPanel
 ---@field datas ISScrollingListBox
@@ -48,8 +60,10 @@ function PricesEditorScrollingTable:createChildren()
     self.datas.doDrawItem = self.drawDatas
     self.datas.drawBorder = true
     self.datas:addColumn("FullType", 0)
-    self.datas:addColumn("Tag", 200)
-    self.datas:addColumn("Price", 450)
+
+    local columnWidth = self.width/3
+    self.datas:addColumn("Tag", columnWidth)
+    self.datas:addColumn("Price", columnWidth*2)
     self:addChild(self.datas)
 end
 
@@ -68,14 +82,32 @@ function PricesEditorScrollingTable:update()
     self.datas.doDrawItem = self.drawDatas
 end
 
+
+---@param tags table
+---@return string
+local function GetTag(tags)
+
+    -- JANK Horrible workaround, fix up this crap
+    for k,v in pairs(tags) do
+        if v == true then
+            return k
+        end
+    end
+    return ""
+end
+
+
+
+---@param y any
+---@param item {index : number, text : string, item : shopItemElement}
+---@param alt any
+---@return unknown
 function PricesEditorScrollingTable:drawDatas(y, item, alt)
     if y + self:getYScroll() + self.itemheight < 0 or y + self:getYScroll() >= self.height then
         return y + self.itemheight
     end
     local a = 0.9
 
-    --todo show tag in edit box
-    -- todo show price in edit box
     if self.selected == item.index then
         self:drawRect(0, (y), self:getWidth(), self.itemheight, 0.3, 0.7, 0.35, 0.15)
     end
@@ -88,7 +120,31 @@ function PricesEditorScrollingTable:drawDatas(y, item, alt)
         self.borderColor.b)
 
     local xOffset = 10
+
+    local clipX = self.columns[1].size
+    local clipX2 = self.columns[2].size
+    local clipY = math.max(0, y + self:getYScroll())
+    local clipY2 = math.min(self.height, y + self:getYScroll() + self.itemheight)
+
+    self:setStencilRect(clipX, clipY, clipX2 - clipX, clipY2 - clipY)
     self:drawText(item.text, xOffset, y + 4, 1, 1, 1, a, self.font)
+    self:clearStencilRect()
+
+
+    local tag = GetTag(item.item.tags)
+
+    clipX = self.columns[2].size
+    clipX2 = self.columns[3].size
+    self:setStencilRect(clipX, clipY, clipX2 - clipX, clipY2 - clipY)
+    self:drawText(tag, self.columns[2].size + xOffset + 4, y + 4, 1, 1, 1, a, self.font)
+    self:clearStencilRect()
+
+
+
+    self:drawText(tostring(item.item.basePrice), self.columns[3].size + xOffset + 4, y + 4, 1, 1, 1, a, self.font)
+
+
+
     return y + self.itemheight
 end
 
@@ -97,6 +153,8 @@ end
 ---@class PricesEditorPanel : ISCollapsableWindow
 PricesEditorPanel = ISCollapsableWindow:derive("PricesEditorPanel")
 
+
+-- PricesEditorPanel.Open(0, 0, 500, 500)
 function PricesEditorPanel.Open(x, y, width, height)
     if PricesEditorPanel.instance then
         PricesEditorPanel.instance:close()
@@ -131,19 +189,33 @@ function PricesEditorPanel:new(x, y, width, height)
     return o
 end
 
+---@return { fullType: string, tags: table, basePrice: number, multiplier: number, sellMultiplier: number, quantity: number? }
+function PricesEditorPanel:getSelectedItem()
+
+    local currSelId = self.mainCategory.datas.selected
+
+    ---@type shopItemElement
+    local selection = self.mainCategory.datas.items[currSelId].item
+    return selection
+
+end
+
+
+function PricesEditorPanel:onTagChange()
+    local item = self:getSelectedItem()
+
+    local selectedTag = self.comboTag:getOptionText(self.comboTag.selected)
+    item.tags = {}      -- Workaround, we should have only a single tag, not multiples.
+    item.tags[selectedTag] = true
+end
+
 function PricesEditorPanel:createChildren()
     local xPadding = GenericUI.X_PADDING
     local yPadding = 10
 
-    self.label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_ManagePlayers"), 1, 1, 1, 1,
-        UIFont.NewLarge, true)
-    self.label:initialise()
-    self.label:instantiate()
-    self:addChild(self.label)
-
     -- TODO Clean this up
 
-    local y = self.label:getBottom() + yPadding * 2
+    local y = yPadding * 2
     local leftSideWidth = (self:getWidth() - xPadding * 2) / 1.25
 
     local entryHgt = GenericUI.SMALL_FONT_HGT + 2 * 2
@@ -200,14 +272,16 @@ function PricesEditorPanel:createChildren()
     self.btnRefresh.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
     self:addChild(self.btnRefresh)
 
+    local entryHeight = 24
 
     btnY = btnY + btnHeight + yPadding
 
 
     -- EDIT TAG
-    self.comboTag = ISComboBox:new(btnX, btnY, btnWidth, btnHeight, self, self.onChangeTag)
+    self.comboTag = ISComboBox:new(btnX, btnY, btnWidth, entryHeight, self, self.onTagChange)
     self.comboTag:initialise()
     self.comboTag:instantiate()
+    --self.comboTag.noSelectionText("SELECT A TAG")
     self.comboTag:setAnchorLeft(false)
     self:addChild(self.comboTag)
 
@@ -215,14 +289,21 @@ function PricesEditorPanel:createChildren()
         self.comboTag:addOption(PZ_EFT_CONFIG.Shop.tags[i])
     end
 
-    btnY = btnY + btnHeight + yPadding
+    btnY = btnY + entryHeight + yPadding
 
     -- EDIT PRICE
-    self.entryPrice = ISTextEntryBox:new("", btnX, btnY, btnWidth, btnHeight)
+    self.entryPrice = ISTextEntryBox:new("", btnX, btnY, btnWidth, entryHeight)
     self.entryPrice:initialise()
     self.entryPrice:instantiate()
     self.entryPrice:setClearButton(false)
     self.entryPrice.font = UIFont.Small
+    self.entryPrice.onTextChange = function()
+        local item = self:getSelectedItem()
+        local newPrice = tonumber(self.entryPrice:getInternalText())
+        if newPrice then
+            item.basePrice = newPrice
+        end
+    end
     self.entryPrice:setText("")
     self.entryPrice:setOnlyNumbers(true)
     self.entryPrice:setHasFrame(false)
@@ -230,6 +311,25 @@ function PricesEditorPanel:createChildren()
     self.entryPrice:setAnchorBottom(true)
 	self.entryPrice:setAnchorRight(true)
     self:addChild(self.entryPrice)
+
+
+    self.btnApply = ISButton:new(
+        btnX, self:getBottom() - btnHeight - xPadding, btnWidth, btnHeight,
+        "", self, PricesEditorPanel.onClick
+    )
+
+
+    self.btnApply = ISButton:new(
+        btnX, self:getBottom() - btnHeight - xPadding, btnWidth, btnHeight,
+        "", self, PricesEditorPanel.onClick
+    )
+    self.btnApply.internal = "APPLY"
+    self.btnApply:setImage(APPLY_ICON)
+    self.btnApply:setTooltip(getText("IGUI_EFT_AdminPanel_Apply"))
+    self.btnApply:initialise()
+    self.btnApply:instantiate()
+    self.btnApply.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
+    self:addChild(self.btnApply)
 
 end
 
@@ -252,35 +352,10 @@ function PricesEditorPanel:prerender()
 end
 
 function PricesEditorPanel:onClick(button)
-    local confY = self:getY() + self:getHeight() + 20
-
     if button.internal == 'REFRESH' then
         self:fillList()
-    else
-        ---@type IsoPlayer
-        local selectedPlayer = self.mainCategory.datas.items[self.mainCategory.datas.selected].item
-        local plID = selectedPlayer:getOnlineID()
-        local plUsername = selectedPlayer:getUsername()
-
-        if button.internal == 'STARTER_KIT' then
-            local function OnConfirmGiveStarterKit()
-                sendClientCommand(EFT_MODULES.Player, "RelayStarterKit", { playerID = plID })
-                local text = getText("UI_EFT_Say_SentStarterKit", plUsername)
-                getPlayer():Say(text)
-            end
-
-            local text = getText("IGUI_EFT_AdminPanel_Confirmation_StarterKit", plUsername)
-            self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, self, OnConfirmGiveStarterKit)
-        elseif button.internal == 'WIPE_PLAYER' then
-            local function OnConfirmWipePlayer()
-                sendClientCommand(EFT_MODULES.Player, "ResetPlayer", { playerID = plID })
-                local text = getText("UI_EFT_Say_WipePlayer", plUsername)
-                getPlayer():Say(text)
-            end
-
-            local text = getText("IGUI_EFT_AdminPanel_Confirmation_WipePlayer", plUsername)
-            self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, self, OnConfirmWipePlayer)
-        end
+    elseif button.internal == 'APPLY' then
+        -- TODO Send new JSON to server
     end
 end
 
@@ -294,12 +369,23 @@ end
 function PricesEditorPanel:update()
     ISCollapsableWindow.update(self)
 
-    ---@type shopItemElement
-    local selection = self.mainCategory.datas.selected
+    local currSelId = self.mainCategory.datas.selected
+    if currSelId ~= self.prevSelId then
 
-    -- TODO Send to combobox and price entry
+        ---@type shopItemElement
+        local selection = self.mainCategory.datas.items[currSelId].item
+        if selection then
+            -- Send to combobox and price entry       
+            local tag = GetTag(selection.tags)
+            self.comboTag:select(tag)
 
+            local price = tostring(selection.basePrice)
+            self.entryPrice:setText(price)
+        end
 
+    end
+
+    self.prevSelId = currSelId
 
 end
 
