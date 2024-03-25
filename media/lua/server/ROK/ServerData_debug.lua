@@ -58,7 +58,7 @@ ClientCommands.print_shopitems = function()
 end
 
 ClientCommands.TransmitShopItems = function()
-    ServerShopManager.TransmitShopItems()
+    ServerData.Shop.TransmitShopItemsData()
 end
 
 -- ClientCommands.TeleportPlayersToInstance = function()

@@ -47,6 +47,7 @@ end
 
 ClientData.Shop = ClientData.Shop or {}
 
+---@return shopItemsTable
 function ClientData.Shop.GetShopItems()
     return ModData.getOrCreate(EFT_ModDataKeys.SHOP_ITEMS)
 end

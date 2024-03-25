@@ -176,12 +176,11 @@ end
 local ShopCommands = {}
 
 ---@param items any
-function ShopCommands.GetShopItems(items)
+function ShopCommands.ReceiveShopItems(items)
     debugPrint("Receiving shop items")
     --PZEFT_UTILS.PrintTable(items)
     if items then
-        local KEY_SHOP_ITEMS = "PZ-EFT-SHOP-ITEMS"
-        ModData.add(KEY_SHOP_ITEMS, items)
+        ModData.add(EFT_ModDataKeys.SHOP_ITEMS, items)
     end
 end
 

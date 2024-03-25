@@ -138,7 +138,8 @@ end
 
 ------------------------------------------------
 ---@alias itemFullType string FullType of the item
----@alias shopItemsTable table<itemFullType, table<integer, shopItemElement>>  -- Key will be full type of the item
+---@alias shopItemsTable { items : table<string, shopItemElement>, tags: table<string, table<integer,boolean>> }
+
 
 --* SHOP - SERVER DATA *--
 ServerData.Shop = ServerData.Shop or {}
@@ -149,13 +150,7 @@ function ServerData.Shop.GetShopItemsData()
     return ModData.getOrCreate(EFT_ModDataKeys.SHOP_ITEMS)
 end
 
---- Set table of shop items
----@param data shopItemsTable
-function ServerData.Shop.SetShopItemsData(data)
-    ModData.add(EFT_ModDataKeys.SHOP_ITEMS, data)
-end
-
---- Transmits table of shop items to clients
+--- Transmits table of shop items to clients, !!!!!!DEBUG ONLY!!!!!
 function ServerData.Shop.TransmitShopItemsData()
     ModData.transmit(EFT_ModDataKeys.SHOP_ITEMS)
 end

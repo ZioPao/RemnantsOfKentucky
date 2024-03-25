@@ -78,43 +78,45 @@ function ShopItemsManager.StructureSellData(itemsList)
      return structuredData
  end
 
- ---load prices from a JSON
- function ShopItemsManager.LoadData()
 
-    -- Load default JSON, if there's no custom one in the cachedir
-    local json = require("ROK/JSON")
-    local fileName = 'rok_prices.json'
-
-    local readData = json.readFile(fileName)
-
-    -- Check if is blank or not
-    if not readData then
-        local writer = getFileWriter(fileName, true, false)
-        local itemsStr = json.readModFile('ROK', 'media/data/default_prices.json')
-        writer:write(itemsStr)
-        writer:close()
-
-        -- get data again
-        readData = json.readFile(fileName)
-    end
-
-    local parsedData = json.parse(readData)
-
-    for k,v in pairs(parsedData) do
-        --debugPrint(k)
-        local fullType = v.fullType
-        --debugPrint(fullType)
-        local tag = v.tag
-        local basePrice = v.basePrice
-        ShopItemsManager.AddItem(fullType, {[tag] = true}, basePrice)
-
-    end
-
-
- end
- 
 -----------------------------------------
+
 if isServer() then
+    ---load prices from a JSON
+    function ShopItemsManager.LoadData()
+
+        -- Load default JSON, if there's no custom one in the cachedir
+        local json = require("ROK/JSON")
+        local fileName = 'rok_prices.json'
+
+        local readData = json.readFile(fileName)
+
+        -- Check if is blank or not
+        if not readData then
+            local writer = getFileWriter(fileName, true, false)
+            local itemsStr = json.readModFile('ROK', 'media/data/default_prices.json')
+            writer:write(itemsStr)
+            writer:close()
+
+            -- get data again
+            readData = json.readFile(fileName)
+        end
+
+        local parsedData = json.parse(readData)
+
+        for k,v in pairs(parsedData) do
+            --debugPrint(k)
+            local fullType = v.fullType
+            --debugPrint(fullType)
+            local tag = v.tag
+            local basePrice = v.basePrice
+            ShopItemsManager.AddItem(fullType, {[tag] = true}, basePrice)
+
+        end
+
+
+    end
+
 
     local function GetKeys(t)
         local t2 = {}
@@ -184,7 +186,6 @@ if isServer() then
 
 
 end
-
 
 
 return ShopItemsManager

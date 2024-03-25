@@ -219,7 +219,16 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
 
 PZ_EFT_CONFIG.Shop = {
     dailyItemsAmount = 30,
-    instaHealCost = 2500
+    instaHealCost = 2500,
+
+
+    tags = {
+        "WEAPON", 'TOOL',
+        "CLOTHING", "MILITARY_CLOTHING",
+        "FOOD", "FIRST_AID",
+        "SKILL_BOOK", "VARIOUS", "FURNITURE",
+        "DAILY", "ESSENTIALS"
+    }
 }
 
 ------------------------------------------

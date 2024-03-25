@@ -4,33 +4,18 @@ if not isServer() then return end
 ---@class ServerShopManager
 local ServerShopManager = {}
 
----Transmit shop items
-function ServerShopManager.TransmitShopItems()
-    ServerData.Shop.TransmitShopItemsData()
-end
-
 function ServerShopManager.GetItems()
     local items = ServerData.Shop.GetShopItemsData()
     return items
 end
 
----@param shopItems any
----@param id any
----@param item any
----@return table
+---@param shopItems shopItemsTable
+---@param id integer
+---@param item shopItemElement
+---@return shopItemsTable
 local function DoTags(shopItems, id, item)
 
-    local tags = {
-        "WEAPON", 'TOOL',
-        "CLOTHING", "MILITARY_CLOTHING",
-        "FOOD", "FIRST_AID",
-        "SKILL_BOOK", "VARIOUS", "FURNITURE",
-        "DAILY", "ESSENTIALS"
-
-    }
-
-    -- local tags = {"FOOD", "CLOTHING_NORMAL", "CLOTHING_BAG", "CLOTHING_MILITARY", "TOOL", "TOOL_MELEE", "GUN",
-    -- "GUN_PART","COSMETIC","EXP","DAILY", "ESSENTIALS" }
+    local tags = PZ_EFT_CONFIG.Shop.tags
 
     for i=1, #tags do
         local tag = tags[i]
@@ -99,7 +84,7 @@ function ShopCommands.TransmitShopItems(playerObj)
     debugPrint("Transmitting Shop Items to Client => " .. playerObj:getUsername())
 
     local items = ServerShopManager.GetItems()
-    sendServerCommand(playerObj, EFT_MODULES.Shop, "GetShopItems", items)
+    sendServerCommand(playerObj, EFT_MODULES.Shop, "ReceiveShopItems", items)
     --debugPrint(playerObj:getUsername() .. " asked for a retransmission of Shop Items")
     --ServerData.Shop.TransmitShopItems()
 end
