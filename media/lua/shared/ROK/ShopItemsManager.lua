@@ -14,8 +14,8 @@ function ShopItemsManager.AddItem(fullType, tag, basePrice)
     ShopItemsManager.data[fullType] = {fullType = fullType, tag = tag, basePrice = basePrice, multiplier = 1, sellMultiplier =  0.5 }
 end
 
-function ShopItemsManager.SetTagToItem(fullType, tag, isActive)
-    ShopItemsManager.data[fullType].tags[tag] = isActive
+function ShopItemsManager.SetTagToItem(fullType, tag)
+    ShopItemsManager.data[fullType].tag = tag
 end
 
 ---@param fullType string
@@ -89,8 +89,7 @@ if isServer() then
     function ShopItemsManager.LoadData()
 
         -- Load default JSON, if there's no custom one in the cachedir
-        local fileName = 'rok_prices.json'      -- TODO Move it to CONFIG
-
+        local fileName = PZ_EFT_CONFIG.Shop.jsonName
         local readData = json.readFile(fileName)
 
         -- Check if is blank or not
@@ -112,7 +111,7 @@ if isServer() then
             --debugPrint(fullType)
             local tag = v.tag
             local basePrice = v.basePrice
-            ShopItemsManager.AddItem(fullType, {[tag] = true}, basePrice)
+            ShopItemsManager.AddItem(fullType, tag, basePrice)
 
         end
 
@@ -120,15 +119,12 @@ if isServer() then
     end
 
 
-    ---@param itemsData table<string, shopItemElement>
+    ---@param itemsData table<integer, {fullType : string, tag : string, basePrice : number}>
     function ShopItemsManager.OverwriteData(itemsData)
-        local writer = getFileWriter(fileName, true, false)
-        local itemsStr = json.readModFile('ROK', 'media/data/default_prices.json')
-        writer:write(itemsStr)
+        local stringifiedData = json.stringify(itemsData)
+        local writer = getFileWriter(PZ_EFT_CONFIG.Shop.jsonName, true, false)
+        writer:write(stringifiedData)
         writer:close()
-
-        -- get data again
-        readData = json.readFile(fileName)
     end
 
     local function GetKeys(t)
@@ -163,7 +159,7 @@ if isServer() then
             -- Check if Item actually exists, in case mod wasn't loaded
             local item = InventoryItemFactory.CreateItem(fType)
             if item then
-                ShopItemsManager.SetTagToItem(fType, "DAILY", true)
+                ShopItemsManager.SetTagToItem(fType, "DAILY")
                 currentAmount = currentAmount + 1
             end
             table.remove(keys, randIndex)
@@ -175,13 +171,13 @@ if isServer() then
     function ShopItemsManager.GenerateDailyItems()
         debugPrint("Generating daily items")
 
-        for _,v in pairs(ShopItemsManager.data) do
-        ---@cast v shopItemElement
+        -- for _,v in pairs(ShopItemsManager.data) do
+        -- ---@cast v shopItemElement
 
-            local fType = v.fullType
-            ShopItemsManager.SetTagToItem(fType, "DAILY", false)
+        --     local fType = v.fullType
+        --     ShopItemsManager.SetTagToItem(fType, "DAILY", false)
 
-        end
+        -- end
         local items = ServerData.Shop.GetShopItemsData()
 
 

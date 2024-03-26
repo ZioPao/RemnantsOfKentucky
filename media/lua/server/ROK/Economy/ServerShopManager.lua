@@ -64,14 +64,14 @@ end
 Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
 
 
-function ServerShopManager.RetransmitDailyItems()
+function ServerShopManager.RetransmitItems()
     debugPrint("Regenerating daily items")
     ServerShopManager.LoadShopPrices()
     local items = ServerShopManager.GetItems()
     sendServerCommand(EFT_MODULES.Shop, "GetShopItems", items)
 end
 
-Events.PZEFT_OnMatchEnd.Add(ServerShopManager.RetransmitDailyItems)
+Events.PZEFT_OnMatchEnd.Add(ServerShopManager.RetransmitItems)
 
 ------------------------------------------------------------------------
 --* COMMANDS FROM CLIENTS *--
@@ -92,10 +92,10 @@ function ShopCommands.TransmitShopItems(playerObj)
 end
 
 ---@param playerObj IsoPlayer
----@param args {items: table<string, shopItemElement>}
+---@param args {items: table<integer, {fullType : string, tag : string, basePrice : number}>}
 function ShopCommands.OverrideShopItems(playerObj, args)
     ShopItemsManager.OverwriteData(args.items)
-    json.stringify
+    ServerShopManager.RetransmitItems()
 end
 
 ------------------------------------

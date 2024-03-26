@@ -139,6 +139,7 @@ end
 
 --************************************************************************--
 -- TODO Make it Local
+-- TODO Add new item
 ---@class PricesEditorPanel : ISCollapsableWindow
 PricesEditorPanel = ISCollapsableWindow:derive("PricesEditorPanel")
 
@@ -352,15 +353,27 @@ function PricesEditorPanel:onClick(button)
 
         -- TODO Get items from list, could be filtered
 
-        local items = ClientData.Shop.GetShopItems().items
-
+        local itemsData = ClientData.Shop.GetShopItems().items
         local modifiedItems = self.mainCategory.datas.items
+        local cleanedData = {}
+        for k,v in pairs(itemsData) do
+            local valToApply
 
-        for k,v in pairs(modifiedItems) do
-            items[k] = v
+            if modifiedItems[k] then
+                valToApply = modifiedItems[k]
+            else
+                valToApply = v
+            end
+
+            local tab = {
+                fullType = valToApply.fullType,
+                tag = valToApply.tag,
+                basePrice = valToApply.basePrice
+            }
+            table.insert(cleanedData, tab)
         end
 
-        sendClientCommand(EFT_MODULES.Shop, 'OverrideShopItems', {items = items})
+        sendClientCommand(EFT_MODULES.Shop, 'OverrideShopItems', {items = cleanedData})
 
     end
 end

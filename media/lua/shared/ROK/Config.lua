@@ -227,8 +227,12 @@ PZ_EFT_CONFIG.Shop = {
         "CLOTHING", "MILITARY_CLOTHING",
         "FOOD", "FIRST_AID",
         "SKILL_BOOK", "VARIOUS", "FURNITURE",
+        "CAR_PARTS",
         "DAILY", "ESSENTIALS"
-    }
+    },
+
+    jsonName = 'rok_prices.json'
+
 }
 
 ------------------------------------------

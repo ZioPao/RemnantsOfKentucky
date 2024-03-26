@@ -142,7 +142,7 @@ function ClientShopManager.GetItemsWithTag(tag)
         for itemType, _ in pairs(shopItems.tags[tag]) do
 
             -- Check if tag is active
-            if shopItems.items[itemType].tags[tag] then
+            if shopItems.items[itemType].tag == tag then
                 itemsList[itemType] = nil
                 itemsList[itemType] = shopItems.items[itemType]
             end
