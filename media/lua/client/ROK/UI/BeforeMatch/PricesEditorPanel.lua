@@ -71,22 +71,6 @@ function PricesEditorScrollingTable:update()
     self.datas.doDrawItem = self.drawDatas
 end
 
-
----@param tags table
----@return string
-local function GetTag(tags)
-
-    -- JANK Horrible workaround, fix up this crap
-    for k,v in pairs(tags) do
-        if v == true then
-            return k
-        end
-    end
-    return ""
-end
-
-
-
 ---@param y any
 ---@param item {index : number, text : string, item : shopItemElement}
 ---@param alt any
@@ -141,7 +125,7 @@ end
 -- TODO Make it Local
 -- TODO Add new item
 ---@class PricesEditorPanel : ISCollapsableWindow
-PricesEditorPanel = ISCollapsableWindow:derive("PricesEditorPanel")
+local PricesEditorPanel = ISCollapsableWindow:derive("PricesEditorPanel")
 
 
 -- PricesEditorPanel.Open(0, 0, 500, 500)
@@ -206,12 +190,16 @@ function PricesEditorPanel:createChildren()
     local xPadding = GenericUI.X_PADDING
     local yPadding = 10
 
-    -- TODO Clean this up
+    self.label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_Economy"), 1, 1, 1, 1, UIFont.NewLarge, true)
+    self.label:initialise()
+    self.label:instantiate()
+    self:addChild(self.label)
 
-    local y = yPadding * 2
-    local leftSideWidth = (self:getWidth() - xPadding * 2) / 1.25
+    local y = self.label:getBottom() + yPadding*2
+    local leftSideWidth = (self:getWidth() - xPadding*2) / 1.25
 
     local entryHgt = GenericUI.SMALL_FONT_HGT + 2 * 2
+
     self.filterEntry = ISTextEntryBox:new("Players", 10, y, leftSideWidth, entryHgt)
     self.filterEntry:initialise()
     self.filterEntry:instantiate()
@@ -238,8 +226,8 @@ function PricesEditorPanel:createChildren()
 
     self.mainCategory = PricesEditorScrollingTable:new(0, 0, leftSideWidth, panelHeight, self)
     self.mainCategory:initialise()
-    self.panel:addView("Items", self.mainCategory)
-    self.panel:activateView("Items")
+    self.panel:addView("", self.mainCategory)
+    self.panel:activateView("")
     self:fillList()
 
 
@@ -265,13 +253,28 @@ function PricesEditorPanel:createChildren()
     self.btnRefresh.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
     self:addChild(self.btnRefresh)
 
+
+    local editY = self:getHeight() - btnHeight - yPadding
+
+    -- FROM THE BOTTOM
+    self.btnApply = ISButton:new(
+        btnX, editY, btnWidth, btnHeight,
+        "", self, PricesEditorPanel.onClick
+    )
+
+    self.btnApply.internal = "APPLY"
+    self.btnApply:setImage(APPLY_ICON)
+    self.btnApply:setTooltip(getText("IGUI_EFT_AdminPanel_Apply"))
+    self.btnApply:initialise()
+    self.btnApply:instantiate()
+    self.btnApply.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
+    self:addChild(self.btnApply)
+
     local entryHeight = 24
-
-    btnY = btnY + btnHeight + yPadding
-
+    editY = editY - entryHgt - yPadding
 
     -- EDIT TAG
-    self.comboTag = ISComboBox:new(btnX, btnY, btnWidth, entryHeight, self, self.onTagChange)
+    self.comboTag = ISComboBox:new(btnX, editY, btnWidth, entryHeight, self, self.onTagChange)
     self.comboTag:initialise()
     self.comboTag:instantiate()
     --self.comboTag.noSelectionText("SELECT A TAG")
@@ -282,10 +285,13 @@ function PricesEditorPanel:createChildren()
         self.comboTag:addOption(PZ_EFT_CONFIG.Shop.tags[i])
     end
 
-    btnY = btnY + entryHeight + yPadding
+
+
+    editY = editY - entryHgt - yPadding
+
 
     -- EDIT PRICE
-    self.entryPrice = ISTextEntryBox:new("", btnX, btnY, btnWidth, entryHeight)
+    self.entryPrice = ISTextEntryBox:new("", btnX, editY, btnWidth, entryHeight)
     self.entryPrice:initialise()
     self.entryPrice:instantiate()
     self.entryPrice:setClearButton(false)
@@ -304,25 +310,6 @@ function PricesEditorPanel:createChildren()
     self.entryPrice:setAnchorBottom(true)
 	self.entryPrice:setAnchorRight(true)
     self:addChild(self.entryPrice)
-
-
-    self.btnApply = ISButton:new(
-        btnX, self:getBottom() - btnHeight - xPadding, btnWidth, btnHeight,
-        "", self, PricesEditorPanel.onClick
-    )
-
-
-    self.btnApply = ISButton:new(
-        btnX, self:getBottom() - btnHeight - xPadding, btnWidth, btnHeight,
-        "", self, PricesEditorPanel.onClick
-    )
-    self.btnApply.internal = "APPLY"
-    self.btnApply:setImage(APPLY_ICON)
-    self.btnApply:setTooltip(getText("IGUI_EFT_AdminPanel_Apply"))
-    self.btnApply:initialise()
-    self.btnApply:instantiate()
-    self.btnApply.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
-    self:addChild(self.btnApply)
 
 end
 
@@ -348,11 +335,8 @@ function PricesEditorPanel:onClick(button)
     if button.internal == 'REFRESH' then
         self:fillList()
     elseif button.internal == 'APPLY' then
-        -- TODO Send new JSON to server
-
-
-        -- TODO Get items from list, could be filtered
-
+        -- Send new JSON to server
+        -- Get items from list, could be filtered
         local itemsData = ClientData.Shop.GetShopItems().items
         local modifiedItems = self.mainCategory.datas.items
         local cleanedData = {}
@@ -426,4 +410,4 @@ function PricesEditorPanel:close()
     ISCollapsableWindow.close(self)
 end
 
---return PricesEditorPanel
+return PricesEditorPanel

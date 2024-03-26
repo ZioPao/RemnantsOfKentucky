@@ -33,7 +33,8 @@ IG_UI_EN = {
 
 
     IGUI_EFT_AdminPanel_OtherOptions = "Other Options",
-    IGUI_EFT_AdminPanel_ModManagement = "Mod Management",
+    IGUI_EFT_AdminPanel_Economy = "Economy",
+    IGUI_EFT_AdminPanel_ModManagement = "Management",
     IGUI_EFT_AdminPanel_MatchOptions = "Match Options",
     
 

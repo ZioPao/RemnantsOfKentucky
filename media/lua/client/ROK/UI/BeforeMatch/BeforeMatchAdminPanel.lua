@@ -8,7 +8,7 @@ local IconButton = require("ROK/UI/BaseComponents/IconButton")
 local MatchOptionsPanel = require("ROK/UI/BaseComponents/MatchOptionsPanel")
 local ManagePlayersPanel = require("ROK/UI/BeforeMatch/ManagePlayersPanel")
 local ModManagementPanel = require("ROK/UI/BeforeMatch/ModManagementPanel")
-local OtherOptionsPanel = require("ROK/UI/BeforeMatch/OtherOptionsPanel")
+local PricesEditorPanel = require("ROK/UI/BeforeMatch/PricesEditorPanel")
 
 
 --------------------------------
@@ -102,12 +102,12 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnManagementOption:setTitle(getText("IGUI_EFT_AdminPanel_ModManagement"))
     self:addChild(self.btnManagementOption)
 
-    self.btnOtherOption = ISButton:new(xRightPadding, y, gridBtnWidth, btnHeight, "", self, self.onClick)
-    self.btnOtherOption.internal = "OPEN_OTHERS_OPTION"
-    self.btnOtherOption:initialise()
-    self.btnOtherOption:setEnable(true)
-    self.btnOtherOption:setTitle(getText("IGUI_EFT_AdminPanel_OtherOptions"))
-    self:addChild(self.btnOtherOption)
+    self.btnEconomyManagement = ISButton:new(xRightPadding, y, gridBtnWidth, btnHeight, "", self, self.onClick)
+    self.btnEconomyManagement.internal = "OPEN_ECONOMY_MANAGEMENT"
+    self.btnEconomyManagement:initialise()
+    self.btnEconomyManagement:setEnable(true)
+    self.btnEconomyManagement:setTitle(getText("IGUI_EFT_AdminPanel_Economy"))
+    self:addChild(self.btnEconomyManagement)
 
 
     --------------------
@@ -159,8 +159,8 @@ function BeforeMatchAdminPanel:onClick(btn)
     end
 
     --* Other Options
-    if btn.internal == "OPEN_OTHERS_OPTION" then
-        GenericUI.ToggleSidePanel(self, OtherOptionsPanel)
+    if btn.internal == "OPEN_ECONOMY_MANAGEMENT" then
+        GenericUI.ToggleSidePanel(self, PricesEditorPanel)
         return
     end
 
@@ -203,7 +203,7 @@ function BeforeMatchAdminPanel:update()
     self.btnMatchOptions:setEnable(not isStartingMatch)
     self.btnManagePlayersOption:setEnable(not isStartingMatch)
     self.btnManagementOption:setEnable(not isStartingMatch)
-    self.btnOtherOption:setEnable(not isStartingMatch)
+    self.btnEconomyManagement:setEnable(not isStartingMatch)
 
 end
 
