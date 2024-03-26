@@ -4,14 +4,14 @@ ShopItemsManager.data = {}
 
 ---@alias shopTags table 
 
----@alias shopItemElement {fullType : string, tags : shopTags, basePrice : number, multiplier : number, sellMultiplier : number, quantity : number?}
+---@alias shopItemElement {fullType : string, tag : string, basePrice : number, multiplier : number, sellMultiplier : number, quantity : number?}
 
 --- Add shop item
 ---@param fullType itemFullType
----@param tags shopTags
+---@param tag string
 ---@param basePrice integer
-function ShopItemsManager.AddItem(fullType, tags, basePrice)
-    ShopItemsManager.data[fullType] = {fullType = fullType, tags = tags, basePrice = basePrice, multiplier = 1, sellMultiplier =  0.5 }
+function ShopItemsManager.AddItem(fullType, tag, basePrice)
+    ShopItemsManager.data[fullType] = {fullType = fullType, tag = tag, basePrice = basePrice, multiplier = 1, sellMultiplier =  0.5 }
 end
 
 function ShopItemsManager.SetTagToItem(fullType, tag, isActive)
@@ -26,7 +26,7 @@ function ShopItemsManager.GetItem(fullType)
 
     if itemData == nil then
         -- Cache it
-        ShopItemsManager.AddItem(fullType, {}, 100)
+        ShopItemsManager.AddItem(fullType, "", 100)
         itemData = ShopItemsManager.data[fullType]
     end
 
@@ -82,12 +82,14 @@ function ShopItemsManager.StructureSellData(itemsList)
 -----------------------------------------
 
 if isServer() then
+
+    local json = require("ROK/JSON")
+
     ---load prices from a JSON
     function ShopItemsManager.LoadData()
 
         -- Load default JSON, if there's no custom one in the cachedir
-        local json = require("ROK/JSON")
-        local fileName = 'rok_prices.json'
+        local fileName = 'rok_prices.json'      -- TODO Move it to CONFIG
 
         local readData = json.readFile(fileName)
 
@@ -117,6 +119,17 @@ if isServer() then
 
     end
 
+
+    ---@param itemsData table<string, shopItemElement>
+    function ShopItemsManager.OverwriteData(itemsData)
+        local writer = getFileWriter(fileName, true, false)
+        local itemsStr = json.readModFile('ROK', 'media/data/default_prices.json')
+        writer:write(itemsStr)
+        writer:close()
+
+        -- get data again
+        readData = json.readFile(fileName)
+    end
 
     local function GetKeys(t)
         local t2 = {}

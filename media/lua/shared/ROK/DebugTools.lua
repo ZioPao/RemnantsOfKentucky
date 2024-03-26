@@ -209,6 +209,7 @@ function debug_getCrateTetris(index, fullType, x, y, isRotated)
     end
 
     inv:addItemOnServer(item)
+    ---@diagnostic disable-next-line: param-type-mismatch
     inv:AddItem(item)
     inv:setDrawDirty(true)
     inv:setHasBeenLooted(true)

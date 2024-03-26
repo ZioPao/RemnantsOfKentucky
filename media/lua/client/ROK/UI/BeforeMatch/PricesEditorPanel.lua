@@ -8,18 +8,7 @@ local REFRESH_ICON = getTexture("media/textures/BeforeMatchPanel/Loop.png")     
 
 -------------------------------
 
-
-
-
--- TODO Save a local copy here and apply changes at runtime
-
-
-
-
-
-
-
-
+-- FIX Check if local prices get overrided this way
 
 ---@class PricesEditorScrollingTable : ISPanel
 ---@field datas ISScrollingListBox
@@ -131,7 +120,7 @@ function PricesEditorScrollingTable:drawDatas(y, item, alt)
     self:clearStencilRect()
 
 
-    local tag = GetTag(item.item.tags)
+    local tag = item.item.tag --GetTag(item.item.tags)
 
     clipX = self.columns[2].size
     clipX2 = self.columns[3].size
@@ -189,7 +178,7 @@ function PricesEditorPanel:new(x, y, width, height)
     return o
 end
 
----@return { fullType: string, tags: table, basePrice: number, multiplier: number, sellMultiplier: number, quantity: number? }
+---@return shopItemElement
 function PricesEditorPanel:getSelectedItem()
 
     local currSelId = self.mainCategory.datas.selected
@@ -205,8 +194,11 @@ function PricesEditorPanel:onTagChange()
     local item = self:getSelectedItem()
 
     local selectedTag = self.comboTag:getOptionText(self.comboTag.selected)
-    item.tags = {}      -- Workaround, we should have only a single tag, not multiples.
-    item.tags[selectedTag] = true
+
+    item.tag = selectedTag
+
+    -- item.tags = {}      -- Workaround, we should have only a single tag, not multiples.
+    -- item.tags[selectedTag] = true
 end
 
 function PricesEditorPanel:createChildren()
@@ -356,6 +348,20 @@ function PricesEditorPanel:onClick(button)
         self:fillList()
     elseif button.internal == 'APPLY' then
         -- TODO Send new JSON to server
+
+
+        -- TODO Get items from list, could be filtered
+
+        local items = ClientData.Shop.GetShopItems().items
+
+        local modifiedItems = self.mainCategory.datas.items
+
+        for k,v in pairs(modifiedItems) do
+            items[k] = v
+        end
+
+        sendClientCommand(EFT_MODULES.Shop, 'OverrideShopItems', {items = items})
+
     end
 end
 
@@ -376,7 +382,7 @@ function PricesEditorPanel:update()
         local selection = self.mainCategory.datas.items[currSelId].item
         if selection then
             -- Send to combobox and price entry       
-            local tag = GetTag(selection.tags)
+            local tag = selection.tag --GetTag(selection.tags)
             self.comboTag:select(tag)
 
             local price = tostring(selection.basePrice)

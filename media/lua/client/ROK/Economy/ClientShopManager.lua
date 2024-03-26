@@ -132,42 +132,28 @@ function ClientShopManager.CanSell(items)
     return true
 end
 
----@return table
-function ClientShopManager.GetDailyItems()
-    local shopItems = ClientData.Shop.GetShopItems()
-    if shopItems and shopItems.tags and shopItems.tags['DAILY'] then
-        local dailyList = {}
-        for itemType, _ in pairs(shopItems.tags['DAILY']) do
 
-            -- Check if daily tag is active
-            if shopItems.items[itemType].tags['DAILY'] then
-                dailyList[itemType] = nil
-                dailyList[itemType] = shopItems.items[itemType]  
+---@param tag string
+---@return table
+function ClientShopManager.GetItemsWithTag(tag)
+    local shopItems = ClientData.Shop.GetShopItems()
+    if shopItems and shopItems.tags and shopItems.tags[tag] then
+        local itemsList = {}
+        for itemType, _ in pairs(shopItems.tags[tag]) do
+
+            -- Check if tag is active
+            if shopItems.items[itemType].tags[tag] then
+                itemsList[itemType] = nil
+                itemsList[itemType] = shopItems.items[itemType]
             end
         end
 
-        return dailyList
+        return itemsList
     else
         return {}
     end
 end
 
----@return table
-function ClientShopManager.GetEssentialItems()
-    local shopItems = ClientData.Shop.GetShopItems()
-    if shopItems and shopItems.tags and shopItems.tags['ESSENTIALS'] then
-        local essentialsList = {}
-        for itemType, _ in pairs(shopItems.tags['ESSENTIALS']) do
-            essentialsList[itemType] = nil
-            essentialsList[itemType] = shopItems.items[itemType]
-        end
-        PZEFT_UTILS.PrintTable(essentialsList)
-
-        return essentialsList
-    else
-        return {}
-    end
-end
 
 ------------------------------------------------------------------------
 --* COMMANDS FROM SERVER *--

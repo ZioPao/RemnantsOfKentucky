@@ -1,5 +1,6 @@
 if not isServer() then return end
 ------------------------------
+local ShopItemsManager = require("ROK/ShopItemsManager")
 
 ---@class ServerShopManager
 local ServerShopManager = {}
@@ -19,16 +20,17 @@ local function DoTags(shopItems, id, item)
 
     for i=1, #tags do
         local tag = tags[i]
-        if item.tags[tag] then
+
+        if item.tag == tag then
             shopItems.tags[tag] = shopItems.tags[tag] or {}
             shopItems.tags[tag][id] = true
         end
+
     end
     return shopItems
 end
 
 function ServerShopManager.LoadShopPrices()
-    local ShopItemsManager = require("ROK/ShopItemsManager")
 
     -- Readd items from JSON
     ShopItemsManager.LoadData()
@@ -87,6 +89,13 @@ function ShopCommands.TransmitShopItems(playerObj)
     sendServerCommand(playerObj, EFT_MODULES.Shop, "ReceiveShopItems", items)
     --debugPrint(playerObj:getUsername() .. " asked for a retransmission of Shop Items")
     --ServerData.Shop.TransmitShopItems()
+end
+
+---@param playerObj IsoPlayer
+---@param args {items: table<string, shopItemElement>}
+function ShopCommands.OverrideShopItems(playerObj, args)
+    ShopItemsManager.OverwriteData(args.items)
+    json.stringify
 end
 
 ------------------------------------
