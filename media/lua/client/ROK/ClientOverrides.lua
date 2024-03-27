@@ -70,7 +70,9 @@ local ClientState = require("ROK/ClientState")
 
 local og_ISWorldMap_ToggleWorldMap = ISWorldMap.ToggleWorldMap
 function ISWorldMap.ToggleWorldMap(playerNum)
-    if isAdmin() and isKeyDown(Keyboard.KEY_LSHIFT) then
+
+    ISWorldMap.isAdminEftMap = isAdmin() and isKeyDown(Keyboard.KEY_LSHIFT)
+    if ISWorldMap.isAdminEftMap then
         return og_ISWorldMap_ToggleWorldMap(playerNum)
     else
         if not ClientState.GetIsInRaid() then return end
@@ -91,10 +93,9 @@ function ISWorldMap.ShowWorldMap(playerNum)
         return
     end
 
-    if isAdmin() and isKeyDown(Keyboard.KEY_LSHIFT) then
+    if ISWorldMap.isAdminEftMap then
         return og_ISWorldMap_ShowWorldMap(playerNum)
     else
-
         local pl = getPlayer()
         local plInv = pl:getInventory()
 
