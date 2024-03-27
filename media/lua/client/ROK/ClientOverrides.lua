@@ -68,16 +68,20 @@ end
 
 local ClientState = require("ROK/ClientState")
 
-
 local og_ISWorldMap_ToggleWorldMap = ISWorldMap.ToggleWorldMap
 function ISWorldMap.ToggleWorldMap(playerNum)
-    if not ClientState.GetIsInRaid() then return end
-    if ISMapWrapper.instance and ISMapWrapper.instance:getIsVisible() then
-        ISMapWrapper.instance:close()
-        return
+    if isAdmin() and isKeyDown(Keyboard.KEY_LSHIFT) then
+        return og_ISWorldMap_ToggleWorldMap(playerNum)
+    else
+        if not ClientState.GetIsInRaid() then return end
+        if ISMapWrapper.instance and ISMapWrapper.instance:getIsVisible() then
+            ISMapWrapper.instance:close()
+            return
+        end
+
+        return og_ISWorldMap_ToggleWorldMap(playerNum)
     end
 
-    return og_ISWorldMap_ToggleWorldMap(playerNum)
 end
 
 
@@ -87,13 +91,19 @@ function ISWorldMap.ShowWorldMap(playerNum)
         return
     end
 
-    local pl = getPlayer()
-    local plInv = pl:getInventory()
-
-    local mapItem = plInv:FindAndReturn("ROK.BriaIslandMap")
-    if mapItem then
-        ISInventoryPaneContextMenu.onCheckMap(mapItem, playerNum)
+    if isAdmin() and isKeyDown(Keyboard.KEY_LSHIFT) then
+        return og_ISWorldMap_ShowWorldMap(playerNum)
     else
-        debugPrint("Couldn't find map item. Something ain't right with this boy")
+
+        local pl = getPlayer()
+        local plInv = pl:getInventory()
+
+        local mapItem = plInv:FindAndReturn("ROK.BriaIslandMap")
+        if mapItem then
+            ISInventoryPaneContextMenu.onCheckMap(mapItem, playerNum)
+        else
+            debugPrint("Couldn't find map item. Something ain't right with this boy")
+        end
     end
+
 end
