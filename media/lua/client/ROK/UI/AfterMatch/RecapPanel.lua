@@ -58,22 +58,33 @@ function RecapPanel:createChildren()
     local heightPanel = self.height/dimY
 
     self.mainContainerPanel = ISPanel:new(x, y, widthPanel, heightPanel)
+    self.mainContainerPanel.backgroundColor = {r=0,g=0,b=0,a=0}
     self:addChild(self.mainContainerPanel)
+
+
+
+    local labelHeight = getTextManager():MeasureStringY(UIFont.Large, "Extracted Items")*2
+
+    debugPrint(labelHeight)
 
     local marginX = 10
     local marginY = 10
-    local boxHeight = self.mainContainerPanel.height - marginY*2
+    local boxHeight = self.mainContainerPanel.height - labelHeight - (marginY*2)
 
     -- List of items that the player has extracted
-
     -- TODO Add translation
-    self.itemsLabel = ISLabel:new(marginX, marginY, 10, "Extracted Items", 1, 1, 1, 1, UIFont.Large, true)
-    self.itemsLabel:initialise()
-    self.itemsLabel:instantiate()
+
+    local itemsWidth = self.mainContainerPanel.width/1.5
+
+    self.itemsLabel = ISRichTextPanel:new(marginX, marginY, itemsWidth, labelHeight)
+    self.itemsLabel.backgroundColor = {r=0,g=0,b=0,a=1}
+    self.itemsLabel.borderColor = {r=1,g=1,b=1,a=1}
+    self.itemsLabel:setText("<SIZE:large> Extracted Items")
+	self.itemsLabel:initialise()
+    self.itemsLabel:paginate()
     self.mainContainerPanel:addChild(self.itemsLabel)
 
-
-    self.itemsBox = RecapScrollItemsPanel:new(marginX, marginY + 15, self.mainContainerPanel.width/1.5, boxHeight)
+    self.itemsBox = RecapScrollItemsPanel:new(marginX, marginY + labelHeight, itemsWidth, boxHeight)
     self.itemsBox:initalise()
     self.mainContainerPanel:addChild(self.itemsBox)
 
@@ -83,19 +94,21 @@ function RecapPanel:createChildren()
 
 
     -- List of players that the current player has killed
-
-
     -- TODO Add translation
     local remainingX = self.itemsBox:getWidth()
+    local killedPlayersWidth = self.mainContainerPanel:getWidth() - self.itemsBox:getWidth() - marginX
 
-    self.itemsLabel = ISLabel:new(remainingX, marginY, 10, "Kills", 1, 1, 1, 1, UIFont.Large, true)
-    self.itemsLabel:initialise()
-    self.itemsLabel:instantiate()
-    self.mainContainerPanel:addChild(self.itemsLabel)
 
-    local killedPlayersBoxWidth = self.mainContainerPanel:getWidth() - self.itemsBox:getWidth() - marginX
+    self.killsLabel = ISRichTextPanel:new(remainingX, marginY, killedPlayersWidth, labelHeight)
+    self.killsLabel.backgroundColor = {r=0,g=0,b=0,a=1}
+    self.killsLabel.borderColor = {r=1,g=1,b=1,a=1}
+    self.killsLabel:setText("<SIZE:large> Kills")
+	self.killsLabel:initialise()
+    self.killsLabel:paginate()
+    self.mainContainerPanel:addChild(self.killsLabel)
 
-    self.killedPlayersBox = RecapScrollKilledPlayersPanel:new(remainingX, marginY + 15, killedPlayersBoxWidth, boxHeight)
+
+    self.killedPlayersBox = RecapScrollKilledPlayersPanel:new(remainingX, marginY + labelHeight, killedPlayersWidth, boxHeight)
     self.killedPlayersBox:initialise()
     self.mainContainerPanel:addChild(self.killedPlayersBox)
 
