@@ -2,7 +2,7 @@ import xml.etree.ElementTree as ET
 import copy
 from pathlib import Path
 
-start_x = 100
+start_x = 0
 start_y = 0
 
 # max_x = 40

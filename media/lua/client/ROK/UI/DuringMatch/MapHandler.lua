@@ -1,14 +1,11 @@
-local ClientState = require("ROK/ClientState")
-
-
 ---@diagnostic disable: undefined-field, undefined-global
 ---@class MapHandler
 ---@field symbolsAPI WorldMapSymbols
-local MapHandler = {}
+local MapHandler = MapHandler or {}
 
 
 ---@param symbolsAPI WorldMapSymbols
----@return table
+---@return MapHandler
 function MapHandler:new(symbolsAPI)
     local o = {}
     setmetatable(o, self)
@@ -52,69 +49,24 @@ function MapHandler:clear()
     self.symbolsAPI:clear()
 end
 
-function MapHandler:deactivate()
-    if self.modal then
-        self.modal.no:forceClick()
-        self.modal = nil
-    end
+-------------------------------------------
+--* LootMap section
+
+require 'ISUI/Maps/ISMapDefinitions'
+
+LootMaps.Init.BriaIslandMap = function(mapUI)
+    local mapAPI = mapUI.javaObject:getAPIv1()
+    MapUtils.initDirectoryMapData(mapUI, 'media/maps/ROK-BriaIsle')
+    MapUtils.initDefaultStyleV1(mapUI)
+    --replaceWaterStyle(mapUI)
+    mapAPI:setBoundsInSquares(0, 0, 900, 600)       -- First map
+
+--	overlayPNG(mapUI, 11093, 9222, 0.666, "badge", "media/textures/worldMap/MuldraughBadge.png")
+    --overlayPNG(mapUI, lvGridX1(1), lvGridY1(2), 1.0, "legend", "media/textures/worldMap/LouisvilleBadge.png")
+    MapUtils.overlayPaper(mapUI)
+
+    local symbolsApi = mapAPI:getSymbolsAPI()
+    local mapHandler = MapHandler:new(symbolsApi)
+    mapHandler:clear()
+    mapHandler:write()
 end
-
--------------------
-
---- Handles writing symbols on the map to show the extraction points
----@param cleanOnly boolean Wheter or not to add the symbols after cleaning
-function ISWorldMap.HandleEFTExits(cleanOnly)
-    local playerNum = getPlayer():getPlayerNum()
-    ISWorldMap.ShowWorldMap(playerNum)
-
-    local function TryHandleMapSymbols()
-        debugPrint("Trying to set the symbols and closing the map")
-        if ISWorldMap_instance == nil then return end
-        debugPrint("Found ISWorldMap_instance")
-        if ISWorldMap_instance.mapAPI == nil then return end
-        debugPrint("Found ISWorldMap_instance map API")
-
-        local symbolsApi = ISWorldMap_instance.mapAPI:getSymbolsAPI()
-        local mapHandler = MapHandler:new(symbolsApi)
-        mapHandler:clear()
-
-        if cleanOnly~= nil and cleanOnly == false then
-            mapHandler:write()
-        end
-
-        -- Handle autocentering and zooming on the zone
-        local settings = WorldMapSettings.getInstance()
-        local zoom = settings:getDouble("WorldMap.Zoom", 50.0)
-        ISWorldMap_instance:onCenterOnPlayer()
-        ISWorldMap_instance.mapAPI:setZoom(zoom)
-
-
-        ISWorldMap.HideWorldMap(playerNum)
-
-        Events.OnTickEvenPaused.Remove(TryHandleMapSymbols)
-    end
-
-
-    Events.OnTickEvenPaused.Add(TryHandleMapSymbols)
-
-end
-
-
-
--- Events.PZEFT_ClientNotInRaidAnymore.Add(function()
---     debugPrint("Player not in raid anymore, cleaning map")
---     ISWorldMap.HandleEFTExits(true)
--- end)
-
-
-Events.PZEFT_ClientModDataReady.Add(function(key)
-    if key == EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID then
-        ISWorldMap.HandleEFTExits(false)
-    end
-end)
-
-Events.PZEFT_OnSuccessfulTeleport.Add(function()
-    -- If we're in a raid, we need to reset the correct symbols.
-    -- If we're not, we're gonna just clean them off the map
-    ISWorldMap.HandleEFTExits(not ClientState.GetIsInRaid())
-end)
