@@ -5,7 +5,7 @@ local StoreContainerPanel = require("ROK/UI/Store/Components/StoreContainerPanel
 
 ---@class BuyMainPanel : StoreContainerPanel
 ---@field itemsTable table<string, {actualItem : Item, fullType : string}>
----@field usedCrates table<IsoObject, boolean>?
+---@field objectsToHighlight table<IsoObject, boolean>?
 ---@field shopCat string
 local BuyMainPanel = StoreContainerPanel:derive("BuyMainPanel")
 
@@ -39,10 +39,11 @@ end
 function BuyMainPanel:render()
     StoreContainerPanel.render(self)
 
-    if self.usedCrates == nil then return end
+    if self.objectsToHighlight == nil then return end
 
-    for obj, _ in pairs(self.usedCrates) do
+    for obj, _ in pairs(self.objectsToHighlight) do
         ---@cast obj IsoObject
+        ---@diagnostic disable-next-line: redundant-parameter
         obj:setHighlighted(true, false)
         local OBJECT_HIGHLIGHT_COLOR = ColorInfo.new(0,1,0,1)
         obj:setHighlightColor(OBJECT_HIGHLIGHT_COLOR)
@@ -54,8 +55,8 @@ function BuyMainPanel:render()
 end
 
 ---@param category string
----@param usedCrates table<IsoObject,boolean>
-function BuyMainPanel.SetSuccessfulBuyConfirmation(category, usedCrates, isRefund)
+---@param objectsToHighlight table<IsoObject,boolean>
+function BuyMainPanel.SetSuccessfulBuyConfirmation(category, objectsToHighlight, isRefund)
     debugPrint("SetSuccessfulBuyConfirmation")
 
     ---@type BuySidePanel
@@ -66,7 +67,9 @@ function BuyMainPanel.SetSuccessfulBuyConfirmation(category, usedCrates, isRefun
     sidePanel.confirmationStatus.timeShowBuyConfirmation = os.time() + 3
 
     -- Render highlighted containers (if there is any)
-    BuyMainPanel.instances[category].usedCrates = usedCrates
+
+    -- TODO Add delivery tile 
+    BuyMainPanel.instances[category].objectsToHighlight = objectsToHighlight
 end
 Events.PZEFT_OnSuccessfulBuy.Add(BuyMainPanel.SetSuccessfulBuyConfirmation)
 

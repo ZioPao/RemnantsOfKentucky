@@ -1,5 +1,9 @@
+local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
+-------------------------
+
+
 ---@class NotificationPanel : ISPanel
-NotificationPanel = ISPanel:derive("NotificationPanel")
+local NotificationPanel = ISPanel:derive("NotificationPanel")
 
 ---Starts a new confirmation panel
 ---@param x number
@@ -27,7 +31,7 @@ function NotificationPanel:createChildren()
     ISPanel.createChildren(self)
     self.borderColor = { r = 1, g = 0, b = 0, a = 1 }
 
-    local xPadding = 10
+    local xPadding = GenericUI.X_PADDING
     local yPadding = 5
 
     local textPanelWidth = self:getWidth() - xPadding*2
@@ -79,10 +83,8 @@ function NotificationPanel.Open(text)
 end
 
 
-
-
 function NotificationPanel.Close()
     NotificationPanel.instance:close()
 end
 
---return NotificationPanel
+return NotificationPanel

@@ -44,10 +44,18 @@ function ISMoveablesAction:isValid()
 end
 
 
---* REPLACE MAP WITH CUSTOM MAP
+local og_ISWorldMenuElementsContextDisassemble = ISWorldMenuElements.ContextDisassemble
+function ISWorldMenuElements.ContextDisassemble()
+    if SafehouseInstanceHandler.IsInSafehouse() and SafehouseInstanceHandler.IsInStaticArea(getPlayer():getSquare()) then
+        return
+    end
 
--- TODO Admin teleport thing?
--- TODO See other players (for admin)
+    og_ISWorldMenuElementsContextDisassemble()
+
+end
+
+
+--* MAP HANDLING *--
 
 local function GivePlayerBriaIslandMap()
     debugPrint("Giving new player bria island map")
@@ -106,5 +114,4 @@ function ISWorldMap.ShowWorldMap(playerNum)
             debugPrint("Couldn't find map item. Something ain't right with this boy")
         end
     end
-
 end

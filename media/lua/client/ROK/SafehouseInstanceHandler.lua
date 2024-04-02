@@ -193,10 +193,14 @@ function SafehouseInstanceHandler.TryToPlaceMoveable(itemObj)
         local props = ISMoveableSpriteProps.new(IsoObject.new(sq, sprite):getSprite())
         props.rawWeight = 10
         props:placeMoveableInternal(sq, itemObj, sprite)
+
+        return sq
+
     --else
        --debugPrint("Delivery point is not clear! Can't put items there")
     end
 
+    return nil
 
 end
 

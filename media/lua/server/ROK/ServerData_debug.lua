@@ -17,8 +17,12 @@ ClientCommands.calculateCratesValue = function(playerObj)
     debugPrint(tostring(x))
 end
 
+
+--sendClientCommand("SERVER_DEBUG", "retransmitItems", {})
+
+
 function ClientCommands.retransmitItems()
-    ServerShopManager.RetransmitDailyItems()
+    ServerShopManager.RetransmitItems()
 end
 
 ClientCommands.loadNewInstances = function()
@@ -58,7 +62,7 @@ ClientCommands.print_shopitems = function()
 end
 
 ClientCommands.TransmitShopItems = function()
-    ServerShopManager.TransmitShopItems()
+    ServerData.Shop.TransmitShopItemsData()
 end
 
 -- ClientCommands.TeleportPlayersToInstance = function()

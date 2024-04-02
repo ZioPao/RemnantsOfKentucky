@@ -78,7 +78,7 @@ PZ_EFT_CONFIG.Server.Match = {
 --* PLAYER DEFAULT VALUES
 
 PZ_EFT_CONFIG.DefaultPlayer = {
-    balance = 10000
+    balance = 10000    -- TODO Make it customizable via a sandboxvar
 }
 
 --* SAFEHOUSES
@@ -92,6 +92,23 @@ PZ_EFT_CONFIG.SafehouseCells = {
         x = 0,
         y = 101
     }
+}
+
+
+--* COUNTDOWN STRINGS
+
+PZ_EFT_CONFIG.CountdownStrings = {
+    MatchStartingManually = getText("IGUI_TimePanel_MatchStarting"),
+    MatchStartingAutomatically = getText("IGUI_TimePanel_MatchStartingAutomatically"),
+
+    MatchEnded = getText("IGUI_TimePanel_MatchEnded"),
+    MatchOvertime = getText("IGUI_TimePanel_Overtime")
+}
+
+
+PZ_EFT_CONFIG.SpawnCell = {
+    x = 150,
+    y = 150
 }
 
 
@@ -202,7 +219,20 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
 
 PZ_EFT_CONFIG.Shop = {
     dailyItemsAmount = 30,
-    instaHealCost = 2500
+    instaHealCost = 2500,
+
+
+    tags = {
+        "WEAPON", 'TOOL',
+        "CLOTHING", "MILITARY_CLOTHING",
+        "FOOD", "FIRST_AID",
+        "SKILL_BOOK", "VARIOUS", "FURNITURE",
+        "CAR_PARTS",
+        "DAILY", "ESSENTIALS"
+    },
+
+    jsonName = 'rok_prices.json'
+
 }
 
 ------------------------------------------

@@ -1,50 +1,41 @@
 if not isServer() then return end
 ------------------------------
+local ShopItemsManager = require("ROK/ShopItemsManager")
 
 ---@class ServerShopManager
 local ServerShopManager = {}
-
----Transmit shop items
-function ServerShopManager.TransmitShopItems()
-    ServerData.Shop.TransmitShopItemsData()
-end
 
 function ServerShopManager.GetItems()
     local items = ServerData.Shop.GetShopItemsData()
     return items
 end
 
----@param shopItems any
----@param id any
----@param item any
----@return table
+---@param shopItems shopItemsTable
+---@param id integer
+---@param item shopItemElement
+---@return shopItemsTable
 local function DoTags(shopItems, id, item)
 
-    local tags = {
-        "WEAPON", 'TOOL',
-        "CLOTHING", "MILITARY_CLOTHING",
-        "FOOD", "FIRST_AID",
-        "SKILL_BOOK", "VARIOUS", "FURNITURE",
-        "DAILY", "ESSENTIALS"
-
-    }
-
-    -- local tags = {"FOOD", "CLOTHING_NORMAL", "CLOTHING_BAG", "CLOTHING_MILITARY", "TOOL", "TOOL_MELEE", "GUN",
-    -- "GUN_PART","COSMETIC","EXP","DAILY", "ESSENTIALS" }
+    local tags = PZ_EFT_CONFIG.Shop.tags
 
     for i=1, #tags do
         local tag = tags[i]
-        if item.tags[tag] then
+
+        if item.tag == tag then
             shopItems.tags[tag] = shopItems.tags[tag] or {}
             shopItems.tags[tag][id] = true
         end
+
     end
     return shopItems
 end
 
 function ServerShopManager.LoadShopPrices()
+
+    -- Readd items from JSON
+    ShopItemsManager.LoadData()
+
     local shopItemsData = ServerData.Shop.GetShopItemsData()
-    local ShopItemsManager = require("ROK/ShopItemsManager")
 
     -- Init
     shopItemsData.items = {}
@@ -73,14 +64,14 @@ end
 Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
 
 
-function ServerShopManager.RetransmitDailyItems()
+function ServerShopManager.RetransmitItems()
     debugPrint("Regenerating daily items")
     ServerShopManager.LoadShopPrices()
     local items = ServerShopManager.GetItems()
     sendServerCommand(EFT_MODULES.Shop, "GetShopItems", items)
 end
 
-Events.PZEFT_OnMatchEnd.Add(ServerShopManager.RetransmitDailyItems)
+Events.PZEFT_OnMatchEnd.Add(ServerShopManager.RetransmitItems)
 
 ------------------------------------------------------------------------
 --* COMMANDS FROM CLIENTS *--
@@ -95,9 +86,16 @@ function ShopCommands.TransmitShopItems(playerObj)
     debugPrint("Transmitting Shop Items to Client => " .. playerObj:getUsername())
 
     local items = ServerShopManager.GetItems()
-    sendServerCommand(playerObj, EFT_MODULES.Shop, "GetShopItems", items)
+    sendServerCommand(playerObj, EFT_MODULES.Shop, "ReceiveShopItems", items)
     --debugPrint(playerObj:getUsername() .. " asked for a retransmission of Shop Items")
     --ServerData.Shop.TransmitShopItems()
+end
+
+---@param playerObj IsoPlayer
+---@param args {items: table<integer, {fullType : string, tag : string, basePrice : number}>}
+function ShopCommands.OverrideShopItems(playerObj, args)
+    ShopItemsManager.OverwriteData(args.items)
+    ServerShopManager.RetransmitItems()
 end
 
 ------------------------------------

@@ -1,15 +1,12 @@
+local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
+
+
 -- -- Base for admin panels
 
 -- This should be the common start for the Admin panels.
 ---@class BaseAdminPanel : ISCollapsableWindow
 local BaseAdminPanel = ISCollapsableWindow:derive("BaseAdminPanel")
 
-local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
-local FONT_SCALE = FONT_HGT_SMALL / 16
-
-if FONT_SCALE < 1 then
-    FONT_SCALE = 1
-end
 
 function BaseAdminPanel:new(x, y, width, height)
     local o = ISCollapsableWindow:new(x, y, width, height)
@@ -65,8 +62,8 @@ function BaseAdminPanel.OnOpenPanel(type)
         return
     end
 
-    local width = 250 * FONT_SCALE
-    local height = 300 * FONT_SCALE
+    local width = 350 * GenericUI.FONT_SCALE
+    local height = 420 ---280 * GenericUI.FONT_SCALE
 
     local x = 100 --getCore():getScreenWidth() / 2 - width
     local y = getCore():getScreenHeight() / 2 - height

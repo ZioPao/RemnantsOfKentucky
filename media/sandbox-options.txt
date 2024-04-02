@@ -21,6 +21,16 @@ option RemnantsOfKentucky.RoundOvertime
     page = ROK,
     translation = ROK_RoundOvertime,
 }
+
+option RemnantsOfKentucky.IsAutomaticStartEnabled
+{
+    type = boolean,
+    default = false,
+
+    page = ROK,
+    translation = ROK_IsAutomaticStartEnabled,
+}
+
 option RemnantsOfKentucky.AutomaticStartCountdownTime
 {
     type = integer,
@@ -29,7 +39,7 @@ option RemnantsOfKentucky.AutomaticStartCountdownTime
     default = 300,
 
     page = ROK,
-    translation = ROK_RoundOvertime,
+    translation = ROK_AutomaticStartCountdownTime,
 }
 option RemnantsOfKentucky.ExtractionTime
 {

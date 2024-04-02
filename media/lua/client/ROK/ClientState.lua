@@ -55,6 +55,10 @@ function ClientState.SetExtractionTime(val)
     ClientState.extractionTime = val
 end
 
+---@param val boolean
+function ClientState.SetIsStartingMatch(val)
+    ClientState.isStartingMatch = val
+end
 --* Getters
 
 function ClientState.GetExtractionTime()
@@ -71,6 +75,9 @@ end
 
 function ClientState.GetIsAutomaticStart()
     return ClientState.isAutomaticStart
+end
+function ClientState.GetIsStartingMatch()
+    return ClientState.isStartingMatch
 end
 
 function ClientState.ResetMatchValues()

@@ -1,10 +1,9 @@
 local ClientState = require("ROK/ClientState")
 -----------------------------
+
 local CratesHandling = {}
 
-
 --* Startup handling
-
 
 --- On player initialise, request safehouse allocation of player from server
 local function OnPlayerInit()
@@ -30,6 +29,7 @@ local function OnPlayerInit()
 
         if hasUnsupportedMods then
             unsModsStr = unsModsStr:sub(1, -3)      -- Removes last ,
+            local NotificationPanel = require("ROK/UI/NotificationPanel")
             NotificationPanel.Open(unsModsStr)
         end
     end
@@ -48,8 +48,14 @@ local function OnPlayerInit()
         --* Request bank account and request bank account periodically.
         CratesHandling.ToggleContainersValueUpdate()
 
+        --* Clean map
+        ISWorldMap.HandleEFTExits(true)
+
         --* Request the list of PVP Instances from the server
         ClientData.RequestPvpInstances()
+
+        --* Ask server if there's a countdown running right now and opens it if that's the case
+        sendClientCommand(EFT_MODULES.Countdown, "AskCurrentCountdown", {})
 
         -- IDEA Add toggle for admin to prevent them from dying\getting punished
         --* Ask server about previous player status
@@ -57,7 +63,6 @@ local function OnPlayerInit()
 
         --* Request extraction time from the server
         sendClientCommand(EFT_MODULES.Match, "SendExtractionTime", {})
-
 
         if isAdmin() then
             -- Request current running match, if there is some set the correct UI
@@ -87,7 +92,7 @@ end)
 -- If player in raid, set that they're not in it anymore
 local function OnPlayerExit()
     if ClientState.GetIsInRaid() == false then return end
-    debugPrint("Player died, removing him from the raid")
+    debugPrint("Player died or quit, removing him from the raid")
     sendClientCommand(EFT_MODULES.Match, "RemovePlayer", {})
 
     if isAdmin() then
@@ -126,7 +131,10 @@ function CratesHandling.ToggleContainersValueUpdate()
     -- Will get triggered even with Overtime.
     -- Doesn't really cause issues, but keep this in mind
 
+
+
     --debugPrint("Toggling crates handling, isInRaid=" .. tostring(ClientState.GetIsInRaid()))
+
 
     if not ClientState.GetIsInRaid() then
         Events.EveryOneMinute.Remove(CratesHandling.UpdateContainersValue)

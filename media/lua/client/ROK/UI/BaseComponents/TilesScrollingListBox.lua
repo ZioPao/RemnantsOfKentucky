@@ -19,7 +19,7 @@ function TilesScrollingListBox:new(x, y, width, height, elementsPerRow)
     o.itemWidth = o.width/o.elementsPerRow
     o.font = UIFont.Small
 
-
+    ---@cast o TilesScrollingListBox
     return o
 end
 

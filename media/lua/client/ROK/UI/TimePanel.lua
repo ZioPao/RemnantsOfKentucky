@@ -59,11 +59,20 @@ function TimePanel:initialise()
     self.textLabel:initialise()
     self.textLabel:instantiate()
     self.timePanel:addChild(self.textLabel)
+
+
+    self.lastTime = math.floor(tonumber(ClientState.currentTime))
 end
 
 function TimePanel:render()
-    local timeNumber = tonumber(ClientState.currentTime)
+    local timeNumber = math.floor(tonumber(ClientState.currentTime))
     if timeNumber == nil then return end
+
+    if timeNumber <= 10 and timeNumber < self.lastTime then
+        getSoundManager():playUISound("Beep")
+        self.lastTime = timeNumber
+    end
+
 
     if timeNumber <= 0 then
         debugPrint("Closing timer")

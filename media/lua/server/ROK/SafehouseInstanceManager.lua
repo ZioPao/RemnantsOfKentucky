@@ -202,7 +202,7 @@ SafehouseInstanceManager.debug.displayAssignedSafehouseInstances = function()
 end
 
 ------------------------------------------------------------------------
---* COMMANDS FROM SERVER *--
+--* COMMANDS FROM CLIENTS *--
 ------------------------------------------------------------------------
 require("ROK/DebugTools")
 local MODULE = EFT_MODULES.Safehouse

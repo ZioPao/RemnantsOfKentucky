@@ -22,20 +22,14 @@ function MapHandler:write()
         return
     end
 
-
-    -- FIX Already mapped to current instnace
     local extractionPoints = currentInstanceData.extractionPoints
 
     --Loop through extraction points and add the note on the map
     for i = 1, #extractionPoints do
         local singleExtractionPoint = extractionPoints[i]
 
-        local x = singleExtractionPoint.x1 - (currentInstanceData.x*300)
-        local y = singleExtractionPoint.y1 - (currentInstanceData.y*300)
-
-        debugPrint("Ext Point: x=" .. tostring(x) .. ", y=" .. tostring(y))
-
-
+        local x = currentInstanceData.x + (singleExtractionPoint.x1 + singleExtractionPoint.x2)/2 - 150
+        local y = currentInstanceData.y + (singleExtractionPoint.y1 + singleExtractionPoint.y2)/2 -- - 5
         local iconSymbol = self.symbolsAPI:addTexture("PZEFT-Exit", x, y)
 
         if singleExtractionPoint.isRandom then

@@ -7,10 +7,16 @@ GenericUI.SMALL_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Small):getLin
 GenericUI.MEDIUM_FONT_HGT = getTextManager():getFontFromEnum(UIFont.Medium):getLineHeight()
 GenericUI.LARGE_FONT_HGT = getTextManager():getFontHeight(UIFont.Large)
 
-GenericUI.FONT_SCALE = GenericUI.MEDIUM_FONT_HGT / 14
+GenericUI.FONT_SCALE = GenericUI.SMALL_FONT_HGT / 16
+
+if GenericUI.FONT_SCALE < 1 then GenericUI.FONT_SCALE = 1 end
+
 GenericUI.HEADER_HGT = GenericUI.MEDIUM_FONT_HGT + 2 * 2
 GenericUI.ENTRY_HGT = GenericUI.HEADER_HGT
 
+
+-- Padding is gonna be the same for every interface
+GenericUI.X_PADDING = 10
 
 ---Returns a string with the formatted time in minutes:seconds
 ---@param time number?
@@ -38,6 +44,24 @@ function GenericUI.FormatTime(time, useRichText)
     end
 
     return finalString
+end
+
+function GenericUI.ToggleSidePanel(parent, NewPanel)
+
+    -- Check if side panel is already open
+    if parent.openedPanel then
+        if parent.openedPanel:getIsVisible() then
+            parent.openedPanel:close()
+            if parent.openedPanel.Type == NewPanel.Type then
+                return
+            end
+        end
+    end
+
+    local width = parent:getWidth()   -- SHITTY Fix this
+    local height = parent:getHeight()
+    parent.openedPanel = NewPanel.Open(parent:getRight(), parent:getBottom() - parent:getHeight(), width, height)
+
 end
 
 return GenericUI
