@@ -203,23 +203,23 @@ function MatchController.HandleZombieSpawns(loops)
                 local y = player:getY()
 
 
-                -- JANK Heavy heavy heavy
+                -- TODO Finish this thing, which is Heavy heavy heavy
                 -- map players position
-                local nearPlayers = {}
-                for k2, v2 in pairs(instance.playersInMatch) do
-                    if v ~= nil then
-                        local otherPlId = v.playerId
-                        local otherPlayer = getPlayerByOnlineID(otherPlId)
-                        local opX = otherPlayer:getX()
-                        local opY = otherPlayer:getY()
+                -- local nearPlayers = {}
+                -- for k2, v2 in pairs(instance.playersInMatch) do
+                --     if v ~= nil then
+                --         local otherPlId = v.playerId
+                --         local otherPlayer = getPlayerByOnlineID(otherPlId)
+                --         local opX = otherPlayer:getX()
+                --         local opY = otherPlayer:getY()
 
-                        local dist = IsoUtils.DistanceTo(x, y, opX, opY)
+                --         local dist = IsoUtils.DistanceTo(x, y, opX, opY)
 
-                        if dist < 50 then
-                            table.insert(nearPlayers, { plId = otherPlId, x = opX, y = opY })
-                        end
-                    end
-                end
+                --         if dist < 50 then
+                --             table.insert(nearPlayers, { plId = otherPlId, x = opX, y = opY })
+                --         end
+                --     end
+                -- end
 
 
                 -- We can't go overboard with addedX or addedY
@@ -275,6 +275,7 @@ end
 ---@param playerObj IsoPlayer
 function MatchController.HandlePlayerDeath(playerObj)
     if playerObj:isZombie() then return end
+
     local killerObj = playerObj:getAttackedBy()
     ---@cast killerObj IsoPlayer
 
@@ -282,6 +283,12 @@ function MatchController.HandlePlayerDeath(playerObj)
         -- Add to kill count, send it back to client
         sendServerCommand(killerObj, EFT_MODULES.Match, 'AddKill', { victimUsername = playerObj:getUsername() })
     end
+
+    -- Removes player from the match, preventing them from despawning crap
+    MatchController.GetHandler():removePlayerFromMatchList(playerObj:getOnlineID())
+
+
+
 end
 
 Events.OnCharacterDeath.Add(MatchController.HandlePlayerDeath)

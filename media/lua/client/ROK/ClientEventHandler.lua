@@ -92,7 +92,7 @@ end)
 -- If player in raid, set that they're not in it anymore
 local function OnPlayerExit()
     if ClientState.GetIsInRaid() == false then return end
-    debugPrint("Player died, removing him from the raid")
+    debugPrint("Player died or quit, removing him from the raid")
     sendClientCommand(EFT_MODULES.Match, "RemovePlayer", {})
 
     if isAdmin() then
