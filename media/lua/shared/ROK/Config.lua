@@ -85,11 +85,11 @@ PZ_EFT_CONFIG.DefaultPlayer = {
 --Cells containing safehouses for initialisation
 PZ_EFT_CONFIG.SafehouseCells = {
     {
-        x = 100,
+        x = 0,
         y = 100
     },
     {
-        x = 100,
+        x = 0,
         y = 101
     }
 }
@@ -204,7 +204,7 @@ PZ_EFT_CONFIG.PVPInstanceSettings = {
     buffer = 1,
 
     -- first instance x cell position
-    firstXCellPos = 100,
+    firstXCellPos = 0,
     -- first instance y cell position
     firstYCellPos = 0,
 
