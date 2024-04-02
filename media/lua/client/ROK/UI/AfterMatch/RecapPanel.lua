@@ -65,7 +65,15 @@ function RecapPanel:createChildren()
     local boxHeight = self.mainContainerPanel.height - marginY*2
 
     -- List of items that the player has extracted
-    self.itemsBox = RecapScrollItemsPanel:new(marginX, marginY, self.mainContainerPanel.width/1.5, boxHeight)
+
+    -- TODO Add translation
+    self.itemsLabel = ISLabel:new(marginX, marginY, 10, "Extracted Items", 1, 1, 1, 1, UIFont.Large, true)
+    self.itemsLabel:initialise()
+    self.itemsLabel:instantiate()
+    self.mainContainerPanel:addChild(self.itemsLabel)
+
+
+    self.itemsBox = RecapScrollItemsPanel:new(marginX, marginY + 15, self.mainContainerPanel.width/1.5, boxHeight)
     self.itemsBox:initalise()
     self.mainContainerPanel:addChild(self.itemsBox)
 
@@ -73,10 +81,21 @@ function RecapPanel:createChildren()
         self.itemsBox:initialiseList(self.itemsList)
     end
 
-    local remainingX = self.itemsBox:getWidth()
-    local killedPlayersBoxWidth = self.mainContainerPanel:getWidth() - self.itemsBox:getWidth() - marginX
+
     -- List of players that the current player has killed
-    self.killedPlayersBox = RecapScrollKilledPlayersPanel:new(remainingX, marginY, killedPlayersBoxWidth, boxHeight)
+
+
+    -- TODO Add translation
+    local remainingX = self.itemsBox:getWidth()
+
+    self.itemsLabel = ISLabel:new(remainingX, marginY, 10, "Kills", 1, 1, 1, 1, UIFont.Large, true)
+    self.itemsLabel:initialise()
+    self.itemsLabel:instantiate()
+    self.mainContainerPanel:addChild(self.itemsLabel)
+
+    local killedPlayersBoxWidth = self.mainContainerPanel:getWidth() - self.itemsBox:getWidth() - marginX
+
+    self.killedPlayersBox = RecapScrollKilledPlayersPanel:new(remainingX, marginY + 15, killedPlayersBoxWidth, boxHeight)
     self.killedPlayersBox:initialise()
     self.mainContainerPanel:addChild(self.killedPlayersBox)
 

@@ -32,8 +32,6 @@ end
 function TimePanel:initialise()
     ISPanel.initialise(self)
 
-    -- FIX This should be in createChildren
-
     self.timePanel = ISRichTextPanel:new(0, 0, self.width, self.height)
     self.timePanel:initialise()
     self:addChild(self.timePanel)
