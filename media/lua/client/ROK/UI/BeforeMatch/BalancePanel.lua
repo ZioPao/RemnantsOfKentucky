@@ -65,7 +65,7 @@ function BalancePanel:prerender()
 
 
     local balance
-    if self.refBankAccount.bankAccount then
+    if self.refBankAccount and self.refBankAccount.bankAccount then
         balance = "<CENTRE> <GREEN> $ <RGB:1,1,1> <SPACE> " .. tostring(self.refBankAccount.bankAccount.balance)
     else
         balance = "..."
@@ -78,18 +78,14 @@ end
 
 function BalancePanel:update()
     ISPanel.update(self)
-
-
     self.refBankAccount = PZEFT_UTILS.GetPlayerModData()
-    if self.refBankAccount == nil then return end
 
-    if self.refBankAccount.bankAccount then
+    if self.refBankAccount and self.refBankAccount.bankAccount and self.refBankAccount then
         -- Calculate length
         local len = getTextManager():MeasureStringX(UIFont.Massive, tostring(self.refBankAccount.bankAccount.balance))
-        --debugPrint(len)
-        if len > self:getWidth() then
-            self:setWidth(len)
-        end
+        local newWidth = len + 50
+        self:setWidth(newWidth)
+        self.balanceText:setWidth(newWidth)
     end
 end
 
@@ -110,8 +106,8 @@ function BalancePanel.Open()
 
     local width = 250
     local height = 50
-    local padding = 10 + width
-    local posX = getCore():getScreenWidth() - width - padding
+    --local padding = 10 + width
+    local posX = getCore():getScreenWidth() - width -- - padding
     local posY = 1
 
     local panel = BalancePanel:new(posX, posY, width, height)
@@ -122,9 +118,9 @@ function BalancePanel.Open()
     return panel
 end
 
-
-Events.PZEFT_ClientNotInRaidAnymore.Add(BalancePanel.Open)
 Events.PZEFT_OnPlayerInitDone.Add(BalancePanel.Open)
+Events.PZEFT_ClientNotInRaidAnymore.Add(BalancePanel.Open)
+
 
 
 
@@ -133,12 +129,13 @@ function BalancePanel.Close()
         BalancePanel.instance:close()
     end
 end
+Events.PZEFT_ClientNowInRaid.Add(BalancePanel.Close)
 
 function BalancePanel.HandleResolutionChange(oldW, oldH, w, h)
     if BalancePanel.instance and BalancePanel.instance:isVisible() then
         local width = 300
-        local padding = 100
-        local posX = w - width - padding
+        --local padding = 100
+        local posX = w - width -- - padding
         local posY = 0
         BalancePanel.instance:setPosition(posX, posY)
     end
