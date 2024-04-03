@@ -8,18 +8,13 @@ local ShopItemsManager = require("ROK/ShopItemsManager")
 ---@class ServerShopManager
 local ServerShopManager = {}
 
-function ServerShopManager.GetItems()
-    local items = ServerData.Shop.GetShopItemsData()
-    return items
-end
-
 
 --* LOADING AND INIT DATA *--
 
 ---@private
 local function GetKeys(t)
     local t2 = {}
-    PZEFT_UTILS.PrintTable(t)
+    --PZEFT_UTILS.PrintTable(t)
 
     for key, _ in pairs(t) do
         table.insert(t2, key)
@@ -44,12 +39,12 @@ local function FetchNRandomItems(percentage, items, tag)
 
     while currentAmount < amount do
         local randIndex = ZombRand(#keys) + 1
-        local fType = keys[randIndex]     -- FIX Can cause issue
+        local fType = keys[randIndex]
         debugPrint("Adding to daily: fType=" .. fType)
 
-        -- Check if Item actually exists, in case mod wasn't loaded
+        -- Check if Item actually exists and it's not in the blacklist
         local item = InventoryItemFactory.CreateItem(fType)
-        if item then
+        if item and not PZ_EFT_CONFIG.Shop.blacklist[fType] then
             ShopItemsManager.SetTagToItem(fType, "DAILY")
             currentAmount = currentAmount + 1
         end
@@ -100,42 +95,6 @@ function ServerShopManager.LoadDataFromJson()
     local parsedData = json.parse(readData)
     --PZEFT_UTILS.PrintTable(parsedData)
     return parsedData
-
-
-    -- local allItems = getScriptManager():getAllItems()
-    -- for i = 0, allItems:size() - 1 do
-    --     ---@type Item
-    --     local item = allItems:get(i)
-
-    --     local fullType = item:getModuleName() .. "." .. item:getName()
-    --     --debugPrint("loading " .. fullType)
-
-    --     if parsedData[fullType] then
-    --         local data = parsedData[fullType]
-    --         ShopItemsManager.AddItem(data.fullType, data.tag, data.basePrice)
-
-    --         debugPrint("Adding " .. item.fullType .. " with tag " .. item.tag .. " to tags")
-    --         shopItems.tags[data.tag][id] = true
-
-
-
-
-
-    --     -- else
-    --     --     ShopItemsManager.AddItem(fullType, "VARIOUS", 100)
-    --     end
-
-
-    --     -- for k,v in pairs(parsedData) do
-    --     --     --debugPrint(k)
-    --     --     local fullType = v.fullType
-    --     --     --debugPrint(fullType)
-    --     --     local tag = v.tag
-    --     --     local basePrice = v.basePrice
-    --     --     ShopItemsManager.AddItem(fullType, tag, basePrice)
-
-    --     -- end
-    -- end
 end
 
 ---@private
@@ -159,29 +118,37 @@ function ServerShopManager.LoadShopPrices()
     end
 
 
-    -- Check other items
+    --Check other items
     local allItems = getScriptManager():getAllItems()
     for i = 0, allItems:size() - 1 do
         ---@type Item
         local item = allItems:get(i)
         local fullType = item:getModuleName() .. "." .. item:getName()
-        if not ShopItemsManager.GetItem(fullType) and not item:isHidden() then
-            debugPrint("No data from JSON => " .. fullType)
-            ShopItemsManager.AddItem(fullType, "VARIOUS", 100)
+ 
+        --debugPrint(fullType)
+        if not ShopItemsManager.GetItem(fullType) then
+            if not item:isHidden() then
+                debugPrint("No data from JSON => " .. fullType)
+                ShopItemsManager.AddItem(fullType, "VARIOUS", 100)
+            else
+                debugPrint("Item is hidden, do not consider it => " .. fullType)
+            end
+        -- else
+        --     debugPrint("Item already set from JSON => " .. fullType)
         end
     end
 
     ServerShopManager.GenerateDailyItems()
-
+    ModData.transmit(EFT_ModDataKeys.SHOP_ITEMS)
 end
 
 Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
 
 
 function ServerShopManager.RetransmitItems()
-    debugPrint("Regenerating daily items")
+    debugPrint("Regeneraint daily items and retransmitting")
     ServerShopManager.LoadShopPrices()
-    ModData.transmit(EFT_ModDataKeys.SHOP_ITEMS)
+    --ModData.transmit(EFT_ModDataKeys.SHOP_ITEMS)
 end
 
 Events.PZEFT_OnMatchEnd.Add(ServerShopManager.RetransmitItems)
@@ -198,7 +165,7 @@ local MODULE = EFT_MODULES.Shop
 function ShopCommands.TransmitShopItems(playerObj)
     debugPrint("Transmitting Shop Items to Client => " .. playerObj:getUsername())
 
-    local items = ServerShopManager.GetItems()
+    local items = ServerData.Shop.GetShopItemsData()
     sendServerCommand(playerObj, EFT_MODULES.Shop, "ReceiveShopItems", items)
 end
 

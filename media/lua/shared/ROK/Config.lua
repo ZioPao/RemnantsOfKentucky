@@ -231,6 +231,13 @@ PZ_EFT_CONFIG.Shop = {
         "DAILY", "ESSENTIALS"
     },
 
+
+    -- TODO Make it customizable
+    blacklist = {
+        ["Base.CorpseMale"] = true,
+        ["Base.CorpseFemale"] = true
+    },
+
     jsonName = 'rok_prices.json'
 
 }

@@ -7676,8 +7676,8 @@
     },
     {
         "fullType": "Base.MM1_Gasmask",
-        "tag": "FIRST_AID",
-        "basePrice": 50
+        "tag": "MILITARY_CLOTHING",
+        "basePrice": 350
     },
     {
         "fullType": "Base.MP5",
@@ -12042,12 +12042,12 @@
     {
         "fullType": "Base.Slug",
         "tag": "FOOD",
-        "basePrice": 20
+        "basePrice": 2
     },
     {
         "fullType": "Base.Slug2",
-        "tag": "CAR_PARTS",
-        "basePrice": 20
+        "tag": "FOOD",
+        "basePrice": 2
     },
     {
         "fullType": "Base.SmallGasTank1",
@@ -14312,17 +14312,17 @@
     {
         "fullType": "Base.Worm",
         "tag": "FOOD",
-        "basePrice": "5"
+        "basePrice": 1
     },
     {
         "fullType": "Base.Worn_Beanie",
         "tag": "CLOTHING",
-        "basePrice": "500"
+        "basePrice": 125
     },
     {
         "fullType": "Base.Worn_Beanie_Full",
         "tag": "CLOTHING",
-        "basePrice": "500"
+        "basePrice": 125
     },
     {
         "fullType": "Base.Wrench",
@@ -14331,73 +14331,73 @@
     },
     {
         "fullType": "Base.WristWatch_Left_ClassicBlack",
-        "tag": "VARIOUS",
-        "basePrice": "35"
+        "tag": "CLOTHING",
+        "basePrice": 25
     },
     {
         "fullType": "Base.WristWatch_Left_ClassicBrown",
-        "tag": "VARIOUS",
-        "basePrice": "35"
+        "tag": "CLOTHING",
+        "basePrice": 25
     },
     {
         "fullType": "Base.WristWatch_Left_ClassicGold",
         "tag": "CLOTHING",
-        "basePrice": "250"
+        "basePrice": 100
     },
     {
         "fullType": "Base.WristWatch_Left_ClassicMilitary",
-        "tag": "VARIOUS",
-        "basePrice": 300
+        "tag": "CLOTHING",
+        "basePrice": 25
     },
     {
         "fullType": "Base.WristWatch_Left_DigitalBlack",
         "tag": "CLOTHING",
-        "basePrice": 200
+        "basePrice": 50
     },
     {
         "fullType": "Base.WristWatch_Left_DigitalDress",
         "tag": "CLOTHING",
-        "basePrice": 250
+        "basePrice": 50
     },
     {
         "fullType": "Base.WristWatch_Left_DigitalRed",
-        "tag": "VARIOUS",
-        "basePrice": 250
+        "tag": "CLOTHING",
+        "basePrice": 50
     },
     {
         "fullType": "Base.WristWatch_Right_ClassicBlack",
-        "tag": "VARIOUS",
-        "basePrice": 250
+        "tag": "CLOTHING",
+        "basePrice": 25
     },
     {
         "fullType": "Base.WristWatch_Right_ClassicBrown",
-        "tag": "VARIOUS",
-        "basePrice": 250
+        "tag": "CLOTHING",
+        "basePrice": 25
     },
     {
         "fullType": "Base.WristWatch_Right_ClassicGold",
-        "tag": "VARIOUS",
-        "basePrice": 300
+        "tag": "CLOTHING",
+        "basePrice": 25
     },
     {
         "fullType": "Base.WristWatch_Right_ClassicMilitary",
-        "tag": "VARIOUS",
-        "basePrice": 250
+        "tag": "CLOTHING",
+        "basePrice": 25
     },
     {
         "fullType": "Base.WristWatch_Right_DigitalBlack",
-        "tag": "VARIOUS",
-        "basePrice": 200
+        "tag": "CLOTHING",
+        "basePrice": 50
     },
     {
         "fullType": "Base.WristWatch_Right_DigitalDress",
         "tag": "CLOTHING",
-        "basePrice": 300
+        "basePrice": 50
     },
     {
         "fullType": "Base.WristWatch_Right_DigitalRed",
         "tag": "CLOTHING",
-        "basePrice": 300
+        "basePrice": 50
     },
     {
         "fullType": "Base.Y_Shirts",
