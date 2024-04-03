@@ -86,7 +86,7 @@ function BalancePanel:update()
     if self.refBankAccount.bankAccount then
         -- Calculate length
         local len = getTextManager():MeasureStringX(UIFont.Massive, tostring(self.refBankAccount.bankAccount.balance))
-        debugPrint(len)
+        --debugPrint(len)
         if len > self:getWidth() then
             self:setWidth(len)
         end
@@ -122,6 +122,12 @@ function BalancePanel.Open()
     return panel
 end
 
+
+Events.PZEFT_ClientNotInRaidAnymore.Add(BalancePanel.Open)
+Events.PZEFT_OnPlayerInitDone.Add(BalancePanel.Open)
+
+
+
 function BalancePanel.Close()
     if BalancePanel.instance then
         BalancePanel.instance:close()
@@ -139,6 +145,5 @@ function BalancePanel.HandleResolutionChange(oldW, oldH, w, h)
 end
 
 Events.OnResolutionChange.Add(BalancePanel.HandleResolutionChange)
-
 
 return BalancePanel
