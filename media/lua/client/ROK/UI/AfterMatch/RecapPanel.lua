@@ -47,8 +47,8 @@ function RecapPanel:createChildren()
     local dimX = 1.45015105740181
     local dimY = 1.31067961165049
 
-    debugPrint(self.width)
-    debugPrint(self.height)
+    -- debugPrint(self.width)
+    -- debugPrint(self.height)
 
     local x = self.width/scaleX
     local y = self.height/scaleY

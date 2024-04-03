@@ -1,3 +1,5 @@
+-- same file as BriaIsle to prevent errors
+
 function SpawnPoints()
 
   local spawns = {
