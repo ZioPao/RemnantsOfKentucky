@@ -55,9 +55,9 @@ function RecapScrollItemsPanel.DrawItem(itemsBox, y, item, rowElementNumber)
     --* ITEM COST *--
     local itemData = ShopItemsManager.GetItem(item.item.fullType)
 
-    if itemData == nil then
-        itemData = { basePrice = 100, sellMultiplier = 0.5 }
-    end
+    -- if itemData == nil then
+    --     itemData = { basePrice = 100, sellMultiplier = 0.5 }
+    -- end
 
     local price = itemData.basePrice * itemData.sellMultiplier
     local priceStr = "$" .. tostring(price)

@@ -8,8 +8,6 @@ local REFRESH_ICON = getTexture("media/textures/BeforeMatchPanel/Loop.png")     
 
 -------------------------------
 
--- FIX Check if local prices get overrided this way
-
 ---@class PricesEditorScrollingTable : ISPanel
 ---@field datas ISScrollingListBox
 local PricesEditorScrollingTable = ISPanel:derive("PricesEditorScrollingTable")
@@ -122,8 +120,6 @@ function PricesEditorScrollingTable:drawDatas(y, item, alt)
 end
 
 --************************************************************************--
--- TODO Make it Local
--- TODO Add new item
 ---@class PricesEditorPanel : ISCollapsableWindow
 local PricesEditorPanel = ISCollapsableWindow:derive("PricesEditorPanel")
 

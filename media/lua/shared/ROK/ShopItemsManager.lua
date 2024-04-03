@@ -105,15 +105,32 @@ if isServer() then
 
         local parsedData = json.parse(readData)
 
-        for k,v in pairs(parsedData) do
-            --debugPrint(k)
-            local fullType = v.fullType
-            --debugPrint(fullType)
-            local tag = v.tag
-            local basePrice = v.basePrice
-            ShopItemsManager.AddItem(fullType, tag, basePrice)
 
-        end
+        local allItems = getScriptManager():getAllItems()
+        for i=0, allItems:size() - 1 do
+
+            ---@type Item
+            local item = allItems:get(i)
+
+            local fullType = item:getModuleName() .. "." .. item:getName()
+
+            if parsedData[fullType] then
+                local data = parsedData[fullType]
+                ShopItemsManager.AddItem(data.fullType, data.tag, data.basePrice)
+            else
+                ShopItemsManager.AddItem(fullType, "VARIOUS", 100)
+            end
+
+
+        -- for k,v in pairs(parsedData) do
+        --     --debugPrint(k)
+        --     local fullType = v.fullType
+        --     --debugPrint(fullType)
+        --     local tag = v.tag
+        --     local basePrice = v.basePrice
+        --     ShopItemsManager.AddItem(fullType, tag, basePrice)
+
+        -- end
 
 
     end
