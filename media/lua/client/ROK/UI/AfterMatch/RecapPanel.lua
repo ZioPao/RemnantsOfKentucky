@@ -12,7 +12,6 @@ local screens = {
     [5] = getTexture("media/textures/RecapScreen/5.png"),
 }
 
-
 ---@class RecapPanel : TextureScreen
 ---@field text string
 ---@field textX number
@@ -61,25 +60,20 @@ function RecapPanel:createChildren()
     self.mainContainerPanel.backgroundColor = {r=0,g=0,b=0,a=0}
     self:addChild(self.mainContainerPanel)
 
+    local itemsStr = getText("IGUI_EFT_Recap_Items")
 
-
-    local labelHeight = getTextManager():MeasureStringY(UIFont.Large, "Extracted Items")*2
-
-    debugPrint(labelHeight)
-
+    local labelHeight = getTextManager():MeasureStringY(UIFont.Large, itemsStr)*2
     local marginX = 10
     local marginY = 10
     local boxHeight = self.mainContainerPanel.height - labelHeight - (marginY*2)
 
     -- List of items that the player has extracted
-    -- TODO Add translation
-
     local itemsWidth = self.mainContainerPanel.width/1.5
 
     self.itemsLabel = ISRichTextPanel:new(marginX, marginY, itemsWidth, labelHeight)
     self.itemsLabel.backgroundColor = {r=0,g=0,b=0,a=1}
     self.itemsLabel.borderColor = {r=1,g=1,b=1,a=1}
-    self.itemsLabel:setText("<SIZE:large> Extracted Items")
+    self.itemsLabel:setText(itemsStr)
 	self.itemsLabel:initialise()
     self.itemsLabel:paginate()
     self.mainContainerPanel:addChild(self.itemsLabel)
@@ -94,7 +88,7 @@ function RecapPanel:createChildren()
 
 
     -- List of players that the current player has killed
-    -- TODO Add translation
+    local killsStr = getText("IGUI_EFT_Recap_Kills")
     local remainingX = self.itemsBox:getWidth()
     local killedPlayersWidth = self.mainContainerPanel:getWidth() - self.itemsBox:getWidth() - marginX
 
@@ -102,7 +96,7 @@ function RecapPanel:createChildren()
     self.killsLabel = ISRichTextPanel:new(remainingX, marginY, killedPlayersWidth, labelHeight)
     self.killsLabel.backgroundColor = {r=0,g=0,b=0,a=1}
     self.killsLabel.borderColor = {r=1,g=1,b=1,a=1}
-    self.killsLabel:setText("<SIZE:large> Kills")
+    self.killsLabel:setText(killsStr)
 	self.killsLabel:initialise()
     self.killsLabel:paginate()
     self.mainContainerPanel:addChild(self.killsLabel)

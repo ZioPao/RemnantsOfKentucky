@@ -89,6 +89,11 @@ IG_UI_EN = {
     
     IGUI_EFT_Leaderboard_Title = "Leaderboard",
     IGUI_EFT_Leaderboard_Players = "Players",
+
+
+    // RECAP PANEL
+    IGUI_EFT_Recap_Kills = "<SIZE:large> Kills",
+    IGUI_EFT_Recap_Items = "<SIZE:large> Extracted Items"
     
 
     

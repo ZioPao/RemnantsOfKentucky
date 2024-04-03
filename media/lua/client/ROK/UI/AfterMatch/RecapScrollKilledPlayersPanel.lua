@@ -1,16 +1,16 @@
--- TODO Add headers!!!!
-
-
 local KillTrackerHandler = require("ROK/Match/KillTrackerHandler")
 local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
-
 local TilesScrollingListBox = require("ROK/UI/BaseComponents/TilesScrollingListBox")
 ----------------
 ---@class RecapScrollKilledPlayersPanel : ISPanelJoypad
 local RecapScrollKilledPlayersPanel = ISPanelJoypad:derive("RecapScrollKilledPlayersPanel")
 
+---@param x number
+---@param y number
+---@param width number
+---@param height number
+---@return RecapScrollKilledPlayersPanel
 function RecapScrollKilledPlayersPanel:new(x, y, width, height)
-    ---@type RecapScrollKilledPlayersPanel
     local o = ISPanelJoypad:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self

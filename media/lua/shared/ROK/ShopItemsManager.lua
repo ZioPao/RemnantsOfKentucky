@@ -2,7 +2,7 @@
 local ShopItemsManager = {}
 ShopItemsManager.data = {}
 
----@alias shopTags table 
+---@alias shopTags table
 
 ---@alias shopItemElement {fullType : string, tag : string, basePrice : number, multiplier : number, sellMultiplier : number, quantity : number?}
 
@@ -11,7 +11,7 @@ ShopItemsManager.data = {}
 ---@param tag string
 ---@param basePrice integer
 function ShopItemsManager.AddItem(fullType, tag, basePrice)
-    ShopItemsManager.data[fullType] = {fullType = fullType, tag = tag, basePrice = basePrice, multiplier = 1, sellMultiplier =  0.5 }
+    ShopItemsManager.data[fullType] = { fullType = fullType, tag = tag, basePrice = basePrice, multiplier = 1, sellMultiplier = 0.5 }
 end
 
 function ShopItemsManager.SetTagToItem(fullType, tag)
@@ -33,8 +33,6 @@ function ShopItemsManager.GetItem(fullType)
     return itemData
 end
 
-
-
 ---------------------------------------------
 --* Sell Stuff
 
@@ -46,18 +44,18 @@ end
 function ShopItemsManager.StructureSellData(itemsList)
     -- Cycle through the items and structure them in the correct way
     local structuredData = {}
-     for i=1, #itemsList do
-         local quality = 1
-         local genericItem = itemsList[i].item[1]
-         local fullType = genericItem:getFullType()
-         local quantity = #itemsList[i].item
+    for i = 1, #itemsList do
+        local quality = 1
+        local genericItem = itemsList[i].item[1]
+        local fullType = genericItem:getFullType()
+        local quantity = #itemsList[i].item
 
-         local isDrainable = ScriptManager.instance:isDrainableItemType(fullType)
-         local isClothing = instanceof(genericItem, "IsoClothing")
+        local isDrainable = ScriptManager.instance:isDrainableItemType(fullType)
+        local isClothing = instanceof(genericItem, "IsoClothing")
 
-         if isDrainable or isClothing then
+        if isDrainable or isClothing then
             quality = 0
-            for j=1, #itemsList[i].item do
+            for j = 1, #itemsList[i].item do
                 local item = itemsList[i].item[j]
 
                 if isDrainable then
@@ -66,28 +64,24 @@ function ShopItemsManager.StructureSellData(itemsList)
                     quality = quality + item:getCondition()
                 end
             end
-            quality = quality / quantity            -- mean
+            quality = quality / quantity -- mean
             debugPrint(quality)
+        end
 
-         end
+        local itemData = ShopItemsManager.GetItem(fullType)
+        table.insert(structuredData, { itemData = itemData, quantity = quantity, quality = quality })
+    end
 
-         local itemData = ShopItemsManager.GetItem(fullType)
-         table.insert(structuredData, {itemData = itemData, quantity = quantity, quality = quality})
-     end
-
-     return structuredData
- end
-
+    return structuredData
+end
 
 -----------------------------------------
 
 if isServer() then
-
     local json = require("ROK/JSON")
 
     ---load prices from a JSON
     function ShopItemsManager.LoadData()
-
         -- Load default JSON, if there's no custom one in the cachedir
         local fileName = PZ_EFT_CONFIG.Shop.jsonName
         local readData = json.readFile(fileName)
@@ -107,8 +101,7 @@ if isServer() then
 
 
         local allItems = getScriptManager():getAllItems()
-        for i=0, allItems:size() - 1 do
-
+        for i = 0, allItems:size() - 1 do
             ---@type Item
             local item = allItems:get(i)
 
@@ -122,19 +115,17 @@ if isServer() then
             end
 
 
-        -- for k,v in pairs(parsedData) do
-        --     --debugPrint(k)
-        --     local fullType = v.fullType
-        --     --debugPrint(fullType)
-        --     local tag = v.tag
-        --     local basePrice = v.basePrice
-        --     ShopItemsManager.AddItem(fullType, tag, basePrice)
+            -- for k,v in pairs(parsedData) do
+            --     --debugPrint(k)
+            --     local fullType = v.fullType
+            --     --debugPrint(fullType)
+            --     local tag = v.tag
+            --     local basePrice = v.basePrice
+            --     ShopItemsManager.AddItem(fullType, tag, basePrice)
 
-        -- end
-
-
+            -- end
+        end
     end
-
 
     ---@param itemsData table<integer, {fullType : string, tag : string, basePrice : number}>
     function ShopItemsManager.OverwriteData(itemsData)
@@ -153,15 +144,15 @@ if isServer() then
         end
 
         return t2
-      end
+    end
 
     ---@param percentage number
     ---@param items any
     ---@param tag string
     local function FetchNRandomItems(percentage, items, tag)
-        local amount = math.floor(PZ_EFT_CONFIG.Shop.dailyItemsAmount * (percentage/100))
+        local amount = math.floor(PZ_EFT_CONFIG.Shop.dailyItemsAmount * (percentage / 100))
 
-        debugPrint("Adding " .. tostring(amount) .." for " .. tag)
+        debugPrint("Adding " .. tostring(amount) .. " for " .. tag)
         local currentAmount = 0
 
         -- We want to pop stuff from here
@@ -170,7 +161,7 @@ if isServer() then
 
         while currentAmount < amount do
             local randIndex = ZombRand(#keys) + 1
-            local fType = keys[randIndex]   -- FIX Can cause issue
+            local fType = keys[randIndex]     -- FIX Can cause issue
             debugPrint("Adding to daily: fType=" .. fType)
 
             -- Check if Item actually exists, in case mod wasn't loaded
@@ -180,7 +171,6 @@ if isServer() then
                 currentAmount = currentAmount + 1
             end
             table.remove(keys, randIndex)
-
         end
     end
 
@@ -209,8 +199,6 @@ if isServer() then
         FetchNRandomItems(5, items, "FOOD")
         FetchNRandomItems(20, items, "VARIOUS")
     end
-
-
 end
 
 
