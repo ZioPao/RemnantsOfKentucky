@@ -61,15 +61,7 @@ end
 function ServerShopManager.GenerateDailyItems()
     debugPrint("Generating daily items")
 
-    -- for _,v in pairs(ShopItemsManager.data) do
-    -- ---@cast v shopItemElement
-
-    --     local fType = v.fullType
-    --     ShopItemsManager.SetTagToItem(fType, "DAILY", false)
-
-    -- end
     local items = ServerData.Shop.GetShopItemsData()
-
 
     -- Should stack to 100%
     FetchNRandomItems(20, items, 'WEAPON')
@@ -156,13 +148,6 @@ function ServerShopManager.OverwriteJsonData(itemsData)
 end
 
 
-
-
-
-
-
-
-
 function ServerShopManager.LoadShopPrices()
     local parsedData = ServerShopManager.LoadDataFromJson()
 
@@ -193,12 +178,9 @@ end
 Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
 
 
-
 function ServerShopManager.RetransmitItems()
     debugPrint("Regenerating daily items")
-
     ServerShopManager.LoadShopPrices()
-
     ModData.transmit(EFT_ModDataKeys.SHOP_ITEMS)
 end
 
@@ -218,8 +200,6 @@ function ShopCommands.TransmitShopItems(playerObj)
 
     local items = ServerShopManager.GetItems()
     sendServerCommand(playerObj, EFT_MODULES.Shop, "ReceiveShopItems", items)
-    --debugPrint(playerObj:getUsername() .. " asked for a retransmission of Shop Items")
-    --ServerData.Shop.TransmitShopItems()
 end
 
 ---@param playerObj IsoPlayer

@@ -49,48 +49,5 @@ function ShopItemsManager.GetItem(fullType)
 end
 
 
----------------------------------------------
---* Sell Stuff
-
----@alias sellData table<integer, {itemData : shopItemElement, quantity : number, quality : number}>
-
---- ItemsList is coming from the ScrollingListBox, we need to keep track of quality stuff so that's why we need groups of every single item
----@param itemsList table<integer, {item : table<integer, InventoryItem>}>
----@return sellData
-function ShopItemsManager.StructureSellData(itemsList)
-    -- Cycle through the items and structure them in the correct way
-    local structuredData = {}
-    for i = 1, #itemsList do
-        local quality = 1
-        local genericItem = itemsList[i].item[1]
-        local fullType = genericItem:getFullType()
-        local quantity = #itemsList[i].item
-
-        local isDrainable = ScriptManager.instance:isDrainableItemType(fullType)
-        local isClothing = instanceof(genericItem, "IsoClothing")
-
-        if isDrainable or isClothing then
-            quality = 0
-            for j = 1, #itemsList[i].item do
-                local item = itemsList[i].item[j]
-
-                if isDrainable then
-                    quality = quality + item:getUsedDelta()
-                elseif isClothing then
-                    quality = quality + item:getCondition()
-                end
-            end
-            quality = quality / quantity -- mean
-            debugPrint(quality)
-        end
-
-        local itemData = ShopItemsManager.GetItem(fullType)
-        table.insert(structuredData, { itemData = itemData, quantity = quantity, quality = quality })
-    end
-
-    return structuredData
-end
-
-
 
 return ShopItemsManager

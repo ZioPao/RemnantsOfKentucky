@@ -120,9 +120,8 @@ local function SellDoDrawItem(self, y, item, alt)
     return y + self.itemheight
 end
 
-
-
-function StructureSellDataTest(items)
+-- TODO Document this
+function StructureSellData(items)
     ---@alias sellItemsDataType table<string, table<integer, {id : number, fullType : string, quality : number}>>
 
     ---@type sellItemsDataType
@@ -170,7 +169,7 @@ local function SellOnDragItem(self, x, y)
     end
 
     -- Cycle through the items and structure them in the correct way.
-    self.sellItemsData = StructureSellDataTest(self.items)
+    self.sellItemsData = StructureSellData(self.items)
 end
 
 local function SellPrerender(self)
