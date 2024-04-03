@@ -12022,12 +12022,12 @@
     {
         "fullType": "Base.Sledgehammer",
         "tag": "TOOL",
-        "basePrice": 100
+        "basePrice": 2000
     },
     {
         "fullType": "Base.Sledgehammer2",
-        "tag": "MILITARY_CLOTHING",
-        "basePrice": 100
+        "tag": "TOOL",
+        "basePrice": 2000
     },
     {
         "fullType": "Base.Sling",
@@ -12036,7 +12036,7 @@
     },
     {
         "fullType": "Base.Sling2",
-        "tag": "FOOD",
+        "tag": "CLOTHING",
         "basePrice": 50
     },
     {
@@ -12061,7 +12061,7 @@
     },
     {
         "fullType": "Base.SmallGasTank3",
-        "tag": "VARIOUS",
+        "tag": "CAR_PARTS",
         "basePrice": 100
     },
     {
@@ -12071,13 +12071,13 @@
     },
     {
         "fullType": "Base.SmallTrashCarry",
-        "tag": "CAR_PARTS",
+        "tag": "VARIOUS",
         "basePrice": 30
     },
     {
         "fullType": "Base.SmallTrunk1",
         "tag": "CAR_PARTS",
-        "basePrice": 150
+        "basePrice": 300
     },
     {
         "fullType": "Base.SmallTrunk2",
@@ -12086,8 +12086,8 @@
     },
     {
         "fullType": "Base.SmallTrunk3",
-        "tag": "FOOD",
-        "basePrice": 500
+        "tag": "CAR_PARTS",
+        "basePrice": 300
     },
     {
         "fullType": "Base.Smallanimalmeat",
@@ -12101,7 +12101,7 @@
     },
     {
         "fullType": "Base.SmashedBottle",
-        "tag": "SKILL_BOOK",
+        "tag": "WEAPON",
         "basePrice": 50
     },
     {
@@ -12121,37 +12121,37 @@
     },
     {
         "fullType": "Base.SmithingMag4",
-        "tag": "AMMO",
+        "tag": "SKILL_BOOK",
         "basePrice": 500
     },
     {
         "fullType": "Base.SmokeBomb",
-        "tag": "MILITARY_CLOTHING",
+        "tag": "WEAPON",
         "basePrice": 250
     },
     {
         "fullType": "Base.SmokeBombRemote",
-        "tag": "VARIOUS",
+        "tag": "WEAPON",
         "basePrice": 250
     },
     {
         "fullType": "Base.SmokeBombSensorV1",
-        "tag": "VARIOUS",
+        "tag": "WEAPON",
         "basePrice": 350
     },
     {
         "fullType": "Base.SmokeBombSensorV2",
-        "tag": "VARIOUS",
+        "tag": "WEAPON",
         "basePrice": 350
     },
     {
         "fullType": "Base.SmokeBombSensorV3",
-        "tag": "AMMO",
+        "tag": "WEAPON",
         "basePrice": 450
     },
     {
         "fullType": "Base.SmokeBombTriggered",
-        "tag": "FOOD",
+        "tag": "WEAPON",
         "basePrice": 550
     },
     {
@@ -12161,27 +12161,27 @@
     },
     {
         "fullType": "Base.Snail",
-        "tag": "WEAPON",
+        "tag": "FOOD",
         "basePrice": 10
     },
     {
         "fullType": "Base.SniperRifle",
-        "tag": "VARIOUS",
+        "tag": "WEAPON",
         "basePrice": 1650
     },
     {
         "fullType": "Base.Sniper_Veil",
-        "tag": "VARIOUS",
+        "tag": "CLOTHING",
         "basePrice": 50
     },
     {
         "fullType": "Base.SnoGlobes",
-        "tag": "TOOL",
+        "tag": "VARIOUS",
         "basePrice": 15
     },
     {
         "fullType": "Base.SnowShovel",
-        "tag": "VARIOUS",
+        "tag": "WEAPON",
         "basePrice": 500
     },
     {
@@ -12191,12 +12191,12 @@
     },
     {
         "fullType": "Base.Soap2",
-        "tag": "WEAPON",
+        "tag": "VARIOUS",
         "basePrice": 5
     },
     {
         "fullType": "Base.SoccerBall",
-        "tag": "CLOTHING",
+        "tag": "VARIOUS",
         "basePrice": 5
     },
     {
@@ -12206,7 +12206,7 @@
     },
     {
         "fullType": "Base.Socks_Long",
-        "tag": "FOOD",
+        "tag": "CLOTHING",
         "basePrice": 50
     },
     {
@@ -12216,8 +12216,8 @@
     },
     {
         "fullType": "Base.Soysauce",
-        "tag": "VARIOUS",
-        "basePrice": 50
+        "tag": "FOOD",
+        "basePrice": 15
     },
     {
         "fullType": "Base.Sparklers",

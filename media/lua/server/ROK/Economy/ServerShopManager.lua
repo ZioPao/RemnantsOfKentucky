@@ -60,11 +60,11 @@ function ServerShopManager.GenerateDailyItems()
 
     -- Should stack to 100%
     FetchNRandomItems(20, items, 'WEAPON')
-    FetchNRandomItems(5, items, 'TOOL')
+    FetchNRandomItems(10, items, 'TOOL')
     FetchNRandomItems(15, items, "MILITARY_CLOTHING")
     FetchNRandomItems(10, items, "CLOTHING")
     FetchNRandomItems(5, items, "SKILL_BOOK")
-    FetchNRandomItems(15, items, "FURNITURE")
+    FetchNRandomItems(10, items, "FURNITURE")
     FetchNRandomItems(5, items, "FIRST_AID")
     FetchNRandomItems(5, items, "FOOD")
     FetchNRandomItems(20, items, "VARIOUS")
