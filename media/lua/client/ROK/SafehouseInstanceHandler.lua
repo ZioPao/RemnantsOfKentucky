@@ -110,7 +110,7 @@ function SafehouseInstanceHandler.AddToCrateOrdered(fullType, index, x, y, isRot
         inv:setHasBeenLooted(true)
 
         grid:insertItem(item, x, y, 1, isRotated)
-    
+
         ISInventoryPage.renderDirty = true
     end
 end

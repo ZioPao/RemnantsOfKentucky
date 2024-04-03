@@ -138,7 +138,10 @@ end
 
 ------------------------------------------------
 ---@alias itemFullType string FullType of the item
----@alias shopItemsTable { items : table<string, shopItemElement>, tags: table<string, table<integer,boolean>> }
+
+
+---@alias tagType string
+---@alias shopItemsTable { items : table<string, shopItemElement>, tags: table<tagType, table<itemFullType, boolean>> }
 
 
 --* SHOP - SERVER DATA *--
