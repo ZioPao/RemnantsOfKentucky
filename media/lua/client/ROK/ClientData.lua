@@ -16,7 +16,7 @@ function ClientData.OnReceiveGlobalModData(key, modData)
        -- PZEFT_UTILS.PrintTable(modData)
 
        if key == EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID then
-            print("Instance id = " .. modData.id)
+            debugPrint("Instance id = " .. modData.id)
        end
 
         -- The client has collected the mod data from the server

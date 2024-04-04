@@ -1,9 +1,28 @@
 ---@diagnostic disable: lowercase-global
 require("ROK/Config")
 
+
+local function GetRunningFile()
+
+    local coroutine = getCurrentCoroutine()
+
+    local o = getCoroutineObjStack(coroutine, 0)
+    if o then
+        local s = KahluaUtil.rawTostring2(o)
+        local match = string.match(s, "file: (%w+)%.lua")
+        if match then return match end
+
+    end
+
+    return ""
+
+end
+
+
 function debugPrint(text)
     if PZ_EFT_CONFIG.Debug or isServer() then
-        print("PZEFT: " .. tostring(text))
+        local runningFile = GetRunningFile()
+        print("[ROK][".. runningFile .. "] " .. tostring(text))
     end
 end
 

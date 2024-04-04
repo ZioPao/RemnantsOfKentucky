@@ -190,9 +190,9 @@ function ShopCommands.BuyItem(args)
     if instanceof(item, "Moveable") and item:getSpriteGrid() == nil then
 
         -- TODO Refund stuff?
-        local tile = SafehouseInstanceHandler.TryToPlaceMoveable(item)
-        if tile then
-            objectsToHighligt[tile] = true
+        local floorObj = SafehouseInstanceHandler.TryToPlaceMoveable(item)
+        if floorObj then
+            objectsToHighligt[floorObj] = true
         end
     else
         for i = 1, args.quantity do

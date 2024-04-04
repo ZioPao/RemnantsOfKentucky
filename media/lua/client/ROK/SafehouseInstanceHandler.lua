@@ -164,16 +164,24 @@ end
 function SafehouseInstanceHandler.IsDeliveryPointClear()
     local sq = SafehouseInstanceHandler.GetMoveableDeliveryPoint()
     if sq == nil then return false end
-	for i=1, sq:getObjects():size() do
-		local obj = sq:getObjects():get(i-1)
-        print(obj:getName())
-        local spr = obj:getSprite()
 
-        local props = spr:getProperties()
-        if props:Is("IsMoveAble") then
-            --debugPrint("Found moveable in delivery area, can't put a new one")
-            return false
+    debugPrint("Checking if delivery point is clear")
+
+	for i=1, sq:getObjects():size() do
+        ---@type IsoObject
+		local obj = sq:getObjects():get(i-1)
+
+        if obj then
+            debugPrint("Obj => " .. tostring(obj:getName()))
+            local spr = obj:getSprite()
+
+            local props = spr:getProperties()
+            if props:Is("IsMoveAble") then
+                --debugPrint("Found moveable in delivery area, can't put a new one")
+                return false
+            end
         end
+
 	end
 
     return true
@@ -181,7 +189,7 @@ function SafehouseInstanceHandler.IsDeliveryPointClear()
 end
 
 ---@param itemObj Moveable
----@return nil
+---@return IsoObject?
 function SafehouseInstanceHandler.TryToPlaceMoveable(itemObj)
 
     local sq = SafehouseInstanceHandler.GetMoveableDeliveryPoint()
@@ -194,7 +202,7 @@ function SafehouseInstanceHandler.TryToPlaceMoveable(itemObj)
         props.rawWeight = 10
         props:placeMoveableInternal(sq, itemObj, sprite)
 
-        return sq
+        return sq:getFloor()
 
     --else
        --debugPrint("Delivery point is not clear! Can't put items there")
