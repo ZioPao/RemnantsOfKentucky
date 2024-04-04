@@ -90,7 +90,7 @@ function PricesEditorScrollingTable:drawDatas(y, item, alt)
     self:drawRectBorder(0, (y), self:getWidth(), self.itemheight, a, self.borderColor.r, self.borderColor.g,
         self.borderColor.b)
 
-    local xOffset = 10
+    local xOffset = 5
 
     local clipX = self.columns[1].size
     local clipX2 = self.columns[2].size
@@ -266,28 +266,19 @@ function PricesEditorPanel:createChildren()
     self.btnApply.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
     self:addChild(self.btnApply)
 
-    local entryHeight = 24
-    editY = editY - entryHgt - yPadding
 
-    -- EDIT TAG
-    self.comboTag = ISComboBox:new(btnX, editY, btnWidth, entryHeight, self, self.onTagChange)
-    self.comboTag:initialise()
-    self.comboTag:instantiate()
-    --self.comboTag.noSelectionText("SELECT A TAG")
-    self.comboTag:setAnchorLeft(false)
-    self:addChild(self.comboTag)
+    -- FROM THE MIDDLE -> BOTTOM
+    local labelHgt = getTextManager():getFontHeight(UIFont.Large) + 8 * 2
 
-    for i=1, #PZ_EFT_CONFIG.Shop.tags do
-        self.comboTag:addOption(PZ_EFT_CONFIG.Shop.tags[i])
-    end
+    editY = self:getHeight()/2 + entryHgt + yPadding
 
+    self.labelPrice = ISLabel:new(btnX, editY, labelHgt, "Price", 1, 1, 1, 1, UIFont.Large, true)
+    self.labelPrice:initialise()
+    self:addChild(self.labelPrice)
 
+    editY = editY + entryHgt + yPadding*2
 
-    editY = editY - entryHgt - yPadding
-
-
-    -- EDIT PRICE
-    self.entryPrice = ISTextEntryBox:new("", btnX, editY, btnWidth, entryHeight)
+    self.entryPrice = ISTextEntryBox:new("", btnX, editY, btnWidth, entryHgt)
     self.entryPrice:initialise()
     self.entryPrice:instantiate()
     self.entryPrice:setClearButton(false)
@@ -307,16 +298,31 @@ function PricesEditorPanel:createChildren()
 	self.entryPrice:setAnchorRight(true)
     self:addChild(self.entryPrice)
 
+    -- FROM THE MIDDLE -> TOP
+    editY = self:getHeight()/2 - entryHgt - yPadding
+
+    self.comboTag = ISComboBox:new(btnX, editY, btnWidth, entryHgt, self, self.onTagChange)
+    self.comboTag:initialise()
+    self.comboTag:instantiate()
+    --self.comboTag.noSelectionText("SELECT A TAG")
+    self.comboTag:setAnchorLeft(false)
+    self:addChild(self.comboTag)
+
+    for i=1, #PZ_EFT_CONFIG.Shop.tags do
+        self.comboTag:addOption(PZ_EFT_CONFIG.Shop.tags[i])
+    end
+
+    editY = editY - entryHgt - yPadding*2
+
+    self.labelTag = ISLabel:new(btnX, editY, labelHgt, "Tag", 1, 1, 1, 1, UIFont.Large, true)
+    self.labelTag:initialise()
+    self:addChild(self.labelTag)
+
+
 end
 
 function PricesEditorPanel:fillList()
-    -- TODO Request json from server
-    --sendClientCommand(EFT_MODULES.Shop, 'TransmitShopItems', {})
-
-    --debugPrint("Filling list")
     local shopItems = ClientData.Shop.GetShopItems()
-
-
     self.mainCategory:initList(shopItems)
 end
 
@@ -371,14 +377,16 @@ function PricesEditorPanel:update()
     local currSelId = self.mainCategory.datas.selected
     if currSelId ~= self.prevSelId then
 
-        ---@type shopItemElement
-        local selection = self.mainCategory.datas.items[currSelId].item
-        if selection then
+        local selection = self.mainCategory.datas.items[currSelId]
+        if selection and selection.item then
+
+            ---@type shopItemElement
+            local item = selection.item
             -- Send to combobox and price entry       
-            local tag = selection.tag --GetTag(selection.tags)
+            local tag = item.tag --GetTag(selection.tags)
             self.comboTag:select(tag)
 
-            local price = tostring(selection.basePrice)
+            local price = tostring(item.basePrice)
             self.entryPrice:setText(price)
         end
 

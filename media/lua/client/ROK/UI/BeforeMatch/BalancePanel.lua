@@ -83,7 +83,7 @@ function BalancePanel:update()
     if self.refBankAccount and self.refBankAccount.bankAccount and self.refBankAccount then
         -- Calculate length
         local len = getTextManager():MeasureStringX(UIFont.Massive, tostring(self.refBankAccount.bankAccount.balance))
-        local newWidth = len + 50
+        local newWidth = len + 100
         self:setWidth(newWidth)
         self.balanceText:setWidth(newWidth)
     end

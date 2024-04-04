@@ -3,11 +3,6 @@
     It will show a list of all the players who have played on the server, sorted by
     balance on that player account.
 ]]
-
-
--- FIX Scaling is broken after we've changed GenericUI stuff!!!
-
-
 local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 
 -------------------------------------
@@ -33,6 +28,7 @@ function LeaderboardScrollingTable:createChildren()
     local btnHgt = math.max(25, GenericUI.SMALL_FONT_HGT + 3 * 2)
     local bottomHgt = 5 + GenericUI.SMALL_FONT_HGT * 2 + 5 + btnHgt + 20 + GenericUI.LARGE_FONT_HGT + GenericUI.HEADER_HGT + GenericUI.ENTRY_HGT
 
+
     self.datas = ISScrollingListBox:new(0, GenericUI.HEADER_HGT, self.width, self.height - bottomHgt + 10)
     self.datas:initialise()
     self.datas:instantiate()
@@ -43,10 +39,10 @@ function LeaderboardScrollingTable:createChildren()
     self.datas.doDrawItem = self.drawDatas
     self.datas.drawBorder = true
     self.datas:addColumn("#", 0)
-    self.datas:addColumn("Player", 100)
-    self.datas:addColumn("Balance", 300)
-    self.datas:addColumn("Crates Value", 450)
-    self.datas:addColumn("Total", 600)
+    self.datas:addColumn("Player", 30*GenericUI.FONT_SCALE)
+    self.datas:addColumn("Balance", 150*GenericUI.FONT_SCALE)
+    self.datas:addColumn("Crates Value", 250*GenericUI.FONT_SCALE)
+    self.datas:addColumn("Total", 350*GenericUI.FONT_SCALE)
     self:addChild(self.datas)
 end
 
@@ -235,8 +231,8 @@ function LeaderboardPanel.Open(x, y)
         return
     end
 
-    local width = 400 * GenericUI.FONT_SCALE
-    local height = 600 * GenericUI.FONT_SCALE
+    local width = 600 * GenericUI.FONT_SCALE
+    local height = 700 * GenericUI.FONT_SCALE
 
     local modal = LeaderboardPanel:new(x, y, width, height)
     modal:initialise()
