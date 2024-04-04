@@ -27,6 +27,8 @@ function ClientShopManager.GetSellableItemsInInventory(sellItemsData)
 
     local pl = getPlayer()
     local plInv = pl:getInventory()
+
+    ---@diagnostic disable-next-line: param-type-mismatch
     local t = plInv:getAllEvalRecurse(predicateFindItemWithId)
     -- debugPrint("___________________________________")
     -- debugPrint(t)
@@ -188,6 +190,8 @@ function ShopCommands.BuyItem(args)
     local objectsToHighligt = {}
 
     if instanceof(item, "Moveable") and item:getSpriteGrid() == nil then
+
+        ---@cast item Moveable
 
         -- TODO Refund stuff?
         local floorObj = SafehouseInstanceHandler.TryToPlaceMoveable(item)
