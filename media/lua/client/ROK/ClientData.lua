@@ -35,6 +35,7 @@ function ClientData.PVPInstances.GetPvpInstances()
     return ModData.getOrCreate(EFT_ModDataKeys.PVP_INSTANCES)
 end
 
+---@return pvpInstanceTable
 function ClientData.PVPInstances.GetCurrentInstance()
     local currInstanceIdTab = ModData.get(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID)
     local instancesData = ModData.get(EFT_ModDataKeys.PVP_INSTANCES)

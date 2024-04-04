@@ -71,7 +71,7 @@ ServerData.PVPInstances.SetPvpUsedInstances = function(data)
 end
 
 --- Get PVP current instance data
----@return pvpInstanceTable
+---@return {id: string} x-y
 ServerData.PVPInstances.GetPvpCurrentInstance = function()
     return ModData.getOrCreate(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID)
 end

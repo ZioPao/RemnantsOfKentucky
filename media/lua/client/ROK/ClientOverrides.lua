@@ -94,6 +94,51 @@ function ISWorldMap.ToggleWorldMap(playerNum)
 
 end
 
+---@param map InventoryItem
+---@param player number
+local function OpenBriaMap(map, player)
+    local playerObj = getSpecificPlayer(player)
+    if luautils.haveToBeTransfered(playerObj, map) then
+        local action = ISInventoryTransferAction:new(playerObj, map, map:getContainer(), playerObj:getInventory())
+        action:setOnComplete(ISInventoryPaneContextMenu.onCheckMap, map, player)
+        ISTimedActionQueue.add(action)
+        return
+    end
+
+    if JoypadState.players[player+1] then
+        local inv = getPlayerInventory(player)
+        local loot = getPlayerLoot(player)
+        inv:setVisible(false)
+        loot:setVisible(false)
+    end
+
+    local titleBarHgt = ISCollapsableWindow.TitleBarHeight()
+    local x = getPlayerScreenLeft(player) + 20
+    local y = getPlayerScreenTop(player) + 20
+    local width = getPlayerScreenWidth(player) - 20 * 2
+    local height = getPlayerScreenHeight(player) - 20 * 2 - titleBarHgt
+
+    local mapUI = ISMap:new(x, y, width, height, map, player);
+    mapUI:initialise();
+    local wrap = mapUI:wrapInCollapsableWindow(map:getName(), false, ISMapWrapper);
+    wrap:setInfo(getText("IGUI_Map_Info"));
+    wrap:setWantKeyEvents(true);
+    mapUI.wrap = wrap;
+    wrap.mapUI = mapUI;
+--    mapUI.render = ISMap.noRender;
+--    mapUI.prerender = ISMap.noRender;
+    map:doBuildingStash();
+    wrap:setVisible(true);
+    wrap:addToUIManager();
+	if JoypadState.players[player+1] then
+        setJoypadFocus(player, mapUI)
+    end
+	mapUI.mapAPI:setBoolean("Players", true)
+
+end
+
+
+
 
 local og_ISWorldMap_ShowWorldMap = ISWorldMap.ShowWorldMap
 function ISWorldMap.ShowWorldMap(playerNum)
@@ -109,7 +154,7 @@ function ISWorldMap.ShowWorldMap(playerNum)
 
         local mapItem = plInv:FindAndReturn("ROK.BriaIslandMap")
         if mapItem then
-            ISInventoryPaneContextMenu.onCheckMap(mapItem, playerNum)
+            OpenBriaMap(mapItem, playerNum)
         else
             debugPrint("Couldn't find map item. Something ain't right with this boy")
         end
