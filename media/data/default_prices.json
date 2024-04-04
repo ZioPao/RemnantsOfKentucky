@@ -14526,7 +14526,7 @@
     },
     {
         "fullType": "MoreTraits.AntiqueBoots",
-        "tag": "MILITARY_CLOTHING",
+        "tag": "CLOTHING",
         "basePrice": 500
     },
     {
@@ -14586,22 +14586,22 @@
     },
     {
         "fullType": "MoreTraits.MedicalMag1",
-        "tag": "FIRST_AID",
+        "tag": "SKILL_BOOK",
         "basePrice": 800
     },
     {
         "fullType": "MoreTraits.MedicalMag2",
-        "tag": "FIRST_AID",
+        "tag": "SKILL_BOOK",
         "basePrice": 850
     },
     {
         "fullType": "MoreTraits.MedicalMag3",
-        "tag": "FIRST_AID",
+        "tag": "SKILL_BOOK",
         "basePrice": 850
     },
     {
         "fullType": "MoreTraits.MedicalMag4",
-        "tag": "FIRST_AID",
+        "tag": "SKILL_BOOK",
         "basePrice": 850
     },
     {
