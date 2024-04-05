@@ -6,45 +6,51 @@ PZ_EFT_CONFIG.Server = {}
 
 PZ_EFT_CONFIG.Debug = true
 
-
-PZ_EFT_CONFIG.SupportedMods = {
-    ["ROK"] = true,
-    ["INVENTORY_TETRIS"] = true,
+-- UNUSED FOR NOW
+PZ_EFT_CONFIG.ItemMods = {
     ["VFExpansion1"] = true,
-    ["Advanced_trajectory"] = true,
-    ["diveThroughWindows"] = true,
-    ["tsarslib"] = true,
-    ["TMC_TrueActions"] = true,
     ["TrueActionsDancing"] = true,
-    ["MoodleFramework"] = true,
     ["ToadTraits"] = true,
-    ["modoptions"] = true,
-    ["BasicCrafting"] = true,
-    ["OutTheWindow"] = true,
-    ["RainWash"] = true,
-    ["TheStar"] = true,
-    ["DylansZombieLoot"] = true,
     ["BetterFlashlights"] = true,
-    ["DRAW_ON_MAP"] = true,
-    ["VISIBLE_BACKPACK_BACKGROUND"] = true,
-    ["BecomeDesensitized"] = true,
-    ["GeneratorTimeRemaining"] = true,
-    ["FuelAPI"] = true,
     ["Brita_2"] = true,
     ["BigBadBeaverMerch"] = true,
-    ["P4HasBeenRead"] = true,
     ["BCGRareWeapons"] = true,
-    ["MoreDescriptionForTraits4166"] = true,
     ["Skizots Visible Boxes and Garbage2"] = true,
-    ["FancyHandwork"] = true,
     ["OneHandedSODBShotgun"] = true,
-    ["fuelsideindicator"] = true,
-    ["Gun Stock Attack Remaster"] = true,
-    ["ZombiesHearYourMicrophone"] = true,
-    ["eris_nightvision_goggles"] = true,
     ["NightVisionChucked"] = true,
-    ["EQUIPMENT_UI"] = true,
 }
+
+PZ_EFT_CONFIG.SupportedMods = {
+    inventoryTetris = getActivatedMods():contains("INVENTORY_TETRIS") and getActivatedMods():contains("EQUIPMENT_UI")
+}
+
+-- PZ_EFT_CONFIG.SupportedMods = {
+--     ["ROK"] = true,
+--     ["INVENTORY_TETRIS"] = true,
+--     ["Advanced_trajectory"] = true,
+--     ["diveThroughWindows"] = true,
+--     ["tsarslib"] = true,
+--     ["TMC_TrueActions"] = true,
+--     ["MoodleFramework"] = true,
+--     ["modoptions"] = true,
+--     ["BasicCrafting"] = true,
+--     ["OutTheWindow"] = true,
+--     ["RainWash"] = true,
+--     ["TheStar"] = true,
+--     ["DylansZombieLoot"] = true,
+--     ["DRAW_ON_MAP"] = true,
+--     ["VISIBLE_BACKPACK_BACKGROUND"] = true,
+--     ["BecomeDesensitized"] = true,
+--     ["GeneratorTimeRemaining"] = true,
+--     ["FuelAPI"] = true,
+--     ["P4HasBeenRead"] = true,
+--     ["MoreDescriptionForTraits4166"] = true,
+--     ["FancyHandwork"] = true,
+--     ["fuelsideindicator"] = true,
+--     ["Gun Stock Attack Remaster"] = true,
+--     ["ZombiesHearYourMicrophone"] = true,
+--     ["EQUIPMENT_UI"] = true,
+-- }
 
 --* MATCH
 

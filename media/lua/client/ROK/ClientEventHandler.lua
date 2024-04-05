@@ -66,7 +66,7 @@ local function OnPlayerInit()
             sendClientCommand(EFT_MODULES.Match, 'CheckIsRunningMatch', {})
 
             -- Notify admins about potentially incompatible mods
-            CheckMods()
+            --CheckMods()
         end
 
         -- IDEA maybe migrate a bunch of these functions to events?

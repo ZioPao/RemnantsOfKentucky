@@ -60,18 +60,29 @@ function SafehouseInstanceHandler.TryToAddToCrate(fullType)
         return nil
     end
     local item = InventoryItemFactory.CreateItem(fullType)
-    local plNum = getPlayer():getPlayerNum()
+    local player = getPlayer()
+    local plNum = player:getPlayerNum()
 
     local function GetFirstAvailableCrate()
         for i=1, #cratesTable do
             local crate = cratesTable[i]
             local inv = crate:getContainer()
-            local itemContainerGrid = ItemContainerGrid.Create(inv, plNum)
 
-            -- Check if can fit item
-            if itemContainerGrid:canAddItem(item) then
-                debugPrint("Found available crate => " .. tostring(i))
-                return crate
+
+            if PZ_EFT_CONFIG.SupportedMods.inventoryTetris then
+                --* INVENTORY TETRIS *--
+                local itemContainerGrid = ItemContainerGrid.Create(inv, plNum)
+
+                -- Check if can fit item
+                if itemContainerGrid:canAddItem(item) then
+                    debugPrint("Found available crate => " .. tostring(i))
+                    return crate
+                end
+            else
+                --* VANILLA *--
+                if inv:hasRoomFor(player, item:getWeight()) then
+                    return crate
+                end
             end
         end
 
@@ -131,12 +142,16 @@ function SafehouseInstanceHandler.GiveStarterKit(playerObj)
             for j=1, #element.positions do
                 local loc = element.positions[j]
                 debugPrint("Positions: x=" .. tostring(loc.x) .. ", y=" .. tostring(loc.y))
-                SafehouseInstanceHandler.AddToCrateOrdered(
-                    element.fullType,
-                    element.crateIndex,
-                    loc.x,
-                    loc.y,
-                    loc.isRotated)
+                if PZ_EFT_CONFIG.SupportedMods.inventoryTetris then
+                    SafehouseInstanceHandler.AddToCrateOrdered(
+                        element.fullType,
+                        element.crateIndex,
+                        loc.x,
+                        loc.y,
+                        loc.isRotated)
+                else
+                    SafehouseInstanceHandler.TryToAddToCrate(element.fullType)
+                end
             end
         end
         -- Notify the player
