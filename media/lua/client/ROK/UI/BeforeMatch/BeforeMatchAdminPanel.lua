@@ -89,7 +89,7 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnManagePlayersOption.internal = "OPEN_PLAYERS_OPTIONS"
     self.btnManagePlayersOption:initialise()
     self.btnManagePlayersOption:setEnable(true)
-    self.btnManagePlayersOption:setTitle(getText("IGUI_EFT_AdminPanel_ManagePlayers"))
+    self.btnManagePlayersOption:setTitle(getText("IGUI_EFT_AdminPanel_ManagePlayers_Title"))
     self:addChild(self.btnManagePlayersOption)
 
     y = y - btnHeight - yPadding
@@ -99,7 +99,7 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnManagementOption.internal = "OPEN_MANAGEMENT_OPTION"
     self.btnManagementOption:initialise()
     self.btnManagementOption:setEnable(true)
-    self.btnManagementOption:setTitle(getText("IGUI_EFT_AdminPanel_ModManagement"))
+    self.btnManagementOption:setTitle(getText("IGUI_EFT_AdminPanel_ModManagement_Title"))
     self:addChild(self.btnManagementOption)
 
     self.btnEconomyManagement = ISButton:new(xRightPadding, y, gridBtnWidth, btnHeight, "", self, self.onClick)

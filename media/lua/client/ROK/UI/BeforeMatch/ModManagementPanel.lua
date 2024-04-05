@@ -54,7 +54,7 @@ function ModManagementPanel:createChildren()
     local btnWidth = self:getWidth() - xPadding * 2
     local yPadding = 10
 
-    local label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_ModManagement"), 1, 1, 1, 1,
+    local label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_ModManagement_Title"), 1, 1, 1, 1,
         UIFont.NewLarge, true)
     label:initialise()
     label:instantiate()
@@ -69,7 +69,7 @@ function ModManagementPanel:createChildren()
 
     self.btnResetUsedInstances = IconButton:new(
         xPadding, y, btnWidth, btnHeight,
-        RESET_USED_INSTANCES_ICON, getText("IGUI_EFT_AdminPanel_ResetUsedInstances"), "RESET_USED_INSTANCES",
+        RESET_USED_INSTANCES_ICON, getText("IGUI_EFT_AdminPanel_ModManagement_ResetUsedInstances"), "RESET_USED_INSTANCES",
         self, self.onClick
     )
     self.btnResetUsedInstances:initialise()
@@ -82,7 +82,7 @@ function ModManagementPanel:createChildren()
 
     self.btnToggleAutomaticStart = IconButton:new(
         xPadding, y, btnWidth, btnHeight,
-        AUTO_START_ICON, getText("IGUI_EFT_AdminPanel_ActivateAutomaticStart"), "TOGGLE_AUTOMATIC_START",
+        AUTO_START_ICON, getText("IGUI_EFT_AdminPanel_ModManagement_ActivateAutomaticStart"), "TOGGLE_AUTOMATIC_START",
         self, self.onClick
     )
     self.btnToggleAutomaticStart:initialise()
@@ -115,7 +115,7 @@ function ModManagementPanel:createChildren()
 
     self.btnTeleportToSafehouse = IconButton:new(
         xPadding, y, btnWidth, btnHeight,
-        TELEPORT_SAFEHOUSE_ICON, getText("IGUI_EFT_AdminPanel_TeleportToSafehouse"), "TELEPORT_SAFEHOUSE",
+        TELEPORT_SAFEHOUSE_ICON, getText("IGUI_EFT_AdminPanel_ModManagement_TeleportToSafehouse"), "TELEPORT_SAFEHOUSE",
         self, self.onClick
     )
     self.btnTeleportToSafehouse:initialise()
@@ -162,10 +162,10 @@ function ModManagementPanel:updateSetTimeBtn()
     --debugPrint(time)
     if time > 9 and time < 21 then
         self.btnSetTime:setInternal("SET_TIME_NIGHT")
-        self.btnSetTime:setTitle(getText("IGUI_EFT_AdminPanel_SetNightTime"))
+        self.btnSetTime:setTitle(getText("IGUI_EFT_AdminPanel_ModManagement_SetNightTime"))
     else
         self.btnSetTime:setInternal("SET_TIME_DAY")
-        self.btnSetTime:setTitle(getText("IGUI_EFT_AdminPanel_SetDayTime"))
+        self.btnSetTime:setTitle(getText("IGUI_EFT_AdminPanel_ModManagement_SetDayTime"))
     end
 
     -- Reactivates the btnSetTime only when the internal has changed
@@ -189,9 +189,9 @@ function ModManagementPanel:update()
 
     --Set the toggle match thing
     if ClientState.GetIsAutomaticStart() then
-        self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_DeactivateAutomaticStart"))
+        self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_ModManagement_DeactivateAutomaticStart"))
     else
-        self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_ActivateAutomaticStart"))
+        self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_ModManagement_ActivateAutomaticStart"))
     end
 
     self.btnResetUsedInstances:setEnable(not ClientState.GetIsStartingMatch())

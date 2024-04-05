@@ -126,7 +126,7 @@ function ManagePlayersPanel:createChildren()
     local xPadding = GenericUI.X_PADDING
     local yPadding = 10
 
-    self.label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_ManagePlayers"), 1, 1, 1, 1,
+    self.label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_ManagePlayers_Title"), 1, 1, 1, 1,
         UIFont.NewLarge, true)
     self.label:initialise()
     self.label:instantiate()
@@ -200,7 +200,7 @@ function ManagePlayersPanel:createChildren()
     )
     self.btnStarterKit.internal = "STARTER_KIT"
     self.btnStarterKit:setImage(STARTER_KIT_ICON)
-    self.btnStarterKit:setTooltip(getText("IGUI_EFT_AdminPanel_Tooltip_StarterKit"))
+    self.btnStarterKit:setTooltip(getText("IGUI_EFT_AdminPanel_ManagePlayers_StarterKit_Tooltip"))
     self.btnStarterKit:initialise()
     self.btnStarterKit:instantiate()
     self.btnStarterKit.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
@@ -214,7 +214,7 @@ function ManagePlayersPanel:createChildren()
     )
     self.btnWipePlayer.internal = "WIPE_PLAYER"
     self.btnWipePlayer:setImage(WIPE_PLAYER_ICON)
-    self.btnWipePlayer:setTooltip(getText("IGUI_EFT_AdminPanel_Tooltip_WipePlayer"))
+    self.btnWipePlayer:setTooltip(getText("IGUI_EFT_AdminPanel_ManagePlayers_WipePlayer_Tooltip"))
     self.btnWipePlayer:initialise()
     self.btnWipePlayer:instantiate()
     self.btnWipePlayer.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
@@ -258,7 +258,7 @@ function ManagePlayersPanel:onClick(button)
                 getPlayer():Say(text)
             end
 
-            local text = getText("IGUI_EFT_AdminPanel_Confirmation_StarterKit", plUsername)
+            local text = getText("IGUI_EFT_AdminPanel_ManagePlayers_StarterKit_Confirmation", plUsername)
             self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, self, OnConfirmGiveStarterKit)
         elseif button.internal == 'WIPE_PLAYER' then
             local function OnConfirmWipePlayer()
@@ -267,7 +267,7 @@ function ManagePlayersPanel:onClick(button)
                 getPlayer():Say(text)
             end
 
-            local text = getText("IGUI_EFT_AdminPanel_Confirmation_WipePlayer", plUsername)
+            local text = getText("IGUI_EFT_AdminPanel_ManagePlayers_WipePlayer_Confirmation", plUsername)
             self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, self, OnConfirmWipePlayer)
         end
     end
