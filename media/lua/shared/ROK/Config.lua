@@ -90,6 +90,17 @@ PZ_EFT_CONFIG.DefaultPlayer = {
 --* SAFEHOUSES
 --Cells containing safehouses for initialisation
 PZ_EFT_CONFIG.SafehouseCells = {
+
+
+    startX = 0,
+    startY = 100,
+
+    endX = 0,
+    endY = 200,
+
+    -- 49 x 100
+
+
     {
         x = 0,
         y = 100

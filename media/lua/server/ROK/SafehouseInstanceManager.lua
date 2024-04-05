@@ -21,10 +21,19 @@ end
 function SafehouseInstanceManager.Reset()
     ServerData.SafehouseInstances.SetSafehouseInstances({})
     ServerData.SafehouseInstances.SetSafehouseAssignedInstances({})
-    for i, v in ipairs(PZ_EFT_CONFIG.SafehouseCells) do
-        SafehouseInstanceManager.LoadSafehouseInstances(v.x, v.y)
+    SafehouseInstanceManager.Load()
+end
+
+
+
+function SafehouseInstanceManager.Load()
+    for y=PZ_EFT_CONFIG.SafehouseCells.startY, PZ_EFT_CONFIG.SafehouseCells.endY do
+        SafehouseInstanceManager.LoadSafehouseInstances(0, y)
     end
 end
+
+
+
 
 --- Load safehouse instances using relative cell coordinates.
 --- Call this multiple times with different cells if safehouses take up more than one cell
@@ -175,9 +184,7 @@ function SafehouseInstanceManager.ResetPlayerSafehouse(pl)
 end
 
 local function OnLoad()
-    for i, v in ipairs(PZ_EFT_CONFIG.SafehouseCells) do
-        SafehouseInstanceManager.LoadSafehouseInstances(v.x, v.y)
-    end
+    SafehouseInstanceManager.Load()
 end
 
 Events.OnLoad.Add(OnLoad)
