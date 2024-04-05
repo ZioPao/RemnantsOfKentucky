@@ -85,6 +85,7 @@ end
 function ServerData.PVPInstances.TransmitPvpCurrentInstance()
     ModData.transmit(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID)
 end
+
 ------------------------------------------------
 ---@alias worldStringCoords string worldx-worldy-worldz
 ---@alias assignedSafehousesTable table<worldStringCoords, string>      value is username
@@ -157,6 +158,7 @@ end
 function ServerData.Shop.TransmitShopItemsData()
     ModData.transmit(EFT_ModDataKeys.SHOP_ITEMS)
 end
+
 ------------------------------------------------
 
 
@@ -220,4 +222,3 @@ ServerData.debug.print_shopitems = function()
     local data = ModData.getOrCreate(EFT_ModDataKeys.SHOP_ITEMS)
     PZEFT_UTILS.PrintTable(data)
 end
-

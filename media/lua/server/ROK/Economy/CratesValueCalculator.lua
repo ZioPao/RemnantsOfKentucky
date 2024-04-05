@@ -45,7 +45,6 @@ function CratesValueCalculator.GetValue(item)
         print("Couldn't find item with fullType " .. item:getFullType())
         return 0
     end
-
 end
 
 ---@param username string
@@ -54,10 +53,10 @@ function CratesValueCalculator.CalculateValueAllItems(username)
     local crates = CratesValueCalculator.GetCrates(username)
     if crates == nil then return 0 end
     local value = 0
-    for i=1, #crates do
+    for i = 1, #crates do
         local crate = crates[i]
         local crateItems = crate:getItems()
-        for j=0, crateItems:size() - 1 do
+        for j = 0, crateItems:size() - 1 do
             local item = crateItems:get(j)
             value = value + CratesValueCalculator.GetValue(item)
         end

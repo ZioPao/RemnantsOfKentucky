@@ -70,12 +70,9 @@ function ServerShopManager.GenerateDailyItems()
     FetchNRandomItems(20, items, "VARIOUS")
 end
 
-
-
 ---@private
 ---@return table<integer, {fullType : string, tag : string, basePrice : integer}>
 function ServerShopManager.LoadDataFromJson()
-
     -- Load default JSON, if there's no custom one in the cachedir
     local fileName = PZ_EFT_CONFIG.Shop.jsonName
     local readData = json.readFile(fileName)
@@ -106,12 +103,11 @@ function ServerShopManager.OverwriteJsonData(itemsData)
     writer:close()
 end
 
-
 function ServerShopManager.LoadShopPrices()
     local parsedData = ServerShopManager.LoadDataFromJson()
 
     -- Load items from JSON into ModData
-    for i=1, #parsedData do
+    for i = 1, #parsedData do
         local d = parsedData[i]
         debugPrint("Adding from JSON => " .. d.fullType)
         ShopItemsManager.AddItem(d.fullType, d.tag, d.basePrice)
@@ -124,7 +120,7 @@ function ServerShopManager.LoadShopPrices()
         ---@type Item
         local item = allItems:get(i)
         local fullType = item:getModuleName() .. "." .. item:getName()
- 
+
         --debugPrint(fullType)
         if not ShopItemsManager.GetItem(fullType) then
             if not item:isHidden() then
@@ -133,8 +129,8 @@ function ServerShopManager.LoadShopPrices()
             else
                 debugPrint("Item is hidden, do not consider it => " .. fullType)
             end
-        -- else
-        --     debugPrint("Item already set from JSON => " .. fullType)
+            -- else
+            --     debugPrint("Item already set from JSON => " .. fullType)
         end
     end
 

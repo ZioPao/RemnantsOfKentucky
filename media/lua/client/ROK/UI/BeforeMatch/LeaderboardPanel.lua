@@ -26,7 +26,8 @@ end
 
 function LeaderboardScrollingTable:createChildren()
     local btnHgt = math.max(25, GenericUI.SMALL_FONT_HGT + 3 * 2)
-    local bottomHgt = 5 + GenericUI.SMALL_FONT_HGT * 2 + 5 + btnHgt + 20 + GenericUI.LARGE_FONT_HGT + GenericUI.HEADER_HGT + GenericUI.ENTRY_HGT
+    local bottomHgt = 5 + GenericUI.SMALL_FONT_HGT * 2 + 5 + btnHgt + 20 + GenericUI.LARGE_FONT_HGT +
+    GenericUI.HEADER_HGT + GenericUI.ENTRY_HGT
 
 
     self.datas = ISScrollingListBox:new(0, GenericUI.HEADER_HGT, self.width, self.height - bottomHgt + 10)
@@ -39,10 +40,10 @@ function LeaderboardScrollingTable:createChildren()
     self.datas.doDrawItem = self.drawDatas
     self.datas.drawBorder = true
     self.datas:addColumn("#", 0)
-    self.datas:addColumn("Player", 30*GenericUI.FONT_SCALE)
-    self.datas:addColumn("Balance", 150*GenericUI.FONT_SCALE)
-    self.datas:addColumn("Crates Value", 250*GenericUI.FONT_SCALE)
-    self.datas:addColumn("Total", 350*GenericUI.FONT_SCALE)
+    self.datas:addColumn("Player", 30 * GenericUI.FONT_SCALE)
+    self.datas:addColumn("Balance", 150 * GenericUI.FONT_SCALE)
+    self.datas:addColumn("Crates Value", 250 * GenericUI.FONT_SCALE)
+    self.datas:addColumn("Total", 350 * GenericUI.FONT_SCALE)
     self:addChild(self.datas)
 end
 
@@ -171,7 +172,8 @@ function LeaderboardPanel:createChildren()
 
     yOffset = yOffset + self.labelLeaderboard:getHeight() + yMargin
 
-    self.filterEntry = ISTextEntryBox:new(getText("IGUI_EFT_Leaderboard_Players"), xOffset, yOffset, self:getWidth() - 10 * 2, entryHgt)
+    self.filterEntry = ISTextEntryBox:new(getText("IGUI_EFT_Leaderboard_Players"), xOffset, yOffset,
+        self:getWidth() - 10 * 2, entryHgt)
     self.filterEntry:initialise()
     self.filterEntry:instantiate()
     self.filterEntry:setClearButton(true)
@@ -242,8 +244,8 @@ function LeaderboardPanel.Open(x, y)
 
     return modal
 end
-function LeaderboardPanel.SetBankAccounts(accounts)
 
+function LeaderboardPanel.SetBankAccounts(accounts)
     if LeaderboardPanel.instance == nil then return end
 
     debugPrint("Setting bank accounts to LeaderboardPanel")
@@ -256,7 +258,7 @@ function LeaderboardPanel.SetBankAccounts(accounts)
     ---@param a bankPlayerTable
     ---@param b bankPlayerTable
     ---@return boolean
-    local function SortByBalance(a,b)
+    local function SortByBalance(a, b)
         return a.balance + a.cratesValue > b.balance + b.cratesValue
     end
 
@@ -267,6 +269,5 @@ function LeaderboardPanel.SetBankAccounts(accounts)
     LeaderboardPanel.bankAccounts = sortedAccounts
     LeaderboardPanel.instance.mainCategory:initList(LeaderboardPanel.bankAccounts)
 end
-
 
 return LeaderboardPanel

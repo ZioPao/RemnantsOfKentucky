@@ -36,13 +36,13 @@ end
 
 function IconButton:initialise()
     local elementHeight = self:getHeight()
-    local xPadding = elementHeight/6
+    local xPadding = elementHeight / 6
 
     -- Icon is gonna be a square, 50x50
     self.icon = ISImage:new(xPadding, xPadding, elementHeight, elementHeight, self.texture)
     self.icon.scaledWidth = elementHeight * 0.64
-	self.icon.scaledHeight = elementHeight * 0.64
-    self.icon:setColor(1,1,1)
+    self.icon.scaledHeight = elementHeight * 0.64
+    self.icon:setColor(1, 1, 1)
     self.icon:initialise()
     self.icon:instantiate()
     self:addChild(self.icon)
@@ -55,7 +55,6 @@ function IconButton:initialise()
     self.btn:setTitle(self.text)
     self:addChild(self.btn)
 end
-
 
 --* Setters
 function IconButton:setEnable(val)
@@ -80,7 +79,5 @@ end
 function IconButton:getInternal()
     return self.btn.internal
 end
-
-
 
 return IconButton

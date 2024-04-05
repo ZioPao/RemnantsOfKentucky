@@ -67,7 +67,8 @@ function MatchOptionsPanel:createChildren()
     local elementWidth = self:getWidth() - xPadding * 2
     local yPadding = 10
 
-    self.label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_MatchOptions"), 1, 1, 1, 1, UIFont.NewLarge, true)
+    self.label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_MatchOptions"), 1, 1, 1, 1,
+        UIFont.NewLarge, true)
     self.label:initialise()
     self.label:instantiate()
     self:addChild(self.label)
@@ -76,14 +77,14 @@ function MatchOptionsPanel:createChildren()
     local xHorizPanel = xPadding
     local yHorizPanel = self.label:getBottom() + yPadding
 
-    for k,v in pairs(optionsReferenceTable) do
+    for k, v in pairs(optionsReferenceTable) do
         self:createHorizontalPanel(
             xHorizPanel, yHorizPanel, elementWidth,
             k, v.title, v.setCommand, v.askCommand
         )
-        end
+    end
 
-    local yBtnApply =  self:getHeight() - btnHeight - yPadding
+    local yBtnApply = self:getHeight() - btnHeight - yPadding
 
     self.btnApply = ISButton:new(
         xPadding, yBtnApply, elementWidth, btnHeight,
@@ -91,7 +92,6 @@ function MatchOptionsPanel:createChildren()
     self.btnApply.internal = "APPLY"
     self.btnApply:initialise()
     self:addChild(self.btnApply)
-
 end
 
 ---@param startY number
@@ -143,11 +143,11 @@ function MatchOptionsPanel:createHorizontalPanel(startX, startY, width, name, te
     self[name].entry:setOnlyNumbers(true)
     self[name].entry:setMaxTextLength(1)
     self[name].entry.onTextChange = OnEntryChange
-    self[name].entry:setEditable(false)     -- By default it's not enabled, until we get the ok from the server
+    self[name].entry:setEditable(false) -- By default it's not enabled, until we get the ok from the server
     self[name].entry:setHasFrame(false)
-	self[name].entry:setAnchorTop(false)
+    self[name].entry:setAnchorTop(false)
     self[name].entry:setAnchorBottom(true)
-	self[name].entry:setAnchorRight(true)
+    self[name].entry:setAnchorRight(true)
     self[name].entry.syncedWithServer = false
     self[name]:addChild(self[name].entry)
     self[name].referencedCommand = setCommand
@@ -155,7 +155,6 @@ function MatchOptionsPanel:createHorizontalPanel(startX, startY, width, name, te
 
 
     table.insert(self.options, self[name])
-
 end
 
 function MatchOptionsPanel:prerender()
@@ -165,14 +164,13 @@ function MatchOptionsPanel:prerender()
         self.borderColor.b)
 end
 
-
 function MatchOptionsPanel:update()
     ISCollapsableWindow.update(self)
 
     -- Check if all the options are valid or not
     local canApply = true
 
-    for i=1, #self.options do
+    for i = 1, #self.options do
         local opt = self.options[i]
         -- Horrendous workaround, but since setValid is not really setting anything, this will do.
         if opt.entry.borderColor.r == 0.7 then
@@ -181,12 +179,11 @@ function MatchOptionsPanel:update()
         end
     end
 
-    self.btnApply:setEnable(canApply)    
+    self.btnApply:setEnable(canApply)
 end
 
 function MatchOptionsPanel:render()
     ISCollapsableWindow.render(self)
-
 end
 
 function MatchOptionsPanel:close()
@@ -195,6 +192,5 @@ function MatchOptionsPanel:close()
     end
     ISCollapsableWindow.close(self)
 end
-
 
 return MatchOptionsPanel

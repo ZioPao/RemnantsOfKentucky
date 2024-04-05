@@ -47,7 +47,6 @@ function GenericUI.FormatTime(time, useRichText)
 end
 
 function GenericUI.ToggleSidePanel(parent, NewPanel)
-
     -- Check if side panel is already open
     if parent.openedPanel then
         if parent.openedPanel:getIsVisible() then
@@ -58,10 +57,9 @@ function GenericUI.ToggleSidePanel(parent, NewPanel)
         end
     end
 
-    local width = parent:getWidth()   -- SHITTY Fix this
+    local width = parent:getWidth() -- SHITTY Fix this
     local height = parent:getHeight()
     parent.openedPanel = NewPanel.Open(parent:getRight(), parent:getBottom() - parent:getHeight(), width, height)
-
 end
 
 return GenericUI

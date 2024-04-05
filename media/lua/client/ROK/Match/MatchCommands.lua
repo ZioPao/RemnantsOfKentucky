@@ -10,14 +10,12 @@ function MatchCommands.TeleportToInstance(coords)
     ClientState.SetIsInRaid(true)
 end
 
-
 ---@param args {victimUsername : string}
 function MatchCommands.AddKill(args)
     local cTime = os.time()
     local KillTrackerHandler = require("ROK/Match/KillTrackerHandler")
     KillTrackerHandler.AddKill(args.victimUsername, cTime)
 end
-
 
 local function OnMatchCommands(module, command, args)
     if (module == MODULE or module == MODULE) and MatchCommands[command] then

@@ -18,7 +18,7 @@ local AVAILABLE_INSTANCES_STR = getText("IGUI_EFT_AdminPanel_InstancesAvailable"
 
 
 local START_MATCH_ICON = getTexture("media/textures/BeforeMatchPanel/StartMatch.png") -- https://www.freepik.com/icon/play_14441317#fromView=family&page=1&position=0&uuid=6c560048-e143-4f62-bae1-92319409fae7
-local STOP_MATCH_ICON = getTexture("media/textures/BeforeMatchPanel/StopMatch.png")  -- https://www.freepik.com/icon/stop_13570077#fromView=family&page=1&position=2&uuid=6db48743-461d-4009-a1be-79aba60b71a3
+local STOP_MATCH_ICON = getTexture("media/textures/BeforeMatchPanel/StopMatch.png")   -- https://www.freepik.com/icon/stop_13570077#fromView=family&page=1&position=2&uuid=6db48743-461d-4009-a1be-79aba60b71a3
 
 --------------------------------
 
@@ -40,7 +40,7 @@ function BeforeMatchAdminPanel:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
 
-    self.availableInstancesAmount = -1      -- init
+    self.availableInstancesAmount = -1 -- init
 
     ---@cast o BeforeMatchAdminPanel
 
@@ -66,15 +66,15 @@ function BeforeMatchAdminPanel:createChildren()
     self.btnToggleMatch:initialise()
     self:addChild(self.btnToggleMatch)
 
-    y = y - btnHeight - yPadding * 3      -- More padding from this
+    y = y - btnHeight - yPadding * 3 -- More padding from this
 
 
 
     --* Main buttons, ordererd as a grid
     ----------------
 
-    local gridBtnWidth = (btnWidth - xPadding)/2
-    local xRightPadding = self:getWidth()/2 + xPadding/2
+    local gridBtnWidth = (btnWidth - xPadding) / 2
+    local xRightPadding = self:getWidth() / 2 + xPadding / 2
 
     -- Top line
 
@@ -113,7 +113,7 @@ function BeforeMatchAdminPanel:createChildren()
     --------------------
     -- INFO PANEL, TOP ONE
 
-    local panelInfoHeight = self:getHeight()/4
+    local panelInfoHeight = self:getHeight() / 4
 
     self.panelInfo = ISRichTextPanel:new(0, 20, self:getWidth(), panelInfoHeight)
     self.panelInfo.autosetheight = false
@@ -126,19 +126,19 @@ function BeforeMatchAdminPanel:createChildren()
     self:addChild(self.panelInfo)
 
 
-    local labelWidth = self:getWidth()/2
-    local labelHeight = self.panelInfo:getHeight()/2
+    local labelWidth = self:getWidth() / 2
+    local labelHeight = self.panelInfo:getHeight() / 2
 
 
     -- Top of the panelInfo
-    self:createIsRichTextPanel("labelInstancesAvailable", "panelInfo", labelWidth/2, 0, labelWidth, labelHeight, labelHeight/4, AVAILABLE_INSTANCES_STR)
+    self:createIsRichTextPanel("labelInstancesAvailable", "panelInfo", labelWidth / 2, 0, labelWidth, labelHeight,
+        labelHeight / 4, AVAILABLE_INSTANCES_STR)
     -- Bottom of Panel Info
-    self:createIsRichTextPanel("labelValInstancesAvailable", "panelInfo", labelWidth/2, labelHeight + yPadding, labelWidth, labelHeight, 0, "")
-
+    self:createIsRichTextPanel("labelValInstancesAvailable", "panelInfo", labelWidth / 2, labelHeight + yPadding,
+        labelWidth, labelHeight, 0, "")
 end
 
 function BeforeMatchAdminPanel:onClick(btn)
-
     --*Match options
     if btn.internal == "OPEN_MATCH_OPTIONS" then
         GenericUI.ToggleSidePanel(self, MatchOptionsPanel)
@@ -170,7 +170,7 @@ function BeforeMatchAdminPanel:onClick(btn)
         ClientState.SetIsStartingMatch(true)
         btn.internal = "STOP"
         btn.parent:setTexture(STOP_MATCH_ICON)
-        btn:setTitle(STOP_MATCH_TEXT)        -- Start timer. Show it on screen
+        btn:setTitle(STOP_MATCH_TEXT) -- Start timer. Show it on screen
         sendClientCommand(EFT_MODULES.Match, "StartCountdown", { stopTime = PZ_EFT_CONFIG.Client.Match.startMatchTime })
         --TimePanel.Open("")
     elseif btn.internal == "STOP" then
@@ -181,7 +181,6 @@ function BeforeMatchAdminPanel:onClick(btn)
         sendClientCommand(EFT_MODULES.Match, "StopCountdown", {})
         TimePanel.Close()
     end
-
 end
 
 function BeforeMatchAdminPanel:update()
@@ -204,7 +203,6 @@ function BeforeMatchAdminPanel:update()
     self.btnManagePlayersOption:setEnable(not isStartingMatch)
     self.btnManagementOption:setEnable(not isStartingMatch)
     self.btnEconomyManagement:setEnable(not isStartingMatch)
-
 end
 
 ---@param amount integer

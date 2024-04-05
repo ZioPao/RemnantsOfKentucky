@@ -115,7 +115,7 @@ end
 function MatchController:stopMatch()
     Countdown.Stop()
     MatchController.instance = nil
-    triggerEvent("PZEFT_OnMatchEnd")        -- OnMatchEnd on the server
+    triggerEvent("PZEFT_OnMatchEnd") -- OnMatchEnd on the server
 end
 
 --- Stop the match and teleport back everyone. Triggered manually by an admin
@@ -235,7 +235,7 @@ function MatchController.HandleZombieSpawns(loops)
                 -- The more players there are, the more zombies will spawn in total, but less per player
                 -- (Base amount * loop) / players in match
                 local zombiesAmount = math.ceil((PZ_EFT_CONFIG.Server.Match.zombiesAmountBase * loops * instance:getZombieSpawnMultiplier()) /
-                instance:getAmountAlivePlayers())
+                    instance:getAmountAlivePlayers())
                 debugPrint("spawning " .. zombiesAmount .. " near " .. player:getUsername())
                 addZombiesInOutfit(sq:getX(), sq:getY(), 0, zombiesAmount, "", 50, false, false, false, false, 1)
 
@@ -286,9 +286,6 @@ function MatchController.HandlePlayerDeath(playerObj)
 
     -- Removes player from the match, preventing them from despawning crap
     MatchController.GetHandler():removePlayerFromMatchList(playerObj:getOnlineID())
-
-
-
 end
 
 Events.OnCharacterDeath.Add(MatchController.HandlePlayerDeath)
@@ -314,11 +311,11 @@ Events.OnDisconnect.Add(function()
 end)
 
 
-    -- if MatchController.isAutomaticStart then
+-- if MatchController.isAutomaticStart then
 
-    --     Events.PZEFT_OnMatchEnd.Add(MatchController.AutoStartMatch)
-    --     Events.PZEFT_ServerModDataReady.Add(MatchController.AutoStartMatch)
-    -- end
+--     Events.PZEFT_OnMatchEnd.Add(MatchController.AutoStartMatch)
+--     Events.PZEFT_ServerModDataReady.Add(MatchController.AutoStartMatch)
+-- end
 
 
 
@@ -427,7 +424,8 @@ end
 ---@param playerObj IsoPlayer
 function MatchCommands.CheckIsAutomaticStart(playerObj, _)
     debugPrint("Client asked if match is running")
-    sendServerCommand(playerObj, EFT_MODULES.State, 'SetClientStateIsAutomaticStart', { value = MatchController.isAutomaticStart })
+    sendServerCommand(playerObj, EFT_MODULES.State, 'SetClientStateIsAutomaticStart',
+        { value = MatchController.isAutomaticStart })
 end
 
 ---@param args {id : number}
@@ -444,7 +442,6 @@ function MatchCommands.KillZombies(_, args)
         end
     end
 end
-
 
 function MatchCommands.ToggleAutomaticStart(playerObj, _)
     MatchController.ToggleAutomaticStart()

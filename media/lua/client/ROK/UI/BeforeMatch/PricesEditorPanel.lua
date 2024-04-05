@@ -3,8 +3,8 @@ local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
 
 ---------------------------------------
 
-local APPLY_ICON = getTexture("media/textures/BeforeMatchPanel/Apply.png")     -- https://www.freepik.com/icon/close_14440874#fromView=family&page=1&position=0&uuid=e818dfad-684a-4567-9aca-43ed2667f4e1
-local REFRESH_ICON = getTexture("media/textures/BeforeMatchPanel/Loop.png")               -- https://www.freepik.com/icon/rotated_14441036#fromView=family&page=1&position=3&uuid=135de5a3-1019-46dd-bbef-fdbb2fd5b027
+local APPLY_ICON = getTexture("media/textures/BeforeMatchPanel/Apply.png")  -- https://www.freepik.com/icon/close_14440874#fromView=family&page=1&position=0&uuid=e818dfad-684a-4567-9aca-43ed2667f4e1
+local REFRESH_ICON = getTexture("media/textures/BeforeMatchPanel/Loop.png") -- https://www.freepik.com/icon/rotated_14441036#fromView=family&page=1&position=3&uuid=135de5a3-1019-46dd-bbef-fdbb2fd5b027
 
 -------------------------------
 
@@ -48,9 +48,9 @@ function PricesEditorScrollingTable:createChildren()
     self.datas.drawBorder = true
     self.datas:addColumn("FullType", 0)
 
-    local columnWidth = self.width/3
+    local columnWidth = self.width / 3
     self.datas:addColumn("Tag", columnWidth)
-    self.datas:addColumn("Price", columnWidth*2)
+    self.datas:addColumn("Price", columnWidth * 2)
     self:addChild(self.datas)
 end
 
@@ -139,11 +139,11 @@ function PricesEditorPanel.Open(x, y, width, height)
 end
 
 function PricesEditorPanel.Close()
-
     if PricesEditorPanel.instance then
         PricesEditorPanel.instance:close()
     end
 end
+
 function PricesEditorPanel:new(x, y, width, height)
     local o = {}
     o = ISCollapsableWindow:new(x, y, width, height)
@@ -161,15 +161,12 @@ end
 
 ---@return shopItemElement
 function PricesEditorPanel:getSelectedItem()
-
     local currSelId = self.mainCategory.datas.selected
 
     ---@type shopItemElement
     local selection = self.mainCategory.datas.items[currSelId].item
     return selection
-
 end
-
 
 function PricesEditorPanel:onTagChange()
     local item = self:getSelectedItem()
@@ -186,13 +183,14 @@ function PricesEditorPanel:createChildren()
     local xPadding = GenericUI.X_PADDING
     local yPadding = 10
 
-    self.label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_Economy"), 1, 1, 1, 1, UIFont.NewLarge, true)
+    self.label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_Economy"), 1, 1, 1, 1, UIFont.NewLarge,
+        true)
     self.label:initialise()
     self.label:instantiate()
     self:addChild(self.label)
 
-    local y = self.label:getBottom() + yPadding*2
-    local leftSideWidth = (self:getWidth() - xPadding*2) / 1.25
+    local y = self.label:getBottom() + yPadding * 2
+    local leftSideWidth = (self:getWidth() - xPadding * 2) / 1.25
 
     local entryHgt = GenericUI.SMALL_FONT_HGT + 2 * 2
 
@@ -270,13 +268,13 @@ function PricesEditorPanel:createChildren()
     -- FROM THE MIDDLE -> BOTTOM
     local labelHgt = getTextManager():getFontHeight(UIFont.Large) + 8 * 2
 
-    editY = self:getHeight()/2 + entryHgt + yPadding
+    editY = self:getHeight() / 2 + entryHgt + yPadding
 
     self.labelPrice = ISLabel:new(btnX, editY, labelHgt, "Price", 1, 1, 1, 1, UIFont.Large, true)
     self.labelPrice:initialise()
     self:addChild(self.labelPrice)
 
-    editY = editY + entryHgt + yPadding*2
+    editY = editY + entryHgt + yPadding * 2
 
     self.entryPrice = ISTextEntryBox:new("", btnX, editY, btnWidth, entryHgt)
     self.entryPrice:initialise()
@@ -293,13 +291,13 @@ function PricesEditorPanel:createChildren()
     self.entryPrice:setText("")
     self.entryPrice:setOnlyNumbers(true)
     self.entryPrice:setHasFrame(false)
-	self.entryPrice:setAnchorTop(false)
+    self.entryPrice:setAnchorTop(false)
     self.entryPrice:setAnchorBottom(true)
-	self.entryPrice:setAnchorRight(true)
+    self.entryPrice:setAnchorRight(true)
     self:addChild(self.entryPrice)
 
     -- FROM THE MIDDLE -> TOP
-    editY = self:getHeight()/2 - entryHgt - yPadding
+    editY = self:getHeight() / 2 - entryHgt - yPadding
 
     self.comboTag = ISComboBox:new(btnX, editY, btnWidth, entryHgt, self, self.onTagChange)
     self.comboTag:initialise()
@@ -308,17 +306,15 @@ function PricesEditorPanel:createChildren()
     self.comboTag:setAnchorLeft(false)
     self:addChild(self.comboTag)
 
-    for i=1, #PZ_EFT_CONFIG.Shop.tags do
+    for i = 1, #PZ_EFT_CONFIG.Shop.tags do
         self.comboTag:addOption(PZ_EFT_CONFIG.Shop.tags[i])
     end
 
-    editY = editY - entryHgt - yPadding*2
+    editY = editY - entryHgt - yPadding * 2
 
     self.labelTag = ISLabel:new(btnX, editY, labelHgt, "Tag", 1, 1, 1, 1, UIFont.Large, true)
     self.labelTag:initialise()
     self:addChild(self.labelTag)
-
-
 end
 
 function PricesEditorPanel:fillList()
@@ -337,30 +333,34 @@ function PricesEditorPanel:onClick(button)
     if button.internal == 'REFRESH' then
         self:fillList()
     elseif button.internal == 'APPLY' then
-        -- Send new JSON to server
-        -- Get items from list, could be filtered
-        local itemsData = ClientData.Shop.GetShopItems().items
-        local modifiedItems = self.mainCategory.datas.items
-        local cleanedData = {}
-        for k,v in pairs(itemsData) do
-            local valToApply
+        local confY = self:getY() + self:getHeight() + 20
+        local text = "Are you sure you want to apply these prices?"
+        self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, nil,
+            function()
+                -- Send new JSON to server
+                -- Get items from list, could be filtered
+                local itemsData = ClientData.Shop.GetShopItems().items
+                local modifiedItems = self.mainCategory.datas.items
+                local cleanedData = {}
+                for k, v in pairs(itemsData) do
+                    local valToApply
 
-            if modifiedItems[k] then
-                valToApply = modifiedItems[k]
-            else
-                valToApply = v
-            end
+                    if modifiedItems[k] then
+                        valToApply = modifiedItems[k]
+                    else
+                        valToApply = v
+                    end
 
-            local tab = {
-                fullType = valToApply.fullType,
-                tag = valToApply.tag,
-                basePrice = valToApply.basePrice
-            }
-            table.insert(cleanedData, tab)
-        end
+                    local tab = {
+                        fullType = valToApply.fullType,
+                        tag = valToApply.tag,
+                        basePrice = valToApply.basePrice
+                    }
+                    table.insert(cleanedData, tab)
+                end
 
-        sendClientCommand(EFT_MODULES.Shop, 'OverrideShopItems', {items = cleanedData})
-
+                sendClientCommand(EFT_MODULES.Shop, 'OverrideShopItems', { items = cleanedData })
+            end)
     end
 end
 
@@ -376,24 +376,20 @@ function PricesEditorPanel:update()
 
     local currSelId = self.mainCategory.datas.selected
     if currSelId ~= self.prevSelId then
-
         local selection = self.mainCategory.datas.items[currSelId]
         if selection and selection.item then
-
             ---@type shopItemElement
             local item = selection.item
-            -- Send to combobox and price entry       
+            -- Send to combobox and price entry
             local tag = item.tag --GetTag(selection.tags)
             self.comboTag:select(tag)
 
             local price = tostring(item.basePrice)
             self.entryPrice:setText(price)
         end
-
     end
 
     self.prevSelId = currSelId
-
 end
 
 function PricesEditorPanel:render()

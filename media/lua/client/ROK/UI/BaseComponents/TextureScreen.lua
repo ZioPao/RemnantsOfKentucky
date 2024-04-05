@@ -14,13 +14,11 @@ function TextureScreen:new()
 
     o.backgroundTexture = nil
     o.backgroundColor = { r = 0, g = 0, b = 0, a = 1 }
-    o.isClosing = false
-    o.closingTime = 0
 
     o.fade = UITransition.new()
     o.fade:setIgnoreUpdateTime(true)
-
-    o.cAlpha = 1            -- current alpha
+    o.isClosing = false
+    o.cAlpha = 1 -- current alpha
 
     ---@cast o TextureScreen
     return o
@@ -33,9 +31,8 @@ function TextureScreen:initialise()
     self.fade:update()
 
     self.text = getText("UI_EFT_Wait")
-    self.textX = (self.width - getTextManager():MeasureStringX(UIFont.Massive, self.text))/2
-    self.textY = self.height/2
-
+    self.textX = (self.width - getTextManager():MeasureStringX(UIFont.Massive, self.text)) / 2
+    self.textY = self.height / 2
 end
 
 function TextureScreen:prerender()
@@ -51,7 +48,8 @@ function TextureScreen:prerender()
     if self.backgroundTexture then
         self:drawTextureScaled(self.backgroundTexture, 0, 0, self.width, self.height, self.cAlpha, 1, 1, 1)
     else
-        self:drawRect(0, 0, self:getWidth(), self.height, self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g, self.backgroundColor.b)
+        self:drawRect(0, 0, self:getWidth(), self.height, self.backgroundColor.a, self.backgroundColor.r,
+            self.backgroundColor.g, self.backgroundColor.b)
     end
 end
 
@@ -60,7 +58,6 @@ function TextureScreen:startFade()
 
     if self.isClosing == false then
         self.isClosing = true
-        self.closingTime = 0
     end
 end
 

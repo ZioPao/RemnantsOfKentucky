@@ -14,7 +14,7 @@ function ClientShopManager.GetSellableItemsInInventory(sellItemsData)
     local function predicateFindItemWithId(item, plObj)
         for fullType, dataTable in pairs(sellItemsData) do
             if item:getFullType() == fullType then
-                for j=1, #dataTable do
+                for j = 1, #dataTable do
                     local data = dataTable[j]
                     if item:getID() == data.id then
                         return true
@@ -36,7 +36,6 @@ function ClientShopManager.GetSellableItemsInInventory(sellItemsData)
     return t
 end
 
-
 ---------------------------------
 --* Instaheal section
 
@@ -45,17 +44,15 @@ function ClientShopManager.AskToBuyInstaHeal()
     local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
 
     -- UGLY Jank, 500 is the width but it's handled inside ConfirmationPanel.
-    local x = (getCore():getScreenWidth() - 500)/2
-    local y = getCore():getScreenHeight()/2
+    local x = (getCore():getScreenWidth() - 500) / 2
+    local y = getCore():getScreenHeight() / 2
 
     ConfirmationPanel.Open(text, x, y, nil, ClientShopManager.BuyInstaHeal)
 end
 
-
 function ClientShopManager.BuyInstaHeal()
     BankManager.TryProcessTransaction(-2500, EFT_MODULES.Shop, "BuyInstaHeal", {}, EFT_MODULES.Shop, "BuyFailed", {})
 end
-
 
 -------------------------------
 
@@ -95,7 +92,7 @@ function ClientShopManager.TrySell(sellData)
     for fullType, data in pairs(sellData) do
         local eftShopData = ShopItemsManager.GetItem(fullType)
 
-        for i=1, #data do
+        for i = 1, #data do
             local itemData = data[i]
             totalPrice = totalPrice + (eftShopData.basePrice * eftShopData.sellMultiplier * itemData.quality)
         end
@@ -104,7 +101,6 @@ function ClientShopManager.TrySell(sellData)
     BankManager.TryProcessTransaction(totalPrice, EFT_MODULES.Shop, "SellItems", sellData, EFT_MODULES.Shop,
         "SellFailed", {})
     return true
-
 end
 
 ---@param totalPrice number
@@ -134,7 +130,6 @@ function ClientShopManager.CanSell(items)
     return true
 end
 
-
 ---@param tag string
 ---@return table
 function ClientShopManager.GetItemsWithTag(tag)
@@ -142,7 +137,6 @@ function ClientShopManager.GetItemsWithTag(tag)
     if shopItems and shopItems.tags and shopItems.tags[tag] then
         local itemsList = {}
         for itemType, _ in pairs(shopItems.tags[tag]) do
-
             -- Check if tag is active
             if shopItems.items[itemType].tag == tag then
                 itemsList[itemType] = nil
@@ -155,7 +149,6 @@ function ClientShopManager.GetItemsWithTag(tag)
         return {}
     end
 end
-
 
 ------------------------------------------------------------------------
 --* COMMANDS FROM SERVER *--
@@ -190,7 +183,6 @@ function ShopCommands.BuyItem(args)
     local objectsToHighligt = {}
 
     if instanceof(item, "Moveable") and item:getSpriteGrid() == nil then
-
         ---@cast item Moveable
 
         -- TODO Refund stuff?
@@ -222,7 +214,7 @@ end
 function ShopCommands.SellItems(sellItemsData)
     local itemsInInventoryArray = ClientShopManager.GetSellableItemsInInventory(sellItemsData)
     local pl = getPlayer()
-    for i=0, itemsInInventoryArray:size() - 1 do
+    for i = 0, itemsInInventoryArray:size() - 1 do
         local item = itemsInInventoryArray:get(i)
         ISRemoveItemTool.removeItem(item, pl)
     end

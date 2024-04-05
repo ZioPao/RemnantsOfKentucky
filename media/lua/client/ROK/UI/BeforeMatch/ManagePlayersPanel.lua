@@ -3,9 +3,9 @@ local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
 
 ---------------------------------------
 
-local WIPE_PLAYER_ICON = getTexture("media/textures/BeforeMatchPanel/WipePlayer.png")  -- https://www.freepik.com/icon/close_14440874#fromView=family&page=1&position=0&uuid=e818dfad-684a-4567-9aca-43ed2667f4e1
-local REFRESH_ICON = getTexture("media/textures/BeforeMatchPanel/Loop.png") -- https://www.freepik.com/icon/rotated_14441036#fromView=family&page=1&position=3&uuid=135de5a3-1019-46dd-bbef-fdbb2fd5b027
-local STARTER_KIT_ICON = getTexture("media/textures/BeforeMatchPanel/GiveStarterKit.png")     -- https://www.freepik.com/icon/gift-box_12484717#fromView=family&page=1&position=4&uuid=6b0bb61f-b073-41c1-b474-32da7131c231
+local WIPE_PLAYER_ICON = getTexture("media/textures/BeforeMatchPanel/WipePlayer.png")     -- https://www.freepik.com/icon/close_14440874#fromView=family&page=1&position=0&uuid=e818dfad-684a-4567-9aca-43ed2667f4e1
+local REFRESH_ICON = getTexture("media/textures/BeforeMatchPanel/Loop.png")               -- https://www.freepik.com/icon/rotated_14441036#fromView=family&page=1&position=3&uuid=135de5a3-1019-46dd-bbef-fdbb2fd5b027
+local STARTER_KIT_ICON = getTexture("media/textures/BeforeMatchPanel/GiveStarterKit.png") -- https://www.freepik.com/icon/gift-box_12484717#fromView=family&page=1&position=4&uuid=6b0bb61f-b073-41c1-b474-32da7131c231
 
 -------------------------------
 
@@ -36,7 +36,7 @@ end
 
 function ManagePlayersScrollingTable:createChildren()
     -- local btnHgt = math.max(25, GenericUI.SMALL_FONT_HGT + 3 * 2)
-   -- local bottomHgt = 5 + GenericUI.SMALL_FONT_HGT * 2 + 5 + btnHgt + 20 + GenericUI.LARGE_FONT_HGT + GenericUI.HEADER_HGT + GenericUI.ENTRY_HGT
+    -- local bottomHgt = 5 + GenericUI.SMALL_FONT_HGT * 2 + 5 + btnHgt + 20 + GenericUI.LARGE_FONT_HGT + GenericUI.HEADER_HGT + GenericUI.ENTRY_HGT
 
     self.datas = ISScrollingListBox:new(0, GenericUI.HEADER_HGT, self.width, self.height - GenericUI.HEADER_HGT)
     self.datas:initialise()
@@ -89,7 +89,6 @@ function ManagePlayersScrollingTable:drawDatas(y, item, alt)
     return y + self.itemheight
 end
 
-
 --************************************************************************--
 
 ---@class ManagePlayersPanel : ISCollapsableWindow
@@ -124,19 +123,19 @@ function ManagePlayersPanel:new(x, y, width, height)
 end
 
 function ManagePlayersPanel:createChildren()
-
     local xPadding = GenericUI.X_PADDING
     local yPadding = 10
 
-    self.label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_ManagePlayers"), 1, 1, 1, 1, UIFont.NewLarge, true)
+    self.label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_ManagePlayers"), 1, 1, 1, 1,
+        UIFont.NewLarge, true)
     self.label:initialise()
     self.label:instantiate()
     self:addChild(self.label)
 
     -- TODO Clean this up
 
-    local y = self.label:getBottom() + yPadding*2
-    local leftSideWidth = (self:getWidth() - xPadding*2) / 1.25
+    local y = self.label:getBottom() + yPadding * 2
+    local leftSideWidth = (self:getWidth() - xPadding * 2) / 1.25
 
     local entryHgt = GenericUI.SMALL_FONT_HGT + 2 * 2
     self.filterEntry = ISTextEntryBox:new("Players", 10, y, leftSideWidth, entryHgt)
@@ -146,13 +145,13 @@ function ManagePlayersPanel:createChildren()
     self.filterEntry:setText("")
     self:addChild(self.filterEntry)
 
----@diagnostic disable-next-line: duplicate-set-field
+    ---@diagnostic disable-next-line: duplicate-set-field
     self.filterEntry.onTextChange = function()
         self:fillList()
     end
 
     y = y + self.filterEntry:getHeight() + yPadding
-    local panelHeight = self:getHeight() - self.filterEntry:getBottom() - yPadding*2
+    local panelHeight = self:getHeight() - self.filterEntry:getBottom() - yPadding * 2
 
     self.panel = ISTabPanel:new(xPadding, y, leftSideWidth, panelHeight)
     self.panel:initialise()
@@ -176,7 +175,7 @@ function ManagePlayersPanel:createChildren()
     local btnY = self.filterEntry:getY()
     local btnX = self.panel:getRight() + 10
 
-    local btnWidth = (self:getWidth() - self.panel:getWidth()) - xPadding*3
+    local btnWidth = (self:getWidth() - self.panel:getWidth()) - xPadding * 3
     local btnHeight = 64
 
 
@@ -197,7 +196,7 @@ function ManagePlayersPanel:createChildren()
 
     self.btnStarterKit = ISButton:new(
         btnX, btnY, btnWidth, btnHeight,
-        "" , self, ManagePlayersPanel.onClick
+        "", self, ManagePlayersPanel.onClick
     )
     self.btnStarterKit.internal = "STARTER_KIT"
     self.btnStarterKit:setImage(STARTER_KIT_ICON)
@@ -220,8 +219,6 @@ function ManagePlayersPanel:createChildren()
     self.btnWipePlayer:instantiate()
     self.btnWipePlayer.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
     self:addChild(self.btnWipePlayer)
-
-
 end
 
 function ManagePlayersPanel:fillList()
@@ -244,7 +241,6 @@ function ManagePlayersPanel:prerender()
 end
 
 function ManagePlayersPanel:onClick(button)
-
     local confY = self:getY() + self:getHeight() + 20
 
     if button.internal == 'REFRESH' then
@@ -257,7 +253,7 @@ function ManagePlayersPanel:onClick(button)
 
         if button.internal == 'STARTER_KIT' then
             local function OnConfirmGiveStarterKit()
-                sendClientCommand(EFT_MODULES.Player, "RelayStarterKit", {playerID = plID})
+                sendClientCommand(EFT_MODULES.Player, "RelayStarterKit", { playerID = plID })
                 local text = getText("UI_EFT_Say_SentStarterKit", plUsername)
                 getPlayer():Say(text)
             end
@@ -266,7 +262,7 @@ function ManagePlayersPanel:onClick(button)
             self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, self, OnConfirmGiveStarterKit)
         elseif button.internal == 'WIPE_PLAYER' then
             local function OnConfirmWipePlayer()
-                sendClientCommand(EFT_MODULES.Player, "ResetPlayer", {playerID = plID})
+                sendClientCommand(EFT_MODULES.Player, "ResetPlayer", { playerID = plID })
                 local text = getText("UI_EFT_Say_WipePlayer", plUsername)
                 getPlayer():Say(text)
             end
@@ -309,6 +305,5 @@ function ManagePlayersPanel:close()
     end
     ISCollapsableWindow.close(self)
 end
-
 
 return ManagePlayersPanel

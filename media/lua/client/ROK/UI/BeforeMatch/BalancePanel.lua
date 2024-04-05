@@ -1,4 +1,3 @@
-
 -- TODO Finish this
 
 require "ISUI/ISPanel"
@@ -34,7 +33,7 @@ function BalancePanel:createChildren()
     ISPanel.createChildren(self)
 
     self.background = true
-    self.borderColor = {r=1,g=1,b=1,a=1}
+    self.borderColor = { r = 1, g = 1, b = 1, a = 1 }
 
     self.balanceText = ISRichTextPanel:new(0, 0, self.width, self.height)
     self.balanceText:initialise()
@@ -54,14 +53,15 @@ function BalancePanel:createChildren()
     self.balanceText.background = false
 
     self.balanceText:paginate()
-
 end
 
 function BalancePanel:prerender()
     if self.background then
-		self:drawRectStatic(0, 0, self.width, self.height, self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g, self.backgroundColor.b)
-		self:drawRectBorderStatic(0, 0, self.width, self.height, self.borderColor.a, self.borderColor.r, self.borderColor.g, self.borderColor.b)
-	end
+        self:drawRectStatic(0, 0, self.width, self.height, self.backgroundColor.a, self.backgroundColor.r,
+            self.backgroundColor.g, self.backgroundColor.b)
+        self:drawRectBorderStatic(0, 0, self.width, self.height, self.borderColor.a, self.borderColor.r,
+            self.borderColor.g, self.borderColor.b)
+    end
 
 
     local balance
@@ -74,7 +74,6 @@ function BalancePanel:prerender()
     self.balanceText:setText(balance)
     self.balanceText.textDirty = true
 end
-
 
 function BalancePanel:update()
     ISPanel.update(self)
@@ -89,14 +88,12 @@ function BalancePanel:update()
     end
 end
 
-
-
 function BalancePanel:setPosition(x, y)
     self:setX(x)
     self:setY(y)
 end
 
-------------------------------------------------- 
+-------------------------------------------------
 
 
 function BalancePanel.Open()
@@ -129,6 +126,7 @@ function BalancePanel.Close()
         BalancePanel.instance:close()
     end
 end
+
 Events.PZEFT_ClientNowInRaid.Add(BalancePanel.Close)
 
 function BalancePanel.HandleResolutionChange(oldW, oldH, w, h)

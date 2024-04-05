@@ -15,11 +15,12 @@ local function OnPlayerInit()
     Delay.Initialize()
 
     local function CheckMods()
-        local unsModsStr = "<CENTRE> <SIZE:large> Unsupported mods found, problems with the economy may arise: <LINE> <LINE> <SIZE:medium>"
+        local unsModsStr =
+        "<CENTRE> <SIZE:large> Unsupported mods found, problems with the economy may arise: <LINE> <LINE> <SIZE:medium>"
         local hasUnsupportedMods = false
-		local activeModIDs = getActivatedMods()
-		for i=1,activeModIDs:size() do
-			local modID = activeModIDs:get(i-1)
+        local activeModIDs = getActivatedMods()
+        for i = 1, activeModIDs:size() do
+            local modID = activeModIDs:get(i - 1)
             if PZ_EFT_CONFIG.SupportedMods[modID] == nil then
                 unsModsStr = unsModsStr .. tostring(modID) .. ", "
                 hasUnsupportedMods = true
@@ -28,7 +29,7 @@ local function OnPlayerInit()
 
 
         if hasUnsupportedMods then
-            unsModsStr = unsModsStr:sub(1, -3)      -- Removes last ,
+            unsModsStr = unsModsStr:sub(1, -3) -- Removes last ,
             local NotificationPanel = require("ROK/UI/NotificationPanel")
             NotificationPanel.Open(unsModsStr)
         end
@@ -39,7 +40,7 @@ local function OnPlayerInit()
     Delay:set(2, function()
         --* Safehouse handling
         -- Request safe house allocation (or just teleport, if it was already done), which in turn will teleport the player to the assigned safehouse
-        sendClientCommand(EFT_MODULES.Safehouse, "RequestSafehouseAllocation", {teleport = true})
+        sendClientCommand(EFT_MODULES.Safehouse, "RequestSafehouseAllocation", { teleport = true })
 
         --* Shop Items
         debugPrint("Requesting TransmitShopItems to the client now that player is in")
@@ -65,8 +66,6 @@ local function OnPlayerInit()
             -- Request current running match, if there is some set the correct UI
             sendClientCommand(EFT_MODULES.Match, 'CheckIsRunningMatch', {})
 
-            -- Notify admins about potentially incompatible mods
-            --CheckMods()
         end
 
         -- IDEA maybe migrate a bunch of these functions to events?
@@ -104,7 +103,7 @@ local function OnPlayerExit()
     local TimePanel = require("ROK/UI/TimePanel")
     TimePanel.Close()
 
-    -- -- Reset buttons 
+    -- -- Reset buttons
     -- ButtonManager.Reset()
 end
 

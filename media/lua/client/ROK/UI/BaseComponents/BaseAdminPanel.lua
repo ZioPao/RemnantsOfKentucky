@@ -30,7 +30,6 @@ function BaseAdminPanel:new(x, y, width, height)
     return o
 end
 
-
 ---@param name string
 ---@param parentName string
 ---@param x number
@@ -51,6 +50,7 @@ function BaseAdminPanel:createIsRichTextPanel(name, parentName, x, y, width, hei
     self[name]:paginate()
     self[parentName]:addChild(self[name])
 end
+
 ---------
 ---Opens a panel
 ---@param type any
