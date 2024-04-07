@@ -24,6 +24,8 @@ function ShopItemsManager.AddItem(fullType, tag, basePrice)
     data.tags[tag][fullType] = true
 end
 
+---@param fullType string
+---@param tag string
 function ShopItemsManager.SetTagToItem(fullType, tag)
     ---@type shopItemsTable
     local data = ModData.get(EFT_ModDataKeys.SHOP_ITEMS)
@@ -36,8 +38,29 @@ function ShopItemsManager.SetTagToItem(fullType, tag)
     data.tags[tag][fullType] = true
 end
 
+function ShopItemsManager.ResetDaily()
+    ---@type shopItemsTable
+    local data = ModData.get(EFT_ModDataKeys.SHOP_ITEMS)
+    data.daily = {}
+end
+
+function ShopItemsManager.AddToDaily(fullType)
+    ---@type shopItemsTable
+    local data = ModData.get(EFT_ModDataKeys.SHOP_ITEMS)
+
+    data.items = data.items or {}
+    data.daily = data.daily or {}
+    data.daily[fullType] = data.items[fullType]
+end
 
 --* COMMON
+
+---@return shopItemsTable
+function ShopItemsManager.GetShopItemsData()
+    local data = ModData.get(EFT_ModDataKeys.SHOP_ITEMS)
+    return data
+end
+
 ---@param fullType string
 ---@return shopItemElement
 function ShopItemsManager.GetItem(fullType)
@@ -47,6 +70,7 @@ function ShopItemsManager.GetItem(fullType)
     local itemData = data.items[fullType]
     return itemData
 end
+
 
 
 

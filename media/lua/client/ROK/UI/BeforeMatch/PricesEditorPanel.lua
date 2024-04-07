@@ -1,5 +1,6 @@
 local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
+local ShopItemsManager = require("ROK/ShopItemsManager")
 
 ---------------------------------------
 
@@ -319,7 +320,7 @@ function PricesEditorPanel:createChildren()
 end
 
 function PricesEditorPanel:fillList()
-    local shopItems = ClientData.Shop.GetShopItems()
+    local shopItems = ShopItemsManager.GetShopItemsData()
     self.mainCategory:initList(shopItems)
 end
 
@@ -340,7 +341,7 @@ function PricesEditorPanel:onClick(button)
             function()
                 -- Send new JSON to server
                 -- Get items from list, could be filtered
-                local itemsData = ClientData.Shop.GetShopItems().items
+                local itemsData = ShopItemsManager.GetShopItemsData().items
                 local modifiedItems = self.mainCategory.datas.items
                 local cleanedData = {}
                 for k, v in pairs(itemsData) do

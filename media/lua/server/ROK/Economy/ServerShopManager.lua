@@ -45,7 +45,7 @@ local function FetchNRandomItems(percentage, items, tag)
         -- Check if Item actually exists and it's not in the blacklist
         local item = InventoryItemFactory.CreateItem(fType)
         if item and not PZ_EFT_CONFIG.Shop.blacklist[fType] then
-            ShopItemsManager.SetTagToItem(fType, "DAILY")
+            ShopItemsManager.AddToDaily(fType)
             currentAmount = currentAmount + 1
         end
         table.remove(keys, randIndex)
@@ -56,7 +56,9 @@ end
 function ServerShopManager.GenerateDailyItems()
     debugPrint("Generating daily items")
 
-    local items = ServerData.Shop.GetShopItemsData()
+    ShopItemsManager.ResetDaily()
+
+    local items = ShopItemsManager.GetShopItemsData()
 
     -- Should stack to 100%
     FetchNRandomItems(20, items, 'WEAPON')
@@ -161,7 +163,7 @@ local MODULE = EFT_MODULES.Shop
 function ShopCommands.TransmitShopItems(playerObj)
     debugPrint("Transmitting Shop Items to Client => " .. playerObj:getUsername())
 
-    local items = ServerData.Shop.GetShopItemsData()
+    local items = ShopItemsManager.GetShopItemsData()
     sendServerCommand(playerObj, EFT_MODULES.Shop, "ReceiveShopItems", items)
 end
 
