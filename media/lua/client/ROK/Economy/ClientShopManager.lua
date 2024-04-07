@@ -14,7 +14,7 @@ function ClientShopManager.GetSellableItemsInInventory(sellItemsData)
     local function predicateFindItemWithId(item, plObj)
         for fullType, dataTable in pairs(sellItemsData) do
             if item:getFullType() == fullType then
-                for j=1, #dataTable do
+                for j = 1, #dataTable do
                     local data = dataTable[j]
                     if item:getID() == data.id then
                         return true
@@ -27,13 +27,14 @@ function ClientShopManager.GetSellableItemsInInventory(sellItemsData)
 
     local pl = getPlayer()
     local plInv = pl:getInventory()
+
+    ---@diagnostic disable-next-line: param-type-mismatch
     local t = plInv:getAllEvalRecurse(predicateFindItemWithId)
     -- debugPrint("___________________________________")
     -- debugPrint(t)
 
     return t
 end
-
 
 ---------------------------------
 --* Instaheal section
@@ -43,17 +44,15 @@ function ClientShopManager.AskToBuyInstaHeal()
     local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
 
     -- UGLY Jank, 500 is the width but it's handled inside ConfirmationPanel.
-    local x = (getCore():getScreenWidth() - 500)/2
-    local y = getCore():getScreenHeight()/2
+    local x = (getCore():getScreenWidth() - 500) / 2
+    local y = getCore():getScreenHeight() / 2
 
     ConfirmationPanel.Open(text, x, y, nil, ClientShopManager.BuyInstaHeal)
 end
 
-
 function ClientShopManager.BuyInstaHeal()
     BankManager.TryProcessTransaction(-2500, EFT_MODULES.Shop, "BuyInstaHeal", {}, EFT_MODULES.Shop, "BuyFailed", {})
 end
-
 
 -------------------------------
 
@@ -93,7 +92,7 @@ function ClientShopManager.TrySell(sellData)
     for fullType, data in pairs(sellData) do
         local eftShopData = ShopItemsManager.GetItem(fullType)
 
-        for i=1, #data do
+        for i = 1, #data do
             local itemData = data[i]
             totalPrice = totalPrice + (eftShopData.basePrice * eftShopData.sellMultiplier * itemData.quality)
         end
@@ -102,7 +101,6 @@ function ClientShopManager.TrySell(sellData)
     BankManager.TryProcessTransaction(totalPrice, EFT_MODULES.Shop, "SellItems", sellData, EFT_MODULES.Shop,
         "SellFailed", {})
     return true
-
 end
 
 ---@param totalPrice number
@@ -132,38 +130,21 @@ function ClientShopManager.CanSell(items)
     return true
 end
 
+---@param tag string
 ---@return table
-function ClientShopManager.GetDailyItems()
+function ClientShopManager.GetItemsWithTag(tag)
     local shopItems = ClientData.Shop.GetShopItems()
-    if shopItems and shopItems.tags and shopItems.tags['DAILY'] then
-        local dailyList = {}
-        for itemType, _ in pairs(shopItems.tags['DAILY']) do
-
-            -- Check if daily tag is active
-            if shopItems.items[itemType].tags['DAILY'] then
-                dailyList[itemType] = nil
-                dailyList[itemType] = shopItems.items[itemType]  
+    if shopItems and shopItems.tags and shopItems.tags[tag] then
+        local itemsList = {}
+        for itemType, _ in pairs(shopItems.tags[tag]) do
+            -- Check if tag is active
+            if shopItems.items[itemType].tag == tag then
+                itemsList[itemType] = nil
+                itemsList[itemType] = shopItems.items[itemType]
             end
         end
 
-        return dailyList
-    else
-        return {}
-    end
-end
-
----@return table
-function ClientShopManager.GetEssentialItems()
-    local shopItems = ClientData.Shop.GetShopItems()
-    if shopItems and shopItems.tags and shopItems.tags['ESSENTIALS'] then
-        local essentialsList = {}
-        for itemType, _ in pairs(shopItems.tags['ESSENTIALS']) do
-            essentialsList[itemType] = nil
-            essentialsList[itemType] = shopItems.items[itemType]
-        end
-        PZEFT_UTILS.PrintTable(essentialsList)
-
-        return essentialsList
+        return itemsList
     else
         return {}
     end
@@ -176,12 +157,11 @@ end
 local ShopCommands = {}
 
 ---@param items any
-function ShopCommands.GetShopItems(items)
+function ShopCommands.ReceiveShopItems(items)
     debugPrint("Receiving shop items")
     --PZEFT_UTILS.PrintTable(items)
     if items then
-        local KEY_SHOP_ITEMS = "PZ-EFT-SHOP-ITEMS"
-        ModData.add(KEY_SHOP_ITEMS, items)
+        ModData.add(EFT_ModDataKeys.SHOP_ITEMS, items)
     end
 end
 
@@ -198,26 +178,32 @@ function ShopCommands.BuyItem(args)
 
     -- Check if is moveable. if it is, send to specific point
 
+    local isRefund = false
     local item = InventoryItemFactory.CreateItem(args.itemData.fullType)
+    local objectsToHighligt = {}
 
     if instanceof(item, "Moveable") and item:getSpriteGrid() == nil then
-        SafehouseInstanceHandler.TryToPlaceMoveable(item)
-    else
-        local usedCrates = {}
-        local isRefund = false
+        ---@cast item Moveable
 
+        -- TODO Refund stuff?
+        local floorObj = SafehouseInstanceHandler.TryToPlaceMoveable(item)
+        if floorObj then
+            objectsToHighligt[floorObj] = true
+        end
+    else
         for i = 1, args.quantity do
             local crate = SafehouseInstanceHandler.TryToAddToCrate(args.itemData.fullType)
             if crate then
-                usedCrates[crate] = true
+                objectsToHighligt[crate] = true
             else
                 -- if no crates were available, a refund will be given to the player
                 isRefund = true
                 sendClientCommand(EFT_MODULES.Bank, "ProcessTransaction", { amount = args.itemData.basePrice })
             end
         end
-        triggerEvent("PZEFT_OnSuccessfulBuy", args.shopCat, usedCrates, isRefund)
     end
+
+    triggerEvent("PZEFT_OnSuccessfulBuy", args.shopCat, objectsToHighligt, isRefund)
 end
 
 function ShopCommands.BuyInstaHeal()
@@ -228,7 +214,7 @@ end
 function ShopCommands.SellItems(sellItemsData)
     local itemsInInventoryArray = ClientShopManager.GetSellableItemsInInventory(sellItemsData)
     local pl = getPlayer()
-    for i=0, itemsInInventoryArray:size() - 1 do
+    for i = 0, itemsInInventoryArray:size() - 1 do
         local item = itemsInInventoryArray:get(i)
         ISRemoveItemTool.removeItem(item, pl)
     end

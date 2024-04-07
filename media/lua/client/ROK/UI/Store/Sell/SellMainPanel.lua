@@ -21,6 +21,9 @@ function SellMainPanel:new(x, y, width, height)
     return o
 end
 
+
+---@alias sellData table<integer, {itemData : shopItemElement, quantity : number, quality : number}>
+
 ---@return sellData
 function SellMainPanel:getSellItemsData()
     return self.scrollPanel.scrollingListBox.sellItemsData

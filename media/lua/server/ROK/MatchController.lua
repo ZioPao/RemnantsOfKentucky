@@ -115,7 +115,7 @@ end
 function MatchController:stopMatch()
     Countdown.Stop()
     MatchController.instance = nil
-    triggerEvent("PZEFT_OnMatchEnd")        -- OnMatchEnd on the server
+    triggerEvent("PZEFT_OnMatchEnd") -- OnMatchEnd on the server
 end
 
 --- Stop the match and teleport back everyone. Triggered manually by an admin
@@ -203,23 +203,23 @@ function MatchController.HandleZombieSpawns(loops)
                 local y = player:getY()
 
 
-                -- JANK Heavy heavy heavy
+                -- TODO Finish this thing, which is Heavy heavy heavy
                 -- map players position
-                local nearPlayers = {}
-                for k2, v2 in pairs(instance.playersInMatch) do
-                    if v ~= nil then
-                        local otherPlId = v.playerId
-                        local otherPlayer = getPlayerByOnlineID(otherPlId)
-                        local opX = otherPlayer:getX()
-                        local opY = otherPlayer:getY()
+                -- local nearPlayers = {}
+                -- for k2, v2 in pairs(instance.playersInMatch) do
+                --     if v ~= nil then
+                --         local otherPlId = v.playerId
+                --         local otherPlayer = getPlayerByOnlineID(otherPlId)
+                --         local opX = otherPlayer:getX()
+                --         local opY = otherPlayer:getY()
 
-                        local dist = IsoUtils.DistanceTo(x, y, opX, opY)
+                --         local dist = IsoUtils.DistanceTo(x, y, opX, opY)
 
-                        if dist < 50 then
-                            table.insert(nearPlayers, { plId = otherPlId, x = opX, y = opY })
-                        end
-                    end
-                end
+                --         if dist < 50 then
+                --             table.insert(nearPlayers, { plId = otherPlId, x = opX, y = opY })
+                --         end
+                --     end
+                -- end
 
 
                 -- We can't go overboard with addedX or addedY
@@ -235,7 +235,7 @@ function MatchController.HandleZombieSpawns(loops)
                 -- The more players there are, the more zombies will spawn in total, but less per player
                 -- (Base amount * loop) / players in match
                 local zombiesAmount = math.ceil((PZ_EFT_CONFIG.Server.Match.zombiesAmountBase * loops * instance:getZombieSpawnMultiplier()) /
-                instance:getAmountAlivePlayers())
+                    instance:getAmountAlivePlayers())
                 debugPrint("spawning " .. zombiesAmount .. " near " .. player:getUsername())
                 addZombiesInOutfit(sq:getX(), sq:getY(), 0, zombiesAmount, "", 50, false, false, false, false, 1)
 
@@ -275,6 +275,7 @@ end
 ---@param playerObj IsoPlayer
 function MatchController.HandlePlayerDeath(playerObj)
     if playerObj:isZombie() then return end
+
     local killerObj = playerObj:getAttackedBy()
     ---@cast killerObj IsoPlayer
 
@@ -282,6 +283,9 @@ function MatchController.HandlePlayerDeath(playerObj)
         -- Add to kill count, send it back to client
         sendServerCommand(killerObj, EFT_MODULES.Match, 'AddKill', { victimUsername = playerObj:getUsername() })
     end
+
+    -- Removes player from the match, preventing them from despawning crap
+    MatchController.GetHandler():removePlayerFromMatchList(playerObj:getOnlineID())
 end
 
 Events.OnCharacterDeath.Add(MatchController.HandlePlayerDeath)
@@ -289,7 +293,34 @@ Events.OnCharacterDeath.Add(MatchController.HandlePlayerDeath)
 
 --* Automatic Startup
 
+-- Events.OnServerStarted.Add(function()
+--     --     -- TODO Add event "WaitForFirstPlayer"
+--     MatchController.isAutomaticStart = SandboxVars.RemnantsOfKentucky.IsAutomaticStartEnabled
+-- end)
+
+-- Events.OnConnected.Add(function()
+
+
+-- end)
+
+Events.OnDisconnect.Add(function()
+    local onlinePlayers = getOnlinePlayers()
+    if onlinePlayers == 0 then
+        Countdown.Stop()
+    end
+end)
+
+
+-- if MatchController.isAutomaticStart then
+
+--     Events.PZEFT_OnMatchEnd.Add(MatchController.AutoStartMatch)
+--     Events.PZEFT_ServerModDataReady.Add(MatchController.AutoStartMatch)
+-- end
+
+
+
 function MatchController.AutoStartMatch()
+    debugPrint("AutoStartMatch function activated!")
     Countdown.Setup(SandboxVars.RemnantsOfKentucky.AutomaticStartCountdownTime, function()
         local handler = MatchController:new()
         handler:initialise()
@@ -393,7 +424,8 @@ end
 ---@param playerObj IsoPlayer
 function MatchCommands.CheckIsAutomaticStart(playerObj, _)
     debugPrint("Client asked if match is running")
-    sendServerCommand(playerObj, EFT_MODULES.State, 'SetClientStateIsAutomaticStart', { value = MatchController.isAutomaticStart })
+    sendServerCommand(playerObj, EFT_MODULES.State, 'SetClientStateIsAutomaticStart',
+        { value = MatchController.isAutomaticStart })
 end
 
 ---@param args {id : number}
@@ -410,7 +442,6 @@ function MatchCommands.KillZombies(_, args)
         end
     end
 end
-
 
 function MatchCommands.ToggleAutomaticStart(playerObj, _)
     MatchController.ToggleAutomaticStart()
@@ -460,10 +491,11 @@ function MatchCommands.SetZombieSpawnMultiplier(_, args)
 end
 
 function MatchCommands.SendZombieSpawnMultiplier(playerObj)
-    local instance = MatchController.GetHandler()
-    debugPrint("Player asked for Zombie Spawn Multiplayer")
-    if instance == nil then return end
-    local spawnZombieMultiplier = instance:getZombieSpawnMultiplier()
+    --local instance = MatchController.GetHandler()
+    debugPrint("Player " .. playerObj:getUsername() .. " asked for Zombie Spawn Multiplayer")
+    --if instance == nil then return end
+    --local spawnZombieMultiplier = instance:getZombieSpawnMultiplier()
+    local spawnZombieMultiplier = PZ_EFT_CONFIG.Server.Match.zombieSpawnMultiplier
     sendServerCommand(playerObj, EFT_MODULES.UI, "ReceiveCurrentZombieSpawnMultiplier",
         { spawnZombieMultiplier = spawnZombieMultiplier })
 end

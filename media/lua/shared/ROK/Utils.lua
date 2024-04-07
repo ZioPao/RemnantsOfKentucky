@@ -135,6 +135,7 @@ end
 ---@param container ItemContainer
 PZEFT_UTILS.AddItems = function(items, container)
     for itemName, quantity in pairs(items) do
+        ---@diagnostic disable-next-line: redundant-parameter
         container:AddItem(itemName, quantity)       -- Umbrella is wrong here
     end
 end

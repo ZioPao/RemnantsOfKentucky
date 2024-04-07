@@ -20,8 +20,8 @@ function ExtractionHandler.ToggleEvent()
         ExtractionPanel.Close()
         Events.OnTick.Remove(ExtractionHandler.RunEvent)
     end
-
 end
+
 Events.PZEFT_IsInRaidChanged.Add(ExtractionHandler.ToggleEvent)
 
 ---Triggers PZEFT_UpdateExtractionZoneState if player is in an extraction zone
@@ -36,8 +36,8 @@ function ExtractionHandler.RunEvent()
     if extractionPoints then
         local playerSquare = pl:getSquare()
         if playerSquare == nil then return end
-        local playerPosition = {x = playerSquare:getX(), y = playerSquare:getY(), z = playerSquare:getZ(),}
-        for key ,area in ipairs(extractionPoints) do
+        local playerPosition = { x = playerSquare:getX(), y = playerSquare:getY(), z = playerSquare:getZ(), }
+        for key, area in ipairs(extractionPoints) do
             -- Save previous state
             ClientState.previousExtractionPointsStatus[key] = ClientState.extractionPointsStatus[key]
 
@@ -46,7 +46,6 @@ function ExtractionHandler.RunEvent()
             ClientState.extractionPointsStatus[key] = isInArea
 
             if ClientState.previousExtractionPointsStatus[key] ~= ClientState.extractionPointsStatus[key] then
-
                 -- Now check if isInArea is true or not
                 debugPrint("Extraction Point status changed, key=" .. tostring(key))
 
@@ -61,7 +60,6 @@ function ExtractionHandler.RunEvent()
     end
 end
 
-
 ---Runs the timer for the ExtractionHandler. Can be closed and disabled from RunEvent
 function ExtractionHandler.HandleTimer()
     local cTime = os_time()
@@ -70,14 +68,14 @@ function ExtractionHandler.HandleTimer()
     ExtractionPanel.instance:setExtractButtonTitle(formattedTime)
 
     if cTime >= ExtractionHandler.stopTime then
-        ExtractionPanel.instance:disableButton()        -- To prevent issues in case of lag
+        ExtractionPanel.instance:disableButton() -- To prevent issues in case of lag
         ExtractionHandler.ExecuteExtraction()
     end
 end
 
 function ExtractionHandler.ExecuteExtraction()
     debugPrint("Extract now!")
-    getSoundManager():playUISound("BoatSound")    -- "BoatSound"
+    getSoundManager():playUISound("BoatSound") -- "BoatSound"
 
     sendClientCommand(EFT_MODULES.Match, "RequestExtraction", {})
     ExtractionPanel.Close()
@@ -91,7 +89,5 @@ function ExtractionHandler.DoExtraction()
     ExtractionHandler.stopTime = os_time() + ClientState.GetExtractionTime()
     Events.OnTick.Add(ExtractionHandler.HandleTimer)
 end
-
-
 
 return ExtractionHandler

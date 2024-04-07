@@ -36,28 +36,29 @@ function RecapScrollItemsPanel.DrawItem(itemsBox, y, item, rowElementNumber)
 
     local a = 0.9
 
-    local width = itemsBox:getWidth()/itemsBox.elementsPerRow
+    local width = itemsBox:getWidth() / itemsBox.elementsPerRow
     local x = width * rowElementNumber
 
     local clipY = math.max(0, y + itemsBox:getYScroll())
     local clipY2 = math.min(itemsBox.height, y + itemsBox:getYScroll() + itemsBox.itemheight)
 
     -- Border of single item
-    itemsBox:drawRectBorder(x, y, width, item.height - 1, a, itemsBox.borderColor.r, itemsBox.borderColor.g, itemsBox.borderColor.b)
+    itemsBox:drawRectBorder(x, y, width, item.height - 1, a, itemsBox.borderColor.r, itemsBox.borderColor.g,
+        itemsBox.borderColor.b)
 
     -- Items are stored in a table that works as a container, let's unpack them here to make it more readable
     local itemDisplayName = item.item.actualItem:getDisplayName()
 
     --* ITEM NAME *--
-	itemsBox:setStencilRect(x, clipY, width - 1, clipY2 - clipY)
+    itemsBox:setStencilRect(x, clipY, width - 1, clipY2 - clipY)
     itemsBox:drawText(itemDisplayName, x + 6, y + 2, 1, 1, 1, a, itemsBox.font)
 
     --* ITEM COST *--
     local itemData = ShopItemsManager.GetItem(item.item.fullType)
 
-    if itemData == nil then
-        itemData = { basePrice = 100, sellMultiplier = 0.5 }
-    end
+    -- if itemData == nil then
+    --     itemData = { basePrice = 100, sellMultiplier = 0.5 }
+    -- end
 
     local price = itemData.basePrice * itemData.sellMultiplier
     local priceStr = "$" .. tostring(price)
@@ -65,7 +66,7 @@ function RecapScrollItemsPanel.DrawItem(itemsBox, y, item, rowElementNumber)
     itemsBox:drawText(priceStr, x + 6, y + priceStrY + 2, 1, 1, 1, a, itemsBox.font)
     itemsBox:clearStencilRect()
 
-	itemsBox:repaintStencilRect(x, clipY, width, clipY2 - clipY)
+    itemsBox:repaintStencilRect(x, clipY, width, clipY2 - clipY)
 
     return y + item.height
 end

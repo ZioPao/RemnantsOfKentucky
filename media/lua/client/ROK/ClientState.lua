@@ -33,16 +33,13 @@ function ClientState.SetIsInRaid(val)
         -- Notify that isInRaid has changed
         triggerEvent("PZEFT_IsInRaidChanged")
 
-
         -- More specific events
         if val == true then
             triggerEvent("PZEFT_ClientNowInRaid")
         else
             triggerEvent("PZEFT_ClientNotInRaidAnymore")
         end
-
     end
-
 end
 
 ---@param val number
@@ -53,6 +50,11 @@ end
 ---@param val number
 function ClientState.SetExtractionTime(val)
     ClientState.extractionTime = val
+end
+
+---@param val boolean
+function ClientState.SetIsStartingMatch(val)
+    ClientState.isStartingMatch = val
 end
 
 --* Getters
@@ -73,6 +75,10 @@ function ClientState.GetIsAutomaticStart()
     return ClientState.isAutomaticStart
 end
 
+function ClientState.GetIsStartingMatch()
+    return ClientState.isStartingMatch
+end
+
 function ClientState.ResetMatchValues()
     ClientState.isStartingMatch = false
     ClientState.isMatchRunning = false
@@ -80,6 +86,7 @@ function ClientState.ResetMatchValues()
     ClientState.previousExtractionPointsStatus = {}
     ClientState.extractionPointsStatus = {}
 end
+
 Events.PZEFT_ClientNotInRaidAnymore.Add(ClientState.ResetMatchValues)
 
 
@@ -90,8 +97,6 @@ end
 function ClientState.SetIsAutomaticStart(value)
     ClientState.isAutomaticStart = value
 end
-
-
 
 -- If the client is in a raid, force set that the match is running
 Events.PZEFT_ClientNowInRaid.Add(function()
@@ -127,9 +132,7 @@ function ClientStateCommands.SetClientStateIsAutomaticStart(args)
     ClientState.SetIsAutomaticStart(args.value)
 end
 
-
 function ClientStateCommands.CommitDieIfInRaid()
-
     if ClientState.GetIsInRaid() == false then return end
 
     ClientState.extractionStatus = {}

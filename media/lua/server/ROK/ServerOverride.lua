@@ -5,7 +5,7 @@ local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 local os_ISMoveableCursorIsValid = ISMoveableCursor.isValid
 ---@param _square IsoGridSquare
 ---@return boolean
-function ISMoveableCursor:isValid( _square )
+function ISMoveableCursor:isValid(_square)
     local isValid = os_ISMoveableCursorIsValid(self, _square)
     if SafehouseInstanceHandler.IsInSafehouse() then
         debugPrint("Player is in safehouse, checking static area")
@@ -17,5 +17,4 @@ function ISMoveableCursor:isValid( _square )
     end
 
     return isValid
-
 end

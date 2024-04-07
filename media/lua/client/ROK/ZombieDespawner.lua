@@ -1,6 +1,9 @@
 -- Based on Konijima - Kill All Zombies mod.
 
 local function DespawnZombies(zombie)
+    -- In case the player has died and the match is still running, their body would despawn zombies without this check
+    if getPlayer():isDead() then return end
+
     local onlineID = zombie:getOnlineID()
     sendClientCommand(EFT_MODULES.Match, "KillZombies", { id = onlineID })
     zombie:removeFromWorld()
@@ -15,7 +18,6 @@ end
 function DeactivateZombieDespawner()
     Events.OnZombieUpdate.Remove(DespawnZombies)
 end
-
 
 --* Activate it at startup
 Events.PZEFT_OnPlayerInitDone.Add(ActivateZombieDespawner)
@@ -32,4 +34,3 @@ end)
 
 Events.PZEFT_ClientNowInRaid.Add(DeactivateZombieDespawner)
 Events.OnPlayerDeath.Add(DeactivateZombieDespawner)
-

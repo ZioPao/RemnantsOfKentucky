@@ -71,7 +71,7 @@ ServerData.PVPInstances.SetPvpUsedInstances = function(data)
 end
 
 --- Get PVP current instance data
----@return pvpInstanceTable
+---@return {id: string} x-y
 ServerData.PVPInstances.GetPvpCurrentInstance = function()
     return ModData.getOrCreate(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID)
 end
@@ -85,6 +85,7 @@ end
 function ServerData.PVPInstances.TransmitPvpCurrentInstance()
     ModData.transmit(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID)
 end
+
 ------------------------------------------------
 ---@alias worldStringCoords string worldx-worldy-worldz
 ---@alias assignedSafehousesTable table<worldStringCoords, string>      value is username
@@ -138,7 +139,11 @@ end
 
 ------------------------------------------------
 ---@alias itemFullType string FullType of the item
----@alias shopItemsTable table<itemFullType, table<integer, shopItemElement>>  -- Key will be full type of the item
+
+
+---@alias tagType string
+---@alias shopItemsTable { items : table<string, shopItemElement>, tags: table<tagType, table<itemFullType, boolean>> }
+
 
 --* SHOP - SERVER DATA *--
 ServerData.Shop = ServerData.Shop or {}
@@ -149,16 +154,11 @@ function ServerData.Shop.GetShopItemsData()
     return ModData.getOrCreate(EFT_ModDataKeys.SHOP_ITEMS)
 end
 
---- Set table of shop items
----@param data shopItemsTable
-function ServerData.Shop.SetShopItemsData(data)
-    ModData.add(EFT_ModDataKeys.SHOP_ITEMS, data)
-end
-
---- Transmits table of shop items to clients
+--- Transmits table of shop items to clients, !!!!!!DEBUG ONLY!!!!!
 function ServerData.Shop.TransmitShopItemsData()
     ModData.transmit(EFT_ModDataKeys.SHOP_ITEMS)
 end
+
 ------------------------------------------------
 
 
@@ -222,4 +222,3 @@ ServerData.debug.print_shopitems = function()
     local data = ModData.getOrCreate(EFT_ModDataKeys.SHOP_ITEMS)
     PZEFT_UTILS.PrintTable(data)
 end
-

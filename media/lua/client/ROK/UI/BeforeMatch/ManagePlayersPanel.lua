@@ -1,26 +1,22 @@
-local FONT_HGT_SMALL = getTextManager():getFontHeight(UIFont.Small)
-local FONT_HGT_MEDIUM = getTextManager():getFontHeight(UIFont.Medium)
-local FONT_HGT_LARGE = getTextManager():getFontHeight(UIFont.Large)
-local HEADER_HGT = FONT_HGT_MEDIUM + 2 * 2
-local ENTRY_HGT = FONT_HGT_MEDIUM + 2 * 2
-local FONT_SCALE = FONT_HGT_SMALL / 16
-if FONT_SCALE < 1 then
-    FONT_SCALE = 1
-end
-
--------------------------------
-
+local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
+
+---------------------------------------
+
+local WIPE_PLAYER_ICON = getTexture("media/textures/BeforeMatchPanel/WipePlayer.png")     -- https://www.freepik.com/icon/close_14440874#fromView=family&page=1&position=0&uuid=e818dfad-684a-4567-9aca-43ed2667f4e1
+local REFRESH_ICON = getTexture("media/textures/BeforeMatchPanel/Loop.png")               -- https://www.freepik.com/icon/rotated_14441036#fromView=family&page=1&position=3&uuid=135de5a3-1019-46dd-bbef-fdbb2fd5b027
+local STARTER_KIT_ICON = getTexture("media/textures/BeforeMatchPanel/GiveStarterKit.png") -- https://www.freepik.com/icon/gift-box_12484717#fromView=family&page=1&position=4&uuid=6b0bb61f-b073-41c1-b474-32da7131c231
+
 -------------------------------
 
 ---@class ManagePlayersScrollingTable : ISPanel
 ---@field datas ISScrollingListBox
 local ManagePlayersScrollingTable = ISPanel:derive("ManagePlayersScrollingTable")
 
----@param x any
----@param y any
----@param width any
----@param height any
+---@param x number
+---@param y number
+---@param width number
+---@param height number
 ---@param viewer any
 ---@return ManagePlayersScrollingTable
 function ManagePlayersScrollingTable:new(x, y, width, height, viewer)
@@ -39,13 +35,13 @@ function ManagePlayersScrollingTable:new(x, y, width, height, viewer)
 end
 
 function ManagePlayersScrollingTable:createChildren()
-    local btnHgt = math.max(25, FONT_HGT_SMALL + 3 * 2)
-    local bottomHgt = 5 + FONT_HGT_SMALL * 2 + 5 + btnHgt + 20 + FONT_HGT_LARGE + HEADER_HGT + ENTRY_HGT
+    -- local btnHgt = math.max(25, GenericUI.SMALL_FONT_HGT + 3 * 2)
+    -- local bottomHgt = 5 + GenericUI.SMALL_FONT_HGT * 2 + 5 + btnHgt + 20 + GenericUI.LARGE_FONT_HGT + GenericUI.HEADER_HGT + GenericUI.ENTRY_HGT
 
-    self.datas = ISScrollingListBox:new(0, HEADER_HGT, self.width, self.height - bottomHgt + 10)
+    self.datas = ISScrollingListBox:new(0, GenericUI.HEADER_HGT, self.width, self.height - GenericUI.HEADER_HGT)
     self.datas:initialise()
     self.datas:instantiate()
-    self.datas.itemheight = FONT_HGT_SMALL + 4 * 2
+    self.datas.itemheight = GenericUI.SMALL_FONT_HGT + 4 * 2
     self.datas.selected = 0
     self.datas.joypadParent = self
     self.datas.font = UIFont.NewSmall
@@ -93,18 +89,17 @@ function ManagePlayersScrollingTable:drawDatas(y, item, alt)
     return y + self.itemheight
 end
 
-
 --************************************************************************--
 
 ---@class ManagePlayersPanel : ISCollapsableWindow
 local ManagePlayersPanel = ISCollapsableWindow:derive("ManagePlayersPanel")
 
-function ManagePlayersPanel.Open(x, y)
+function ManagePlayersPanel.Open(x, y, width, height)
     if ManagePlayersPanel.instance then
         ManagePlayersPanel.instance:close()
     end
 
-    local modal = ManagePlayersPanel:new(x, y, 350 * FONT_SCALE, 500)
+    local modal = ManagePlayersPanel:new(x, y, width, height)
     modal:initialise()
     modal:addToUIManager()
     modal.instance:setKeyboardFocus()
@@ -127,23 +122,38 @@ function ManagePlayersPanel:new(x, y, width, height)
     return o
 end
 
-function ManagePlayersPanel:initialise()
-    local top = 40
+function ManagePlayersPanel:createChildren()
+    local xPadding = GenericUI.X_PADDING
+    local yPadding = 10
 
-    local entryHgt = FONT_HGT_SMALL + 2 * 2
-    self.filterEntry = ISTextEntryBox:new("Players", 10, top, (self.width - 10 * 2) / 1.5, entryHgt)
+    self.label = ISLabel:new(xPadding, yPadding, 25, getText("IGUI_EFT_AdminPanel_ManagePlayers_Title"), 1, 1, 1, 1,
+        UIFont.NewLarge, true)
+    self.label:initialise()
+    self.label:instantiate()
+    self:addChild(self.label)
+
+    -- TODO Clean this up
+
+    local y = self.label:getBottom() + yPadding * 2
+    local leftSideWidth = (self:getWidth() - xPadding * 2) / 1.25
+
+    local entryHgt = GenericUI.SMALL_FONT_HGT + 2 * 2
+    self.filterEntry = ISTextEntryBox:new("Players", 10, y, leftSideWidth, entryHgt)
     self.filterEntry:initialise()
     self.filterEntry:instantiate()
     self.filterEntry:setClearButton(true)
     self.filterEntry:setText("")
     self:addChild(self.filterEntry)
 
----@diagnostic disable-next-line: duplicate-set-field
+    ---@diagnostic disable-next-line: duplicate-set-field
     self.filterEntry.onTextChange = function()
         self:fillList()
     end
 
-    self.panel = ISTabPanel:new(10, top + entryHgt + 10, (self.width - 10 * 2) / 1.5, self.height + top - 50)
+    y = y + self.filterEntry:getHeight() + yPadding
+    local panelHeight = self:getHeight() - self.filterEntry:getBottom() - yPadding * 2
+
+    self.panel = ISTabPanel:new(xPadding, y, leftSideWidth, panelHeight)
     self.panel:initialise()
     self.panel.borderColor = { r = 0, g = 0, b = 0, a = 0 }
     self.panel.target = self
@@ -152,80 +162,63 @@ function ManagePlayersPanel:initialise()
     self.panel.tabHeight = 0
     self:addChild(self.panel)
 
-    local btnY = self.panel:getHeight() / 2 - top
+    self.mainCategory = ManagePlayersScrollingTable:new(0, 0, leftSideWidth, panelHeight, self)
+    self.mainCategory:initialise()
+    self.panel:addView("Players", self.mainCategory)
+    self.panel:activateView("Players")
+    self:fillList()
+
+
+    ---------------------------------
+    -- Buttons
+
+    local btnY = self.filterEntry:getY()
     local btnX = self.panel:getRight() + 10
 
-    local btnSize = (self:getWidth() - self.panel:getWidth()) - 30 -- You must account for the padding, 10 and -20
+    local btnWidth = (self:getWidth() - self.panel:getWidth()) - xPadding * 3
+    local btnHeight = 64
 
 
-    local openIco = getTexture("media/ui/openPanelIcon.png")        -- Document icons created by Freepik - Flaticon - Document
-    local refreshListIco = getTexture("media/ui/refreshIcon.png")   -- Refresh icons created by Dave Gandy - Flaticon - Refresh
-    local deleteDataIco = getTexture("media/ui/deleteDataIcon.png") -- www.flaticon.com/free-icons/delete Delete icons created by Kiranshastry - Flaticon
-
-    -- Middle button
-    self.btnWipePlayer = ISButton:new(btnX, btnY, btnSize, btnSize / 1.5,
-        getText("IGUI_EFT_AdminPanel_WipePlayer"), self, ManagePlayersPanel.onClick)
-    self.btnWipePlayer.internal = "WIPE_PLAYER"
-    self.btnWipePlayer:setTooltip(getText("IGUI_EFT_AdminPanel_Tooltip_WipePlayer"))
-    self.btnWipePlayer:setImage(openIco)
-    self.btnWipePlayer.anchorTop = false
-    self.btnWipePlayer.anchorBottom = true
-    self.btnWipePlayer:initialise()
-    self.btnWipePlayer:instantiate()
-    self.btnWipePlayer.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
-    self:addChild(self.btnWipePlayer)
-
-    self.btnRefresh = ISButton:new(btnX, btnY - self.btnWipePlayer:getHeight() - 10, btnSize, btnSize / 1.5,
-        getText("IGUI_EFT_AdminPanel_Refresh"), self, ManagePlayersPanel.onClick)
+    self.btnRefresh = ISButton:new(
+        btnX, btnY, btnWidth, btnHeight,
+        "", self, ManagePlayersPanel.onClick
+    )
     self.btnRefresh.internal = "REFRESH"
+    self.btnRefresh:setImage(REFRESH_ICON)
     self.btnRefresh:setTooltip(getText("IGUI_EFT_AdminPanel_Refresh"))
-    self.btnRefresh:setImage(refreshListIco)
-    self.btnRefresh.anchorTop = false
-    self.btnRefresh.anchorBottom = true
     self.btnRefresh:initialise()
     self.btnRefresh:instantiate()
     self.btnRefresh.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
     self:addChild(self.btnRefresh)
 
-    self.btnStarterKit = ISButton:new(btnX, btnY + self.btnWipePlayer:getHeight() + 10, btnSize, btnSize / 1.5,
-        getText("IGUI_EFT_AdminPanel_StarterKit"), self, ManagePlayersPanel.onClick)
+
+    btnY = btnY + btnHeight + yPadding
+
+    self.btnStarterKit = ISButton:new(
+        btnX, btnY, btnWidth, btnHeight,
+        "", self, ManagePlayersPanel.onClick
+    )
     self.btnStarterKit.internal = "STARTER_KIT"
-    self.btnStarterKit:setTooltip(getText("IGUI_EFT_AdminPanel_Tooltip_StarterKit"))
-    self.btnStarterKit:setImage(deleteDataIco)
-    self.btnStarterKit:setBorderRGBA(1, 1, 1, 1)
-    self.btnStarterKit:setTextureRGBA(1, 1, 1, 1)
-    self.btnStarterKit.anchorTop = false
-    self.btnStarterKit.anchorBottom = true
+    self.btnStarterKit:setImage(STARTER_KIT_ICON)
+    self.btnStarterKit:setTooltip(getText("IGUI_EFT_AdminPanel_ManagePlayers_StarterKit_Tooltip"))
     self.btnStarterKit:initialise()
     self.btnStarterKit:instantiate()
     self.btnStarterKit.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
     self:addChild(self.btnStarterKit)
 
+    btnY = btnY + btnHeight + yPadding
 
-    -- local xPadding = 20
-    -- local normalBtnWidth = self:getWidth() - xPadding * 2
-    -- local normalBtnHeight = 25
-
-    -- self.btnWipeEverything = ISButton:new(xPadding, self:getHeight() - normalBtnHeight - 10, normalBtnWidth,
-    --     normalBtnHeight / 1.2, getText("IGUI_EFT_AdminPanel_WipeEverything"), self, ManagePlayersPanel.onClick)
-    -- self.btnWipeEverything.internal = "WIPE_EVERYTHING"
-    -- self.btnWipeEverything:setTooltip(getText("IGUI_EFT_AdminPanel_Tooltip_WipeEverything"))
-    -- self.btnWipeEverything:setImage(deleteDataIco)
-    -- self.btnWipeEverything:setBorderRGBA(1, 1, 1, 1)
-    -- self.btnWipeEverything:setTextureRGBA(1, 1, 1, 1)
-    -- self.btnWipeEverything.anchorTop = false
-    -- self.btnWipeEverything.anchorBottom = true
-    -- self.btnWipeEverything:initialise()
-    -- self.btnWipeEverything:instantiate()
-    -- self.btnWipeEverything.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
-    -- self:addChild(self.btnWipeEverything)
-
-
-    self.mainCategory = ManagePlayersScrollingTable:new(0, 0, self.panel.width, self.panel.height, self)
-    self.mainCategory:initialise()
-    self.panel:addView("Players", self.mainCategory)
-    self.panel:activateView("Players")
-    self:fillList()
+    self.btnWipePlayer = ISButton:new(
+        btnX, btnY, btnWidth, btnHeight,
+        "", self, ManagePlayersPanel.onClick
+    )
+    self.btnWipePlayer.internal = "WIPE_PLAYER"
+    self.btnWipePlayer:setImage(WIPE_PLAYER_ICON)
+    self.btnWipePlayer:setTooltip(getText("IGUI_EFT_AdminPanel_ManagePlayers_WipePlayer_Tooltip"))
+    self.btnWipePlayer:initialise()
+    self.btnWipePlayer:instantiate()
+    self.btnWipePlayer.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
+    self:addChild(self.btnWipePlayer)
 end
 
 function ManagePlayersPanel:fillList()
@@ -248,7 +241,6 @@ function ManagePlayersPanel:prerender()
 end
 
 function ManagePlayersPanel:onClick(button)
-
     local confY = self:getY() + self:getHeight() + 20
 
     if button.internal == 'REFRESH' then
@@ -261,21 +253,21 @@ function ManagePlayersPanel:onClick(button)
 
         if button.internal == 'STARTER_KIT' then
             local function OnConfirmGiveStarterKit()
-                sendClientCommand(EFT_MODULES.Player, "RelayStarterKit", {playerID = plID})
+                sendClientCommand(EFT_MODULES.Player, "RelayStarterKit", { playerID = plID })
                 local text = getText("UI_EFT_Say_SentStarterKit", plUsername)
                 getPlayer():Say(text)
             end
 
-            local text = getText("IGUI_EFT_AdminPanel_Confirmation_StarterKit", plUsername)
+            local text = getText("IGUI_EFT_AdminPanel_ManagePlayers_StarterKit_Confirmation", plUsername)
             self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, self, OnConfirmGiveStarterKit)
         elseif button.internal == 'WIPE_PLAYER' then
             local function OnConfirmWipePlayer()
-                sendClientCommand(EFT_MODULES.Player, "ResetPlayer", {playerID = plID})
+                sendClientCommand(EFT_MODULES.Player, "ResetPlayer", { playerID = plID })
                 local text = getText("UI_EFT_Say_WipePlayer", plUsername)
                 getPlayer():Say(text)
             end
 
-            local text = getText("IGUI_EFT_AdminPanel_Confirmation_WipePlayer", plUsername)
+            local text = getText("IGUI_EFT_AdminPanel_ManagePlayers_WipePlayer_Confirmation", plUsername)
             self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, self, OnConfirmWipePlayer)
         end
     end
@@ -313,9 +305,5 @@ function ManagePlayersPanel:close()
     end
     ISCollapsableWindow.close(self)
 end
-
-
-
-
 
 return ManagePlayersPanel

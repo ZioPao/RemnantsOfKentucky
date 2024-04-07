@@ -18,8 +18,8 @@ local credits = {
     },
 
     [4] = {
-        title = "Map",
-        names = {"Oppolla"}
+        title = "Mapping",
+        names = {"Oppolla", "Nurver"}
     },
 
     [5] = {

@@ -9,6 +9,7 @@ function KillTrackerHandler.Init()
     --  Reset it
     KillTrackerHandler.data = {}
 end
+
 Events.PZEFT_ClientNowInRaid.Add(KillTrackerHandler.Init)
 
 function KillTrackerHandler.GetData()
@@ -25,6 +26,5 @@ function KillTrackerHandler.AddKill(victimUsername, time)
     }
     table.insert(KillTrackerHandler.data, tempTable)
 end
-
 
 return KillTrackerHandler

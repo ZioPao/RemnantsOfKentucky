@@ -1,10 +1,9 @@
 local ClientState = require("ROK/ClientState")
 -----------------------------
+
 local CratesHandling = {}
 
-
 --* Startup handling
-
 
 --- On player initialise, request safehouse allocation of player from server
 local function OnPlayerInit()
@@ -16,11 +15,12 @@ local function OnPlayerInit()
     Delay.Initialize()
 
     local function CheckMods()
-        local unsModsStr = "<CENTRE> <SIZE:large> Unsupported mods found, problems with the economy may arise: <LINE> <LINE> <SIZE:medium>"
+        local unsModsStr =
+        "<CENTRE> <SIZE:large> Unsupported mods found, problems with the economy may arise: <LINE> <LINE> <SIZE:medium>"
         local hasUnsupportedMods = false
-		local activeModIDs = getActivatedMods()
-		for i=1,activeModIDs:size() do
-			local modID = activeModIDs:get(i-1)
+        local activeModIDs = getActivatedMods()
+        for i = 1, activeModIDs:size() do
+            local modID = activeModIDs:get(i - 1)
             if PZ_EFT_CONFIG.SupportedMods[modID] == nil then
                 unsModsStr = unsModsStr .. tostring(modID) .. ", "
                 hasUnsupportedMods = true
@@ -29,7 +29,8 @@ local function OnPlayerInit()
 
 
         if hasUnsupportedMods then
-            unsModsStr = unsModsStr:sub(1, -3)      -- Removes last ,
+            unsModsStr = unsModsStr:sub(1, -3) -- Removes last ,
+            local NotificationPanel = require("ROK/UI/NotificationPanel")
             NotificationPanel.Open(unsModsStr)
         end
     end
@@ -39,7 +40,7 @@ local function OnPlayerInit()
     Delay:set(2, function()
         --* Safehouse handling
         -- Request safe house allocation (or just teleport, if it was already done), which in turn will teleport the player to the assigned safehouse
-        sendClientCommand(EFT_MODULES.Safehouse, "RequestSafehouseAllocation", {teleport = true})
+        sendClientCommand(EFT_MODULES.Safehouse, "RequestSafehouseAllocation", { teleport = true })
 
         --* Shop Items
         debugPrint("Requesting TransmitShopItems to the client now that player is in")
@@ -48,11 +49,11 @@ local function OnPlayerInit()
         --* Request bank account and request bank account periodically.
         CratesHandling.ToggleContainersValueUpdate()
 
-        --* Clean map
-        ISWorldMap.HandleEFTExits(true)
-
         --* Request the list of PVP Instances from the server
         ClientData.RequestPvpInstances()
+
+        --* Ask server if there's a countdown running right now and opens it if that's the case
+        sendClientCommand(EFT_MODULES.Countdown, "AskCurrentCountdown", {})
 
         -- IDEA Add toggle for admin to prevent them from dying\getting punished
         --* Ask server about previous player status
@@ -61,13 +62,10 @@ local function OnPlayerInit()
         --* Request extraction time from the server
         sendClientCommand(EFT_MODULES.Match, "SendExtractionTime", {})
 
-
         if isAdmin() then
             -- Request current running match, if there is some set the correct UI
             sendClientCommand(EFT_MODULES.Match, 'CheckIsRunningMatch', {})
 
-            -- Notify admins about potentially incompatible mods
-            CheckMods()
         end
 
         -- IDEA maybe migrate a bunch of these functions to events?
@@ -90,7 +88,7 @@ end)
 -- If player in raid, set that they're not in it anymore
 local function OnPlayerExit()
     if ClientState.GetIsInRaid() == false then return end
-    debugPrint("Player died, removing him from the raid")
+    debugPrint("Player died or quit, removing him from the raid")
     sendClientCommand(EFT_MODULES.Match, "RemovePlayer", {})
 
     if isAdmin() then
@@ -105,7 +103,7 @@ local function OnPlayerExit()
     local TimePanel = require("ROK/UI/TimePanel")
     TimePanel.Close()
 
-    -- -- Reset buttons 
+    -- -- Reset buttons
     -- ButtonManager.Reset()
 end
 
@@ -130,7 +128,9 @@ function CratesHandling.ToggleContainersValueUpdate()
     -- Doesn't really cause issues, but keep this in mind
 
 
+
     --debugPrint("Toggling crates handling, isInRaid=" .. tostring(ClientState.GetIsInRaid()))
+
 
     if not ClientState.GetIsInRaid() then
         Events.EveryOneMinute.Remove(CratesHandling.UpdateContainersValue)

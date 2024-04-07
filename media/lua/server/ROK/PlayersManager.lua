@@ -1,6 +1,7 @@
 if not isServer() then return end
 local SafehouseInstanceManager = require("ROK/SafehouseInstanceManager")
 local ServerBankManager = require("ROK/Economy/ServerBankManager")
+
 ------------------------
 
 ---@class PlayersManager

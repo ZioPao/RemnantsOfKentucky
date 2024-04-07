@@ -3,6 +3,7 @@ IG_UI_EN = {
     // Admin Panel common
     IGUI_EFT_AdminPanel_Apply = "Apply",
     IGUI_EFT_AdminPanel_Close = "Close",
+    IGUI_EFT_AdminPanel_Refresh = "Refresh",
 
     // Admin Panel Before Match
     IGUI_EFT_AdminPanel_InstancesAvailable = " <CENTRE> Instances Available",
@@ -10,50 +11,55 @@ IG_UI_EN = {
     IGUI_EFT_AdminPanel_StartMatch = "Start Match",
     IGUI_EFT_AdminPanel_Stop = "Stop",
 
-    IGUI_EFT_AdminPanel_ManagePlayers = "Manage Players",
-    IGUI_EFT_AdminPanel_Refresh = "Refresh",
-    IGUI_EFT_AdminPanel_Tooltip_Refresh = "Refresh the players list",
 
-    IGUI_EFT_AdminPanel_WipePlayer = "Wipe Player",
-    IGUI_EFT_AdminPanel_Confirmation_WipePlayer = "Are you sure you want to wipe %1 data?",
-    IGUI_EFT_AdminPanel_Tooltip_WipePlayer = "Wipes everything about this player",
+    // Manage players panel
+    IGUI_EFT_AdminPanel_ManagePlayers_Title = "Manage Players",
+    IGUI_EFT_AdminPanel_ManagePlayers_WipePlayer = "Wipe Player",
+    IGUI_EFT_AdminPanel_ManagePlayers_WipePlayer_Confirmation = "Are you sure you want to wipe %1 data?",
+    IGUI_EFT_AdminPanel_ManagePlayers_WipePlayer_Tooltip = "Wipes everything about this player",
+    IGUI_EFT_AdminPanel_ManagePlayers_StarterKit = "Give Starter Kit",
+    IGUI_EFT_AdminPanel_ManagePlayers_StarterKit_Confirmation = "<CENTRE> Are you sure you want to send %1 a starter kit?",
+    IGUI_EFT_AdminPanel_ManagePlayers_StarterKit_Tooltip = "Give Starter Kit",
+
+
+    // Mod management panel
+    IGUI_EFT_AdminPanel_ModManagement_Title = "Management",
+    IGUI_EFT_AdminPanel_ModManagement_SetDayTime = "Set Time - Day",
+    IGUI_EFT_AdminPanel_ModManagement_SetNightTime = "Set Time - Night",
+    IGUI_EFT_AdminPanel_ModManagement_ResetUsedInstances = "Reset Used Instances",
+    IGUI_EFT_AdminPanel_ModManagement_ToggleAutomaticStart = "Toggle Automatic Start",
+    IGUI_EFT_AdminPanel_ModManagement_ActivateAutomaticStart = "Activate Automatic Start",
+    IGUI_EFT_AdminPanel_ModManagement_DeactivateAutomaticStart = "Deactivate Automatic Start",
+    IGUI_EFT_AdminPanel_ModManagement_TeleportToSafehouse = "Teleport to Safehouse",
+
+
+    // Economy management Panel
+    IGUI_EFT_AdminPanel_Economy = "Economy",
+    IGUI_EFT_AdminPanel_Economy_Apply_Confirmation = "Are you sure you want to apply these prices?",
     
-    IGUI_EFT_AdminPanel_StarterKit = "Give Starter Kit",
-    IGUI_EFT_AdminPanel_Confirmation_StarterKit = "<CENTRE> Are you sure you want to send %1 a starter kit?",
-    IGUI_EFT_AdminPanel_Tooltip_StarterKit = "Give Starter Kit",
-    
-    IGUI_EFT_AdminPanel_WipeEverything = "WIPE EVERYTHING",
-    IGUI_EFT_AdminPanel_Confirmation_WipeEverything = " <CENTRE> Are you sure you want to wipe out everything for the entire server? <LINE> You can't come back from this.",
-    IGUI_EFT_AdminPanel_Tooltip_WipeEverything = "Wipe everything about the selected player",
 
+    // Match options
+    IGUI_EFT_AdminPanel_MatchOptions = "Match Options",
 
-    IGUI_EFT_AdminPanel_SetDayTime = "Set Time - Day",
-    IGUI_EFT_AdminPanel_SetNightTime = "Set Time - Night",
-
-    IGUI_EFT_AdminPanel_ResetUsedInstances = "Reset Used Instances",
-    IGUI_EFT_AdminPanel_ToggleAutomaticStart = "Toggle Automatic Start",
-    IGUI_EFT_AdminPanel_ActivateAutomaticStart = "Activate Automatic Start",
-    IGUI_EFT_AdminPanel_DeactivateAutomaticStart = "Deactivate Automatic Start",
-    IGUI_EFT_AdminPanel_TeleportToSafehouse = "Teleport to Safehouse",
     
     // ADMIN PANEL - DURING MATCH
-
     IGUI_EFT_AdminPanel_MatchTime = "Match time: %1",
     IGUI_EFT_AdminPanel_MatchEnded = "<SIZE:large> <CENTRE> <RED> The match has ended.",
     IGUI_EFT_AdminPanel_MatchOptions = "Match Options",
 
 
-    IGUI_TimePanel_MatchStarting = "The match is starting",
+    IGUI_TimePanel_MatchStartingManually = "The match is starting",
+    IGUI_TimePanel_MatchStartingAutomatically = "AUTO - Match is starting",
+
     IGUI_TimePanel_MatchEnded = "The match has ended",
     IGUI_TimePanel_Overtime = "Overtime",
 
 
     // SHOP
-
     IGUI_Shop_Title = "Shop",
     IGUI_Shop_Buy = "Buy",
     IGUI_Shop_CurrentBalance = "<SIZE:large> Current Balance: $%1",
-    IGUI_Shop_TabEssential = "Essential Items",
+    IGUI_Shop_TabEssentials = "Essential Items",
     IGUI_Shop_TabDaily = "Daily Items",
     IGUI_Shop_TabSell = "Sell Items",
     IGUI_Shop_Sell_Tooltip = "Drag items in here to sell them",
@@ -76,11 +82,12 @@ IG_UI_EN = {
 
 
     //LEADERBOARD
-    
     IGUI_EFT_Leaderboard_Title = "Leaderboard",
     IGUI_EFT_Leaderboard_Players = "Players",
-    
 
-    
 
+    // RECAP PANEL
+    IGUI_EFT_Recap_Kills = "<SIZE:large> Kills",
+    IGUI_EFT_Recap_Items = "<SIZE:large> Extracted Items"
+    
 }

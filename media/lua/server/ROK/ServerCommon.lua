@@ -3,7 +3,7 @@
 ------------------------------------------------------------------------
 
 local TimeCommands = {}
-local MODULE = EFT_MODULES.UI
+local MODULE = EFT_MODULES.Time
 
 ---* Setting time from client
 function TimeCommands.SetDayTime()

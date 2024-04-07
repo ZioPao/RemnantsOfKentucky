@@ -103,9 +103,9 @@ local function SellDoDrawItem(self, y, item, alt)
     local itemData = ShopItemsManager.GetItem(itemFullType)
 
     -- If an item doesn't exist in the DB, create a fake one here
-    if itemData == nil then
-        itemData = { basePrice = 100, sellMultiplier = 0.5 }
-    end
+    -- if itemData == nil then
+    --     itemData = { basePrice = 100, sellMultiplier = 0.5 }
+    -- end
 
     -- TODO Reimplement quality, we need to change the UI for this to work.
     --local sellData = self.sellItemsData[itemFullType]
@@ -120,9 +120,8 @@ local function SellDoDrawItem(self, y, item, alt)
     return y + self.itemheight
 end
 
-
-
-function StructureSellDataTest(items)
+-- TODO Document this
+function StructureSellData(items)
     ---@alias sellItemsDataType table<string, table<integer, {id : number, fullType : string, quality : number}>>
 
     ---@type sellItemsDataType
@@ -170,7 +169,7 @@ local function SellOnDragItem(self, x, y)
     end
 
     -- Cycle through the items and structure them in the correct way.
-    self.sellItemsData = StructureSellDataTest(self.items)
+    self.sellItemsData = StructureSellData(self.items)
 end
 
 local function SellPrerender(self)

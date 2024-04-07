@@ -8,10 +8,10 @@ local ClientBankManager = {}
 ---Requests the server for an update on the local bank account. Do not nil the mod data to prevent issues during transactions
 ---@param updateCratesValue boolean?
 function ClientBankManager.RequestBankAccountFromServer(updateCratesValue)
-   -- local md = PZEFT_UTILS.GetPlayerModData()
+    -- local md = PZEFT_UTILS.GetPlayerModData()
     --md.bankAccount = nil
     --debugPrint("Requesting bank account from client")
-    sendClientCommand(EFT_MODULES.Bank, "SendBankAccount", {updateCratesValue = updateCratesValue or false})
+    sendClientCommand(EFT_MODULES.Bank, "SendBankAccount", { updateCratesValue = updateCratesValue or false })
 end
 
 --- Returns account balance from player's mod data
@@ -36,8 +36,8 @@ end
 ---@param failCallbackCommand string
 ---@param failCallbackArgs table
 function ClientBankManager.TryProcessTransaction(amount, successCallbackModule, successCallbackCommand,
-    successCallbackArgs, failCallbackModule, failCallbackCommand, failCallbackArgs)
-
+                                                 successCallbackArgs, failCallbackModule, failCallbackCommand,
+                                                 failCallbackArgs)
     sendClientCommand(EFT_MODULES.Bank, "ProcessTransaction", {
         amount = amount,
         onSuccess = {
@@ -52,7 +52,6 @@ function ClientBankManager.TryProcessTransaction(amount, successCallbackModule, 
         }
     })
 end
-
 
 ------------------------------------------------------------------------
 --* COMMANDS FROM SERVER *--
@@ -74,7 +73,7 @@ end
 
 --- Receive the updated bank accounts from the server, to be used in the leaderboard and balance screen
 ---@param args {accounts : bankAccountsTable}
- function BankCommands.GetAllBankAccounts(args)
+function BankCommands.GetAllBankAccounts(args)
     if args.accounts then
         debugPrint("Setting accounts")
         LeaderboardPanel.SetBankAccounts(args.accounts)

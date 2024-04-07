@@ -11,11 +11,13 @@ LootRecapHandler.newItems = {}
 function LootRecapHandler.SaveBeforeMatchInventory()
     LootRecapHandler.SaveInventory(true)
 end
+
 Events.PZEFT_ClientNowInRaid.Add(LootRecapHandler.SaveBeforeMatchInventory)
 
 function LootRecapHandler.SaveAfterMatchInventory()
     LootRecapHandler.SaveInventory(false)
 end
+
 Events.PZEFT_ClientNotInRaidAnymore.Add(LootRecapHandler.SaveAfterMatchInventory)
 
 ---@param isStartingRaid boolean
@@ -43,7 +45,7 @@ function LootRecapHandler.SaveInventory(isStartingRaid)
 end
 
 function LootRecapHandler.SaveInventoryLoop(itemsList, lootList)
-    for i=0, itemsList:size() - 1 do
+    for i = 0, itemsList:size() - 1 do
         local item = itemsList:get(i)
         if instanceof(item, "InventoryContainer") then
             LootRecapHandler.SaveInventoryLoop(item:getInventory():getItems(), lootList)
@@ -54,17 +56,16 @@ function LootRecapHandler.SaveInventoryLoop(itemsList, lootList)
     end
 end
 
-
 function LootRecapHandler.CompareWithOldInventory()
     --if #LootRecapHandler.oldItems == 0 and #LootRecapHandler.newItems == 0 then return end
 
     local actualNewItems = {}
-    for k,v in pairs(LootRecapHandler.newItems) do
+    for k, v in pairs(LootRecapHandler.newItems) do
         --debugPrint("Checking " .. k)
         if LootRecapHandler.oldItems[k] == nil then
             local fullType = v:getFullType()
             --debugPrint("New item: " .. fullType)
-            actualNewItems[k] = {actualItem = v:getScriptItem(), fullType = fullType}
+            actualNewItems[k] = { actualItem = v:getScriptItem(), fullType = fullType }
             --table.insert(actualNewItems, v)
         end
     end
@@ -73,6 +74,5 @@ function LootRecapHandler.CompareWithOldInventory()
 
     --triggerEvent("PZEFT_LootRecapReady", actualNewItems)
 end
-
 
 return LootRecapHandler

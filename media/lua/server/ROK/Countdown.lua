@@ -11,7 +11,11 @@ local os_time = os.time
 
 ---@class Countdown
 ---@field intervals {}
+---@field fun function
+---@field isRunning boolean
 local Countdown = {}
+
+Countdown.isRunning = false
 
 ---Will run the func after the end
 ---@param stopTime number
@@ -20,6 +24,8 @@ local Countdown = {}
 ---@param description string?
 function Countdown.Setup(stopTime, fun, displayOnClient, description)
 	Countdown.fun = fun
+	Countdown.description = description
+	Countdown.isRunning = true
 
 	if fun == nil then
 		error("Function is nil!")
@@ -30,7 +36,7 @@ function Countdown.Setup(stopTime, fun, displayOnClient, description)
 
 	if displayOnClient and displayOnClient == true then
 		description = description or ""
-		sendServerCommand(EFT_MODULES.UI, "OpenTimePanel", {description = description})
+		sendServerCommand(EFT_MODULES.UI, "OpenTimePanel", { description = description })
 		Countdown.displayOnClient = true
 	else
 		Countdown.displayOnClient = false
@@ -42,7 +48,6 @@ end
 ---@param interval number in seconds
 ---@param fun function
 function Countdown.AddIntervalFunc(interval, fun)
-
 	local intTab = {
 		counter = 0,
 		base = interval,
@@ -67,11 +72,11 @@ function Countdown.Update()
 
 	-- Check interval funcs
 	if Countdown.intervals then
-		for i=1, #Countdown.intervals do
+		for i = 1, #Countdown.intervals do
 			local intTab = Countdown.intervals[i]
 			if currTime >= intTab.stopTime then
 				intTab.counter = intTab.counter + 1
-				intTab.stopTime = os_time() + intTab.base	-- Updates it for the next iteration
+				intTab.stopTime = os_time() + intTab.base -- Updates it for the next iteration
 				--debugPrint("Running interval function -> " .. tostring(intTab.fun))
 				intTab.fun(intTab.counter)
 			end
@@ -87,13 +92,14 @@ function Countdown.Update()
 		else
 			debugPrint("Function not found, countdown probably finished")
 		end
+
+		Countdown.isRunning = false
 	end
 end
 
 ---Stop the countdown
 function Countdown.Stop()
-
-	Countdown.stopTime = -1		-- use -1 to prevent issues when looping
+	Countdown.stopTime = -1 -- use -1 to prevent issues when looping
 	Countdown.fun = nil
 	Countdown.intervals = {}
 
@@ -104,5 +110,30 @@ function Countdown.Stop()
 
 	Events.OnTickEvenPaused.Remove(Countdown.Update)
 end
+
+------------------------------------------------------------------------
+--* COMMANDS FROM CLIENTS *--
+------------------------------------------------------------------------
+
+local MODULE = EFT_MODULES.Countdown
+local CountdownCommands = {}
+
+---@param playerObj IsoPlayer
+function CountdownCommands.AskCurrentCountdown(playerObj)
+	if Countdown and Countdown.isRunning then
+		sendServerCommand(playerObj, EFT_MODULES.UI, "OpenTimePanel", { description = Countdown.description })
+	end
+end
+
+---------------------------------
+local function OnCountdownCommands(module, command, playerObj, args)
+	if module == MODULE and CountdownCommands[command] then
+		--debugPrint("Client Command - " .. MODULE .. "." .. command)
+		CountdownCommands[command](playerObj, args)
+	end
+end
+
+Events.OnClientCommand.Add(OnCountdownCommands)
+
 
 return Countdown

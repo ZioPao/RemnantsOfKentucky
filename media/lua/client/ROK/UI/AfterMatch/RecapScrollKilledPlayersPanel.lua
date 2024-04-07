@@ -1,16 +1,16 @@
--- TODO Add headers!!!!
-
-
 local KillTrackerHandler = require("ROK/Match/KillTrackerHandler")
 local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
-
 local TilesScrollingListBox = require("ROK/UI/BaseComponents/TilesScrollingListBox")
 ----------------
 ---@class RecapScrollKilledPlayersPanel : ISPanelJoypad
 local RecapScrollKilledPlayersPanel = ISPanelJoypad:derive("RecapScrollKilledPlayersPanel")
 
+---@param x number
+---@param y number
+---@param width number
+---@param height number
+---@return RecapScrollKilledPlayersPanel
 function RecapScrollKilledPlayersPanel:new(x, y, width, height)
-    ---@type RecapScrollKilledPlayersPanel
     local o = ISPanelJoypad:new(x, y, width, height)
     setmetatable(o, self)
     self.__index = self
@@ -19,7 +19,6 @@ function RecapScrollKilledPlayersPanel:new(x, y, width, height)
     RecapScrollKilledPlayersPanel.instance = o
     return o
 end
-
 
 ---This is run on the the ScrollingBoxList!
 ---@param x number
@@ -72,7 +71,6 @@ function RecapScrollKilledPlayersPanel:createChildren()
     self:initialiseList(KillTrackerHandler.GetData())
 end
 
-
 function RecapScrollKilledPlayersPanel:initialiseList(victimsTable)
     if victimsTable == nil then return end
     local sortedVictims = {}
@@ -84,14 +82,14 @@ function RecapScrollKilledPlayersPanel:initialiseList(victimsTable)
     ---@param a {timestamp : string}
     ---@param b {timestamp : string}
     ---@return boolean
-    local function SortByTimestamp(a,b)
+    local function SortByTimestamp(a, b)
         return a.timestamp < b.timestamp
     end
 
     table.sort(sortedVictims, SortByTimestamp)
 
 
-    for i=1, #sortedVictims do
+    for i = 1, #sortedVictims do
         local data = sortedVictims[i]
         self.scrollingListBox:addItem(data.victimUsername, data)
     end
@@ -101,7 +99,6 @@ function RecapScrollKilledPlayersPanel:initialiseList(victimsTable)
         self.scrollingListBox.selected = 1
     end
 end
-
 
 ---@alias KilLTrack {victimUsername : string, timestamp : any}
 
@@ -117,31 +114,36 @@ function RecapScrollKilledPlayersPanel.DrawItem(playersBox, y, item, rowElementN
 
     local a = 0.9
 
-    local width = playersBox:getWidth()/playersBox.elementsPerRow
+    local width = playersBox:getWidth() / playersBox.elementsPerRow
     local x = width * rowElementNumber
 
     local clipY = math.max(0, y + playersBox:getYScroll())
     local clipY2 = math.min(playersBox.height, y + playersBox:getYScroll() + playersBox.itemheight)
 
     -- Border of single item
-    playersBox:drawRectBorder(x, y, width, item.height - 1, a, playersBox.borderColor.r, playersBox.borderColor.g, playersBox.borderColor.b)
+    playersBox:drawRectBorder(x, y, width, item.height - 1, a, playersBox.borderColor.r, playersBox.borderColor.g,
+        playersBox.borderColor.b)
 
 
     --* USER NAME *--
     local username = item.item.victimUsername
     local timestamp = item.item.timestamp
-	playersBox:setStencilRect(x, clipY, width - 1, clipY2 - clipY)
+    playersBox:setStencilRect(x, clipY, width - 1, clipY2 - clipY)
     playersBox:drawText(username, x + 6, y + 2, 1, 1, 1, a, playersBox.font)
 
     --* TIMESTAMP *--
     -- FIX Timestamps are still completely fucked up
-    -- local timeStr = GenericUI.FormatTime(timestamp, false)
-    -- local timeStrY = getTextManager():MeasureStringY(playersBox.font, timeStr)
-    -- local timeStrX = getTextManager():MeasureStringX(playersBox.font, timeStr)
+    --local timeStr = GenericUI.FormatTime(timestamp, false)
+    -- https://www.lua.org/pil/22.1.html
 
-    --local timeStrStartX = playersBox:getWidth() - timeStrX - 10
+    -- %X doesn't work in kahlua for some reason.
+    local timeStr = tostring(os.date('%H:%m', timestamp))
+    local timeStrY = getTextManager():MeasureStringY(playersBox.font, timeStr)
+    local timeStrX = getTextManager():MeasureStringX(playersBox.font, timeStr)
 
-    --playersBox:drawText(timeStr, timeStrStartX, y + 2 + 2, 1, 1, 1, a, playersBox.font)
+    local timeStrStartX = playersBox:getWidth() - timeStrX - 10
+
+    playersBox:drawText(timeStr, timeStrStartX, y + 2 + 2, 1, 1, 1, a, playersBox.font)
     playersBox:clearStencilRect()
 
     return y + item.height

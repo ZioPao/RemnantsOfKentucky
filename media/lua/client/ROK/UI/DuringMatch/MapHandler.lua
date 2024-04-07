@@ -1,29 +1,43 @@
-local ClientState = require("ROK/ClientState")
+--* LootMap section
 
+require 'ISUI/Maps/ISMapDefinitions'
 
----@diagnostic disable: undefined-field, undefined-global
----@class MapHandler
----@field symbolsAPI WorldMapSymbols
-local MapHandler = {}
+LootMaps.Init.BriaIslandMap = function(mapUI)
+    local mapAPI = mapUI.javaObject:getAPIv1()
+    MapUtils.initDirectoryMapData(mapUI, 'media/maps/ROK-BriaIsle')
+    MapUtils.initDefaultStyleV1(mapUI)
+    --replaceWaterStyle(mapUI)
 
-
----@param symbolsAPI WorldMapSymbols
----@return table
-function MapHandler:new(symbolsAPI)
-    local o = {}
-    setmetatable(o, self)
-    self.__index = self
-
-    o.symbolsAPI = symbolsAPI
-    return o
-end
-
-function MapHandler:write()
+    -- First map => x = 900, y=600
     local currentInstanceData = ClientData.PVPInstances.GetCurrentInstance()
     if currentInstanceData == nil then
-        debugPrint("Trying to draw extraction points, but current pvp instance is null on this client")
+        debugPrint("Trying to draw data on the map, but current pvp instance is null on this client")
         return
     end
+
+
+    local cellSize = 300
+
+    local sizeX = 900
+    local sizeY = 600
+
+    local x1 = currentInstanceData.x * cellSize
+    local y1 = currentInstanceData.y * cellSize
+
+    local x2 = x1 + sizeX
+    local y2 = y1 + sizeY
+
+    debugPrint("MAP BOUNDS => x1=" .. tostring(x1) .. ", y1=" .. tostring(y1) .. ", x2=" .. tostring(x2) .. ", y2=" ..tostring(y2))
+
+    mapAPI:setBoundsInSquares(x1, y1, x2, y2)
+
+--	overlayPNG(mapUI, 11093, 9222, 0.666, "badge", "media/textures/worldMap/MuldraughBadge.png")
+    --overlayPNG(mapUI, lvGridX1(1), lvGridY1(2), 1.0, "legend", "media/textures/worldMap/LouisvilleBadge.png")
+    MapUtils.overlayPaper(mapUI)
+
+    local symbolsApi = mapAPI:getSymbolsAPI()
+    symbolsApi:clear()
+
 
     local extractionPoints = currentInstanceData.extractionPoints
 
@@ -31,9 +45,13 @@ function MapHandler:write()
     for i = 1, #extractionPoints do
         local singleExtractionPoint = extractionPoints[i]
 
-        local x = currentInstanceData.x + (singleExtractionPoint.x1 + singleExtractionPoint.x2)/2 - 150
-        local y = currentInstanceData.y + (singleExtractionPoint.y1 + singleExtractionPoint.y2)/2 -- - 5
-        local iconSymbol = self.symbolsAPI:addTexture("PZEFT-Exit", x, y)
+        local x = currentInstanceData.x + (singleExtractionPoint.x1 + singleExtractionPoint.x2)/2 - 25
+        local y = currentInstanceData.y + (singleExtractionPoint.y1 + singleExtractionPoint.y2)/2
+
+        debugPrint("Ext Point: x=" .. tostring(x) .. ", y=" .. tostring(y))
+
+
+        local iconSymbol = symbolsApi:addTexture("PZEFT-Exit", x, y)
 
         if singleExtractionPoint.isRandom then
             --debugPrint("Found random extraction point, adding it to the map")
@@ -46,75 +64,5 @@ function MapHandler:write()
         iconSymbol:setAnchor(0.0, 0.0)
 
     end
-end
-
-function MapHandler:clear()
-    self.symbolsAPI:clear()
-end
-
-function MapHandler:deactivate()
-    if self.modal then
-        self.modal.no:forceClick()
-        self.modal = nil
-    end
-end
-
--------------------
-
---- Handles writing symbols on the map to show the extraction points
----@param cleanOnly boolean Wheter or not to add the symbols after cleaning
-function ISWorldMap.HandleEFTExits(cleanOnly)
-    local playerNum = getPlayer():getPlayerNum()
-    ISWorldMap.ShowWorldMap(playerNum)
-
-    local function TryHandleMapSymbols()
-        debugPrint("Trying to set the symbols and closing the map")
-        if ISWorldMap_instance == nil then return end
-        debugPrint("Found ISWorldMap_instance")
-        if ISWorldMap_instance.mapAPI == nil then return end
-        debugPrint("Found ISWorldMap_instance map API")
-
-        local symbolsApi = ISWorldMap_instance.mapAPI:getSymbolsAPI()
-        local mapHandler = MapHandler:new(symbolsApi)
-        mapHandler:clear()
-
-        if cleanOnly~= nil and cleanOnly == false then
-            mapHandler:write()
-        end
-
-        -- Handle autocentering and zooming on the zone
-        local settings = WorldMapSettings.getInstance()
-        local zoom = settings:getDouble("WorldMap.Zoom", 50.0)
-        ISWorldMap_instance:onCenterOnPlayer()
-        ISWorldMap_instance.mapAPI:setZoom(zoom)
-
-
-        ISWorldMap.HideWorldMap(playerNum)
-
-        Events.OnTickEvenPaused.Remove(TryHandleMapSymbols)
-    end
-
-
-    Events.OnTickEvenPaused.Add(TryHandleMapSymbols)
 
 end
-
-
-
--- Events.PZEFT_ClientNotInRaidAnymore.Add(function()
---     debugPrint("Player not in raid anymore, cleaning map")
---     ISWorldMap.HandleEFTExits(true)
--- end)
-
-
-Events.PZEFT_ClientModDataReady.Add(function(key)
-    if key == EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID then
-        ISWorldMap.HandleEFTExits(false)
-    end
-end)
-
-Events.PZEFT_OnSuccessfulTeleport.Add(function()
-    -- If we're in a raid, we need to reset the correct symbols.
-    -- If we're not, we're gonna just clean them off the map
-    ISWorldMap.HandleEFTExits(not ClientState.GetIsInRaid())
-end)

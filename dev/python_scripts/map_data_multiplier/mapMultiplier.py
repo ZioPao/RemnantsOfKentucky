@@ -56,10 +56,10 @@ base_lotpack = "world_{x}_{y}.lotpack"
 
 
 # Preprocess, set files to the correct name
-start_x = 100
-end_x = 104
-start_y = 0
-end_y = 2
+start_x = 0
+end_x = 0
+start_y = 100
+end_y = 200
 
 
 for x in range(0, 5):
@@ -73,10 +73,20 @@ for x in range(0, 5):
     print("_________")
 
 
-
 # Actual script running
-for x in range(start_x, end_x):
+for x in range(start_x, end_x+1):
     for y in range(start_y, end_y):
+
+        print(x)
+        print(y)
+
         copyLoop(base_lotheader, start_x=x ,start_y=y)
         copyLoop(base_chunkdata, start_x=x ,start_y=y)
         copyLoop(base_lotpack, start_x=x ,start_y=y)
+
+        print("__________")
+
+
+
+
+        

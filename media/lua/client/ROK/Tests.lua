@@ -49,14 +49,12 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
 
 
             Delay:set(5, CloseRecapScreen)
-
-
         end)
     end
     -- COMMON
 
     local function ExtractAtRandomTime()
-        Delay:set(ZombRand(5,25), ExecuteExtraction)
+        Delay:set(ZombRand(5, 25), ExecuteExtraction)
     end
 
     -- function Tests.LoopStartEndMatch()
@@ -91,8 +89,6 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
         ExtractAtRandomTime()
     end
 
-
-
     --* ADMIN WHO STARTS MATCH HANDLING
 
     local ClientState = require("ROK/ClientState")
@@ -105,16 +101,15 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
 
                 Delay:set(5, function()
                     StartMatch()
-                    Delay:set(ZombRand(10,20), function()
+                    Delay:set(ZombRand(10, 20), function()
                         ExecuteExtraction()
                     end)
                 end)
             end
             sendClientCommand(EFT_MODULES.Match, 'CheckIsRunningMatch', {})
-
         end
 
-        ClientState.isMatchRunning = true       -- Assume that it's true for now
+        ClientState.isMatchRunning = true -- Assume that it's true for now
         Events.EveryOneMinute.Remove(CheckAndRunMatch)
         Events.EveryOneMinute.Add(CheckAndRunMatch)
     end
@@ -133,7 +128,6 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
         Events.PZEFT_ClientNotInRaidAnymore.Add(InnerLoop)
     end
 
-
     --* PLAYERS
     function Tests.LoopExtractAtRandomTime()
         Events.PZEFT_ClientNowInRaid.Add(function()
@@ -141,15 +135,10 @@ TestFramework.registerTestModule("Gameplay", "Debug", function()
         end)
     end
 
-
-
-
     return Tests
-
 end)
 
 TestFramework.registerTestModule("PVP Instances", "Debug", function()
-
     local Tests = {}
     function Tests.PrintPvpInstances()
         ServerData_client_debug.print_pvp_instances()
@@ -168,12 +157,10 @@ TestFramework.registerTestModule("PVP Instances", "Debug", function()
         PZEFT_UTILS.PrintTable(items)
     end
 
-
     return Tests
 end)
 
 TestFramework.registerTestModule("Bank", "Debug", function()
-
     local Tests = {}
     function Tests.GiveMoney()
         ServerData_client_debug.setBankAccount(getPlayer():getUsername(), 1000000)
@@ -225,9 +212,8 @@ end)
 
 
 TestFramework.registerTestModule("UI", "KillTracker", function()
-    
     local Tests = {}
-    
+
     local KillTrackerHandler = require("ROK/Match/KillTrackerHandler")
 
     function Tests.AddFakeKill()
@@ -238,7 +224,5 @@ TestFramework.registerTestModule("UI", "KillTracker", function()
         KillTrackerHandler.AddKill("Fake Kill4", os.time() + 1000)
     end
 
-
     return Tests
-
 end)

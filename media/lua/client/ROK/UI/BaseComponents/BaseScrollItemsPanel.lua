@@ -31,7 +31,7 @@ function BaseScrollItemsPanel:initialiseList(itemsTable)
     if itemsTable == nil then return end
     local sortedItems = {}
 
-    for k,v in pairs(itemsTable) do
+    for _, v in pairs(itemsTable) do
         v.actualItem = getScriptManager():getItem(v.fullType)
         if v.actualItem ~= nil then
             -- TODO Workaround, it could prevent from reaching the desired amount of daily items
@@ -42,7 +42,7 @@ function BaseScrollItemsPanel:initialiseList(itemsTable)
     ---@param a {actualItem : Item}
     ---@param b {actualItem : Item}
     ---@return boolean
-    local function SortByName(a,b)
+    local function SortByName(a, b)
         return a.actualItem:getDisplayName() < b.actualItem:getDisplayName()
     end
 
@@ -50,11 +50,10 @@ function BaseScrollItemsPanel:initialiseList(itemsTable)
 
     -- Sorting
 
-    for i=1, #sortedItems do
+    for i = 1, #sortedItems do
         local data = sortedItems[i]
         data.actualItem = getScriptManager():getItem(data.fullType)
         self.scrollingListBox:addItem(data.fullType, data)
-
     end
 
     -- Select first item in the list automatically
@@ -62,7 +61,6 @@ function BaseScrollItemsPanel:initialiseList(itemsTable)
         self.scrollingListBox.selected = 1
     end
 end
-
 
 ---This is run on the the ScrollingBoxList!
 ---@param x number
@@ -115,7 +113,6 @@ end
 
 function BaseScrollItemsPanel:prerender()
     ISPanelJoypad.prerender(self)
-
 end
 
 ---@return selectedItemType

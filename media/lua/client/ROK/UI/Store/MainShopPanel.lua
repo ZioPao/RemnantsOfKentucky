@@ -131,14 +131,14 @@ function MainShopPanel:createChildren()
     local catHeight = self.height - th - rh - addedHeight - 50
 
     --* ESSENTIAL ITEMS *--
-    self.essentialItemsCat = BuyPanel:new(0, 0, self.width, catHeight, ClientShopManager.GetEssentialItems(), "ESSENTIAL")
+    self.essentialItemsCat = BuyPanel:new(0, 0, self.width, catHeight, ClientShopManager.GetItemsWithTag("ESSENTIALS"), "ESSENTIALS")
     self.essentialItemsCat:initialise()
-    self.panel:addView(getText("IGUI_Shop_TabEssential"), self.essentialItemsCat, self.width / 3 - 2, addedHeight)
+    self.panel:addView(getText("IGUI_Shop_TabEssentials"), self.essentialItemsCat, self.width / 3 - 2, addedHeight)
     self.essentialItemsCat.category = 1
     table.insert(self.categories, self.essentialItemsCat)
 
     --* DAILY ITEMS *--
-    self.dailyItemsCat = BuyPanel:new(0, 0, self.width, catHeight, ClientShopManager.GetDailyItems(), "DAILY")
+    self.dailyItemsCat = BuyPanel:new(0, 0, self.width, catHeight, ClientShopManager.GetItemsWithTag("DAILY"), "DAILY")
     self.dailyItemsCat:initialise()
     self.panel:addView(getText("IGUI_Shop_TabDaily"), self.dailyItemsCat, self.width / 3 - 2, addedHeight)
     self.dailyItemsCat.category = 2
@@ -152,7 +152,7 @@ function MainShopPanel:createChildren()
     table.insert(self.categories, self.sellCat)
 
     -- Set default stuff
-    self.panel:activateView(getText("IGUI_Shop_TabEssential"))
+    self.panel:activateView(getText("IGUI_Shop_TabEssentials"))
 end
 
 function MainShopPanel:update()

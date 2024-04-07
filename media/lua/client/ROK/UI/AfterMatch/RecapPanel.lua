@@ -12,7 +12,6 @@ local screens = {
     [5] = getTexture("media/textures/RecapScreen/5.png"),
 }
 
-
 ---@class RecapPanel : TextureScreen
 ---@field text string
 ---@field textX number
@@ -48,24 +47,38 @@ function RecapPanel:createChildren()
     local dimX = 1.45015105740181
     local dimY = 1.31067961165049
 
-    debugPrint(self.width)
-    debugPrint(self.height)
+    -- debugPrint(self.width)
+    -- debugPrint(self.height)
 
-    local x = self.width/scaleX
-    local y = self.height/scaleY
+    local x = self.width / scaleX
+    local y = self.height / scaleY
 
-    local widthPanel = self.width/dimX
-    local heightPanel = self.height/dimY
+    local widthPanel = self.width / dimX
+    local heightPanel = self.height / dimY
 
     self.mainContainerPanel = ISPanel:new(x, y, widthPanel, heightPanel)
+    self.mainContainerPanel.backgroundColor = { r = 0, g = 0, b = 0, a = 0 }
     self:addChild(self.mainContainerPanel)
 
+    local itemsStr = getText("IGUI_EFT_Recap_Items")
+
+    local labelHeight = getTextManager():MeasureStringY(UIFont.Large, itemsStr) * 2
     local marginX = 10
     local marginY = 10
-    local boxHeight = self.mainContainerPanel.height - marginY*2
+    local boxHeight = self.mainContainerPanel.height - labelHeight - (marginY * 2)
 
     -- List of items that the player has extracted
-    self.itemsBox = RecapScrollItemsPanel:new(marginX, marginY, self.mainContainerPanel.width/1.5, boxHeight)
+    local itemsWidth = self.mainContainerPanel.width / 1.5
+
+    self.itemsLabel = ISRichTextPanel:new(marginX, marginY, itemsWidth, labelHeight)
+    self.itemsLabel.backgroundColor = { r = 0, g = 0, b = 0, a = 1 }
+    self.itemsLabel.borderColor = { r = 1, g = 1, b = 1, a = 1 }
+    self.itemsLabel:setText(itemsStr)
+    self.itemsLabel:initialise()
+    self.itemsLabel:paginate()
+    self.mainContainerPanel:addChild(self.itemsLabel)
+
+    self.itemsBox = RecapScrollItemsPanel:new(marginX, marginY + labelHeight, itemsWidth, boxHeight)
     self.itemsBox:initalise()
     self.mainContainerPanel:addChild(self.itemsBox)
 
@@ -73,22 +86,37 @@ function RecapPanel:createChildren()
         self.itemsBox:initialiseList(self.itemsList)
     end
 
-    local remainingX = self.itemsBox:getWidth()
-    local killedPlayersBoxWidth = self.mainContainerPanel:getWidth() - self.itemsBox:getWidth() - marginX
+
     -- List of players that the current player has killed
-    self.killedPlayersBox = RecapScrollKilledPlayersPanel:new(remainingX, marginY, killedPlayersBoxWidth, boxHeight)
+    local killsStr = getText("IGUI_EFT_Recap_Kills")
+    local remainingX = self.itemsBox:getWidth()
+    local killedPlayersWidth = self.mainContainerPanel:getWidth() - self.itemsBox:getWidth() - marginX
+
+
+    self.killsLabel = ISRichTextPanel:new(remainingX, marginY, killedPlayersWidth, labelHeight)
+    self.killsLabel.backgroundColor = { r = 0, g = 0, b = 0, a = 1 }
+    self.killsLabel.borderColor = { r = 1, g = 1, b = 1, a = 1 }
+    self.killsLabel:setText(killsStr)
+    self.killsLabel:initialise()
+    self.killsLabel:paginate()
+    self.mainContainerPanel:addChild(self.killsLabel)
+
+
+    self.killedPlayersBox = RecapScrollKilledPlayersPanel:new(remainingX, marginY + labelHeight, killedPlayersWidth,
+        boxHeight)
     self.killedPlayersBox:initialise()
     self.mainContainerPanel:addChild(self.killedPlayersBox)
-
 end
 
 function RecapPanel:setItemsList(list)
     self.itemsList = list
 end
+
 function RecapPanel.OnSpacePressed(key)
     if key ~= Keyboard.KEY_SPACE then return end
     RecapPanel.Close()
 end
+
 Events.OnKeyStartPressed.Add(RecapPanel.OnSpacePressed)
 
 ---comment
@@ -102,7 +130,6 @@ end
 --Events.PZEFT_LootRecapReady.Add(RecapPanel.SetupItemsList)
 
 function RecapPanel:prerender()
-
     TextureScreen.prerender(self)
     local alpha = 0.8 - self.closingTime
 
@@ -112,15 +139,14 @@ function RecapPanel:prerender()
 
     self.itemsBox.scrollingListBox.backgroundColor.a = alpha
     self.killedPlayersBox.scrollingListBox.backgroundColor.a = alpha
-
 end
-
 
 function RecapPanel:close()
     debugPrint("Closing RecapPanel")
     TextureScreen.close(self)
     RecapPanel.instance = nil
 end
+
 -----
 
 

@@ -13,16 +13,15 @@ function ClientData.OnReceiveGlobalModData(key, modData)
         debugPrint("Received modData for " .. key)
         ModData.add(key, modData)
 
-       -- PZEFT_UTILS.PrintTable(modData)
+        -- PZEFT_UTILS.PrintTable(modData)
 
-       if key == EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID then
-            print("Instance id = " .. modData.id)
-       end
+        if key == EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID then
+            debugPrint("Instance id = " .. modData.id)
+        end
 
         -- The client has collected the mod data from the server
         triggerEvent("PZEFT_ClientModDataReady", key)
     end
-
 end
 
 Events.OnReceiveGlobalModData.Add(ClientData.OnReceiveGlobalModData)
@@ -35,6 +34,7 @@ function ClientData.PVPInstances.GetPvpInstances()
     return ModData.getOrCreate(EFT_ModDataKeys.PVP_INSTANCES)
 end
 
+---@return pvpInstanceTable
 function ClientData.PVPInstances.GetCurrentInstance()
     local currInstanceIdTab = ModData.get(EFT_ModDataKeys.PVP_CURRENT_INSTANCE_ID)
     local instancesData = ModData.get(EFT_ModDataKeys.PVP_INSTANCES)
@@ -47,7 +47,7 @@ end
 
 ClientData.Shop = ClientData.Shop or {}
 
+---@return shopItemsTable
 function ClientData.Shop.GetShopItems()
     return ModData.getOrCreate(EFT_ModDataKeys.SHOP_ITEMS)
 end
-

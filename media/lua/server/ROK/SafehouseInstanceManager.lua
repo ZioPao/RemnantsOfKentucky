@@ -21,8 +21,12 @@ end
 function SafehouseInstanceManager.Reset()
     ServerData.SafehouseInstances.SetSafehouseInstances({})
     ServerData.SafehouseInstances.SetSafehouseAssignedInstances({})
-    for i, v in ipairs(PZ_EFT_CONFIG.SafehouseCells) do
-        SafehouseInstanceManager.LoadSafehouseInstances(v.x, v.y)
+    SafehouseInstanceManager.Load()
+end
+
+function SafehouseInstanceManager.Load()
+    for y = PZ_EFT_CONFIG.SafehouseCells.startY, PZ_EFT_CONFIG.SafehouseCells.endY do
+        SafehouseInstanceManager.LoadSafehouseInstances(0, y)
     end
 end
 
@@ -36,9 +40,9 @@ function SafehouseInstanceManager.LoadSafehouseInstances(cellX, cellY)
     for y = 0, safehouseSettings.safehouseGrid.y.count - 1 do
         for x = 0, safehouseSettings.safehouseGrid.x.count - 1 do
             local relativeX = safehouseSettings.firstSafehouse.relative.x +
-                                  (x * safehouseSettings.safehouseGrid.x.spacing)
+                (x * safehouseSettings.safehouseGrid.x.spacing)
             local relativeY = safehouseSettings.firstSafehouse.relative.y +
-                                  (y * safehouseSettings.safehouseGrid.y.spacing)
+                (y * safehouseSettings.safehouseGrid.y.spacing)
             local relativeZ = safehouseSettings.firstSafehouse.relative.z
 
             local wX = (cellX * 300) + relativeX
@@ -81,7 +85,7 @@ function SafehouseInstanceManager.GetPlayerSafehouseKey(username)
     return nil
 end
 
---- Unassign a safehouse instance 
+--- Unassign a safehouse instance
 ---@param key string
 function SafehouseInstanceManager.UnassignSafehouseInstance(key)
     local assignedSafehouses = ServerData.SafehouseInstances.GetSafehouseAssignedInstances()
@@ -127,7 +131,7 @@ function SafehouseInstanceManager.GetOrAssignSafehouse(player)
 
         SafehouseInstanceManager.AssignSafehouseInstanceToPlayer(playerSafehouseKey, id)
 
-        -- Clean crates, send starter kit 
+        -- Clean crates, send starter kit
         sendServerCommand(player, EFT_MODULES.Safehouse, 'PrepareNewSafehouse', {})
     end
 
@@ -154,7 +158,6 @@ end
 
 ---@param pl IsoPlayer
 function SafehouseInstanceManager.ResetPlayerSafehouse(pl)
-
     -- FIX This is wrong conceptually. This will just re-assign the old safehouse at the end of the day.
 
     debugPrint("ResetSafehouseAllocation")
@@ -170,14 +173,10 @@ function SafehouseInstanceManager.ResetPlayerSafehouse(pl)
     local safehouseCoords = SafehouseInstanceManager.GetSafehouseInstanceByKey(safehouseKey)
     sendServerCommand(pl, EFT_MODULES.Safehouse, 'SetSafehouse', safehouseCoords)
     sendServerCommand(pl, EFT_MODULES.Safehouse, "TeleportToSafehouse", safehouseCoords)
-
-
 end
 
 local function OnLoad()
-    for i, v in ipairs(PZ_EFT_CONFIG.SafehouseCells) do
-        SafehouseInstanceManager.LoadSafehouseInstances(v.x, v.y)
-    end
+    SafehouseInstanceManager.Load()
 end
 
 Events.OnLoad.Add(OnLoad)
@@ -202,7 +201,7 @@ SafehouseInstanceManager.debug.displayAssignedSafehouseInstances = function()
 end
 
 ------------------------------------------------------------------------
---* COMMANDS FROM SERVER *--
+--* COMMANDS FROM CLIENTS *--
 ------------------------------------------------------------------------
 require("ROK/DebugTools")
 local MODULE = EFT_MODULES.Safehouse
@@ -228,11 +227,9 @@ function SafehouseInstanceManagerCommands.RequestSafehouseAllocation(playerObj, 
     end
 end
 
-
 ---Clean current safehouse from a specific player and reassign a new one
 ---@param args {playerID : number}
 function SafehouseInstanceManagerCommands.ResetSafehouseAllocation(_, args)
-
     local pl = getPlayerByOnlineID(args.playerID)
 
     debugPrint("ResetSafehouseAllocation")
@@ -246,8 +243,6 @@ function SafehouseInstanceManagerCommands.ResetSafehouseAllocation(_, args)
     local safehouseCoords = SafehouseInstanceManager.GetSafehouseInstanceByKey(safehouseKey)
     sendServerCommand(pl, MODULE, 'SetSafehouse', safehouseCoords)
     sendServerCommand(pl, EFT_MODULES.Safehouse, "TeleportToSafehouse", safehouseCoords)
-
-
 end
 
 ---@param args {id : number}
@@ -264,7 +259,6 @@ function SafehouseInstanceManagerCommands.DespawnZombies(args)
         end
     end
 end
-
 
 local function OnSafehouseInstanceManagerCommand(module, command, playerObj, args)
     if module == MODULE and SafehouseInstanceManagerCommands[command] then

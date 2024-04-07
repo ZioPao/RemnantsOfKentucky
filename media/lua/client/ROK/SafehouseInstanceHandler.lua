@@ -40,9 +40,12 @@ end
 function SafehouseInstanceHandler.WipeCrates()
     local function RunWipe()
         local cratesTable = SafehouseInstanceHandler.GetCrates()
-        if cratesTable == nil then debugPrint("No crates to wipe") return end
+        if cratesTable == nil then
+            debugPrint("No crates to wipe")
+            return
+        end
 
-        for i=1, #cratesTable do
+        for i = 1, #cratesTable do
             local crate = cratesTable[i]
             crate:getContainer():clear()
         end
@@ -60,18 +63,29 @@ function SafehouseInstanceHandler.TryToAddToCrate(fullType)
         return nil
     end
     local item = InventoryItemFactory.CreateItem(fullType)
-    local plNum = getPlayer():getPlayerNum()
+    local player = getPlayer()
+    local plNum = player:getPlayerNum()
 
     local function GetFirstAvailableCrate()
-        for i=1, #cratesTable do
+        for i = 1, #cratesTable do
             local crate = cratesTable[i]
             local inv = crate:getContainer()
-            local itemContainerGrid = ItemContainerGrid.Create(inv, plNum)
 
-            -- Check if can fit item
-            if itemContainerGrid:canAddItem(item) then
-                debugPrint("Found available crate => " .. tostring(i))
-                return crate
+
+            if PZ_EFT_CONFIG.SupportedMods.inventoryTetris then
+                --* INVENTORY TETRIS *--
+                local itemContainerGrid = ItemContainerGrid.Create(inv, plNum)
+
+                -- Check if can fit item
+                if itemContainerGrid:canAddItem(item) then
+                    debugPrint("Found available crate => " .. tostring(i))
+                    return crate
+                end
+            else
+                --* VANILLA *--
+                if inv:hasRoomFor(player, item:getWeight()) then
+                    return crate
+                end
             end
         end
 
@@ -96,53 +110,57 @@ end
 
 function SafehouseInstanceHandler.AddToCrateOrdered(fullType, index, x, y, isRotated)
     local cratesTable = SafehouseInstanceHandler.GetCrates()
-    if cratesTable == nil or #cratesTable == 0 then debugPrint("Crates are nil or empty!") return nil end
+    if cratesTable == nil or #cratesTable == 0 then
+        debugPrint("Crates are nil or empty!")
+        return nil
+    end
     local crateObj = cratesTable[index]
     local inv = crateObj:getContainer()
     local grid = ItemContainerGrid.Create(inv, getPlayer():getPlayerNum())
     local item = InventoryItemFactory.CreateItem(fullType)
 
     if grid:canAddItem(item) then
-        debugPrint("Adding " .. fullType .. " to crate " .. tostring(index) .. " at X=" .. tostring(x) .. ", Y=" .. tostring(y))
+        debugPrint("Adding " ..
+        fullType .. " to crate " .. tostring(index) .. " at X=" .. tostring(x) .. ", Y=" .. tostring(y))
         inv:addItemOnServer(item)
         inv:AddItem(item)
         inv:setDrawDirty(true)
         inv:setHasBeenLooted(true)
 
         grid:insertItem(item, x, y, 1, isRotated)
-    
+
         ISInventoryPage.renderDirty = true
     end
 end
 
-
---* Starter kit 
+--* Starter kit
 
 ---@param playerObj IsoPlayer
 function SafehouseInstanceHandler.GiveStarterKit(playerObj)
-
     -- 10 x 10 with tetris inventory
     function RunGiveStarterKit()
-        for i=1, #PZ_EFT_CONFIG.StarterKit do
-
+        for i = 1, #PZ_EFT_CONFIG.StarterKit do
             ---@type starterKitElement
             local element = PZ_EFT_CONFIG.StarterKit[i]
             debugPrint("Adding " .. element.fullType)
-            for j=1, #element.positions do
+            for j = 1, #element.positions do
                 local loc = element.positions[j]
                 debugPrint("Positions: x=" .. tostring(loc.x) .. ", y=" .. tostring(loc.y))
-                SafehouseInstanceHandler.AddToCrateOrdered(
-                    element.fullType,
-                    element.crateIndex,
-                    loc.x,
-                    loc.y,
-                    loc.isRotated)
+                if PZ_EFT_CONFIG.SupportedMods.inventoryTetris then
+                    SafehouseInstanceHandler.AddToCrateOrdered(
+                        element.fullType,
+                        element.crateIndex,
+                        loc.x,
+                        loc.y,
+                        loc.isRotated)
+                else
+                    SafehouseInstanceHandler.TryToAddToCrate(element.fullType)
+                end
             end
         end
         -- Notify the player
         playerObj:Say(getText("UI_EFT_Say_ReceivedStartedKit"))
     end
-
 
     SafehouseInstanceHandler.WaitForSafehouseAndRun(RunGiveStarterKit, {})
 end
@@ -164,26 +182,31 @@ end
 function SafehouseInstanceHandler.IsDeliveryPointClear()
     local sq = SafehouseInstanceHandler.GetMoveableDeliveryPoint()
     if sq == nil then return false end
-	for i=1, sq:getObjects():size() do
-		local obj = sq:getObjects():get(i-1)
-        print(obj:getName())
-        local spr = obj:getSprite()
 
-        local props = spr:getProperties()
-        if props:Is("IsMoveAble") then
-            --debugPrint("Found moveable in delivery area, can't put a new one")
-            return false
+    debugPrint("Checking if delivery point is clear")
+
+    for i = 1, sq:getObjects():size() do
+        ---@type IsoObject
+        local obj = sq:getObjects():get(i - 1)
+
+        if obj then
+            debugPrint("Obj => " .. tostring(obj:getName()))
+            local spr = obj:getSprite()
+
+            local props = spr:getProperties()
+            if props:Is("IsMoveAble") then
+                --debugPrint("Found moveable in delivery area, can't put a new one")
+                return false
+            end
         end
-	end
+    end
 
     return true
-
 end
 
 ---@param itemObj Moveable
----@return nil
+---@return IsoObject?
 function SafehouseInstanceHandler.TryToPlaceMoveable(itemObj)
-
     local sq = SafehouseInstanceHandler.GetMoveableDeliveryPoint()
     if sq == nil then return end
 
@@ -193,11 +216,14 @@ function SafehouseInstanceHandler.TryToPlaceMoveable(itemObj)
         local props = ISMoveableSpriteProps.new(IsoObject.new(sq, sprite):getSprite())
         props.rawWeight = 10
         props:placeMoveableInternal(sq, itemObj, sprite)
-    --else
-       --debugPrint("Delivery point is not clear! Can't put items there")
+
+        return sq:getFloor()
+
+        --else
+        --debugPrint("Delivery point is not clear! Can't put items there")
     end
 
-
+    return nil
 end
 
 --* Safehouse Checks
@@ -248,12 +274,10 @@ function SafehouseInstanceHandler.WaitForSafehouseAndRun(funcToRun, args)
     Events.OnPlayerUpdate.Add(WaitAndRun)
 end
 
-
 ---@param sq IsoGridSquare
 ---@param excludeDeliveryPoint boolean?
 ---@return boolean
 function SafehouseInstanceHandler.IsInStaticArea(sq, excludeDeliveryPoint)
-
     excludeDeliveryPoint = excludeDeliveryPoint or true
 
     local isInStaticArea = false
@@ -270,13 +294,13 @@ function SafehouseInstanceHandler.IsInStaticArea(sq, excludeDeliveryPoint)
             z2 = 0
         }
 
-        isInStaticArea = PZEFT_UTILS.IsInRectangle({x = sq:getX(), y = sq:getY(), z = sq:getZ() }, staticRoomArea)
+        isInStaticArea = PZEFT_UTILS.IsInRectangle({ x = sq:getX(), y = sq:getY(), z = sq:getZ() }, staticRoomArea)
 
         if excludeDeliveryPoint then
             local movDeliverySq = SafehouseInstanceHandler.GetMoveableDeliveryPoint()
             if movDeliverySq and isInStaticArea then
                 debugPrint("Checking delivery point")
-                isInStaticArea = not(movDeliverySq:getX() == sq:getX() and movDeliverySq:getY() == sq:getY())
+                isInStaticArea = not (movDeliverySq:getX() == sq:getX() and movDeliverySq:getY() == sq:getY())
             end
         end
     end
