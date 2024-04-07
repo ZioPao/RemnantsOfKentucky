@@ -205,17 +205,6 @@ function BeforeMatchAdminPanel:update()
     self.btnEconomyManagement:setEnable(not isStartingMatch)
 end
 
----@param amount integer
-function BeforeMatchAdminPanel:setAvailableInstancesAmount(amount)
-    self.availableInstancesAmount = amount
-end
-
-function BeforeMatchAdminPanel:setAvailableInstancesText(text)
-    local valInstancesAvailableText = " <CENTRE> " .. tostring(text)
-    self.labelValInstancesAvailable:setText(valInstancesAvailableText)
-    self.labelValInstancesAvailable.textDirty = true
-end
-
 function BeforeMatchAdminPanel:render()
     BaseAdminPanel.render(self)
     if self.openedPanel then
@@ -231,6 +220,27 @@ function BeforeMatchAdminPanel:close()
 
     ISCollapsableWindow.close(self)
 end
+
+-- TODO Merge admin panels in one with switching modules instead
+
+
+--* Before Match
+---@param amount integer
+function BeforeMatchAdminPanel:setAvailableInstancesAmount(amount)
+    self.availableInstancesAmount = amount
+end
+
+function BeforeMatchAdminPanel:setAvailableInstancesText(text)
+    local valInstancesAvailableText = " <CENTRE> " .. tostring(text)
+    self.labelValInstancesAvailable:setText(valInstancesAvailableText)
+    self.labelValInstancesAvailable.textDirty = true
+end
+
+
+--* During Match
+
+
+
 
 --*****************************************--
 ---@return ISCollapsableWindow?
