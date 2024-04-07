@@ -504,6 +504,7 @@ end
 ---@param playerObj IsoPlayer player requesting extraction
 function MatchCommands.RequestExtraction(playerObj)
     local instance = MatchController.GetHandler()
+    debugPrint("Running extraction for player " .. playerObj:getUsername())
     if instance == nil then return end
     instance:extractPlayer(playerObj)
 end

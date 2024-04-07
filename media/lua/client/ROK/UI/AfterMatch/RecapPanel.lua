@@ -17,7 +17,6 @@ local screens = {
 ---@field textX number
 ---@field textY number
 ---@field isClosing boolean
----@field closingTime number
 ---@field itemsList table
 local RecapPanel = TextureScreen:derive("RecapPanel")
 
@@ -131,14 +130,10 @@ end
 
 function RecapPanel:prerender()
     TextureScreen.prerender(self)
-    local alpha = 0.8 - self.closingTime
 
     --debugPrint("Setting alpha to itemsBox and killerPlayerBox to " .. tostring(alpha))
-
-    if alpha < 0 then alpha = 0 end
-
-    self.itemsBox.scrollingListBox.backgroundColor.a = alpha
-    self.killedPlayersBox.scrollingListBox.backgroundColor.a = alpha
+    self.itemsBox.scrollingListBox.backgroundColor.a = self.cAlpha
+    self.killedPlayersBox.scrollingListBox.backgroundColor.a = self.cAlpha
 end
 
 function RecapPanel:close()

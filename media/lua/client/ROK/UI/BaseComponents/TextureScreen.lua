@@ -3,7 +3,7 @@
 ---@field textX number
 ---@field textY number
 ---@field isClosing boolean
----@field closingTime number
+---@field cAlpha number
 local TextureScreen = ISPanel:derive("TextureScreen")
 
 ---@return TextureScreen
