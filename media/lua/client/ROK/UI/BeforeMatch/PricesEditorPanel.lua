@@ -8,6 +8,10 @@ local REFRESH_ICON = getTexture("media/textures/BeforeMatchPanel/Loop.png") -- h
 
 -------------------------------
 
+-- FIX DAILY TAG WILL FUCK EVERYTHING WHEN WE APPLY FROM HERE!!!
+
+
+
 ---@class PricesEditorScrollingTable : ISPanel
 ---@field datas ISScrollingListBox
 local PricesEditorScrollingTable = ISPanel:derive("PricesEditorScrollingTable")
@@ -46,11 +50,11 @@ function PricesEditorScrollingTable:createChildren()
     self.datas.font = UIFont.NewSmall
     self.datas.doDrawItem = self.drawDatas
     self.datas.drawBorder = true
-    self.datas:addColumn("FullType", 0)
 
-    local columnWidth = self.width / 3
-    self.datas:addColumn("Tag", columnWidth)
-    self.datas:addColumn("Price", columnWidth * 2)
+
+    self.datas:addColumn("FullType", 0)
+    self.datas:addColumn("Tag", self.width/2)
+    self.datas:addColumn("Price", self.width - 50)
     self:addChild(self.datas)
 end
 
@@ -130,7 +134,7 @@ function PricesEditorPanel.Open(x, y, width, height)
         PricesEditorPanel.instance:close()
     end
 
-    local modal = PricesEditorPanel:new(x, y, width, height)
+    local modal = PricesEditorPanel:new(x, y, width + 350, height)
     modal:initialise()
     modal:addToUIManager()
     modal.instance:setKeyboardFocus()
@@ -174,9 +178,6 @@ function PricesEditorPanel:onTagChange()
     local selectedTag = self.comboTag:getOptionText(self.comboTag.selected)
 
     item.tag = selectedTag
-
-    -- item.tags = {}      -- Workaround, we should have only a single tag, not multiples.
-    -- item.tags[selectedTag] = true
 end
 
 function PricesEditorPanel:createChildren()

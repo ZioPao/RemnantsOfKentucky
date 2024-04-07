@@ -63,7 +63,7 @@ local function GivePlayerBriaIslandMap()
     player:getInventory():AddItem("ROK.BriaIslandMap")      -- Hidden item to use the map
 end
 
-Events.OnNewGame.Add(GivePlayerBriaIslandMap)
+Events.OnCreatePlayer.Add(GivePlayerBriaIslandMap)
 
 
 local og_ISMapWrapper_new = ISMapWrapper.new
