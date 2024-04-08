@@ -26,10 +26,10 @@ local function CheckCanPutInSellTab(item)
     local pl = getPlayer()
 
     if pl:isEquipped(item) or pl:isEquippedClothing(item) then
-        triggerEvent("PZEFT_OnFailedSellTransfer", "isEquipped")
+        triggerEvent("PZEFT_OnFailedSellTransfer", getText("IGUI_Shop_Sell_IsEquipped"))
         return false
     elseif item:isFavorite() then
-        triggerEvent("PZEFT_OnFailedSellTransfer", "isFavorite")
+        triggerEvent("PZEFT_OnFailedSellTransfer", getText("IGUI_Shop_Sell_IsFavorite"))
         return false
     end
 
@@ -38,7 +38,7 @@ local function CheckCanPutInSellTab(item)
     if not isValid then
         debugPrint("Couldn't find item in players container, checking inventory")
         if luautils.haveToBeTransfered(pl, item) then
-            triggerEvent("PZEFT_OnFailedSellTransfer", "haveToBeTransferred")
+            triggerEvent("PZEFT_OnFailedSellTransfer", getText("IGUI_Shop_Sell_HaveToBeTransferred"))
             return false
         end
     end
