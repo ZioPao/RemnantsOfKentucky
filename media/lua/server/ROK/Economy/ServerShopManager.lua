@@ -172,6 +172,10 @@ function ShopCommands.TransmitShopItems(playerObj)
     sendServerCommand(playerObj, EFT_MODULES.Shop, "ReceiveShopItems", items)
 end
 
+function ShopCommands.ReloadData()
+    ServerShopManager.LoadShopPrices()
+end
+
 ---@param playerObj IsoPlayer
 ---@param args {items: table<integer, {fullType : string, tag : string, basePrice : number}>}
 function ShopCommands.OverrideShopItems(playerObj, args)
