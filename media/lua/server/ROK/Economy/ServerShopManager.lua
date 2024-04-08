@@ -75,6 +75,9 @@ end
 ---@private
 ---@return table<integer, {fullType : string, tag : string, basePrice : integer}>
 function ServerShopManager.LoadDataFromJson()
+
+    -- TODO Force load from admin panel
+
     -- Load default JSON, if there's no custom one in the cachedir
     local fileName = PZ_EFT_CONFIG.Shop.jsonName
     local readData = json.readFile(fileName)
@@ -145,7 +148,9 @@ Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
 
 function ServerShopManager.RetransmitItems()
     debugPrint("Regeneraint daily items and retransmitting")
-    ServerShopManager.LoadShopPrices()
+    ServerShopManager.GenerateDailyItems()
+    ModData.transmit(EFT_ModDataKeys.SHOP_ITEMS)
+    --ServerShopManager.LoadShopPrices()
     --ModData.transmit(EFT_ModDataKeys.SHOP_ITEMS)
 end
 

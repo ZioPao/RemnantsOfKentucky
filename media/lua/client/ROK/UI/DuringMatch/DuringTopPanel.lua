@@ -29,7 +29,7 @@ function DuringTopPanel.RequestAlivePlayersUpdate()
     ---@type DuringMatchAdminPanel
     local parent = DuringTopPanel.instance:getParent()
 
-    debugPrint("Requesting players amount")
+    --debugPrint("Requesting players amount")
 
     if parent == nil or parent:getIsMatchEnded() == true then
         debugPrint("DuringTopPanel parent does not exist or match has ended, stopping request amount loop")
@@ -56,7 +56,7 @@ function DuringTopPanel:prerender()
 
     ---@type ISLabel
     local alivePlayersLabelVal = self.alivePlayersLabelVal
-    alivePlayersLabelVal:setName("")
+    alivePlayersLabelVal:setName(tostring(ClientState.GetAlivePlayersAmount()))
 end
 
 return DuringTopPanel
