@@ -4,6 +4,8 @@
 ---@field isAutomaticStart boolean
 ---@field currentTime number
 ---@field extractionTime number
+---@field availableInstances number
+---@field alivePlayersAmount number
 ---@field previousExtractionPointsStatus table
 ---@field extractionPointsStatus table
 local ClientState = {
@@ -12,6 +14,9 @@ local ClientState = {
     isAutomaticStart = false,
     currentTime = -1,
 
+    -- Admin panels
+    availableInstances = -1,
+    alivePlayersAmount = -1,
 
     isMatchRunning = false,
     extractionTime = -1,
@@ -52,6 +57,16 @@ function ClientState.SetExtractionTime(val)
     ClientState.extractionTime = val
 end
 
+---@param val number
+function ClientState.SetAvailableInstances(val)
+    ClientState.availableInstances = val
+end
+
+---@param val number
+function ClientState.SetAlivePlayersAmount(val)
+    ClientState.alivePlayersAmount = val
+end
+
 ---@param val boolean
 function ClientState.SetIsStartingMatch(val)
     ClientState.isStartingMatch = val
@@ -65,6 +80,14 @@ end
 
 function ClientState.GetIsInRaid()
     return ClientState.isInRaid
+end
+
+function ClientState.GetAvailableInstances()
+    return ClientState.availableInstances
+end
+
+function ClientState.GetAlivePlayersAmount()
+    return ClientState.alivePlayersAmount
 end
 
 function ClientState.GetIsMatchRunning()

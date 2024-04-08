@@ -9,9 +9,6 @@ local REFRESH_ICON = getTexture("media/textures/BeforeMatchPanel/Loop.png") -- h
 
 -------------------------------
 
--- FIX DAILY TAG WILL FUCK EVERYTHING WHEN WE APPLY FROM HERE!!!
-
-
 
 ---@class PricesEditorScrollingTable : ISPanel
 ---@field datas ISScrollingListBox
@@ -333,7 +330,9 @@ end
 
 function PricesEditorPanel:onClick(button)
     if button.internal == 'REFRESH' then
-        self:fillList()
+        sendClientCommand(EFT_MODULES.Shop, 'ReloadData', {})
+        self.mainCategory.datas:clear() -- Empty for now, until we get the new moddata
+
     elseif button.internal == 'APPLY' then
         local confY = self:getY() + self:getHeight() + 20
         local text = "Are you sure you want to apply these prices?"
@@ -365,6 +364,17 @@ function PricesEditorPanel:onClick(button)
             end)
     end
 end
+
+
+local function UpdateListAfterUpdate(key)
+    if key ~= EFT_ModDataKeys.SHOP_ITEMS then return end
+    if PricesEditorPanel.instance and PricesEditorPanel.instance:getIsVisible() then
+        PricesEditorPanel.instance:fillList()
+    end
+end
+
+Events.PZEFT_ClientModDataReady.Add(UpdateListAfterUpdate)
+
 
 function PricesEditorPanel:setKeyboardFocus()
     local view = self.panel:getActiveView()
