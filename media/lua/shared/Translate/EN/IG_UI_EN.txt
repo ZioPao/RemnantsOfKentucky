@@ -43,9 +43,9 @@ IG_UI_EN = {
 
     
     // ADMIN PANEL - DURING MATCH
-    IGUI_EFT_AdminPanel_MatchTime = "Match time: %1",
+    IGUI_EFT_AdminPanel_Top_MatchTime = "Match time",
+    IGUI_EFT_AdminPanel_Top_AlivePlayers = "Alive Players"
     IGUI_EFT_AdminPanel_MatchEnded = "<SIZE:large> <CENTRE> <RED> The match has ended.",
-    IGUI_EFT_AdminPanel_MatchOptions = "Match Options",
 
 
     IGUI_TimePanel_MatchStartingManually = "The match is starting",

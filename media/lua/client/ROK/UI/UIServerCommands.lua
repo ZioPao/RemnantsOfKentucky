@@ -83,9 +83,14 @@ end
 
 ---@param args {amount : number}
 function InterfaceCommands.ReceiveAlivePlayersAmount(args)
-    -- TODO Should set it to the instance, not set it from there
-    if DuringMatchAdminPanel.instance == nil then return end
-    DuringMatchAdminPanel.instance:setAlivePlayersText(tostring(args.amount))
+    ClientState.SetAlivePlayersAmount(args.amount)
+
+
+
+
+    -- -- TODO Should set it to the instance, not set it from there
+    -- if DuringMatchAdminPanel.instance == nil then return end
+    -- DuringMatchAdminPanel.instance:setAlivePlayersText(tostring(args.amount))
 
 end
 

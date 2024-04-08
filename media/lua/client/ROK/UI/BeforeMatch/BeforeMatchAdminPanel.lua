@@ -72,7 +72,6 @@ function BeforeMatchAdminPanel:update()
     BaseAdminPanel.update(self)
 
     -- Buttons
-
     self.btnToggleMatch:setEnable(ClientState.GetAvailableInstances() > 0 and not ClientState.GetIsAutomaticStart())
 
     -- When starting the match, we'll disable various buttons
