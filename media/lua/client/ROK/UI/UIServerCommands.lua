@@ -1,5 +1,6 @@
 local BeforeMatchAdminPanel = require("ROK/UI/BeforeMatch/BeforeMatchAdminPanel")
 local DuringMatchAdminPanel = require("ROK/UI/DuringMatch/DuringMatchAdminPanel")
+
 local ClientState = require("ROK/ClientState")
 
 local MODULE = EFT_MODULES.UI
@@ -53,8 +54,11 @@ end
 ---@param args {startingState : string}
 function InterfaceCommands.SwitchMatchAdminUI(args)
     -- Check if admin UI is already open. If it is, closes it and opens the during match one
-    local startingState = args.startingState
 
+    if not isAdmin() then return end
+
+    local startingState = args.startingState
+    debugPrint("Switching match admin UI")
     if startingState == 'BEFORE' then
         if BeforeMatchAdminPanel.OnClosePanel() then
             DuringMatchAdminPanel.OnOpenPanel()
@@ -69,8 +73,9 @@ end
 --- Sets the amount of available instances to the client state
 ---@param args {amount : integer}
 function InterfaceCommands.ReceiveAmountAvailableInstances(args)
-    if BeforeMatchAdminPanel.instance == nil then return end
-    BeforeMatchAdminPanel.instance:setAvailableInstancesAmount(args.amount)
+    ClientState.SetAvailableInstances(args.amount)
+    -- if BeforeMatchAdminPanel.instance == nil then return end
+    -- BeforeMatchAdminPanel.instance:setAvailableInstancesAmount(args.amount)
 end
 
 function InterfaceCommands.ReceiveFailStartingMatch(args)
@@ -81,8 +86,14 @@ end
 
 ---@param args {amount : number}
 function InterfaceCommands.ReceiveAlivePlayersAmount(args)
-    if DuringMatchAdminPanel.instance == nil then return end
-    DuringMatchAdminPanel.instance:setAlivePlayersText(tostring(args.amount))
+    ClientState.SetAlivePlayersAmount(args.amount)
+
+
+
+
+    -- -- TODO Should set it to the instance, not set it from there
+    -- if DuringMatchAdminPanel.instance == nil then return end
+    -- DuringMatchAdminPanel.instance:setAlivePlayersText(tostring(args.amount))
 
 end
 

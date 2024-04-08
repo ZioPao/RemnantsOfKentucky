@@ -5,9 +5,6 @@ local RightSidePanel = require("ROK/UI/Store/Components/RightSidePanel")
 ------------------------
 
 local notificationsTable = {
-    haveToBeTransfered = getText("IGUI_Shop_Sell_HaveToBeTransferred"),
-    isEquipped = getText("IGUI_Shop_Sell_IsEquipped"),
-    isFavorite =  getText("IGUI_Shop_Sell_IsFavorite"),
     successful = getText("IGUI_Shop_Sell_Confirmation_Success")
 }
 
@@ -55,12 +52,15 @@ function SellSidePanel:render()
         text = string.format("<CENTRE> You will receive: $%.2f", tostring(price))
     end
 
-    if self.showNotification then
+    -- UGLY Fixed notification type bug, but at what cost. notificationType is now the string itself
+    if self.showNotification and self.notificationType then
 
-        if self.notificationType ~= 'successful' then
+        if self.notificationType ~= notificationsTable.successful then
             text = text .. " <LINE> <CENTRE> <RED> Can't add item, "
         end
-        text = text .. notificationsTable[self.notificationType]
+
+        --local notification = notificationsTable[self.notificationType]
+        text = text .. self.notificationType
 
         local showTime = os.time()
         if showTime > self.timeShowNotification then

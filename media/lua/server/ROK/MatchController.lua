@@ -115,6 +115,8 @@ end
 function MatchController:stopMatch()
     Countdown.Stop()
     MatchController.instance = nil
+    sendServerCommand(EFT_MODULES.UI, 'SwitchMatchAdminUI', { startingState = 'DURING' })
+
     triggerEvent("PZEFT_OnMatchEnd") -- OnMatchEnd on the server
 end
 
@@ -457,7 +459,7 @@ function MatchCommands.StartCountdown(playerObj, args)
         handler:startMatch()
 
         -- Closes automatically the admin panel\switch it to the during match one
-        sendServerCommand(playerObj, EFT_MODULES.UI, 'SwitchMatchAdminUI', { startingState = 'BEFORE' })
+        sendServerCommand(EFT_MODULES.UI, 'SwitchMatchAdminUI', { startingState = 'BEFORE' })
     end
 
     Countdown.Setup(args.stopTime, StartMatch, true, MATCH_STARTING_STR)
@@ -504,6 +506,7 @@ end
 ---@param playerObj IsoPlayer player requesting extraction
 function MatchCommands.RequestExtraction(playerObj)
     local instance = MatchController.GetHandler()
+    debugPrint("Running extraction for player " .. playerObj:getUsername())
     if instance == nil then return end
     instance:extractPlayer(playerObj)
 end

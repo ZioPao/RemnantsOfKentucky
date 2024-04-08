@@ -142,17 +142,11 @@ end
 
 
 ---@alias tagType string
----@alias shopItemsTable { items : table<string, shopItemElement>, tags: table<tagType, table<itemFullType, boolean>> }
+---@alias shopItemsTable { items : table<string, shopItemElement>, tags: table<tagType, table<itemFullType, boolean>>, daily :  table<string, shopItemElement> }
 
 
 --* SHOP - SERVER DATA *--
 ServerData.Shop = ServerData.Shop or {}
-
---- Get table of shop items
----@return shopItemsTable
-function ServerData.Shop.GetShopItemsData()
-    return ModData.getOrCreate(EFT_ModDataKeys.SHOP_ITEMS)
-end
 
 --- Transmits table of shop items to clients, !!!!!!DEBUG ONLY!!!!!
 function ServerData.Shop.TransmitShopItemsData()

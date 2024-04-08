@@ -6,8 +6,8 @@ IG_UI_EN = {
     IGUI_EFT_AdminPanel_Refresh = "Refresh",
 
     // Admin Panel Before Match
-    IGUI_EFT_AdminPanel_InstancesAvailable = " <CENTRE> Instances Available",
-    IGUI_EFT_AdminPanel_SafehousesAssigned = " <CENTRE> Assigned Safehouses",
+    IGUI_EFT_AdminPanel_Top_AvailableInstances = "Available Instances",
+    IGUI_EFT_AdminPanel_SafehousesAssigned = "Assigned Safehouses",
     IGUI_EFT_AdminPanel_StartMatch = "Start Match",
     IGUI_EFT_AdminPanel_Stop = "Stop",
 
@@ -15,12 +15,13 @@ IG_UI_EN = {
     // Manage players panel
     IGUI_EFT_AdminPanel_ManagePlayers_Title = "Manage Players",
     IGUI_EFT_AdminPanel_ManagePlayers_WipePlayer = "Wipe Player",
-    IGUI_EFT_AdminPanel_ManagePlayers_WipePlayer_Confirmation = "Are you sure you want to wipe %1 data?",
+    IGUI_EFT_AdminPanel_ManagePlayers_WipePlayer_Confirmation = " <CENTRE> Are you sure you want to wipe %1 data?",
     IGUI_EFT_AdminPanel_ManagePlayers_WipePlayer_Tooltip = "Wipes everything about this player",
     IGUI_EFT_AdminPanel_ManagePlayers_StarterKit = "Give Starter Kit",
     IGUI_EFT_AdminPanel_ManagePlayers_StarterKit_Confirmation = "<CENTRE> Are you sure you want to send %1 a starter kit?",
     IGUI_EFT_AdminPanel_ManagePlayers_StarterKit_Tooltip = "Give Starter Kit",
-
+    IGUI_EFT_AdminPanel_ManagePlayers_Teleport_Confirmation = "Are you sure you want to teleport to this player?",
+    IGUI_EFT_AdminPanel_ManagePlayers_Teleport_Tooltip = "Teleport to the selected player",
 
     // Mod management panel
     IGUI_EFT_AdminPanel_ModManagement_Title = "Management",
@@ -43,9 +44,9 @@ IG_UI_EN = {
 
     
     // ADMIN PANEL - DURING MATCH
-    IGUI_EFT_AdminPanel_MatchTime = "Match time: %1",
+    IGUI_EFT_AdminPanel_Top_MatchTime = "Match time",
+    IGUI_EFT_AdminPanel_Top_AlivePlayers = "Alive Players"
     IGUI_EFT_AdminPanel_MatchEnded = "<SIZE:large> <CENTRE> <RED> The match has ended.",
-    IGUI_EFT_AdminPanel_MatchOptions = "Match Options",
 
 
     IGUI_TimePanel_MatchStartingManually = "The match is starting",

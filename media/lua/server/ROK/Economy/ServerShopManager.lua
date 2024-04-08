@@ -45,7 +45,7 @@ local function FetchNRandomItems(percentage, items, tag)
         -- Check if Item actually exists and it's not in the blacklist
         local item = InventoryItemFactory.CreateItem(fType)
         if item and not PZ_EFT_CONFIG.Shop.blacklist[fType] then
-            ShopItemsManager.SetTagToItem(fType, "DAILY")
+            ShopItemsManager.AddToDaily(fType)
             currentAmount = currentAmount + 1
         end
         table.remove(keys, randIndex)
@@ -56,7 +56,9 @@ end
 function ServerShopManager.GenerateDailyItems()
     debugPrint("Generating daily items")
 
-    local items = ServerData.Shop.GetShopItemsData()
+    ShopItemsManager.ResetDaily()
+
+    local items = ShopItemsManager.GetShopItemsData()
 
     -- Should stack to 100%
     FetchNRandomItems(20, items, 'WEAPON')
@@ -73,6 +75,9 @@ end
 ---@private
 ---@return table<integer, {fullType : string, tag : string, basePrice : integer}>
 function ServerShopManager.LoadDataFromJson()
+
+    -- TODO Force load from admin panel
+
     -- Load default JSON, if there's no custom one in the cachedir
     local fileName = PZ_EFT_CONFIG.Shop.jsonName
     local readData = json.readFile(fileName)
@@ -143,7 +148,9 @@ Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
 
 function ServerShopManager.RetransmitItems()
     debugPrint("Regeneraint daily items and retransmitting")
-    ServerShopManager.LoadShopPrices()
+    ServerShopManager.GenerateDailyItems()
+    ModData.transmit(EFT_ModDataKeys.SHOP_ITEMS)
+    --ServerShopManager.LoadShopPrices()
     --ModData.transmit(EFT_ModDataKeys.SHOP_ITEMS)
 end
 
@@ -161,8 +168,12 @@ local MODULE = EFT_MODULES.Shop
 function ShopCommands.TransmitShopItems(playerObj)
     debugPrint("Transmitting Shop Items to Client => " .. playerObj:getUsername())
 
-    local items = ServerData.Shop.GetShopItemsData()
+    local items = ShopItemsManager.GetShopItemsData()
     sendServerCommand(playerObj, EFT_MODULES.Shop, "ReceiveShopItems", items)
+end
+
+function ShopCommands.ReloadData()
+    ServerShopManager.LoadShopPrices()
 end
 
 ---@param playerObj IsoPlayer

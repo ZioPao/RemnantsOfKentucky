@@ -1,12 +1,13 @@
 local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 local ConfirmationPanel = require("ROK/UI/ConfirmationPanel")
+local ClientState = require("ROK/ClientState")
 
 ---------------------------------------
 
 local WIPE_PLAYER_ICON = getTexture("media/textures/BeforeMatchPanel/WipePlayer.png")     -- https://www.freepik.com/icon/close_14440874#fromView=family&page=1&position=0&uuid=e818dfad-684a-4567-9aca-43ed2667f4e1
 local REFRESH_ICON = getTexture("media/textures/BeforeMatchPanel/Loop.png")               -- https://www.freepik.com/icon/rotated_14441036#fromView=family&page=1&position=3&uuid=135de5a3-1019-46dd-bbef-fdbb2fd5b027
 local STARTER_KIT_ICON = getTexture("media/textures/BeforeMatchPanel/GiveStarterKit.png") -- https://www.freepik.com/icon/gift-box_12484717#fromView=family&page=1&position=4&uuid=6b0bb61f-b073-41c1-b474-32da7131c231
-
+local TELEPORT_ICON = getTexture("media/textures/ExitIcon.png")
 -------------------------------
 
 ---@class ManagePlayersScrollingTable : ISPanel
@@ -219,6 +220,20 @@ function ManagePlayersPanel:createChildren()
     self.btnWipePlayer:instantiate()
     self.btnWipePlayer.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
     self:addChild(self.btnWipePlayer)
+
+    btnY = btnY + btnHeight + yPadding
+
+    self.btnTeleport = ISButton:new(
+        btnX, btnY, btnWidth, btnHeight,
+        "", self, ManagePlayersPanel.onClick
+    )
+    self.btnTeleport.internal = "TELEPORT"
+    self.btnTeleport:setImage(TELEPORT_ICON)
+    self.btnTeleport:setTooltip(getText("IGUI_EFT_AdminPanel_ManagePlayers_Teleport_Tooltip"))
+    self.btnTeleport:initialise()
+    self.btnTeleport:instantiate()
+    self.btnTeleport.borderColor = { r = 1, g = 1, b = 1, a = 0.5 }
+    self:addChild(self.btnTeleport)
 end
 
 function ManagePlayersPanel:fillList()
@@ -269,6 +284,8 @@ function ManagePlayersPanel:onClick(button)
 
             local text = getText("IGUI_EFT_AdminPanel_ManagePlayers_WipePlayer_Confirmation", plUsername)
             self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, self, OnConfirmWipePlayer)
+        elseif button.internal == 'TELEPORT' then
+            SendCommandToServer("/teleport \"" .. plUsername .. "\"")
         end
     end
 end
@@ -284,8 +301,16 @@ function ManagePlayersPanel:update()
     ISCollapsableWindow.update(self)
     local selection = self.mainCategory.datas.selected
 
-    self.btnWipePlayer:setEnable(selection ~= 0)
-    self.btnStarterKit:setEnable(selection ~= 0)
+
+    local isMatchRunning = ClientState.GetIsMatchRunning()
+
+    self.btnWipePlayer:setEnable(selection ~= 0 and not isMatchRunning)
+    self.btnStarterKit:setEnable(selection ~= 0 and not isMatchRunning)
+
+    self.btnTeleport:setEnable(selection ~= 0)
+
+
+
 end
 
 function ManagePlayersPanel:render()

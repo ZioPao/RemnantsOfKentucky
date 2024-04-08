@@ -2,6 +2,9 @@ require "ROK/ClientData"
 local BankManager = require("ROK/Economy/ClientBankManager")
 local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 local ClientCommon = require("ROK/ClientCommon")
+local ShopItemsManager = require("ROK/ShopItemsManager")
+
+
 ------------------
 
 ---@class ClientShopManager
@@ -133,14 +136,14 @@ end
 ---@param tag string
 ---@return table
 function ClientShopManager.GetItemsWithTag(tag)
-    local shopItems = ClientData.Shop.GetShopItems()
-    if shopItems and shopItems.tags and shopItems.tags[tag] then
+    local shopItemsData = ShopItemsManager.GetShopItemsData()
+    if shopItemsData and shopItemsData.tags and shopItemsData.tags[tag] then
         local itemsList = {}
-        for itemType, _ in pairs(shopItems.tags[tag]) do
+        for itemType, _ in pairs(shopItemsData.tags[tag]) do
             -- Check if tag is active
-            if shopItems.items[itemType].tag == tag then
+            if shopItemsData.items[itemType].tag == tag then
                 itemsList[itemType] = nil
-                itemsList[itemType] = shopItems.items[itemType]
+                itemsList[itemType] = shopItemsData.items[itemType]
             end
         end
 
@@ -148,6 +151,12 @@ function ClientShopManager.GetItemsWithTag(tag)
     else
         return {}
     end
+end
+
+---@return table
+function ClientShopManager.GetDailyItems()
+    local shopItemsData = ShopItemsManager.GetShopItemsData()
+    return shopItemsData.daily
 end
 
 ------------------------------------------------------------------------

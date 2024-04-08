@@ -138,7 +138,7 @@ function MainShopPanel:createChildren()
     table.insert(self.categories, self.essentialItemsCat)
 
     --* DAILY ITEMS *--
-    self.dailyItemsCat = BuyPanel:new(0, 0, self.width, catHeight, ClientShopManager.GetItemsWithTag("DAILY"), "DAILY")
+    self.dailyItemsCat = BuyPanel:new(0, 0, self.width, catHeight, ClientShopManager.GetDailyItems(), "DAILY")
     self.dailyItemsCat:initialise()
     self.panel:addView(getText("IGUI_Shop_TabDaily"), self.dailyItemsCat, self.width / 3 - 2, addedHeight)
     self.dailyItemsCat.category = 2
