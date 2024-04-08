@@ -6,8 +6,8 @@ IG_UI_EN = {
     IGUI_EFT_AdminPanel_Refresh = "Refresh",
 
     // Admin Panel Before Match
-    IGUI_EFT_AdminPanel_InstancesAvailable = " <CENTRE> Instances Available",
-    IGUI_EFT_AdminPanel_SafehousesAssigned = " <CENTRE> Assigned Safehouses",
+    IGUI_EFT_AdminPanel_Top_AvailableInstances = "Available Instances",
+    IGUI_EFT_AdminPanel_SafehousesAssigned = "Assigned Safehouses",
     IGUI_EFT_AdminPanel_StartMatch = "Start Match",
     IGUI_EFT_AdminPanel_Stop = "Stop",
 

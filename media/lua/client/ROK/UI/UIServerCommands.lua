@@ -1,5 +1,6 @@
 local BeforeMatchAdminPanel = require("ROK/UI/BeforeMatch/BeforeMatchAdminPanel")
 local DuringMatchAdminPanel = require("ROK/UI/DuringMatch/DuringMatchAdminPanel")
+
 local ClientState = require("ROK/ClientState")
 
 local MODULE = EFT_MODULES.UI
@@ -69,8 +70,9 @@ end
 --- Sets the amount of available instances to the client state
 ---@param args {amount : integer}
 function InterfaceCommands.ReceiveAmountAvailableInstances(args)
-    if BeforeMatchAdminPanel.instance == nil then return end
-    BeforeMatchAdminPanel.instance:setAvailableInstancesAmount(args.amount)
+    ClientState.SetAvailableInstances(args.amount)
+    -- if BeforeMatchAdminPanel.instance == nil then return end
+    -- BeforeMatchAdminPanel.instance:setAvailableInstancesAmount(args.amount)
 end
 
 function InterfaceCommands.ReceiveFailStartingMatch(args)
@@ -81,6 +83,7 @@ end
 
 ---@param args {amount : number}
 function InterfaceCommands.ReceiveAlivePlayersAmount(args)
+    -- TODO Should set it to the instance, not set it from there
     if DuringMatchAdminPanel.instance == nil then return end
     DuringMatchAdminPanel.instance:setAlivePlayersText(tostring(args.amount))
 

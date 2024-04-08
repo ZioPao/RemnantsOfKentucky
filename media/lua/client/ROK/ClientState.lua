@@ -4,6 +4,7 @@
 ---@field isAutomaticStart boolean
 ---@field currentTime number
 ---@field extractionTime number
+---@field availableInstances number
 ---@field previousExtractionPointsStatus table
 ---@field extractionPointsStatus table
 local ClientState = {
@@ -11,6 +12,8 @@ local ClientState = {
     isStartingMatch = false,
     isAutomaticStart = false,
     currentTime = -1,
+
+    availableInstances = -1,
 
 
     isMatchRunning = false,
@@ -52,6 +55,11 @@ function ClientState.SetExtractionTime(val)
     ClientState.extractionTime = val
 end
 
+---@param val number
+function ClientState.SetAvailableInstances(val)
+    ClientState.availableInstances = val
+end
+
 ---@param val boolean
 function ClientState.SetIsStartingMatch(val)
     ClientState.isStartingMatch = val
@@ -66,6 +74,11 @@ end
 function ClientState.GetIsInRaid()
     return ClientState.isInRaid
 end
+
+function ClientState.GetAvailableInstances()
+    return ClientState.availableInstances
+end
+
 
 function ClientState.GetIsMatchRunning()
     return ClientState.isMatchRunning
