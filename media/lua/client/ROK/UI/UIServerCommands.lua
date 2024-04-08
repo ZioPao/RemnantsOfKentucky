@@ -54,8 +54,11 @@ end
 ---@param args {startingState : string}
 function InterfaceCommands.SwitchMatchAdminUI(args)
     -- Check if admin UI is already open. If it is, closes it and opens the during match one
-    local startingState = args.startingState
 
+    if not isAdmin() then return end
+
+    local startingState = args.startingState
+    debugPrint("Switching match admin UI")
     if startingState == 'BEFORE' then
         if BeforeMatchAdminPanel.OnClosePanel() then
             DuringMatchAdminPanel.OnOpenPanel()

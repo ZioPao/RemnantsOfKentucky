@@ -194,7 +194,8 @@ function ModManagementPanel:update()
         self.btnToggleAutomaticStart:setTitle(getText("IGUI_EFT_AdminPanel_ModManagement_ActivateAutomaticStart"))
     end
 
-    self.btnResetUsedInstances:setEnable(not ClientState.GetIsStartingMatch())
+    local isActive = not ClientState.GetIsStartingMatch() and not ClientState.GetIsMatchRunning()
+    self.btnResetUsedInstances:setEnable(isActive)
 
     -- Updates time in bottom btns
     self:updateSetTimeBtn()

@@ -82,8 +82,8 @@ function DuringMatchAdminPanel:update()
     self.closeButton:setEnable(not isOptionsEnabled)
     self.btnMatchOptions:setEnable(not isOptionsEnabled)
     self.btnManagePlayersOption:setEnable(not isOptionsEnabled)
-    self.btnManagementOption:setEnable(not isOptionsEnabled)
-    self.btnEconomyManagement:setEnable(not isOptionsEnabled)
+    self.btnManagementOption:setEnable(false)       -- Disabled for now
+    self.btnEconomyManagement:setEnable(false)
 end
 
 

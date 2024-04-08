@@ -15,12 +15,13 @@ IG_UI_EN = {
     // Manage players panel
     IGUI_EFT_AdminPanel_ManagePlayers_Title = "Manage Players",
     IGUI_EFT_AdminPanel_ManagePlayers_WipePlayer = "Wipe Player",
-    IGUI_EFT_AdminPanel_ManagePlayers_WipePlayer_Confirmation = "Are you sure you want to wipe %1 data?",
+    IGUI_EFT_AdminPanel_ManagePlayers_WipePlayer_Confirmation = " <CENTRE> Are you sure you want to wipe %1 data?",
     IGUI_EFT_AdminPanel_ManagePlayers_WipePlayer_Tooltip = "Wipes everything about this player",
     IGUI_EFT_AdminPanel_ManagePlayers_StarterKit = "Give Starter Kit",
     IGUI_EFT_AdminPanel_ManagePlayers_StarterKit_Confirmation = "<CENTRE> Are you sure you want to send %1 a starter kit?",
     IGUI_EFT_AdminPanel_ManagePlayers_StarterKit_Tooltip = "Give Starter Kit",
-
+    IGUI_EFT_AdminPanel_ManagePlayers_Teleport_Confirmation = "Are you sure you want to teleport to this player?",
+    IGUI_EFT_AdminPanel_ManagePlayers_Teleport_Tooltip = "Teleport to the selected player",
 
     // Mod management panel
     IGUI_EFT_AdminPanel_ModManagement_Title = "Management",

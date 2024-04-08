@@ -335,7 +335,7 @@ function PricesEditorPanel:onClick(button)
 
     elseif button.internal == 'APPLY' then
         local confY = self:getY() + self:getHeight() + 20
-        local text = "Are you sure you want to apply these prices?"
+        local text = getText("IGUI_EFT_AdminPanel_Economy_Apply_Confirmation")
         self.confirmationPanel = ConfirmationPanel.Open(text, self:getX(), confY, nil,
             function()
                 -- Send new JSON to server
