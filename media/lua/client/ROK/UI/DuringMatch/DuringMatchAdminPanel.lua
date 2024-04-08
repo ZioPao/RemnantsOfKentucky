@@ -68,7 +68,6 @@ function DuringMatchAdminPanel:onClick(btn)
     end
 end
 function DuringMatchAdminPanel:onConfirmStop()
-    --print("Confirm! Teleporting back everyone")
     self:setIsMatchEnded(true)
     sendClientCommand(EFT_MODULES.Match, "StartMatchEndCountdown", { stopTime = PZ_EFT_CONFIG.Client.Match.endMatchTime })
 end
@@ -76,23 +75,15 @@ end
 function DuringMatchAdminPanel:update()
     BaseAdminPanel.update(self)
 
-    -- -- Top Panel
-    -- local valInstancesAvailableText = " <CENTRE> " .. tostring(self.availableInstancesAmount)
-    -- self.labelValInstancesAvailable:setText(valInstancesAvailableText)
-    -- self.labelValInstancesAvailable.textDirty = true
+    local isOptionsEnabled = (self.confirmationPanel and self.confirmationPanel:isVisible()) or self:getIsMatchEnded()
+    self.btnToggleMatch:setEnable(not isOptionsEnabled)
 
-    -- -- Buttons
 
-    -- self.btnToggleMatch:setEnable(self.availableInstancesAmount > 0 and not ClientState.GetIsAutomaticStart())
-
-    -- -- When starting the match, we'll disable various buttons
-    -- local isStartingMatch = ClientState.GetIsStartingMatch()
-
-    -- self.closeButton:setEnable(not isStartingMatch)
-    -- self.btnMatchOptions:setEnable(not isStartingMatch)
-    -- self.btnManagePlayersOption:setEnable(not isStartingMatch)
-    -- self.btnManagementOption:setEnable(not isStartingMatch)
-    -- self.btnEconomyManagement:setEnable(not isStartingMatch)
+    self.closeButton:setEnable(not isOptionsEnabled)
+    self.btnMatchOptions:setEnable(not isOptionsEnabled)
+    self.btnManagePlayersOption:setEnable(not isOptionsEnabled)
+    self.btnManagementOption:setEnable(not isOptionsEnabled)
+    self.btnEconomyManagement:setEnable(not isOptionsEnabled)
 end
 
 

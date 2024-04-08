@@ -71,11 +71,6 @@ end
 function BeforeMatchAdminPanel:update()
     BaseAdminPanel.update(self)
 
-    -- Top Panel
-    -- local valInstancesAvailableText = " <CENTRE> " .. tostring(self.availableInstancesAmount)
-    -- self.labelValInstancesAvailable:setText(valInstancesAvailableText)
-    -- self.labelValInstancesAvailable.textDirty = true
-
     -- Buttons
 
     self.btnToggleMatch:setEnable(ClientState.GetAvailableInstances() > 0 and not ClientState.GetIsAutomaticStart())
