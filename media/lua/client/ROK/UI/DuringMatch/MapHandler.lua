@@ -66,3 +66,18 @@ LootMaps.Init.BriaIslandMap = function(mapUI)
     end
 
 end
+
+
+Events.PZEFT_ClientNowInRaid.Add(function()
+
+    debugPrint("Checking if player has map")
+
+    local plInv = getPlayer():getInventory()
+    local mapType = "ROK.BriaIslandMap"
+
+    if not plInv:FindAndReturn(mapType) then
+        debugPrint("Giving the player a new map")
+        plInv:AddItem(mapType)
+    end
+
+end)

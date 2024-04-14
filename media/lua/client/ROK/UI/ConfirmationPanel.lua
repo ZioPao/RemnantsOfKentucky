@@ -79,14 +79,9 @@ function ConfirmationPanel:onClick(btn)
     end
 end
 
--- function ConfirmationPanel:close()
---     print("Closing confirmation panel")
---     ISPanel.close(self)
--- end
-
 -------------------------
 
----@param alertText any
+---@param alertText string
 ---@param x any
 ---@param y any
 ---@param parentPanel any
