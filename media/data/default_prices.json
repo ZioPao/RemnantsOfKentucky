@@ -195,6 +195,11 @@
         "basePrice": 200
     },
     {
+        "fullType": "Base.223Silencer",
+        "tag": "WEAPON",
+        "basePrice": "250"
+    },
+    {
         "fullType": "Base.22Box",
         "tag": "AMMO",
         "basePrice": 600
@@ -205,6 +210,11 @@
         "basePrice": 35
     },
     {
+        "fullType": "Base.22Clip",
+        "tag": "AMMO",
+        "basePrice": "200"
+    },
+    {
         "fullType": "Base.22ClipPistol",
         "tag": "AMMO",
         "basePrice": 150
@@ -213,6 +223,11 @@
         "fullType": "Base.22ClipRifle",
         "tag": "AMMO",
         "basePrice": 150
+    },
+    {
+        "fullType": "Base.22Silencer",
+        "tag": "WEAPON",
+        "basePrice": "200"
     },
     {
         "fullType": "Base.308Box",
@@ -240,6 +255,16 @@
         "basePrice": 150
     },
     {
+        "fullType": "Base.308Silencer",
+        "tag": "WEAPON",
+        "basePrice": "200"
+    },
+    {
+        "fullType": "Base.38Silencer",
+        "tag": "WEAPON",
+        "basePrice": "200"
+    },
+    {
         "fullType": "Base.44Clip",
         "tag": "AMMO",
         "basePrice": 180
@@ -258,6 +283,11 @@
         "fullType": "Base.45Clip32",
         "tag": "AMMO",
         "basePrice": 180
+    },
+    {
+        "fullType": "Base.45Silencer",
+        "tag": "WEAPON",
+        "basePrice": "200"
     },
     {
         "fullType": "Base.500Tank1",
@@ -330,6 +360,26 @@
         "basePrice": 180
     },
     {
+        "fullType": "Base.762x39Box",
+        "tag": "AMMO",
+        "basePrice": "600"
+    },
+    {
+        "fullType": "Base.762x39Bullets",
+        "tag": "AMMO",
+        "basePrice": "35"
+    },
+    {
+        "fullType": "Base.762x51Box",
+        "tag": "AMMO",
+        "basePrice": "600"
+    },
+    {
+        "fullType": "Base.762x51Bullets",
+        "tag": "AMMO",
+        "basePrice": "45"
+    },
+    {
         "fullType": "Base.9mmBulletsMold",
         "tag": "AMMO",
         "basePrice": 15
@@ -360,6 +410,16 @@
         "basePrice": 300
     },
     {
+        "fullType": "Base.9mmCompensator",
+        "tag": "WEAPON",
+        "basePrice": "50"
+    },
+    {
+        "fullType": "Base.9mmSilencer",
+        "tag": "WEAPON",
+        "basePrice": "50"
+    },
+    {
         "fullType": "Base.AK47",
         "tag": "WEAPON",
         "basePrice": 2400
@@ -373,6 +433,11 @@
         "fullType": "Base.AK47Unfolded",
         "tag": "WEAPON",
         "basePrice": 2400
+    },
+    {
+        "fullType": "Base.AK_Mag",
+        "tag": "AMMO",
+        "basePrice": "200"
     },
     {
         "fullType": "Base.ANA_Classic",
@@ -408,6 +473,11 @@
         "fullType": "Base.AP3",
         "tag": "MILITARY_CLOTHING",
         "basePrice": 15
+    },
+    {
+        "fullType": "Base.AR15",
+        "tag": "WEAPON",
+        "basePrice": "1200"
     },
     {
         "fullType": "Base.ATA1000Trunk",
@@ -788,6 +858,41 @@
         "fullType": "Base.AmericanLadyCaterpillar",
         "tag": "FOOD",
         "basePrice": 25
+    },
+    {
+        "fullType": "Base.AmmoCan223",
+        "tag": "AMMO",
+        "basePrice": "600"
+    },
+    {
+        "fullType": "Base.AmmoCan308",
+        "tag": "AMMO",
+        "basePrice": "600"
+    },
+    {
+        "fullType": "Base.AmmoCan556",
+        "tag": "AMMO",
+        "basePrice": "600"
+    },
+    {
+        "fullType": "Base.AmmoCan762",
+        "tag": "AMMO",
+        "basePrice": "600"
+    },
+    {
+        "fullType": "Base.AmmoCan762x39",
+        "tag": "AMMO",
+        "basePrice": "600"
+    },
+    {
+        "fullType": "Base.AmmoCan9mm",
+        "tag": "AMMO",
+        "basePrice": "600"
+    },
+    {
+        "fullType": "Base.AmmoStock",
+        "tag": "AMMO",
+        "basePrice": "500"
     },
     {
         "fullType": "Base.AmmoStrap_Bullets",
@@ -1240,6 +1345,11 @@
         "basePrice": 500
     },
     {
+        "fullType": "Base.Bag_Improvised_Backpack",
+        "tag": "CLOTHING",
+        "basePrice": "500"
+    },
+    {
         "fullType": "Base.Bag_InmateEscapedBag",
         "tag": "CLOTHING",
         "basePrice": 350
@@ -1323,6 +1433,11 @@
         "fullType": "Base.Bag_Schoolbag",
         "tag": "VARIOUS",
         "basePrice": 500
+    },
+    {
+        "fullType": "Base.Bag_Sheet_Bag",
+        "tag": "CLOTHING",
+        "basePrice": "400"
     },
     {
         "fullType": "Base.Bag_ShotgunBag",
@@ -1682,6 +1797,11 @@
     {
         "fullType": "Base.BaseballBat",
         "tag": "WEAPON",
+        "basePrice": 200
+    },
+    {
+        "fullType": "Base.BaseballBat",
+        "tag": "ESSENTIALS",
         "basePrice": 200
     },
     {
@@ -2745,6 +2865,36 @@
         "basePrice": 100
     },
     {
+        "fullType": "Base.Bullets22",
+        "tag": "AMMO",
+        "basePrice": "15"
+    },
+    {
+        "fullType": "Base.Bullets22Box",
+        "tag": "AMMO",
+        "basePrice": "600"
+    },
+    {
+        "fullType": "Base.Bullets3006",
+        "tag": "AMMO",
+        "basePrice": "30"
+    },
+    {
+        "fullType": "Base.Bullets3006Box",
+        "tag": "AMMO",
+        "basePrice": "600"
+    },
+    {
+        "fullType": "Base.Bullets357",
+        "tag": "AMMO",
+        "basePrice": "15"
+    },
+    {
+        "fullType": "Base.Bullets357Box",
+        "tag": "AMMO",
+        "basePrice": "75"
+    },
+    {
         "fullType": "Base.Bullets38",
         "tag": "AMMO",
         "basePrice": 15
@@ -2758,6 +2908,16 @@
         "fullType": "Base.Bullets44",
         "tag": "AMMO",
         "basePrice": 45
+    },
+    {
+        "fullType": "Base.Bullets4440",
+        "tag": "AMMO",
+        "basePrice": "13"
+    },
+    {
+        "fullType": "Base.Bullets4440Box",
+        "tag": "AMMO",
+        "basePrice": "75"
     },
     {
         "fullType": "Base.Bullets44Box",
@@ -3647,6 +3807,36 @@
     {
         "fullType": "Base.Cologne",
         "tag": "VARIOUS",
+        "basePrice": "5"
+    },
+    {
+        "fullType": "Base.ColtAce",
+        "tag": "WEAPON",
+        "basePrice": "15"
+    },
+    {
+        "fullType": "Base.ColtAnaconda",
+        "tag": "WEAPON",
+        "basePrice": "15"
+    },
+    {
+        "fullType": "Base.ColtPeacemaker",
+        "tag": "WEAPON",
+        "basePrice": "15"
+    },
+    {
+        "fullType": "Base.ColtPython",
+        "tag": "WEAPON",
+        "basePrice": "4"
+    },
+    {
+        "fullType": "Base.ColtPythonHunter",
+        "tag": "WEAPON",
+        "basePrice": "5"
+    },
+    {
+        "fullType": "Base.ColtSingleAction22",
+        "tag": "WEAPON",
         "basePrice": "5"
     },
     {
@@ -4665,6 +4855,11 @@
         "basePrice": 5
     },
     {
+        "fullType": "Base.ExtendedRecoilPad",
+        "tag": "VARIOUS",
+        "basePrice": "5"
+    },
+    {
         "fullType": "Base.Extinguisher",
         "tag": "VARIOUS",
         "basePrice": 5
@@ -4683,6 +4878,16 @@
         "fullType": "Base.FALClip",
         "tag": "AMMO",
         "basePrice": 200
+    },
+    {
+        "fullType": "Base.FN_FAL",
+        "tag": "WEAPON",
+        "basePrice": "1700"
+    },
+    {
+        "fullType": "Base.FN_FAL_Mag",
+        "tag": "AMMO",
+        "basePrice": "200"
     },
     {
         "fullType": "Base.FakeItemSights",
@@ -5295,6 +5500,16 @@
         "basePrice": 75
     },
     {
+        "fullType": "Base.Glock17",
+        "tag": "WEAPON",
+        "basePrice": "1400"
+    },
+    {
+        "fullType": "Base.Glock17Mag",
+        "tag": "AMMO",
+        "basePrice": "200"
+    },
+    {
         "fullType": "Base.Glock18",
         "tag": "WEAPON",
         "basePrice": 75
@@ -5590,9 +5805,19 @@
         "basePrice": 50
     },
     {
+        "fullType": "Base.GunLightImprovised",
+        "tag": "WEAPON",
+        "basePrice": "250"
+    },
+    {
         "fullType": "Base.GunPowder",
         "tag": "AMMO",
         "basePrice": 50
+    },
+    {
+        "fullType": "Base.GunToolKit",
+        "tag": "TOOL",
+        "basePrice": "150"
     },
     {
         "fullType": "Base.Gunsmith_Jacket",
@@ -6760,6 +6985,11 @@
         "basePrice": 2500
     },
     {
+        "fullType": "Base.HuntingRifle_Sawn",
+        "tag": "WEAPON",
+        "basePrice": "1200"
+    },
+    {
         "fullType": "Base.Huntrite_Jacket",
         "tag": "MILITARY_CLOTHING",
         "basePrice": 250
@@ -6798,6 +7028,21 @@
         "fullType": "Base.Icing",
         "tag": "FOOD",
         "basePrice": 5
+    },
+    {
+        "fullType": "Base.ImprovisedGunToolKit",
+        "tag": "TOOL",
+        "basePrice": "5"
+    },
+    {
+        "fullType": "Base.ImprovisedSilencer",
+        "tag": "AMMO",
+        "basePrice": "50"
+    },
+    {
+        "fullType": "Base.ImprovisedSilencer_Broken",
+        "tag": "VARIOUS",
+        "basePrice": "5"
     },
     {
         "fullType": "Base.IronIngot",
@@ -7265,6 +7510,11 @@
         "basePrice": 5
     },
     {
+        "fullType": "Base.LAW12",
+        "tag": "WEAPON",
+        "basePrice": "1800"
+    },
+    {
         "fullType": "Base.LaCrosseStick",
         "tag": "WEAPON",
         "basePrice": 150
@@ -7445,6 +7695,11 @@
         "basePrice": 50
     },
     {
+        "fullType": "Base.LightShotgunStock",
+        "tag": "WEAPON",
+        "basePrice": "100"
+    },
+    {
         "fullType": "Base.Light_Woman",
         "tag": "VARIOUS",
         "basePrice": 2000
@@ -7595,9 +7850,39 @@
         "basePrice": 200
     },
     {
+        "fullType": "Base.M16A2",
+        "tag": "WEAPON",
+        "basePrice": "1600"
+    },
+    {
         "fullType": "Base.M16Bayonet",
         "tag": "WEAPON",
         "basePrice": 50
+    },
+    {
+        "fullType": "Base.M1Garand",
+        "tag": "WEAPON",
+        "basePrice": "1600"
+    },
+    {
+        "fullType": "Base.M1GarandClip",
+        "tag": "AMMO",
+        "basePrice": "200"
+    },
+    {
+        "fullType": "Base.M24Rifle",
+        "tag": "WEAPON",
+        "basePrice": "2600"
+    },
+    {
+        "fullType": "Base.M37",
+        "tag": "WEAPON",
+        "basePrice": "1500"
+    },
+    {
+        "fullType": "Base.M37Sawnoff",
+        "tag": "WEAPON",
+        "basePrice": "1600"
     },
     {
         "fullType": "Base.M42_Pants",
@@ -7610,6 +7895,11 @@
         "basePrice": 20
     },
     {
+        "fullType": "Base.M60",
+        "tag": "WEAPON",
+        "basePrice": "1600"
+    },
+    {
         "fullType": "Base.M60Belt",
         "tag": "AMMO",
         "basePrice": 600
@@ -7618,6 +7908,11 @@
         "fullType": "Base.M60MMG",
         "tag": "WEAPON",
         "basePrice": 1800
+    },
+    {
+        "fullType": "Base.M60Mag",
+        "tag": "AMMO",
+        "basePrice": "600"
     },
     {
         "fullType": "Base.M60_Link",
@@ -7638,6 +7933,11 @@
         "fullType": "Base.M65_Jacket_ON",
         "tag": "MILITARY_CLOTHING",
         "basePrice": 275
+    },
+    {
+        "fullType": "Base.M733",
+        "tag": "WEAPON",
+        "basePrice": "3600"
     },
     {
         "fullType": "Base.MAC10Folded",
@@ -7690,6 +7990,11 @@
         "basePrice": 1500
     },
     {
+        "fullType": "Base.MP5Mag",
+        "tag": "AMMO",
+        "basePrice": "600"
+    },
+    {
         "fullType": "Base.MP5SD",
         "tag": "WEAPON",
         "basePrice": 1500
@@ -7698,6 +8003,36 @@
         "fullType": "Base.MP5Unfolded",
         "tag": "WEAPON",
         "basePrice": 1500
+    },
+    {
+        "fullType": "Base.MP5_Stock_Detracted",
+        "tag": "WEAPON",
+        "basePrice": "100"
+    },
+    {
+        "fullType": "Base.MP5_Stock_Extended",
+        "tag": "WEAPON",
+        "basePrice": "250"
+    },
+    {
+        "fullType": "Base.Mac10",
+        "tag": "WEAPON",
+        "basePrice": "900"
+    },
+    {
+        "fullType": "Base.Mac10Mag",
+        "tag": "AMMO",
+        "basePrice": "600"
+    },
+    {
+        "fullType": "Base.Mac10_Stock_Detracted",
+        "tag": "WEAPON",
+        "basePrice": "15"
+    },
+    {
+        "fullType": "Base.Mac10_Stock_Extended",
+        "tag": "WEAPON",
+        "basePrice": "15"
     },
     {
         "fullType": "Base.Macandcheese",
@@ -8298,6 +8633,16 @@
         "fullType": "Base.MortarPestle",
         "tag": "VARIOUS",
         "basePrice": 15
+    },
+    {
+        "fullType": "Base.Mossberg500",
+        "tag": "WEAPON",
+        "basePrice": "15"
+    },
+    {
+        "fullType": "Base.Mossberg500Tactical",
+        "tag": "WEAPON",
+        "basePrice": "1000"
     },
     {
         "fullType": "Base.MotionSensor",
@@ -10615,6 +10960,16 @@
         "basePrice": 500
     },
     {
+        "fullType": "Base.Remington870Sawnoff",
+        "tag": "WEAPON",
+        "basePrice": "1500"
+    },
+    {
+        "fullType": "Base.Remington870Wood",
+        "tag": "WEAPON",
+        "basePrice": "1500"
+    },
+    {
         "fullType": "Base.Remote",
         "tag": "VARIOUS",
         "basePrice": 50
@@ -10708,6 +11063,11 @@
         "fullType": "Base.RifleCase3",
         "tag": "VARIOUS",
         "basePrice": 200
+    },
+    {
+        "fullType": "Base.Rifle_Bipod",
+        "tag": "CAR_PARTS",
+        "basePrice": "50"
     },
     {
         "fullType": "Base.Rig_ELA",
@@ -10955,6 +11315,11 @@
         "basePrice": 5
     },
     {
+        "fullType": "Base.Rossi92",
+        "tag": "WEAPON",
+        "basePrice": "500"
+    },
+    {
         "fullType": "Base.Round_Cap_Casual",
         "tag": "CLOTHING",
         "basePrice": 100
@@ -10998,6 +11363,11 @@
         "fullType": "Base.Rubberducky2",
         "tag": "VARIOUS",
         "basePrice": 1
+    },
+    {
+        "fullType": "Base.Rugerm7722",
+        "tag": "WEAPON",
+        "basePrice": "600"
     },
     {
         "fullType": "Base.S10_Gasmask",
@@ -11093,6 +11463,21 @@
         "fullType": "Base.SKSSpikerBayonet",
         "tag": "WEAPON",
         "basePrice": 2500
+    },
+    {
+        "fullType": "Base.SPAS12",
+        "tag": "WEAPON",
+        "basePrice": "750"
+    },
+    {
+        "fullType": "Base.SPAS12_Stock_Detracted",
+        "tag": "VARIOUS",
+        "basePrice": "150"
+    },
+    {
+        "fullType": "Base.SPAS12_Stock_Extended",
+        "tag": "WEAPON",
+        "basePrice": "200"
     },
     {
         "fullType": "Base.S_Tank_Top",
@@ -11890,9 +12275,19 @@
         "basePrice": 150
     },
     {
+        "fullType": "Base.ShotgunSilencer",
+        "tag": "WEAPON",
+        "basePrice": "300"
+    },
+    {
         "fullType": "Base.ShotgunSilent",
         "tag": "VARIOUS",
         "basePrice": 1500
+    },
+    {
+        "fullType": "Base.ShotgunStock",
+        "tag": "WEAPON",
+        "basePrice": "300"
     },
     {
         "fullType": "Base.Shotgun_Rig",
@@ -11933,6 +12328,16 @@
         "fullType": "Base.ShrimpFriedCraft",
         "tag": "FOOD",
         "basePrice": 10
+    },
+    {
+        "fullType": "Base.Silencer_PopBottle",
+        "tag": "WEAPON",
+        "basePrice": "150"
+    },
+    {
+        "fullType": "Base.Silencer_PopBottle_Broken",
+        "tag": "WEAPON",
+        "basePrice": "50"
     },
     {
         "fullType": "Base.SilkMothCaterpillar",
@@ -12038,6 +12443,41 @@
         "fullType": "Base.Sling2",
         "tag": "CLOTHING",
         "basePrice": 50
+    },
+    {
+        "fullType": "Base.SlingA",
+        "tag": "CAR_PARTS",
+        "basePrice": "50"
+    },
+    {
+        "fullType": "Base.SlingAalt",
+        "tag": "VARIOUS",
+        "basePrice": "50"
+    },
+    {
+        "fullType": "Base.SlingAalt2",
+        "tag": "VARIOUS",
+        "basePrice": "50"
+    },
+    {
+        "fullType": "Base.SlingAalt3",
+        "tag": "VARIOUS",
+        "basePrice": "50"
+    },
+    {
+        "fullType": "Base.Sling_Camo",
+        "tag": "WEAPON",
+        "basePrice": "100"
+    },
+    {
+        "fullType": "Base.Sling_Leather",
+        "tag": "WEAPON",
+        "basePrice": "100"
+    },
+    {
+        "fullType": "Base.Sling_Olive",
+        "tag": "WEAPON",
+        "basePrice": "100"
     },
     {
         "fullType": "Base.Slug",
@@ -12208,6 +12648,11 @@
         "fullType": "Base.Socks_Long",
         "tag": "CLOTHING",
         "basePrice": 50
+    },
+    {
+        "fullType": "Base.Solvent",
+        "tag": "TOOL",
+        "basePrice": "15"
     },
     {
         "fullType": "Base.SoupBowl",
@@ -12703,6 +13148,11 @@
         "fullType": "Base.TacoShell",
         "tag": "MILITARY_CLOTHING",
         "basePrice": 50
+    },
+    {
+        "fullType": "Base.TacticalStock",
+        "tag": "WEAPON",
+        "basePrice": "500"
     },
     {
         "fullType": "Base.Tactical_Hood",
@@ -13615,6 +14065,26 @@
         "basePrice": 800
     },
     {
+        "fullType": "Base.UZI",
+        "tag": "WEAPON",
+        "basePrice": "1800"
+    },
+    {
+        "fullType": "Base.UZIMag",
+        "tag": "AMMO",
+        "basePrice": "200"
+    },
+    {
+        "fullType": "Base.UZI_Stock_Detracted",
+        "tag": "WEAPON",
+        "basePrice": "30"
+    },
+    {
+        "fullType": "Base.UZI_Stock_Extended",
+        "tag": "WEAPON",
+        "basePrice": "30"
+    },
+    {
         "fullType": "Base.Umbrella",
         "tag": "FURNITURE",
         "basePrice": 50
@@ -14150,6 +14620,16 @@
         "basePrice": "50"
     },
     {
+        "fullType": "Base.Winchester73",
+        "tag": "WEAPON",
+        "basePrice": "400"
+    },
+    {
+        "fullType": "Base.Winchester94",
+        "tag": "WEAPON",
+        "basePrice": "400"
+    },
+    {
         "fullType": "Base.Windshield1",
         "tag": "CAR_PARTS",
         "basePrice": "600"
@@ -14470,6 +14950,11 @@
         "basePrice": 5
     },
     {
+        "fullType": "Base.x2LeupoldScope",
+        "tag": "WEAPON",
+        "basePrice": "100"
+    },
+    {
         "fullType": "Base.x2Scope",
         "tag": "MILITARY_CLOTHING",
         "basePrice": 600
@@ -14478,6 +14963,11 @@
         "fullType": "Base.x2Scope_Fake",
         "tag": "VARIOUS",
         "basePrice": 600
+    },
+    {
+        "fullType": "Base.x4-x12Scope",
+        "tag": "WEAPON",
+        "basePrice": "300"
     },
     {
         "fullType": "Base.x4Scope",
@@ -14503,6 +14993,256 @@
         "fullType": "DrawOnTheMap.SheetPaperMap",
         "tag": "VARIOUS",
         "basePrice": 5
+    },
+    {
+        "fullType": "EHE.BanditStashBox",
+        "tag": "VARIOUS",
+        "basePrice": "1000"
+    },
+    {
+        "fullType": "EHE.Bell206HalfSkirt",
+        "tag": "CAR_PARTS",
+        "basePrice": "10"
+    },
+    {
+        "fullType": "EHE.Bell206RotorBlade1",
+        "tag": "CAR_PARTS",
+        "basePrice": "10"
+    },
+    {
+        "fullType": "EHE.Bell206RotorBlade2",
+        "tag": "CAR_PARTS",
+        "basePrice": "5"
+    },
+    {
+        "fullType": "EHE.Bell206TailBlade",
+        "tag": "CAR_PARTS",
+        "basePrice": "5"
+    },
+    {
+        "fullType": "EHE.Boilersuit_BlackFlying",
+        "tag": "MILITARY_CLOTHING",
+        "basePrice": "500"
+    },
+    {
+        "fullType": "EHE.Boilersuit_PoliceFlying",
+        "tag": "MILITARY_CLOTHING",
+        "basePrice": "500"
+    },
+    {
+        "fullType": "EHE.EHE_Parachute",
+        "tag": "VARIOUS",
+        "basePrice": "25"
+    },
+    {
+        "fullType": "EHE.EmergencyFlyer",
+        "tag": "SKILL_BOOK",
+        "basePrice": "25"
+    },
+    {
+        "fullType": "EHE.EmergencyFoodSupplyBox",
+        "tag": "FOOD",
+        "basePrice": "600"
+    },
+    {
+        "fullType": "EHE.EmergencyMedicalSupplyBox",
+        "tag": "FIRST_AID",
+        "basePrice": "600"
+    },
+    {
+        "fullType": "EHE.EmergencySurvivalSupplyBox",
+        "tag": "VARIOUS",
+        "basePrice": "600"
+    },
+    {
+        "fullType": "EHE.EmergencyWaterRation",
+        "tag": "FOOD",
+        "basePrice": "50"
+    },
+    {
+        "fullType": "EHE.EmergencyWaterRationOpen",
+        "tag": "FOOD",
+        "basePrice": "50"
+    },
+    {
+        "fullType": "EHE.EvacuationFlyer",
+        "tag": "SKILL_BOOK",
+        "basePrice": "50"
+    },
+    {
+        "fullType": "EHE.HandFlare",
+        "tag": "TOOL",
+        "basePrice": "250"
+    },
+    {
+        "fullType": "EHE.Hat_SPHBlack",
+        "tag": "MILITARY_CLOTHING",
+        "basePrice": 300
+    },
+    {
+        "fullType": "EHE.Hat_SPHBlackVISORUP",
+        "tag": "MILITARY_CLOTHING",
+        "basePrice": 350
+    },
+    {
+        "fullType": "EHE.Hat_SPHCivilian",
+        "tag": "MILITARY_CLOTHING",
+        "basePrice": 200
+    },
+    {
+        "fullType": "EHE.Hat_SPHCivilianVISORUP",
+        "tag": "MILITARY_CLOTHING",
+        "basePrice": 220
+    },
+    {
+        "fullType": "EHE.Hat_SPHMilitary",
+        "tag": "MILITARY_CLOTHING",
+        "basePrice": 250
+    },
+    {
+        "fullType": "EHE.Hat_SPHMilitaryVISORUP",
+        "tag": "MILITARY_CLOTHING",
+        "basePrice": 300
+    },
+    {
+        "fullType": "EHE.Hat_SPHPolice",
+        "tag": "MILITARY_CLOTHING",
+        "basePrice": 400
+    },
+    {
+        "fullType": "EHE.Hat_SPHPoliceVISORUP",
+        "tag": "MILITARY_CLOTHING",
+        "basePrice": 500
+    },
+    {
+        "fullType": "EHE.Jacket_DenimCutoff",
+        "tag": "MILITARY_CLOTHING",
+        "basePrice": 200
+    },
+    {
+        "fullType": "EHE.MREWrapperEHE",
+        "tag": "FOOD",
+        "basePrice": 5
+    },
+    {
+        "fullType": "EHE.MealReadytoEatEHE",
+        "tag": "FOOD",
+        "basePrice": 500
+    },
+    {
+        "fullType": "EHE.NoticeFlyer",
+        "tag": "VARIOUS",
+        "basePrice": 500
+    },
+    {
+        "fullType": "EHE.PreventionFlyer",
+        "tag": "SKILL_BOOK",
+        "basePrice": 500
+    },
+    {
+        "fullType": "EHE.QuarantineFlyer",
+        "tag": "SKILL_BOOK",
+        "basePrice": 500
+    },
+    {
+        "fullType": "EHE.SignalFlare",
+        "tag": "TOOL",
+        "basePrice": 400
+    },
+    {
+        "fullType": "EHE.SurvivorCanningSupplyBox",
+        "tag": "VARIOUS",
+        "basePrice": 600
+    },
+    {
+        "fullType": "EHE.SurvivorFishingSupplyBox",
+        "tag": "VARIOUS",
+        "basePrice": 600
+    },
+    {
+        "fullType": "EHE.SurvivorFoodSupplyBox",
+        "tag": "FOOD",
+        "basePrice": 1000
+    },
+    {
+        "fullType": "EHE.SurvivorMedicalSupplyBox",
+        "tag": "FIRST_AID",
+        "basePrice": 1000
+    },
+    {
+        "fullType": "EHE.SurvivorSeedSupplyBox",
+        "tag": "VARIOUS",
+        "basePrice": 200
+    },
+    {
+        "fullType": "EHE.SurvivorToiletSupplyBox",
+        "tag": "VARIOUS",
+        "basePrice": 200
+    },
+    {
+        "fullType": "EHE.UH1HHalfSkirt2",
+        "tag": "VARIOUS",
+        "basePrice": 5
+    },
+    {
+        "fullType": "EHE.UH1HRotorBlade1",
+        "tag": "CAR_PARTS",
+        "basePrice": 10
+    },
+    {
+        "fullType": "EHE.UH1HRotorBlade2",
+        "tag": "CAR_PARTS",
+        "basePrice": 5
+    },
+    {
+        "fullType": "EHE.UH60DoorDesert",
+        "tag": "CAR_PARTS",
+        "basePrice": 10
+    },
+    {
+        "fullType": "EHE.UH60DoorGreen",
+        "tag": "CAR_PARTS",
+        "basePrice": 5
+    },
+    {
+        "fullType": "EHE.UH60DoorMedevac",
+        "tag": "CAR_PARTS",
+        "basePrice": 10
+    },
+    {
+        "fullType": "EHE.UH60Elevator",
+        "tag": "CAR_PARTS",
+        "basePrice": 5
+    },
+    {
+        "fullType": "EHE.UH60ElevatorDesert",
+        "tag": "CAR_PARTS",
+        "basePrice": 5
+    },
+    {
+        "fullType": "EHE.UH60WindowDesert",
+        "tag": "VARIOUS",
+        "basePrice": 3
+    },
+    {
+        "fullType": "EHE.UH60WindowGreen",
+        "tag": "VARIOUS",
+        "basePrice": 5
+    },
+    {
+        "fullType": "EHE.Vest_BlackPilotSurvivalVest",
+        "tag": "MILITARY_CLOTHING",
+        "basePrice": 200
+    },
+    {
+        "fullType": "EHE.Vest_BlackPilotSurvivalVestTightened",
+        "tag": "MILITARY_CLOTHING",
+        "basePrice": 250
+    },
+    {
+        "fullType": "EHE.Vest_PilotSurvivalVest",
+        "tag": "MILITARY_CLOTHING",
+        "basePrice": 250
     },
     {
         "fullType": "FuelAPI.LargePetrolCan",
@@ -14773,6 +15513,51 @@
         "fullType": "Radio.WalkieTalkieMakeShift",
         "tag": "VARIOUS",
         "basePrice": 200
+    },
+    {
+        "fullType": "Susceptible.ClothMask",
+        "tag": "MILITARY_CLOTHING",
+        "basePrice": 10
+    },
+    {
+        "fullType": "Susceptible.DustmaskBox",
+        "tag": "FILTER",
+        "basePrice": 600
+    },
+    {
+        "fullType": "Susceptible.EmptyDustmaskBox",
+        "tag": "VARIOUS",
+        "basePrice": 100
+    },
+    {
+        "fullType": "Susceptible.EmptyMaskBox_Blue",
+        "tag": "CLOTHING",
+        "basePrice": 150
+    },
+    {
+        "fullType": "Susceptible.EmptyMaskBox_Green",
+        "tag": "FIRST_AID",
+        "basePrice": 150
+    },
+    {
+        "fullType": "Susceptible.GasmaskFilter",
+        "tag": "FILTER",
+        "basePrice": 150
+    },
+    {
+        "fullType": "Susceptible.MaskBox_Blue",
+        "tag": "FIRST_AID",
+        "basePrice": 600
+    },
+    {
+        "fullType": "Susceptible.MaskBox_Green",
+        "tag": "FIRST_AID",
+        "basePrice": 600
+    },
+    {
+        "fullType": "Susceptible.OxygenTank",
+        "tag": "FIRST_AID",
+        "basePrice": 1000
     },
     {
         "fullType": "TAD.BobTA_Afoxe_Samba_Raggae_card",

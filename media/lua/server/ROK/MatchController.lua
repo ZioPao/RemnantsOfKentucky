@@ -407,14 +407,14 @@ local MODULE = EFT_MODULES.Match
 local MatchCommands = {}
 
 
-function MatchCommands.SendExtractionTime(playerObj, _)
+function MatchCommands.SendExtractionTime(playerObj)
     local extTime = SandboxVars.RemnantsOfKentucky.ExtractionTime
     sendServerCommand(playerObj, EFT_MODULES.State, 'SetExtractionTime', { extractionTime = extTime })
 end
 
 ---Client is asking if a match is running
 ---@param playerObj IsoPlayer
-function MatchCommands.CheckIsRunningMatch(playerObj, _)
+function MatchCommands.CheckIsRunningMatch(playerObj)
     debugPrint("Client asked if match is running")
     local handler = MatchController.GetHandler()
 
@@ -424,7 +424,7 @@ end
 
 ---Client is asking if automatic matches are active
 ---@param playerObj IsoPlayer
-function MatchCommands.CheckIsAutomaticStart(playerObj, _)
+function MatchCommands.CheckIsAutomaticStart(playerObj)
     debugPrint("Client asked if match is running")
     sendServerCommand(playerObj, EFT_MODULES.State, 'SetClientStateIsAutomaticStart',
         { value = MatchController.isAutomaticStart })
@@ -445,13 +445,12 @@ function MatchCommands.KillZombies(_, args)
     end
 end
 
-function MatchCommands.ToggleAutomaticStart(playerObj, _)
+function MatchCommands.ToggleAutomaticStart()
     MatchController.ToggleAutomaticStart()
 end
 
----@param playerObj IsoPlayer
 ---@param args {stopTime : number}
-function MatchCommands.StartCountdown(playerObj, args)
+function MatchCommands.StartCountdown(_, args)
     local function StartMatch()
         debugPrint("Initialize match")
         local handler = MatchController:new()
@@ -507,7 +506,10 @@ end
 function MatchCommands.RequestExtraction(playerObj)
     local instance = MatchController.GetHandler()
     debugPrint("Running extraction for player " .. playerObj:getUsername())
-    if instance == nil then return end
+    if instance == nil then
+        debugPrint("INSTANCE IS NIL, CAN'T EXTRACT PLAYER!!! SOMETHING IS VERY WRONG")
+        return
+    end
     instance:extractPlayer(playerObj)
 end
 
