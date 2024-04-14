@@ -3812,32 +3812,32 @@
     {
         "fullType": "Base.ColtAce",
         "tag": "WEAPON",
-        "basePrice": "15"
+        "basePrice": "2500"
     },
     {
         "fullType": "Base.ColtAnaconda",
         "tag": "WEAPON",
-        "basePrice": "15"
+        "basePrice": "2500"
     },
     {
         "fullType": "Base.ColtPeacemaker",
         "tag": "WEAPON",
-        "basePrice": "15"
+        "basePrice": "2500"
     },
     {
         "fullType": "Base.ColtPython",
         "tag": "WEAPON",
-        "basePrice": "4"
+        "basePrice": "2500"
     },
     {
         "fullType": "Base.ColtPythonHunter",
         "tag": "WEAPON",
-        "basePrice": "5"
+        "basePrice": "2500"
     },
     {
         "fullType": "Base.ColtSingleAction22",
         "tag": "WEAPON",
-        "basePrice": "5"
+        "basePrice": "1500"
     },
     {
         "fullType": "Base.Comb",
@@ -4857,7 +4857,7 @@
     {
         "fullType": "Base.ExtendedRecoilPad",
         "tag": "VARIOUS",
-        "basePrice": "5"
+        "basePrice": "500"
     },
     {
         "fullType": "Base.Extinguisher",
@@ -7032,12 +7032,12 @@
     {
         "fullType": "Base.ImprovisedGunToolKit",
         "tag": "TOOL",
-        "basePrice": "5"
+        "basePrice": "150"
     },
     {
         "fullType": "Base.ImprovisedSilencer",
         "tag": "AMMO",
-        "basePrice": "50"
+        "basePrice": "250"
     },
     {
         "fullType": "Base.ImprovisedSilencer_Broken",
@@ -7862,7 +7862,7 @@
     {
         "fullType": "Base.M1Garand",
         "tag": "WEAPON",
-        "basePrice": "1600"
+        "basePrice": "1800"
     },
     {
         "fullType": "Base.M1GarandClip",
@@ -7877,12 +7877,12 @@
     {
         "fullType": "Base.M37",
         "tag": "WEAPON",
-        "basePrice": "1500"
+        "basePrice": "3500"
     },
     {
         "fullType": "Base.M37Sawnoff",
         "tag": "WEAPON",
-        "basePrice": "1600"
+        "basePrice": "2600"
     },
     {
         "fullType": "Base.M42_Pants",
@@ -7897,7 +7897,7 @@
     {
         "fullType": "Base.M60",
         "tag": "WEAPON",
-        "basePrice": "1600"
+        "basePrice": "3600"
     },
     {
         "fullType": "Base.M60Belt",
@@ -8017,7 +8017,7 @@
     {
         "fullType": "Base.Mac10",
         "tag": "WEAPON",
-        "basePrice": "900"
+        "basePrice": "1900"
     },
     {
         "fullType": "Base.Mac10Mag",
@@ -8027,12 +8027,12 @@
     {
         "fullType": "Base.Mac10_Stock_Detracted",
         "tag": "WEAPON",
-        "basePrice": "15"
+        "basePrice": "1900"
     },
     {
         "fullType": "Base.Mac10_Stock_Extended",
         "tag": "WEAPON",
-        "basePrice": "15"
+        "basePrice": "1900"
     },
     {
         "fullType": "Base.Macandcheese",
@@ -8637,12 +8637,12 @@
     {
         "fullType": "Base.Mossberg500",
         "tag": "WEAPON",
-        "basePrice": "15"
+        "basePrice": "3500"
     },
     {
         "fullType": "Base.Mossberg500Tactical",
         "tag": "WEAPON",
-        "basePrice": "1000"
+        "basePrice": "3500"
     },
     {
         "fullType": "Base.MotionSensor",
@@ -10962,12 +10962,12 @@
     {
         "fullType": "Base.Remington870Sawnoff",
         "tag": "WEAPON",
-        "basePrice": "1500"
+        "basePrice": "3500"
     },
     {
         "fullType": "Base.Remington870Wood",
         "tag": "WEAPON",
-        "basePrice": "1500"
+        "basePrice": "3500"
     },
     {
         "fullType": "Base.Remote",
@@ -11067,7 +11067,7 @@
     {
         "fullType": "Base.Rifle_Bipod",
         "tag": "CAR_PARTS",
-        "basePrice": "50"
+        "basePrice": "250"
     },
     {
         "fullType": "Base.Rig_ELA",
@@ -11317,7 +11317,7 @@
     {
         "fullType": "Base.Rossi92",
         "tag": "WEAPON",
-        "basePrice": "500"
+        "basePrice": "3000"
     },
     {
         "fullType": "Base.Round_Cap_Casual",
@@ -11367,7 +11367,7 @@
     {
         "fullType": "Base.Rugerm7722",
         "tag": "WEAPON",
-        "basePrice": "600"
+        "basePrice": "2600"
     },
     {
         "fullType": "Base.S10_Gasmask",
@@ -11467,17 +11467,17 @@
     {
         "fullType": "Base.SPAS12",
         "tag": "WEAPON",
-        "basePrice": "750"
+        "basePrice": "3500"
     },
     {
         "fullType": "Base.SPAS12_Stock_Detracted",
         "tag": "VARIOUS",
-        "basePrice": "150"
+        "basePrice": "3500"
     },
     {
         "fullType": "Base.SPAS12_Stock_Extended",
         "tag": "WEAPON",
-        "basePrice": "200"
+        "basePrice": "3500"
     },
     {
         "fullType": "Base.S_Tank_Top",
@@ -12337,7 +12337,7 @@
     {
         "fullType": "Base.Silencer_PopBottle_Broken",
         "tag": "WEAPON",
-        "basePrice": "50"
+        "basePrice": "5"
     },
     {
         "fullType": "Base.SilkMothCaterpillar",
@@ -12447,37 +12447,37 @@
     {
         "fullType": "Base.SlingA",
         "tag": "CAR_PARTS",
-        "basePrice": "50"
+        "basePrice": "150"
     },
     {
         "fullType": "Base.SlingAalt",
         "tag": "VARIOUS",
-        "basePrice": "50"
+        "basePrice": "150"
     },
     {
         "fullType": "Base.SlingAalt2",
         "tag": "VARIOUS",
-        "basePrice": "50"
+        "basePrice": "150"
     },
     {
         "fullType": "Base.SlingAalt3",
         "tag": "VARIOUS",
-        "basePrice": "50"
+        "basePrice": "150"
     },
     {
         "fullType": "Base.Sling_Camo",
         "tag": "WEAPON",
-        "basePrice": "100"
+        "basePrice": "250"
     },
     {
         "fullType": "Base.Sling_Leather",
         "tag": "WEAPON",
-        "basePrice": "100"
+        "basePrice": "300"
     },
     {
         "fullType": "Base.Sling_Olive",
         "tag": "WEAPON",
-        "basePrice": "100"
+        "basePrice": "200"
     },
     {
         "fullType": "Base.Slug",
@@ -14077,12 +14077,12 @@
     {
         "fullType": "Base.UZI_Stock_Detracted",
         "tag": "WEAPON",
-        "basePrice": "30"
+        "basePrice": "1800"
     },
     {
         "fullType": "Base.UZI_Stock_Extended",
         "tag": "WEAPON",
-        "basePrice": "30"
+        "basePrice": "1800"
     },
     {
         "fullType": "Base.Umbrella",
@@ -14622,12 +14622,12 @@
     {
         "fullType": "Base.Winchester73",
         "tag": "WEAPON",
-        "basePrice": "400"
+        "basePrice": "4000"
     },
     {
         "fullType": "Base.Winchester94",
         "tag": "WEAPON",
-        "basePrice": "400"
+        "basePrice": "4000"
     },
     {
         "fullType": "Base.Windshield1",
@@ -14952,7 +14952,7 @@
     {
         "fullType": "Base.x2LeupoldScope",
         "tag": "WEAPON",
-        "basePrice": "100"
+        "basePrice": "300"
     },
     {
         "fullType": "Base.x2Scope",
