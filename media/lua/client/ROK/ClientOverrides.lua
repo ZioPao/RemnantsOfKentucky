@@ -57,13 +57,11 @@ end
 
 --* MAP HANDLING *--
 
-local function GivePlayerBriaIslandMap()
-    debugPrint("Giving new player bria island map")
-    local player = getPlayer()
-    player:getInventory():AddItem("ROK.BriaIslandMap")      -- Hidden item to use the map
-end
+-- local function GivePlayerBriaIslandMap()
+--  -- Hidden item to use the map
+-- end
 
-Events.OnCreatePlayer.Add(GivePlayerBriaIslandMap)
+-- Events.OnCreatePlayer.Add(GivePlayerBriaIslandMap)
 
 
 local og_ISMapWrapper_new = ISMapWrapper.new

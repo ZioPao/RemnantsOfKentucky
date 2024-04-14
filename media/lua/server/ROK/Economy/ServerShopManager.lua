@@ -147,7 +147,7 @@ Events.PZEFT_ServerModDataReady.Add(ServerShopManager.LoadShopPrices)
 
 
 function ServerShopManager.RetransmitItems()
-    debugPrint("Regeneraint daily items and retransmitting")
+    debugPrint("Regenerating daily items and retransmitting")
     ServerShopManager.GenerateDailyItems()
     ModData.transmit(EFT_ModDataKeys.SHOP_ITEMS)
     --ServerShopManager.LoadShopPrices()
