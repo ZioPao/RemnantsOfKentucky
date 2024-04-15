@@ -22,3 +22,5 @@ if isServer() then
         end)
     end)
 end
+
+-- TODO Trigger restart when instances are all used up
