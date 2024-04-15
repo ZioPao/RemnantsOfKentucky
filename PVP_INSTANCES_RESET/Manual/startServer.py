@@ -7,6 +7,20 @@ from os.path import split as path_split, abspath, join, isfile
 from pathlib import Path
 import subprocess
 import json
+import time
+
+def countdown(string, time_sec):
+    while time_sec:
+        _, secs = divmod(time_sec, 60)
+        timeformat = string.format(secs)
+        print(timeformat, end='\r')
+        time.sleep(1)
+        time_sec -= 1
+countdown("Resetting save", 3)
+
+
+############################
+
 
 def in_boundary(X, Y, startX, startY, endX, endY):
     """Determines if a co-ordinate is within a boundary
@@ -65,8 +79,12 @@ with open(config_path) as config_data:
 
 # Reset map files
 save_path = data.get("savePath")
+print("Resetting PVP Instances, saves located in => " + save_path)
 reset_instances(save_path)
 
+
+countdown("Starting server in {:d}", 3)
+
 # Run the actual server
-#sh_path = data.get("serverStartPath")
-#subprocess.call(['sh', sh_path])
+sh_path = data.get("serverStartPath")
+subprocess.call(['sh', sh_path])
