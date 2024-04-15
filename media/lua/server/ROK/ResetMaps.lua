@@ -1,9 +1,16 @@
 Events.OnServerStarted.Add(function()
     pcall(function()
-        if deleteInstancesEFT then
+        if deleteInstancesROK then
             debugPrint("Deleting maps data on start")
             local path = "Multiplayer\\" .. getServerName()
-            deleteInstancesEFT(path) -- Java mod necessary for this to work
+            
+            local startX = 0
+            local startY = 0
+
+            local endX = 600
+            local endY = 100
+
+            deleteInstancesROK(path, startX, startY, endX, endY)-- Java mod necessary for this to work
 
             -- Reset Used Instances in ModData
             local PvpInstanceManager = require("ROK/PvpInstanceManager")
