@@ -165,6 +165,12 @@ function ClientStateCommands.CommitDieIfInRaid()
     ClientState.SetIsInRaid(false)
 end
 
+function ClientStateCommands.ForceQuit()
+    getCore():quit()
+    
+    -- TODO Add notification
+end
+
 local function OnClientStateCommands(module, command, args)
     if (module == MODULE or module == MODULE) and ClientStateCommands[command] then
         --debugPrint("Server Command - " .. MODULE .. "." .. command)

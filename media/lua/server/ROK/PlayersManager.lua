@@ -59,7 +59,6 @@ function PlayersCommands.CheckPlayer(playerObj, args)
     debugPrint("Checking player Status...")
 
     local Delay = require("ROK/Delay")
-    Delay.Initialize()
     local username = playerObj:getUsername()
     local plData = PlayersManager.GetOrCreateData(username)
 

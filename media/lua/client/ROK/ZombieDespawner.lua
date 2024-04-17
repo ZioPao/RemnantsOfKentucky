@@ -29,7 +29,7 @@ Events.PZEFT_OnSuccessfulTeleport.Add(function()
     Delay:set(5, function()
         debugPrint("Deactivating zombie despawner")
         DeactivateZombieDespawner()
-    end)
+    end, "DespawnZombies5Seconds")
 end)
 
 Events.PZEFT_ClientNowInRaid.Add(DeactivateZombieDespawner)

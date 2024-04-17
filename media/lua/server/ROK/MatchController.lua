@@ -52,6 +52,9 @@ function MatchController:initialise()
     sendServerCommand(EFT_MODULES.UI, "OpenLoadingScreen", { sound = "BoomSound" }) -- Boom sound by Garuda1982
 
     -- Init players in match
+
+
+    local areSpawnpointsAllUsed = false
     local playersArray = getOnlinePlayers()
     for i = 0, playersArray:size() - 1 do
         ---@type IsoPlayer
@@ -64,21 +67,29 @@ function MatchController:initialise()
             -- Add them to the list to keep track of them
             local plId = player:getOnlineID()
             if plId then
-                self:addPlayerToMatchList(plId, plUsername)
 
-                -- Teleport the player
                 local spawnPoint = PvpInstanceManager.PopRandomSpawnPoint()
-                if not spawnPoint then
+                if spawnPoint then
+                    debugPrint("Teleporting " .. plUsername .. " to " .. spawnPoint.name)
+                    sendServerCommand(player, EFT_MODULES.Match, "TeleportToInstance", spawnPoint)
+                    self:addPlayerToMatchList(plId, plUsername)
+                else
+                    areSpawnpointsAllUsed = true
                     debugPrint("No more spawnpoints! Can't teleport player!")
-                    -- FIX This should be made more clear to the users, can break a lot of stuff
-                    return
+                    sendServerCommand(player, EFT_MODULES.State, "ForceQuit", {})
                 end
-
-                debugPrint("Teleporting " .. plUsername .. " to " .. spawnPoint.name)
-                sendServerCommand(player, EFT_MODULES.Match, "TeleportToInstance", spawnPoint)
             end
         end
     end
+
+    if areSpawnpointsAllUsed then
+        --sendServerCommand()
+        -- TODO Notify admin that spawnpoints are not enough for this amount of players
+    end
+
+
+
+
     -- Default value for the zombie multiplier
     self:setZombieSpawnMultiplier(PZ_EFT_CONFIG.Server.Match.zombieSpawnMultiplier)
 end
@@ -351,9 +362,21 @@ end
 ------------------------
 --* Match List
 
+--- Checks if a player is in the match list or not
+---@param playerId number
+---@return boolean
+function MatchController:isPlayerInMatchList(playerId)
+    if self.playersInMatch[playerId] then return true else return false end
+end
+
 ---@param playerId number
 ---@param username string
 function MatchController:addPlayerToMatchList(playerId, username)
+    if self:isPlayerInMatchList(playerId) then
+        debugPrint("Player " .. tostring(username) .. " is already in the match, won't re-add it")
+        return
+    end
+
     self.playersInMatch[playerId] = {
         playerId = playerId,
         username = username
@@ -363,8 +386,11 @@ end
 
 ---@param playerId number
 function MatchController:removePlayerFromMatchList(playerId)
-    self.playersInMatch[playerId] = nil
-    self.amountPlayersInMatch = self.amountPlayersInMatch - 1
+    if self:isPlayerInMatchList(playerId) then
+        debugPrint("Removing player with ID " .. tostring(playerId) .. " from match list")
+        self.playersInMatch[playerId] = nil
+        self.amountPlayersInMatch = self.amountPlayersInMatch - 1
+    end
 end
 
 ---Checks if there are players still alive in a match. When it gets to 0, stop the match
@@ -382,6 +408,8 @@ function MatchController.CheckAlivePlayers()
             if testPl == nil then
                 PlayersManager.MarkPlayerAsMIA(plUsername)
                 instance:removePlayerFromMatchList(plId)
+            elseif testPl and testPl:isDead() then
+                instance:removePlayerFromMatchList(plId)
             end
         end
     end
@@ -396,9 +424,24 @@ end
 --- Get the instance of MatchController
 ---@return MatchController
 function MatchController.GetHandler()
-    return MatchController.instance
+    if MatchController.instance then
+        return MatchController.instance
+    else
+        debugPrint("Match controller instance is nil")
+        return nil
+    end
 end
 
+---
+function MatchController.CheckIsMatchRunning()
+    debugPrint("Client asked if match is running")
+    local handler = MatchController.GetHandler()
+
+    local isMatchRunning = handler ~= nil
+    debugPrint("isMatchRunning = " .. tostring(isMatchRunning))
+
+    return isMatchRunning
+end
 ------------------------------------------------------------------------
 --* COMMANDS FROM CLIENTS *--
 ------------------------------------------------------------------------
@@ -415,17 +458,14 @@ end
 ---Client is asking if a match is running
 ---@param playerObj IsoPlayer
 function MatchCommands.CheckIsRunningMatch(playerObj)
-    debugPrint("Client asked if match is running")
-    local handler = MatchController.GetHandler()
-
-    local isMatchRunning = handler ~= nil
+    local isMatchRunning = MatchController.CheckIsMatchRunning()
     sendServerCommand(playerObj, EFT_MODULES.State, 'SetClientStateIsMatchRunning', { value = isMatchRunning })
 end
 
 ---Client is asking if automatic matches are active
 ---@param playerObj IsoPlayer
 function MatchCommands.CheckIsAutomaticStart(playerObj)
-    debugPrint("Client asked if match is running")
+    debugPrint("Client asked if automatic start is enabled")
     sendServerCommand(playerObj, EFT_MODULES.State, 'SetClientStateIsAutomaticStart',
         { value = MatchController.isAutomaticStart })
 end
@@ -484,18 +524,15 @@ end
 
 ---@param args {val : number}
 function MatchCommands.SetZombieSpawnMultiplier(_, args)
-    local instance = MatchController.GetHandler()
-    if instance == nil then return end
-
+    local handler = MatchController.GetHandler()
     debugPrint("Setting zombie multiplier to " .. tostring(args.val))
-    instance:setZombieSpawnMultiplier(args.val)
+    handler:setZombieSpawnMultiplier(args.val)
 end
 
 function MatchCommands.SendZombieSpawnMultiplier(playerObj)
-    --local instance = MatchController.GetHandler()
+
     debugPrint("Player " .. playerObj:getUsername() .. " asked for Zombie Spawn Multiplayer")
-    --if instance == nil then return end
-    --local spawnZombieMultiplier = instance:getZombieSpawnMultiplier()
+
     local spawnZombieMultiplier = PZ_EFT_CONFIG.Server.Match.zombieSpawnMultiplier
     sendServerCommand(playerObj, EFT_MODULES.UI, "ReceiveCurrentZombieSpawnMultiplier",
         { spawnZombieMultiplier = spawnZombieMultiplier })
@@ -504,30 +541,26 @@ end
 ---A client has sent an extraction request
 ---@param playerObj IsoPlayer player requesting extraction
 function MatchCommands.RequestExtraction(playerObj)
-    local instance = MatchController.GetHandler()
+    local handler = MatchController.GetHandler()
     debugPrint("Running extraction for player " .. playerObj:getUsername())
-    if instance == nil then
-        debugPrint("INSTANCE IS NIL, CAN'T EXTRACT PLAYER!!! SOMETHING IS VERY WRONG")
-        return
-    end
-    instance:extractPlayer(playerObj)
+    handler:extractPlayer(playerObj)
 end
 
 ---Removes a player from the current match
 ---@param playerObj IsoPlayer
 function MatchCommands.RemovePlayer(playerObj)
-    local instance = MatchController.GetHandler()
-    if instance == nil then return end
-    instance:removePlayerFromMatchList(playerObj:getOnlineID())
+    local handler = MatchController.GetHandler()
+    handler:removePlayerFromMatchList(playerObj:getOnlineID())
     sendServerCommand(playerObj, EFT_MODULES.State, "SetClientStateIsInRaid", { value = false })
 end
 
 ---@param playerObj IsoPlayer
 function MatchCommands.SendAlivePlayersAmount(playerObj)
-    local instance = MatchController.GetHandler()
-
-    if instance == nil then return end
-    local counter = instance:getAmountAlivePlayers()
+    local handler = MatchController.GetHandler()
+    local counter = -1
+    if handler then
+        counter = handler:getAmountAlivePlayers()
+    end
     --debugPrint("Alive players in match: " .. tostring(counter))
     sendServerCommand(playerObj, EFT_MODULES.UI, "ReceiveAlivePlayersAmount", { amount = counter })
 end

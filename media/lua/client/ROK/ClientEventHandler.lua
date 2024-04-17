@@ -12,7 +12,6 @@ local function OnPlayerInit()
     local Delay = require("ROK/Delay")
 
     LoadingScreen.Open()
-    Delay.Initialize()
 
     local function CheckMods()
         local unsModsStr =
@@ -72,7 +71,7 @@ local function OnPlayerInit()
         triggerEvent("PZEFT_OnPlayerInitDone")
 
         LoadingScreen.Close()
-    end)
+    end, "PlayerInit")
 
     Events.OnPlayerUpdate.Remove(OnPlayerInit)
 end
