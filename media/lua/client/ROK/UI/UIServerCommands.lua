@@ -14,9 +14,13 @@ local InterfaceCommands = {}
 function InterfaceCommands.OpenTimePanel(args)
     local TimePanel = require("ROK/UI/TimePanel")
     TimePanel.Close()
-    TimePanel.Open(args.description)
 
-    ClientState.SetCurrentTime(100) -- Workaround to prevent the TimePanel from closing
+    -- Somehow args could be dropped. Not sure why
+    if args and args.description then
+        TimePanel.Open(args.description)
+        ClientState.SetCurrentTime(100) -- Workaround to prevent the TimePanel from closing
+    end
+
 end
 
 ---@param args { time : number }
