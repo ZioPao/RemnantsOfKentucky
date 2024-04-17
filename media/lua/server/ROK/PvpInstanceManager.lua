@@ -223,6 +223,17 @@ function PvpInstanceManager.GetPermanentExtractionPoints(cellX, cellY)
     return points
 end
 
+function PvpInstanceManager.GetAmountAvailableInstances()
+    local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
+    local counter = 0
+    for _ in pairs(usedInstances) do
+        counter = counter + 1
+    end
+
+    local amount = 100 - counter
+    return amount
+end
+
 
 local function OnInitGlobalModData()
     debugPrint("INITIALIZING PVP INSTANCES MOD DATA")
@@ -242,13 +253,7 @@ local PvpInstanceCommands = {}
 
 ---Calculate how many available instances there are and send them back to the clients
 function PvpInstanceCommands.GetAmountAvailableInstances(playerObj)
-    local usedInstances = ServerData.PVPInstances.GetPvpUsedInstances()
-    local counter = 0
-    for _ in pairs(usedInstances) do
-        counter = counter + 1
-    end
-
-    local amount = 100 - counter
+    local amount = PvpInstanceManager.GetAmountAvailableInstances()
     --print("Amount of instances on the server " .. tostring(amount))
     sendServerCommand(playerObj, EFT_MODULES.UI, "ReceiveAmountAvailableInstances", {amount = amount})
 end

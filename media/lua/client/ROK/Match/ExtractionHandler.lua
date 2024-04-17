@@ -63,14 +63,20 @@ end
 ---Runs the timer for the ExtractionHandler. Can be closed and disabled from RunEvent
 function ExtractionHandler.HandleTimer()
     local cTime = os_time()
-
     local formattedTime = string.format("%d", ExtractionHandler.stopTime - cTime)
-    ExtractionPanel.instance:setExtractButtonTitle(formattedTime)
 
-    if cTime >= ExtractionHandler.stopTime then
-        ExtractionPanel.instance:disableButton() -- To prevent issues in case of lag
-        ExtractionHandler.ExecuteExtraction()
+    if ExtractionPanel.instance then
+        ExtractionPanel.instance:setExtractButtonTitle(formattedTime)
+
+        if cTime >= ExtractionHandler.stopTime then
+            ExtractionPanel.instance:disableButton() -- To prevent issues in case of lag
+            ExtractionHandler.ExecuteExtraction()
+        end
+    else
+        debugPrint("Extraction panel isn't ready")
     end
+
+
 end
 
 function ExtractionHandler.ExecuteExtraction()

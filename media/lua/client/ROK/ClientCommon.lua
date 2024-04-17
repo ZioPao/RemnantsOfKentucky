@@ -18,6 +18,7 @@ function ClientCommon.Teleport(coords)
     if pl:isDead() then return end
 
     -- FIX Breaks when players get damaged during extraction!
+    
     pl:setX(coords.x)
     pl:setY(coords.y)
     pl:setZ(coords.z)
@@ -26,7 +27,7 @@ function ClientCommon.Teleport(coords)
     pl:setLz(coords.z)
 
     local function CheckTeleportStatus()
-        debugPrint("Checking is teleport is successful")
+        debugPrint("Checking if teleport is successful")
         local x = pl:getX()
         local y = pl:getY()
         local z = pl:getZ()
