@@ -166,7 +166,8 @@ function ClientStateCommands.CommitDieIfInRaid()
 end
 
 function ClientStateCommands.ForceQuit()
-    getCore():exitToMenu()
+    getCore():quit()
+    
     -- TODO Add notification
 end
 

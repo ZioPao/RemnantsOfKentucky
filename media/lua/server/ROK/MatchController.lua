@@ -427,11 +427,21 @@ function MatchController.GetHandler()
     if MatchController.instance then
         return MatchController.instance
     else
-        debugPrint("Match controller instance is nil! This should never happen")
+        debugPrint("Match controller instance is nil")
         return nil
     end
 end
 
+---
+function MatchController.CheckIsMatchRunning()
+    debugPrint("Client asked if match is running")
+    local handler = MatchController.GetHandler()
+
+    local isMatchRunning = handler ~= nil
+    debugPrint("isMatchRunning = " .. tostring(isMatchRunning))
+
+    return isMatchRunning
+end
 ------------------------------------------------------------------------
 --* COMMANDS FROM CLIENTS *--
 ------------------------------------------------------------------------
@@ -448,18 +458,14 @@ end
 ---Client is asking if a match is running
 ---@param playerObj IsoPlayer
 function MatchCommands.CheckIsRunningMatch(playerObj)
-    debugPrint("Client asked if match is running")
-    local handler = MatchController.GetHandler()
-
-    local isMatchRunning = handler ~= nil
-    debugPrint("isMatchRunning = " .. tostring(isMatchRunning))
+    local isMatchRunning = MatchController.CheckIsMatchRunning()
     sendServerCommand(playerObj, EFT_MODULES.State, 'SetClientStateIsMatchRunning', { value = isMatchRunning })
 end
 
 ---Client is asking if automatic matches are active
 ---@param playerObj IsoPlayer
 function MatchCommands.CheckIsAutomaticStart(playerObj)
-    debugPrint("Client asked if match is running")
+    debugPrint("Client asked if automatic start is enabled")
     sendServerCommand(playerObj, EFT_MODULES.State, 'SetClientStateIsAutomaticStart',
         { value = MatchController.isAutomaticStart })
 end
@@ -551,7 +557,10 @@ end
 ---@param playerObj IsoPlayer
 function MatchCommands.SendAlivePlayersAmount(playerObj)
     local handler = MatchController.GetHandler()
-    local counter = handler:getAmountAlivePlayers()
+    local counter = -1
+    if handler then
+        counter = handler:getAmountAlivePlayers()
+    end
     --debugPrint("Alive players in match: " .. tostring(counter))
     sendServerCommand(playerObj, EFT_MODULES.UI, "ReceiveAlivePlayersAmount", { amount = counter })
 end

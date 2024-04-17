@@ -1,6 +1,3 @@
-local Delay = require("ROK/Delay")
-
-
 ---@class ClientCommon
 local ClientCommon = {}
 
@@ -46,7 +43,8 @@ function ClientCommon.Teleport(coords)
     end
 
     -- Remove the check after 5 seconds if nothing changes.
-    Delay:set(5, StopTeleportCheck)
+    local Delay = require("ROK/Delay")
+    Delay:set(5, StopTeleportCheck, "StopTeleportCheck")
     Events.OnTick.Add(CheckTeleportStatus)
 end
 
