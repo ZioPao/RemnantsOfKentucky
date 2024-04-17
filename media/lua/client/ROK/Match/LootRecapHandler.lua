@@ -62,7 +62,7 @@ function LootRecapHandler.CompareWithOldInventory()
     local actualNewItems = {}
     for k, v in pairs(LootRecapHandler.newItems) do
         --debugPrint("Checking " .. k)
-        if LootRecapHandler.oldItems[k] == nil then
+        if LootRecapHandler.oldItems[k] == nil and not v:isHidden() then
             local fullType = v:getFullType()
             --debugPrint("New item: " .. fullType)
             actualNewItems[k] = { actualItem = v:getScriptItem(), fullType = fullType }
