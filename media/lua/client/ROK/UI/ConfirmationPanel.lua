@@ -91,6 +91,19 @@ function ConfirmationPanel.Open(alertText, x, y, parentPanel, onConfirmFunc)
     local width = 500
     local height = 120
 
+
+    local screenWidth = getCore():getScreenWidth()
+    local screenHeight = getCore():getScreenHeight()
+
+    -- Check for oversize
+    if x+width > screenWidth then
+        x = screenWidth - width
+    end
+
+    if y+height > screenHeight then
+        y = screenHeight - height
+    end
+
     local panel = ConfirmationPanel:new(x, y, width, height, alertText, parentPanel, onConfirmFunc)
     panel:initialise()
     panel:addToUIManager()
