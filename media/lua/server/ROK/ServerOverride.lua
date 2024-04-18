@@ -18,3 +18,24 @@ function ISMoveableCursor:isValid(_square)
 
     return isValid
 end
+
+Events.OnServerStarted.Add(function()
+    if getActivatedMods():contains("UdderlyUpToDate") then
+        debugPrint("UdderlyUpToDate in use! Overriding functions")
+        require("UdderlyUpToDate")
+
+        --* UDDERLY UP TO DATE OVERRIDE *--
+        -- We want to prevent the mod from restarting the server mid-match
+        local og_UdderlyUpToDate_pollWorkshop = UdderlyUpToDate.pollWorkshop
+        function UdderlyUpToDate.pollWorkshop()
+            debugPrint("UdderlyUpToDate polling started")
+            local MatchController = require("ROK/MatchController")
+            if MatchController.CheckIsMatchRunning() then
+                debugPrint("Match is running, can't continue with UdderlyUpToDate")
+                return
+            end
+
+            og_UdderlyUpToDate_pollWorkshop()
+        end
+    end
+end)

@@ -230,7 +230,7 @@ function PvpInstanceManager.GetAmountAvailableInstances()
         counter = counter + 1
     end
 
-    local totalAmount = 2 --PZ_EFT_CONFIG.PVPInstanceSettings.xRepeat * PZ_EFT_CONFIG.PVPInstanceSettings.yRepeat
+    local totalAmount = PZ_EFT_CONFIG.PVPInstanceSettings.xRepeat * PZ_EFT_CONFIG.PVPInstanceSettings.yRepeat
     local availableInstancesAmount = totalAmount - counter
     return availableInstancesAmount - 1       -- FIXME There's something wrong with the latest available instance. We need to skip it for now
 end

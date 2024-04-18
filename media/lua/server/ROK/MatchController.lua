@@ -434,12 +434,9 @@ end
 
 ---
 function MatchController.CheckIsMatchRunning()
-    debugPrint("Client asked if match is running")
     local handler = MatchController.GetHandler()
-
     local isMatchRunning = handler ~= nil
     debugPrint("isMatchRunning = " .. tostring(isMatchRunning))
-
     return isMatchRunning
 end
 ------------------------------------------------------------------------
@@ -458,6 +455,7 @@ end
 ---Client is asking if a match is running
 ---@param playerObj IsoPlayer
 function MatchCommands.CheckIsRunningMatch(playerObj)
+    debugPrint("Client asked if match is running")
     local isMatchRunning = MatchController.CheckIsMatchRunning()
     sendServerCommand(playerObj, EFT_MODULES.State, 'SetClientStateIsMatchRunning', { value = isMatchRunning })
 end

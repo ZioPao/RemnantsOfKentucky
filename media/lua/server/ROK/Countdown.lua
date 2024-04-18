@@ -42,7 +42,7 @@ function Countdown.Setup(stopTime, fun, displayOnClient, description)
 		Countdown.displayOnClient = false
 	end
 
-	Events.OnTickEvenPaused.Add(Countdown.Update)
+	Events.OnTick.Add(Countdown.Update)
 end
 
 ---@param interval number in seconds
@@ -84,9 +84,8 @@ function Countdown.Update()
 	end
 
 	if currTime >= Countdown.stopTime then
-		Events.OnTickEvenPaused.Remove(Countdown.Update)
-		debugPrint("STOP COUNTDOWN! Running func!")
-
+		Events.OnTick.Remove(Countdown.Update)
+		debugPrint("Stopping countdown and running function")
 		if Countdown.fun then
 			Countdown.fun()
 		else
@@ -108,7 +107,7 @@ function Countdown.Stop()
 		sendServerCommand(EFT_MODULES.UI, "ReceiveTimeUpdate", { time = 0 })
 	end
 
-	Events.OnTickEvenPaused.Remove(Countdown.Update)
+	Events.OnTick.Remove(Countdown.Update)
 end
 
 ------------------------------------------------------------------------
