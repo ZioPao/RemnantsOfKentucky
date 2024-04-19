@@ -47,7 +47,7 @@ end
 ServerData.PVPInstances = ServerData.PVPInstances or {}
 
 --- Get table of PVP instances data
----@return pvpInstanceTable
+---@return table<integer, pvpInstanceTable>
 ServerData.PVPInstances.GetPvpInstances = function()
     return ModData.getOrCreate(EFT_ModDataKeys.PVP_INSTANCES)
 end
