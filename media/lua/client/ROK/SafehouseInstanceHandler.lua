@@ -299,13 +299,13 @@ function SafehouseInstanceHandler.IsInStaticArea(sq, excludeDeliveryPoint)
         if excludeDeliveryPoint then
             local movDeliverySq = SafehouseInstanceHandler.GetMoveableDeliveryPoint()
             if movDeliverySq and isInStaticArea then
-                debugPrint("Checking delivery point")
+                --debugPrint("Checking delivery point")
                 isInStaticArea = not (movDeliverySq:getX() == sq:getX() and movDeliverySq:getY() == sq:getY())
             end
         end
     end
 
-    debugPrint(isInStaticArea)
+    --debugPrint(isInStaticArea)
 
     return isInStaticArea
 end

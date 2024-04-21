@@ -228,7 +228,8 @@ function ShopCommands.SellItems(sellItemsData)
         ISRemoveItemTool.removeItem(item, pl)
     end
 
-    triggerEvent("PZEFT_OnSuccessfulSell", "successful")
+    local text = getText("IGUI_Shop_Sell_Confirmation_Success")
+    triggerEvent("PZEFT_OnSuccessfulSell", text)
 end
 
 ---@param args table
