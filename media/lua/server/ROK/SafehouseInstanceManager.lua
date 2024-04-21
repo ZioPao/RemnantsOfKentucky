@@ -144,6 +144,8 @@ function SafehouseInstanceManager.SendPlayerToSafehouse(player)
     local playerSafehouseKey = SafehouseInstanceManager.GetOrAssignSafehouse(player)
     local safehouseCoords = SafehouseInstanceManager.GetSafehouseInstanceByKey(playerSafehouseKey)
 
+
+    debugPrint("Sending " .. player:getUsername() .. " to safehouse (x=" .. safehouseCoords.x .. ", y=" ..  safehouseCoords.y .. ", z=" ..  safehouseCoords.z .. ")")
     sendServerCommand(player, EFT_MODULES.Safehouse, "TeleportToSafehouse", safehouseCoords)
 end
 
