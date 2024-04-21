@@ -324,6 +324,7 @@ local SafehouseInstanceCommands = {}
 function SafehouseInstanceCommands.TeleportToSafehouse(coords)
     local ClientCommon = require("ROK/ClientCommon")
     local ClientState = require("ROK/ClientState")
+    debugPrint("Teleporting to " .. tostring(coords.x) .. ", " .. tostring(coords.y))
     ClientCommon.Teleport(coords)
     ClientState.SetIsInRaid(false)
 end
