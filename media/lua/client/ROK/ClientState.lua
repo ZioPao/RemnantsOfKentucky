@@ -114,6 +114,18 @@ Events.PZEFT_ClientNotInRaidAnymore.Add(ClientState.ResetMatchValues)
 
 
 function ClientState.SetIsMatchRunning(value)
+
+
+    -- Event
+    if ClientState.isMatchRunning ~= value then
+        if value then
+            triggerEvent("PZEFT_MatchNowRunning")
+        else
+            triggerEvent("PZEFT_MatchNotRunningAnymore")
+
+        end
+    end
+
     ClientState.isMatchRunning = value
 end
 

@@ -117,6 +117,7 @@ function MatchController:startMatch()
         -- Setup checking alive players to stop the match and such things
         Countdown.AddIntervalFunc(PZ_EFT_CONFIG.Server.Match.checkAlivePlayersTime, MatchController.CheckAlivePlayers)
 
+        sendServerCommand(EFT_MODULES.State, 'SetClientStateIsMatchRunning', { value = true })
         sendServerCommand(EFT_MODULES.UI, "CloseLoadingScreen", {})
 
         triggerEvent("PZEFT_OnMatchStart")
@@ -126,7 +127,8 @@ end
 function MatchController:stopMatch()
     Countdown.Stop()
     MatchController.instance = nil
-    sendServerCommand(EFT_MODULES.UI, 'SwitchMatchAdminUI', { startingState = 'DURING' })
+    sendServerCommand(EFT_MODULES.State, 'SetClientStateIsMatchRunning', { value = false })
+    --sendServerCommand(EFT_MODULES.UI, 'SwitchMatchAdminUI', { startingState = 'DURING' })
 
     triggerEvent("PZEFT_OnMatchEnd") -- OnMatchEnd on the server
 end
@@ -396,7 +398,7 @@ end
 ---Checks if there are players still alive in a match. When it gets to 0, stop the match
 ---We have to check it periodically to account for crashes
 function MatchController.CheckAlivePlayers()
-    --debugPrint("checking alive players")
+    debugPrint("checking alive players")
     local instance = MatchController.GetHandler()
     if instance == nil then return end
     for k, v in pairs(instance.playersInMatch) do
@@ -496,7 +498,7 @@ function MatchCommands.StartCountdown(_, args)
         handler:startMatch()
 
         -- Closes automatically the admin panel\switch it to the during match one
-        sendServerCommand(EFT_MODULES.UI, 'SwitchMatchAdminUI', { startingState = 'BEFORE' })
+        --sendServerCommand(EFT_MODULES.UI, 'SwitchMatchAdminUI', { startingState = 'BEFORE' })
     end
 
     Countdown.Setup(args.stopTime, StartMatch, true, MATCH_STARTING_STR)

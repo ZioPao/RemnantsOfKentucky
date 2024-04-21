@@ -48,7 +48,6 @@ ButtonManager.firstInit = true
 ButtonManager.additionalY = 10
 
 local function OpenAdminMenu()
-    -- UGLY This could mean that the admin needs to open it up multiple times
     sendClientCommand(EFT_MODULES.Match, 'CheckIsRunningMatch', {})
 
     if not ClientState.isMatchRunning then
