@@ -42,7 +42,7 @@ function CratesValueCalculator.GetValue(item)
         --debugPrint(fullType .. " : $" .. tostring(shopItem.basePrice))
         return shopItem.basePrice
     else
-        print("Couldn't find item with fullType " .. item:getFullType())
+        debugPrint("Couldn't find shop data for item with fullType=" .. item:getFullType())
         return 0
     end
 end

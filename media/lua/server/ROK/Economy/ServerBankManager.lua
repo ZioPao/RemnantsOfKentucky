@@ -103,7 +103,7 @@ end
 ---@param args {amount : number, onSuccess : callaback, onFail : callaback} {amount=x, onSuccess = {callbackModule="abc", callbackCommand="abc", callbackArgs={args...}}, onFail = {callbackModule="abc", callbackCommand="abc", callbackArgs={args...}}}
 function BankCommands.ProcessTransaction(playerObj, args)
     local result = ServerBankManager.ProcessTransaction(playerObj:getUsername(), args.amount)
-    --print("Result from ProcessTransaction " .. tostring(result))
+    --debugPrint("Result from ProcessTransaction " .. tostring(result))
     if result.success then
         debugPrint("Transaction success")
         if args.onSuccess and args.onSuccess.callbackModule and args.onSuccess.callbackCommand then
