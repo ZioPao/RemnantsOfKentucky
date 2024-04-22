@@ -72,49 +72,6 @@ function ClientState.SetIsStartingMatch(val)
     ClientState.isStartingMatch = val
 end
 
---* Getters
-
-function ClientState.GetExtractionTime()
-    return ClientState.extractionTime
-end
-
-function ClientState.GetIsInRaid()
-    return ClientState.isInRaid
-end
-
-function ClientState.GetAvailableInstances()
-    return ClientState.availableInstances
-end
-
-function ClientState.GetAlivePlayersAmount()
-    return ClientState.alivePlayersAmount
-end
-
-function ClientState.GetIsMatchRunning()
-    return ClientState.isMatchRunning
-end
-
-function ClientState.GetIsAutomaticStart()
-    return ClientState.isAutomaticStart
-end
-
-function ClientState.GetIsStartingMatch()
-    return ClientState.isStartingMatch
-end
-
-function ClientState.ResetMatchValues()
-    ClientState.SetIsStartingMatch(false)
-
-
-    --ClientState.isMatchRunning = false This must be from the server
-
-    -- UGLY Use setters, not this
-    ClientState.previousExtractionPointsStatus = {}
-    ClientState.extractionPointsStatus = {}
-end
-
-Events.PZEFT_ClientNotInRaidAnymore.Add(ClientState.ResetMatchValues)
-
 ---@param value boolean
 function ClientState.SetIsMatchRunning(value)
 
@@ -134,15 +91,80 @@ function ClientState.SetIsMatchRunning(value)
     ClientState.isMatchRunning = value
 end
 
+---@param value boolean
 function ClientState.SetIsAutomaticStart(value)
     ClientState.isAutomaticStart = value
 end
 
--- If the client is in a raid, force set that the match is running
-Events.PZEFT_ClientNowInRaid.Add(function()
-    ClientState.SetIsMatchRunning(true)
-end)
+---@param val table
+function ClientState.SetPreviousExtractionPointsStatus(val)
+    ClientState.previousExtractionPointsStatus = val
+end
 
+---@param val table
+function ClientState.SetExtractionPointsStatus(val)
+    ClientState.extractionPointsStatus = val
+end
+
+--* Getters
+
+---@return number
+function ClientState.GetExtractionTime()
+    return ClientState.extractionTime
+end
+
+---@return boolean
+function ClientState.GetIsInRaid()
+    return ClientState.isInRaid
+end
+
+---@return integer
+function ClientState.GetAvailableInstances()
+    return ClientState.availableInstances
+end
+
+---@return integer
+function ClientState.GetAlivePlayersAmount()
+    return ClientState.alivePlayersAmount
+end
+
+---@return boolean
+function ClientState.GetIsMatchRunning()
+    return ClientState.isMatchRunning
+end
+
+---@return boolean
+function ClientState.GetIsAutomaticStart()
+    return ClientState.isAutomaticStart
+end
+
+---@return boolean
+function ClientState.GetIsStartingMatch()
+    return ClientState.isStartingMatch
+end
+
+---@return table
+function ClientState.GetPreviousExtractionPointsStatus()
+    return ClientState.previousExtractionPointsStatus
+end
+
+---@return table
+function ClientState.GetExtractionPointsStatus()
+    return ClientState.extractionPointsStatus
+end
+-- -- If the client is in a raid, force set that the match is running
+-- Events.PZEFT_ClientNowInRaid.Add(function()
+--     ClientState.SetIsMatchRunning(true)
+-- end)
+
+function ClientState.ResetMatchValues()
+    ClientState.SetIsStartingMatch(false)
+    --ClientState.isMatchRunning = false This must be from serverside, not client-side
+    ClientState.SetPreviousExtractionPointsStatus({})
+    ClientState.SetExtractionPointsStatus({})
+end
+
+Events.PZEFT_ClientNotInRaidAnymore.Add(ClientState.ResetMatchValues)
 
 
 -----------------------------------
