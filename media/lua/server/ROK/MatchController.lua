@@ -294,7 +294,7 @@ function MatchController.HandlePlayerDeath(playerObj)
     local killerObj = playerObj:getAttackedBy()
     ---@cast killerObj IsoPlayer
 
-    if killerObj and killerObj ~= playerObj then
+    if killerObj then
         -- Add to kill count, send it back to client
         sendServerCommand(killerObj, EFT_MODULES.Match, 'AddKill', { victimUsername = playerObj:getUsername() })
     end
