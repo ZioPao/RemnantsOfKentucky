@@ -1,4 +1,5 @@
 local StoreScrollItemsPanel = require("ROK/UI/Store/Components/StoreScrollItemsPanel")
+local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 -----------
 
 ---@class BuyScrollItemsPanel : StoreScrollItemsPanel
@@ -48,7 +49,7 @@ local function BuyDoDrawItem(self, y, item, rowElementNumber)
     self:drawText(itemDisplayName, x + 6, y + 2, 1, 1, 1, a, self.font)
 
     --* ITEM COST *--
-    local priceStr = "$" .. itemCost
+    local priceStr = "$" .. GenericUI.FormatCurrency(itemCost)
     local priceStrY = getTextManager():MeasureStringY(self.font, priceStr)
     self:drawText(priceStr, x + 6, y + priceStrY + 2, 1, 1, 1, a, self.font)
     self:clearStencilRect()

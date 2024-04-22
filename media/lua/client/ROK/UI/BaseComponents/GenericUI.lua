@@ -46,6 +46,23 @@ function GenericUI.FormatTime(time, useRichText)
     return finalString
 end
 
+--- Format the balance with a , separator for thousands
+---@param balance number
+function GenericUI.FormatCurrency(balance)
+    local formatted = tostring(balance)
+    formatted = string.reverse(formatted)
+    local result = ""
+    local count = 1
+    for i = 1, #formatted do
+        result = result .. formatted:sub(i, i)
+        if count % 3 == 0 and i ~= #formatted then
+            result = result .. ","
+        end
+        count = count + 1
+    end
+    return string.reverse(result)
+end
+
 function GenericUI.ToggleSidePanel(parent, NewPanel)
     -- Check if side panel is already open
     if parent.openedPanel then

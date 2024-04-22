@@ -107,7 +107,9 @@ function LeaderboardScrollingTable:drawDatas(y, item, alt)
     clipX = self.columns[3].size
     clipX2 = self.columns[4].size
     self:setStencilRect(clipX, clipY, clipX2 - clipX, clipY2 - clipY)
-    self:drawText("$" .. tostring(item.item.balance), self.columns[3].size + xOffset, y + 4, 1, 1, 1, a, self.font)
+
+    local balance = item.item.balance
+    self:drawText("$" .. GenericUI.FormatCurrency(balance), self.columns[3].size + xOffset, y + 4, 1, 1, 1, a, self.font)
     self:clearStencilRect()
 
 
@@ -115,12 +117,13 @@ function LeaderboardScrollingTable:drawDatas(y, item, alt)
     clipX = self.columns[4].size
     clipX2 = self.columns[5].size
     self:setStencilRect(clipX, clipY, clipX2 - clipX, clipY2 - clipY)
-    self:drawText("$" .. tostring(item.item.cratesValue), self.columns[4].size + xOffset, y + 4, 1, 1, 1, a, self.font)
+    local cratesValue = item.item.cratesValue
+    self:drawText("$" .. GenericUI.FormatCurrency(cratesValue), self.columns[4].size + xOffset, y + 4, 1, 1, 1, a, self.font)
     self:clearStencilRect()
 
     -- Total
-    local totalBalance = item.item.balance + item.item.cratesValue
-    self:drawText("$" .. tostring(totalBalance), self.columns[5].size + xOffset, y + 4, 1, 1, 1, a, self.font)
+    local totalBalance = cratesValue + balance
+    self:drawText("$" .. GenericUI.FormatCurrency(totalBalance), self.columns[5].size + xOffset, y + 4, 1, 1, 1, a, self.font)
 
 
     return y + self.itemheight

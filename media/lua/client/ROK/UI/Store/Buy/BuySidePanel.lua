@@ -3,6 +3,7 @@ local ClientShopManager = require("ROK/Economy/ClientShopManager")
 local SafehouseInstanceHandler = require("ROK/SafehouseInstanceHandler")
 local CommonStore = require("ROK/UI/Store/Components/CommonStore")
 local ShopItemsManager = require("ROK/ShopItemsManager")
+local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 ------------------------
 
 ---@class BuySidePanel : RightSidePanel
@@ -157,8 +158,11 @@ function BuySidePanel:render()
     if self.currentCost == nil then
         finalStr = " <CENTRE> Loading..."
     else
+
+        local formattedCost = GenericUI.FormatCurrency(self.currentCost)
+
         local itemNameStr = " <CENTRE> " .. actualItem:getDisplayName()
-        local itemFinalCostStr = " <CENTRE> $" .. self.currentCost .. " x " .. tostring(self.selectedAmount) .. " = $" .. tostring(self.currentCost)
+        local itemFinalCostStr = " <CENTRE> $" .. formattedCost .. " x " .. tostring(self.selectedAmount) .. " = $" .. tostring(self.currentCost)
         finalStr = itemNameStr .. " <LINE> " .. itemFinalCostStr
     end
 
