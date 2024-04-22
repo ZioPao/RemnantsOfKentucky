@@ -121,7 +121,7 @@ function SafehouseInstanceHandler.AddToCrateOrdered(fullType, index, x, y, isRot
 
     if grid:canAddItem(item) then
         debugPrint("Adding " ..
-        fullType .. " to crate " .. tostring(index) .. " at X=" .. tostring(x) .. ", Y=" .. tostring(y))
+            fullType .. " to crate " .. tostring(index) .. " at X=" .. tostring(x) .. ", Y=" .. tostring(y))
         inv:addItemOnServer(item)
         inv:AddItem(item)
         inv:setDrawDirty(true)
@@ -183,14 +183,14 @@ function SafehouseInstanceHandler.IsDeliveryPointClear()
     local sq = SafehouseInstanceHandler.GetMoveableDeliveryPoint()
     if sq == nil then return false end
 
-    debugPrint("Checking if delivery point is clear")
+    --debugPrint("Checking if delivery point is clear")
 
     for i = 1, sq:getObjects():size() do
         ---@type IsoObject
         local obj = sq:getObjects():get(i - 1)
 
         if obj then
-            debugPrint("Obj => " .. tostring(obj:getName()))
+            --debugPrint("Obj => " .. tostring(obj:getName()))
             local spr = obj:getSprite()
 
             local props = spr:getProperties()
@@ -211,6 +211,7 @@ function SafehouseInstanceHandler.TryToPlaceMoveable(itemObj)
     if sq == nil then return end
 
     if SafehouseInstanceHandler.IsDeliveryPointClear() then
+        debugPrint("Delivery point clear, spawning " .. itemObj:getName())
         local sprite = itemObj:getWorldSprite()
 
         local props = ISMoveableSpriteProps.new(IsoObject.new(sq, sprite):getSprite())
@@ -218,9 +219,8 @@ function SafehouseInstanceHandler.TryToPlaceMoveable(itemObj)
         props:placeMoveableInternal(sq, itemObj, sprite)
 
         return sq:getFloor()
-
-        --else
-        --debugPrint("Delivery point is not clear! Can't put items there")
+    else
+        debugPrint("Delivery point is not clear! Can't put " .. itemObj:getName() .. " in the point")
     end
 
     return nil

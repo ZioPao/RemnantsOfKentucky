@@ -103,26 +103,31 @@ function ClientState.GetIsStartingMatch()
 end
 
 function ClientState.ResetMatchValues()
-    ClientState.isStartingMatch = false
-    ClientState.isMatchRunning = false
+    ClientState.SetIsStartingMatch(false)
 
+
+    --ClientState.isMatchRunning = false This must be from the server
+
+    -- UGLY Use setters, not this
     ClientState.previousExtractionPointsStatus = {}
     ClientState.extractionPointsStatus = {}
 end
 
 Events.PZEFT_ClientNotInRaidAnymore.Add(ClientState.ResetMatchValues)
 
-
+---@param value boolean
 function ClientState.SetIsMatchRunning(value)
 
-
+    debugPrint("Setting isMatchRunning="..tostring(value))
+    debugPrint("Current isMatchRunning="..tostring(ClientState.isMatchRunning))
     -- Event
     if ClientState.isMatchRunning ~= value then
         if value then
+            debugPrint("Triggering event PZEFT_MatchNowRunning")
             triggerEvent("PZEFT_MatchNowRunning")
         else
+            debugPrint("Triggering event PZEFT_MatchNotRunningAnymore")
             triggerEvent("PZEFT_MatchNotRunningAnymore")
-
         end
     end
 
@@ -160,7 +165,7 @@ function ClientStateCommands.SetClientStateIsInRaid(args)
 end
 
 function ClientStateCommands.SetClientStateIsMatchRunning(args)
-    ClientState.isMatchRunning = args.value
+    ClientState.SetIsMatchRunning(args.value)
 end
 
 function ClientStateCommands.SetClientStateIsAutomaticStart(args)

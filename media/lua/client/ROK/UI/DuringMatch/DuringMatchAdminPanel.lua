@@ -107,6 +107,8 @@ end
 
 function DuringMatchAdminPanel.SwitchPanel()
     if not isAdmin() then return end
+    debugPrint("Switching admin panel, DURING => BEFORE")
+
     if DuringMatchAdminPanel.instance and DuringMatchAdminPanel.instance:isVisible() then
         DuringMatchAdminPanel.instance:close()
         DuringMatchAdminPanel.instance = nil
