@@ -113,6 +113,11 @@ function ClientState.GetExtractionTime()
     return ClientState.extractionTime
 end
 
+---@return number
+function ClientState.GetCurrentTime()
+    return ClientState.currentTime
+end
+
 ---@return boolean
 function ClientState.GetIsInRaid()
     return ClientState.isInRaid

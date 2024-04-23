@@ -61,11 +61,11 @@ function TimePanel:initialise()
     self.timePanel:addChild(self.textLabel)
 
 
-    self.lastTime = math.floor(tonumber(ClientState.currentTime))
+    self.lastTime = math.floor(tonumber(ClientState.GetCurrentTime()))
 end
 
 function TimePanel:render()
-    local timeNumber = math.floor(tonumber(ClientState.currentTime))
+    local timeNumber = math.floor(tonumber(ClientState.GetCurrentTime()))
     if timeNumber == nil then return end
 
     if timeNumber <= 10 and timeNumber < self.lastTime then
@@ -158,12 +158,12 @@ function TimeCommands.OpenTimePanel(args)
     TimePanel.Close()
     TimePanel.Open(args.description)
 
-    ClientState.currentTime = 100       -- Workaround to prevent the TimePanel from closing
+    ClientState.SetCurrentTime(100)       -- Workaround to prevent the TimePanel from closing
 end
 
 ---@param args { time : number }
 function TimeCommands.ReceiveTimeUpdate(args)
-    ClientState.currentTime = args.time
+    ClientState.SetCurrentTime(args.time)
     -- Locally, 1 player, about 4-5 ms of delay.
 end
 

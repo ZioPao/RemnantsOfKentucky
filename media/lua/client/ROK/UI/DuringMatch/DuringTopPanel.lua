@@ -52,7 +52,7 @@ function DuringTopPanel:prerender()
 
     ---@type ISLabel
     local timeLabelVal = self.matchTimeLabelVal
-    timeLabelVal:setName(GenericUI.FormatTime(tonumber(ClientState.currentTime)))
+    timeLabelVal:setName(GenericUI.FormatTime(tonumber(ClientState.GetCurrentTime())))
 
     ---@type ISLabel
     local alivePlayersLabelVal = self.alivePlayersLabelVal

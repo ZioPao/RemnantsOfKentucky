@@ -295,8 +295,15 @@ function MatchController.HandlePlayerDeath(playerObj)
     ---@cast killerObj IsoPlayer
 
     if killerObj then
+        local os_time = os.time
+        local currTime = os_time()
+        local currSeconds = Countdown.stopTime - currTime
+
+
         -- Add to kill count, send it back to client
-        sendServerCommand(killerObj, EFT_MODULES.Match, 'AddKill', { victimUsername = playerObj:getUsername() })
+        sendServerCommand(killerObj, EFT_MODULES.Match, 'AddKill', {
+            victimUsername = playerObj:getUsername()
+        })
     end
 
     -- Removes player from the match, preventing them from despawning crap
