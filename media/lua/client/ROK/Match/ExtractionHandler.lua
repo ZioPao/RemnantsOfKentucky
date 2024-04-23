@@ -37,15 +37,20 @@ function ExtractionHandler.RunEvent()
         local playerSquare = pl:getSquare()
         if playerSquare == nil then return end
         local playerPosition = { x = playerSquare:getX(), y = playerSquare:getY(), z = playerSquare:getZ(), }
+
+
+        local prevExtractionPointsStatus = ClientState.GetPreviousExtractionPointsStatus()
+        local extractionPointsStatus = ClientState.GetExtractionPointsStatus()
+
         for key, area in ipairs(extractionPoints) do
             -- Save previous state
-            ClientState.previousExtractionPointsStatus[key] = ClientState.extractionPointsStatus[key]
+            prevExtractionPointsStatus[key] = extractionPointsStatus[key]
 
 
             local isInArea = PZEFT_UTILS.IsInRectangle(playerPosition, area)
-            ClientState.extractionPointsStatus[key] = isInArea
+            extractionPointsStatus[key] = isInArea
 
-            if ClientState.previousExtractionPointsStatus[key] ~= ClientState.extractionPointsStatus[key] then
+            if prevExtractionPointsStatus[key] ~= extractionPointsStatus[key] then
                 -- Now check if isInArea is true or not
                 debugPrint("Extraction Point status changed, key=" .. tostring(key))
 

@@ -185,8 +185,8 @@ function MainShopPanel:render()
     if self.accountBalance == nil then return end
     local balanceText
 
-    -- SP Workaround
-    balanceText = getText("IGUI_Shop_CurrentBalance", string.format("%.2f", self.accountBalance))
+    local formattedBalance = GenericUI.FormatCurrency(self.accountBalance)
+    balanceText = getText("IGUI_Shop_CurrentBalance", formattedBalance)
 
     self.balancePanel:setText(balanceText)
     self.balancePanel:paginate()
@@ -217,7 +217,7 @@ local function AddShopMenu(playerNum, context, worldObjects, test)
             context:addOption(getText("ContextMenu_EFT_OpenShop"), playerObj, MainShopPanel.Open, coords)
 
             local instaHealCost = PZ_EFT_CONFIG.Shop.instaHealCost
-            local instaHealOption = context:addOption(getText("ContextMenu_EFT_InstaHeal", instaHealCost), playerObj, ClientShopManager.AskToBuyInstaHeal)
+            local instaHealOption = context:addOption(getText("ContextMenu_EFT_InstaHeal", GenericUI.FormatCurrency(PZ_EFT_CONFIG.Shop.instaHealCost)), playerObj, ClientShopManager.AskToBuyInstaHeal)
             instaHealOption.notAvailable = not ClientShopManager.CanBuy(instaHealCost)
         end
     end

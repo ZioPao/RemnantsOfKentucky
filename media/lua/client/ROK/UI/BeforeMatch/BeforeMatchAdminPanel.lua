@@ -82,6 +82,7 @@ function BeforeMatchAdminPanel:update()
     self.btnManagePlayersOption:setEnable(not isStartingMatch)
     self.btnManagementOption:setEnable(not isStartingMatch)
     self.btnEconomyManagement:setEnable(not isStartingMatch)
+
 end
 
 
@@ -126,5 +127,20 @@ end
 function BeforeMatchAdminPanel.OnClosePanel()
     return BaseAdminPanel.OnClosePanel(BeforeMatchAdminPanel)
 end
+
+function BeforeMatchAdminPanel.SwitchPanel()
+    if not isAdmin() then return end
+    debugPrint("Switching admin panel, BEFORE => ADMIN")
+
+    if BeforeMatchAdminPanel.instance and BeforeMatchAdminPanel.instance:isVisible() then
+        BeforeMatchAdminPanel.instance:close()
+        BeforeMatchAdminPanel.instance = nil
+        local DuringMatchAdminPanel = require("ROK/UI/DuringMatch/DuringMatchAdminPanel")
+        DuringMatchAdminPanel.OnOpenPanel()
+
+    end
+end
+
+Events.PZEFT_MatchNowRunning.Add(BeforeMatchAdminPanel.SwitchPanel)
 
 return BeforeMatchAdminPanel

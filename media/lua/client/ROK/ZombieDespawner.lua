@@ -21,7 +21,20 @@ end
 
 --* Activate it at startup
 Events.PZEFT_OnPlayerInitDone.Add(ActivateZombieDespawner)
-Events.PZEFT_ClientNotInRaidAnymore.Add(ActivateZombieDespawner)
+Events.OnPlayerDeath.Add(DeactivateZombieDespawner)
+Events.PZEFT_ClientNowInRaid.Add(DeactivateZombieDespawner)
+
+
+
+
+
+-- FIX This could cause issue, methink.
+--Events.PZEFT_ClientNotInRaidAnymore.Add(ActivateZombieDespawner)
+
+
+
+
+
 Events.PZEFT_OnSuccessfulTeleport.Add(function()
     debugPrint("Teleported, despawning zombies near player for 5 seconds")
     ActivateZombieDespawner()
@@ -31,6 +44,3 @@ Events.PZEFT_OnSuccessfulTeleport.Add(function()
         DeactivateZombieDespawner()
     end, "DespawnZombies5Seconds")
 end)
-
-Events.PZEFT_ClientNowInRaid.Add(DeactivateZombieDespawner)
-Events.OnPlayerDeath.Add(DeactivateZombieDespawner)

@@ -5,6 +5,9 @@ if isClient() then
     LuaEventManager.AddEvent("PZEFT_ClientNowInRaid")
     LuaEventManager.AddEvent("PZEFT_ClientNotInRaidAnymore")
 
+    LuaEventManager.AddEvent("PZEFT_MatchNowRunning")
+    LuaEventManager.AddEvent("PZEFT_MatchNotRunningAnymore")
+
 
     --* ClientEventHandler.lua
     LuaEventManager.AddEvent("PZEFT_OnPlayerInitDone")

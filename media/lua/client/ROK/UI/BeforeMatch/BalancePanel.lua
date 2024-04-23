@@ -1,8 +1,8 @@
--- TODO Finish this
 
 require "ISUI/ISPanel"
 require "ISUI/ISRichTextPanel"
 require "ISUI/ISButton"
+local GenericUI = require("ROK/UI/BaseComponents/GenericUI")
 ---------------------------
 
 ---@class BalancePanel : ISPanel
@@ -66,7 +66,11 @@ function BalancePanel:prerender()
 
     local balance
     if self.refBankAccount and self.refBankAccount.bankAccount then
-        balance = "<CENTRE> <GREEN> $ <RGB:1,1,1> <SPACE> " .. tostring(self.refBankAccount.bankAccount.balance)
+
+        -- TODO Format balance correctly
+        local formattedBalance = GenericUI.FormatCurrency(self.refBankAccount.bankAccount.balance)
+
+        balance = "<CENTRE> <GREEN> $ <RGB:1,1,1> <SPACE> " .. formattedBalance
     else
         balance = "..."
     end

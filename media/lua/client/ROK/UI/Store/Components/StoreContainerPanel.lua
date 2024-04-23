@@ -26,12 +26,7 @@ function StoreContainerPanel:new(x, y, width, height, scrollModal, sideModal)
     StoreContainerPanel.instance = o
     return o
 end
-
-function StoreContainerPanel:initialise()
-    ISPanelJoypad.initialise(self)
-
-    --self.scrollPanel:initialiseList(ClientShopManager.GetEssentialItems())
-end
+----------------
 
 function StoreContainerPanel:createChildren()
 

@@ -137,7 +137,8 @@ function RecapScrollKilledPlayersPanel.DrawItem(playersBox, y, item, rowElementN
     -- https://www.lua.org/pil/22.1.html
 
     -- %X doesn't work in kahlua for some reason.
-    local timeStr = tostring(os.date('%H:%m', timestamp))
+    --local timeStr = tostring(os.date('%H:%m', timestamp))
+    local timeStr = GenericUI.FormatTime(tonumber(timestamp))
     local timeStrY = getTextManager():MeasureStringY(playersBox.font, timeStr)
     local timeStrX = getTextManager():MeasureStringX(playersBox.font, timeStr)
 

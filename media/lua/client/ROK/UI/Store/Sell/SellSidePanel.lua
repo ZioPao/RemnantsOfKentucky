@@ -112,11 +112,11 @@ function SellSidePanel:onConfirmSell()
     
 end
 
----@param val boolean
----@param cat string
-function SellSidePanel:updateNotification(val, cat)
-    self.showNotification = val
-    self.notificationType = cat
+---@param showNotification boolean
+---@param notification string
+function SellSidePanel:updateNotification(showNotification, notification)
+    self.showNotification = showNotification
+    self.notificationType = notification
     self.timeShowNotification = os.time() + 3
 end
 

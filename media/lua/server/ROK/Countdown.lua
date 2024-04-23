@@ -7,6 +7,9 @@ Workshop ID: 2875394066
 Mod ID: LuaTimers
 --]]
 
+
+-- TODO Using OnTickEvenPaused will prevent the server from stopping matches if there are no more players online.
+
 local os_time = os.time
 
 ---@class Countdown
@@ -42,7 +45,7 @@ function Countdown.Setup(stopTime, fun, displayOnClient, description)
 		Countdown.displayOnClient = false
 	end
 
-	Events.OnTick.Add(Countdown.Update)
+	Events.OnTickEvenPaused.Add(Countdown.Update)
 end
 
 ---@param interval number in seconds
@@ -84,7 +87,7 @@ function Countdown.Update()
 	end
 
 	if currTime >= Countdown.stopTime then
-		Events.OnTick.Remove(Countdown.Update)
+		Events.OnTickEvenPaused.Remove(Countdown.Update)
 		debugPrint("Stopping countdown and running function")
 		if Countdown.fun then
 			Countdown.fun()
@@ -107,7 +110,7 @@ function Countdown.Stop()
 		sendServerCommand(EFT_MODULES.UI, "ReceiveTimeUpdate", { time = 0 })
 	end
 
-	Events.OnTick.Remove(Countdown.Update)
+	Events.OnTickEvenPaused.Remove(Countdown.Update)
 end
 
 ------------------------------------------------------------------------
