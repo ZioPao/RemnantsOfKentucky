@@ -158,11 +158,11 @@ function BuySidePanel:render()
     if self.currentCost == nil then
         finalStr = " <CENTRE> Loading..."
     else
-
-        local formattedCost = GenericUI.FormatCurrency(self.currentCost)
+        local formattedItemCost = GenericUI.FormatCurrency(selectedItem.basePrice)
+        local formattedFinalCost = GenericUI.FormatCurrency(self.currentCost)
 
         local itemNameStr = " <CENTRE> " .. actualItem:getDisplayName()
-        local itemFinalCostStr = " <CENTRE> $" .. formattedCost .. " x " .. tostring(self.selectedAmount) .. " = $" .. tostring(self.currentCost)
+        local itemFinalCostStr = " <CENTRE> $" .. formattedItemCost .. " x " .. tostring(self.selectedAmount) .. " = $" .. formattedFinalCost
         finalStr = itemNameStr .. " <LINE> " .. itemFinalCostStr
     end
 
